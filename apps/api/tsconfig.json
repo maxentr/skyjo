@@ -1,5 +1,10 @@
 {
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "strict": true,
+    "outDir": "./dist",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "sourceMap": true,
   },
 }

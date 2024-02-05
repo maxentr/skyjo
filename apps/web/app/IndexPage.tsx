@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
-import { CreatePlayer } from "@/validations/player"
 import { Shantell_Sans } from "next/font/google"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { SkyjoToJSON } from "shared/types/Skyjo"
+import { CreatePlayer } from "shared/validations/player"
 
 const shantell = Shantell_Sans({ subsets: ["latin"], weight: "700" })
 

@@ -5,7 +5,7 @@ import Providers from "@/app/providers"
 import { cn } from "@/lib/utils"
 import { PropsWithChildren } from "react"
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
