@@ -35,7 +35,7 @@ const GamePage = () => {
         <div className="absolute right-0 top-1/2 z-10">
           {game.selectedCard && (
             <div className="flex flex-col items-center justify-center">
-              <Card card={game.selectedCard} />
+              <Card card={game.selectedCard} disabled />
               <p>Carte sélectionnée</p>
             </div>
           )}

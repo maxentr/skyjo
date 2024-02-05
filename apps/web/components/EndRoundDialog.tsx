@@ -21,8 +21,10 @@ const EndRoundDialog = ({}: EndRoundDialogProps) => {
         <DialogHeader>
           <DialogTitle className="text-center">Fin de la manche</DialogTitle>
           <DialogDescription>
-              <p className="mt-2">La manche suivante va commencer dans quelques secondes.</p>
-              <ScoreTable players={game.players} />
+            <p className="mt-2">
+              La manche suivante va commencer dans quelques secondes.
+            </p>
+            <ScoreTable players={game.players} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
