@@ -1,7 +1,3 @@
-import { Socket } from "socket.io"
-import { GameController } from "./class/GameController"
-import { Skyjo } from "./class/Skyjo"
-import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import {
   PlaySkyjo,
   PlaySkyjoReplace,
@@ -9,6 +5,10 @@ import {
 } from "shared/validations/play"
 import { CreatePlayer } from "shared/validations/player"
 import { TurnCard } from "shared/validations/turnCard"
+import { Socket } from "socket.io"
+import { GameController } from "./class/GameController"
+import { Skyjo } from "./class/Skyjo"
+import { SkyjoPlayer } from "./class/SkyjoPlayer"
 
 export default class SkyjoController extends GameController {
   private static instance: SkyjoController
@@ -77,7 +77,8 @@ export default class SkyjoController extends GameController {
     ) {
       this.turnCardAfterThrowing(socket, game, player, data)
     } else {
-      throw new Error(
+      // If user try an impossible move
+      console.log(
         `Invalid actionType ${data.actionType} for turnState ${game.turnState}`,
       )
     }

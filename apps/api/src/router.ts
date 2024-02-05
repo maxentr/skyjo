@@ -1,10 +1,10 @@
-import { Namespace } from "socket.io"
-import { SkyjoPlayer } from "./class/SkyjoPlayer"
-import skyjoController from "./controller"
 import { JoinGame, joinGame } from "shared/validations/joinGame"
 import { PlaySkyjo, playSkyjo } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
 import { TurnCard, turnCard } from "shared/validations/turnCard"
+import { Namespace } from "socket.io"
+import { SkyjoPlayer } from "./class/SkyjoPlayer"
+import skyjoController from "./controller"
 
 const instance = skyjoController.getInstance()
 
