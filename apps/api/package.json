@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsx build src/index.ts",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.7.0",
+    "hono": "^3.12.8",
+    "socket.io": "^4.7.4",
+    "zod": "^3.22.4",
+    "shared": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.2"
+  }
+}

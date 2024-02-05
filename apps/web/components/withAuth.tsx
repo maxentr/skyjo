@@ -1,0 +1,39 @@
+"use client"
+
+import { useSocket } from "@/contexts/SocketContext"
+import { useUser } from "@/contexts/UserContext"
+import { useParams, useRouter } from "next/navigation"
+import React, { ComponentType, useEffect, useState } from "react"
+
+const withAuth = <P extends object>(
+  WrappedComponent: ComponentType<P>,
+): React.FC<P> =>
+  function UpdatedComponent(props: P) {
+    const { username, avatar } = useUser()
+    const { socket } = useSocket()
+    const params = useParams()
+    const router = useRouter()
+    const [verified, setVerified] = useState(false)
+
+    useEffect(() => {
+      checkAuth()
+    }, [router, avatar, username, socket])
+
+    const checkAuth = async () => {
+      if (username && avatar && socket) setVerified(true)
+      else {
+        const gameId = params?.id
+
+        if (gameId) router.push(`/?gameId=${gameId}`)
+        else router.push("/")
+      }
+    }
+
+    if (verified) {
+      return <WrappedComponent {...props} />
+    } else {
+      return null
+    }
+  }
+
+export default withAuth

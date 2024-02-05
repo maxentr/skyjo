@@ -1,0 +1,20 @@
+{
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "module": "esnext",
+    "lib": ["ES2023"],
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+  },
+  "buildOptions": {
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist",
+  },
+}
