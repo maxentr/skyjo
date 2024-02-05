@@ -1,25 +1,19 @@
 import "@/app/globals.css"
-import { Inter as FontSans } from "next/font/google"
+import { Inter } from "next/font/google"
 
 import Providers from "@/app/providers"
-import { cn } from "@/lib/utils"
 import { PropsWithChildren } from "react"
 
-const fontSans = FontSans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  display: "swap",
 })
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.className}>
       <head />
-      <body
-        className={cn(
-          "h-dvh bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
+      <body className="h-dvh bg-background antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
