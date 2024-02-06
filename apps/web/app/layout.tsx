@@ -37,7 +37,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
       </head>
-      <body className="h-dvh bg-background antialiased">
+      <body className="h-dvh bg-background antialiased overflow-hidden">
         <Providers>{children}</Providers>
       </body>
     </html>
