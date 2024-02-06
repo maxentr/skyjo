@@ -88,8 +88,6 @@ export abstract class GameController implements IGameController {
     game.addPlayer(player)
     await socket.join(gameId)
 
-    if (game.status === "lobby" && game.isFull()) game.start()
-
     socket.emit("joinGame", game.toJSON())
 
     socket.to(gameId).emit("game", game.toJSON())

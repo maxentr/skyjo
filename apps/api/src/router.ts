@@ -1,6 +1,7 @@
 import { JoinGame, joinGame } from "shared/validations/joinGame"
 import { PlaySkyjo, playSkyjo } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
+import { StartGame, startGame } from "shared/validations/start"
 import { TurnCard, turnCard } from "shared/validations/turnCard"
 import { Namespace } from "socket.io"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
@@ -64,6 +65,16 @@ const skyjoRouter = (namespace: Namespace) => {
     socket.on("get", async (gameId: string) => {
       try {
         await instance.onGet(socket, gameId)
+      } catch (error) {
+        console.error(`Error while getting a game : ${error}`)
+      }
+    })
+
+    socket.on("start", async (data: StartGame) => {
+      try {
+        const startGameData = startGame.parse(data)
+
+        instance.startGame(socket, startGameData.gameId)
       } catch (error) {
         console.error(`Error while getting a game : ${error}`)
       }

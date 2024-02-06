@@ -22,9 +22,9 @@ export default class SkyjoController extends GameController {
   }
 
   async create(socket: Socket, player: CreatePlayer, isPrivate = true) {
-    const game = new Skyjo(isPrivate)
-
     const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
+
+    const game = new Skyjo(newPlayer, isPrivate)
 
     this.onCreate(socket, newPlayer, game)
   }
@@ -43,6 +43,16 @@ export default class SkyjoController extends GameController {
     game.checkIfAllPlayersTurnedAmountOfCards()
 
     this.sendGame(socket, data.gameId)
+  }
+
+  async startGame(socket: Socket, gameId: string) {
+    const game = this.getGame(gameId)
+    if (!game) return
+
+    if (game.admin.socketID !== socket.id) return
+
+    game.start()
+    this.sendGame(socket, gameId)
   }
 
   async play(socket: Socket, data: PlaySkyjo) {

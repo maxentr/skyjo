@@ -31,8 +31,8 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
   roundNumber: number = 1
   firstPlayerToFinish: SkyjoPlayer | null = null
 
-  constructor(privateGame: boolean = false) {
-    super(2, privateGame)
+  constructor(player: SkyjoPlayer, privateGame: boolean = false) {
+    super(player, 8, privateGame)
   }
 
   private get discardPile() {
@@ -266,6 +266,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
   override toJSON() {
     return {
       ...super.toJSON(),
+      admin: this.admin.toJSON(),
       players: this.players.map((player) => player.toJSON()),
       selectedCard: this.selectedCard?.toJSON(),
       lastDiscardCardValue: this.discardPile[this.discardPile.length - 1],

@@ -30,8 +30,10 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
   maxPlayers!: number
   players: TPlayer[] = []
   turn: number = 0
+  admin: TPlayer
 
-  constructor(maxPlayers: number, privateGame: boolean) {
+  constructor(player: TPlayer, maxPlayers: number, privateGame: boolean) {
+    this.admin = player
     this.maxPlayers = maxPlayers
     this.private = privateGame
   }
@@ -66,7 +68,9 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
   }
 
   start() {
-    if (!this.isFull()) return
+    // The game can't start if there are less than 2 players
+    if (this.players.length < 2) return
+
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
 
@@ -91,6 +95,7 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
       id: this.id,
       private: this.private,
       status: this.status,
+      admin: this.admin.toJSON(),
       maxPlayers: this.maxPlayers,
       players: this.players.map((player) => player.toJSON()),
       turn: this.turn,

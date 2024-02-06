@@ -1,5 +1,6 @@
 "use client"
 
+import AdminLobby from "@/components/AdminLobby"
 import { Card } from "@/components/Card"
 import CopyLink from "@/components/CopyLink"
 import DiscardPile from "@/components/DiscardPile"
@@ -48,9 +49,12 @@ const GamePage = () => {
           )}
           <p>{getGameInfo(player, game)}</p>
         </div>
-        <div className="absolute inset-0 flex flex-row justify-center items-center gap-10">
-          <DrawPile />
-          <DiscardPile />
+        <div className="absolute inset-0 flex flex-col justify-center items-center">
+          <div className="flex flex-row justify-center items-center gap-10">
+            <DrawPile />
+            <DiscardPile />
+          </div>
+          <AdminLobby />
         </div>
         {game.status === "lobby" && (
           <CopyLink className="absolute bottom-0 left-0 z-10" />

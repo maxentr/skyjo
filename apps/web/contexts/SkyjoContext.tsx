@@ -20,6 +20,7 @@ type SkyjoContextInterface = {
   player: SkyjoPlayerToJSON
   opponents: SkyjoPlayerToJSON[]
   actions: {
+    startGame: () => void
     turnCard: (column: number, row: number) => void
     takeCardFromPile: (actionType: PlaySkyjoActionTypeTakeFromPile) => void
     replaceCard: (column: number, row: number) => void
@@ -69,6 +70,12 @@ const SkyjoContextProvider = ({
   if (!game || !player) return null
 
   //#region game actions
+  const startGame = () => {
+    socket?.emit("start", {
+      gameId: gameId,
+    })
+  }
+
   const turnCard = (column: number, row: number) => {
     socket?.emit("turnCard", {
       gameId: gameId,
@@ -115,6 +122,7 @@ const SkyjoContextProvider = ({
   }
 
   const actions = {
+    startGame,
     turnCard,
     takeCardFromPile,
     replaceCard,
