@@ -1,6 +1,7 @@
 "use client"
 
 import { Card } from "@/components/Card"
+import CopyLink from "@/components/CopyLink"
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
@@ -51,6 +52,9 @@ const GamePage = () => {
           <DrawPile />
           <DiscardPile />
         </div>
+        {game.status === "lobby" && (
+          <CopyLink className="absolute bottom-0 left-0 z-10" />
+        )}
       </div>
       <EndRoundDialog />
       <EndGameDialog />
