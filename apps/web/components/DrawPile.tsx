@@ -26,6 +26,12 @@ const DrawPile = () => {
       onClick={onClick}
       title="Paquet de pioche"
       className="shadow-md"
+      disabled={
+        !(
+          isCurrentUserTurn(game, player.name) &&
+          game.turnState === "chooseAPile"
+        )
+      }
     />
   )
 }

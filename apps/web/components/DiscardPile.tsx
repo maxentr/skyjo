@@ -30,6 +30,12 @@ const DiscardPile = () => {
       onClick={onClick}
       title="Paquet de défausse"
       className="shadow-md"
+      disabled={
+        !(
+          isCurrentUserTurn(game, player.name) &&
+          game.turnState === "chooseAPile"
+        )
+      }
     />
   )
 }
