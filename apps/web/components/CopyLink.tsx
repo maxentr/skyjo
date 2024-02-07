@@ -27,13 +27,13 @@ const CopyLink = ({ className }: Props) => {
     return (
       <div
         className={cn(
-          "flex flex-col justify-center items-center",
+          "flex flex-col items-center justify-center gap-2 w-fit",
           className,
         )}
       >
         <p
           className={cn(
-            "px-2.5 py-1 w-fit absolute bottom-[120%] bg-white text-slate-800 text-sm shadow rounded-md duration-300 transition-all select-none",
+            "px-2.5 py-1 w-fit bg-white text-slate-800 text-sm shadow rounded-md duration-300 transition-all select-none",
             copied
               ? "opacity-100 translate-y-0 scale-100"
               : "opacity-0 translate-y-4 scale-[85%]",

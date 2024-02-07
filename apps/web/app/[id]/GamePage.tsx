@@ -45,7 +45,7 @@ const GamePage = () => {
         </div>
       </div>
       <div className="w-full h-2/5 grid grid-cols-3 grid-flow-row items-end">
-        <CopyLink className="items-start" />
+        <CopyLink />
         {player && (
           <PlayerBoard
             player={player}
