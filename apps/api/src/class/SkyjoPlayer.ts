@@ -118,6 +118,7 @@ export class SkyjoPlayer extends Player implements ISkyjoPlayer {
 
     this.cards.forEach((column) => {
       column.forEach((card) => {
+        card.turnVisible()
         finalScore += card.value
       })
     })
