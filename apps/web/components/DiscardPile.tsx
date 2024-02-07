@@ -19,23 +19,21 @@ const DiscardPile = () => {
   }
 
   const card = {
-    value:
-      game.lastDiscardCardValue === undefined ? -99 : game.lastDiscardCardValue,
+    value: game.lastDiscardCardValue ?? -99,
     isVisible: game.lastDiscardCardValue !== undefined,
   }
 
+  const disabled = !(
+    isCurrentUserTurn(game, player.name) &&
+    (game.turnState === "chooseAPile" || game.turnState === "throwOrReplace")
+  )
   return (
     <Card
       card={card}
       onClick={onClick}
       title="Paquet de défausse"
       className="shadow-md"
-      disabled={
-        !(
-          isCurrentUserTurn(game, player.name) &&
-          game.turnState === "chooseAPile"
-        )
-      }
+      disabled={disabled}
     />
   )
 }
