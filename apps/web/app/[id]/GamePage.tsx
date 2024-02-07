@@ -17,51 +17,51 @@ const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
 
   return (
-    <div className="h-dvh w-dvw p-6 bg-slate-100">
-      <div className="relative w-full h-full">
+    <div className="relative h-dvh w-dvw p-6 bg-slate-100 flex flex-col">
+      <div className="w-full h-2/5 flex flex-row justify-evenly">
+        {opponents.map((opponent) => (
+          <OpponentBoard
+            opponent={opponent}
+            key={opponent.name}
+            isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+          />
+        ))}
+      </div>
+      <div className="w-full h-1/5 grid grid-cols-3 grid-flow-row">
+        <div className="col-start-2 flex flex-col justify-center items-center gap-4">
+          <div className="flex flex-row items-center gap-10">
+            <DrawPile />
+            <DiscardPile />
+          </div>
+          <AdminLobby />
+        </div>
+        <div className="col-start-3 flex justify-end items-center">
+          {game.selectedCard && (
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Card card={game.selectedCard} disabled />
+              <p>Carte sélectionnée</p>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="w-full h-2/5 grid grid-cols-3 grid-flow-row items-end">
+        <CopyLink className="items-start" />
         {player && (
           <PlayerBoard
             player={player}
             isPlayerTurn={isCurrentUserTurn(game, player.name)}
           />
         )}
-        <div className="flex flex-row justify-evenly">
-          {opponents.map((opponent) => (
-            <OpponentBoard
-              opponent={opponent}
-              key={opponent.name}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
-            />
-          ))}
-        </div>
-        <div className="absolute right-0 top-1/2 z-10">
-          {game.selectedCard && (
-            <div className="flex flex-col items-center justify-center">
-              <Card card={game.selectedCard} disabled />
-              <p>Carte sélectionnée</p>
-            </div>
-          )}
-        </div>
-        <ScoreSheet players={game.players} />
-        <div className="absolute top-0 right-0 z-10">
-          {game.roundState === "lastLap" && (
-            <p className="font-bold">Dernier tour !</p>
-          )}
-          <p>{getGameInfo(player, game)}</p>
-        </div>
-        <div className="absolute inset-0 flex flex-col justify-center items-center">
-          <div className="flex flex-row justify-center items-center gap-10">
-            <DrawPile />
-            <DiscardPile />
-          </div>
-          <AdminLobby />
-        </div>
-        {game.status === "lobby" && (
-          <CopyLink className="absolute bottom-0 left-0 z-10" />
+      </div>
+      <div className="absolute top-6 right-6">
+        {game.roundState === "lastLap" && (
+          <p className="font-bold">Dernier tour !</p>
         )}
+        <p>{getGameInfo(player, game)}</p>
       </div>
       <EndRoundDialog />
       <EndGameDialog />
+      <ScoreSheet players={game.players} />
     </div>
   )
 }

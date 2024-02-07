@@ -11,26 +11,26 @@ type OpponentBoardProps = {
 const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center z-10 duration-300 ${
+      className={`flex flex-col items-center justify-start duration-300 ease-in-out ${
         isPlayerTurn ? "scale-105" : ""
       }`}
     >
       <Image
         src={`/avatars/${opponent.avatar}.png`}
-        width={48}
-        height={48}
+        width={40}
+        height={40}
         alt={opponent.avatar}
         className={`select-none ${isPlayerTurn && "animate-bounce-slow"}`}
         priority
       />
-      <div
+      <p
         className={cn(
-          "text-center select-none mb-4",
+          "text-center select-none text-sm mb-4",
           isPlayerTurn && "font-semibold",
         )}
       >
         {opponent.name}
-      </div>
+      </p>
       <CardTable cards={opponent.cards} size="small" cardDisabled={true} />
     </div>
   )

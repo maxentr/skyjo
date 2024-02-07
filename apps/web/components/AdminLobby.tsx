@@ -6,7 +6,7 @@ const AdminLobby = () => {
 
   if (game.admin.socketID === player.socketID && game.status === "lobby" && game.players.length > 1)
     return (
-      <Button onClick={actions.startGame} className="mt-12">
+      <Button onClick={actions.startGame}>
         Start the game
       </Button>
     )

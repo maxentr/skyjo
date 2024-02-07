@@ -10,27 +10,29 @@ type PlayerBoardProps = {
 
 const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
   return (
-    <div className="flex flex-col items-center justify-center absolute bottom-0 left-0 right-0 self-center z-10">
-      <CardTable
-        cards={player.cards}
-        size={isPlayerTurn ? "normal" : "small"}
-      />
+    <div
+      className={cn(
+        "flex flex-col items-center col-start-2 duration-300 ease-in-out",
+        isPlayerTurn ? "scale-110" : "",
+      )}
+    >
+      <CardTable cards={player.cards} size={"small"} />
       <Image
         src={`/avatars/${player.avatar}.png`}
-        width={48}
-        height={48}
+        width={40}
+        height={40}
         alt={player.avatar}
         className="mt-4 select-none"
         priority
       />
-      <div
+      <p
         className={cn(
-          "text-center select-none",
+          "text-center select-none text-sm",
           isPlayerTurn && "font-semibold",
         )}
       >
         {player.name} (Vous)
-      </div>
+      </p>
     </div>
   )
 }

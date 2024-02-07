@@ -10,7 +10,7 @@ const ScoreSheet = ({ players }: Props) => {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="absolute right-8 -bottom-6 z-10 flex items-center justify-end">
+    <div className="absolute right-8 bottom-0 z-10 flex items-center justify-end">
       <div
         className={`w-fit h-fit bg-white shadow border rounded-t-lg boder-slate-600 flex flex-col items-center duration-300 transition-transform ease-in-out ${
           open ? "translate-y-0" : "-translate-y-[calc(-100%+2.75rem)]"

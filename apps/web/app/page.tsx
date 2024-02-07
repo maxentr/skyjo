@@ -13,8 +13,8 @@ type IndexServerPageProps = {
 }
 const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
   return (
-    <div className="flex h-dvh items-center justify-center bg-slate-200">
-      <div className="bg-slate-300 border border-slate-600 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
+    <div className="flex h-dvh items-center justify-center bg-white">
+      <div className="bg-slate-200 border border-slate-300 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
         <h1
           className={cn(
             "text-4xl text-center mb-5 text-slate-900",
