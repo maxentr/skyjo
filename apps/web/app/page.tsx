@@ -4,7 +4,11 @@ import { Shantell_Sans } from "next/font/google"
 import Image from "next/image"
 import Link from "next/link"
 
-const shantell = Shantell_Sans({ subsets: ["latin"], weight: "700" })
+const shantell = Shantell_Sans({
+  subsets: ["latin"],
+  weight: "700",
+  display: "swap",
+})
 
 type IndexServerPageProps = {
   searchParams: {
