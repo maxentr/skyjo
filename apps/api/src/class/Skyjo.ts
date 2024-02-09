@@ -52,6 +52,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
   public resetCardPiles() {
     const defaultCards = [
       ...Array(5).fill(-2),
+      ...Array(10).fill(-1),
       ...Array(15).fill(0),
       ...Array(10).fill(1),
       ...Array(10).fill(2),
