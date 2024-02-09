@@ -14,46 +14,37 @@ type Props = {
 }
 
 const ScoreTable = ({ players, winner }: Props) => {
-  const scoreRows = players[0]?.scores?.length
-  const formattedScores = Array.from({ length: scoreRows }, (_, i) =>
-    players.map((row) => row.scores[i] ?? 0),
-  )
+  const nbRounds = players[0].scores.length
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableCell className="w-12"></TableCell>
-          {players.map((player) => (
-            <TableHead key={player.name} className="text-center">
-              {player.name} {winner?.socketID === player.socketID && "🏆"}
+          <TableHead className="w-12"></TableHead>
+          {Array.from({ length: nbRounds }).map((_, index) => (
+            <TableHead key={index} className="text-center w-fit text-nowrap">
+              Round {index + 1}
             </TableHead>
           ))}
+          <TableHead className="text-center">Total</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {formattedScores.map((rows, index) => (
-          <TableRow key={rows[0] + index}>
+        {players.map((player, index) => (
+          <TableRow key={player.socketID}>
             <TableCell className="text-center w-32">
-              Round {index + 1}
+              {player.name} {winner?.socketID === player.socketID && "🏆"}
             </TableCell>
-            {rows.map((score) => (
-              <TableCell key={score + rows[0] + index} className="text-center">
+            {player.scores.map((score) => (
+              <TableCell key={player.socketID + score} className="text-center">
                 {score}
               </TableCell>
             ))}
-          </TableRow>
-        ))}
-        <TableRow>
-          <TableCell className="w-12 font-semibold text-center">
-            Total
-          </TableCell>
-          {players.map((player) => (
-            <TableCell key={player.socketID} className="text-center">
+            <TableCell className="text-center">
               {player.scores.reduce((a, b) => a + b, 0)}
             </TableCell>
-          ))}
-        </TableRow>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   )
