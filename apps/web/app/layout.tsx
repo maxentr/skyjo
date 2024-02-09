@@ -6,6 +6,7 @@ import { PropsWithChildren } from "react"
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: "variable",
   display: "swap",
 })
 
