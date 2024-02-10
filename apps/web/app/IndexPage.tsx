@@ -14,8 +14,7 @@ type Props = { gameId?: string }
 
 const IndexPage = ({ gameId }: Props) => {
   const hasGameId = !!gameId
-  const { username, avatar, setUsername, setAvatar, saveUserInLocalStorage } =
-    useUser()
+  const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
   const { connect } = useSocket()
 
   const router = useRouter()
@@ -29,13 +28,15 @@ const IndexPage = ({ gameId }: Props) => {
     if (!username) return
     const socket = connect()
 
+    const avatar = getAvatar()
+    console.log(avatar)
     const player: CreatePlayer = {
       username,
-      avatar,
+      avatar: getAvatar(),
     }
 
     if (gameId && type === "join") socket.emit("join", { gameId, player })
-    else socket.emit(type, { username, avatar })
+    else socket.emit(type, player)
 
     socket.on("joinGame", (game: SkyjotoJson) => {
       setLoading(false)
@@ -46,11 +47,7 @@ const IndexPage = ({ gameId }: Props) => {
 
   return (
     <>
-      <SelectAvatar
-        containerClassName="mb-4"
-        initialValue={avatar}
-        onChange={setAvatar}
-      />
+      <SelectAvatar containerClassName="mb-4" />
       <Input
         placeholder="Nom"
         value={username}

@@ -1,51 +1,25 @@
 "use client"
 
+import { AVATARS, useUser } from "@/contexts/UserContext"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import { Dispatch, SetStateAction, useState } from "react"
-import { Avatar } from "shared/types/Player"
 import UserAvatar from "./UserAvatar"
 
-const availableAvatars: Avatar[] = [
-  "bee",
-  "crab",
-  "dog",
-  "elephant",
-  "fox",
-  "frog",
-  "koala",
-  "octopus",
-  "penguin",
-  "turtle",
-  "whale",
-]
-
 type Props = {
-  onChange: Dispatch<SetStateAction<Avatar>>
-  initialValue?: Avatar
   containerClassName?: string
 }
 
-const SelectAvatar = ({
-  containerClassName,
-  initialValue = "bee",
-  onChange,
-}: Props) => {
-  const intialValueIndex =
-    availableAvatars.findIndex((avatar) => avatar === initialValue) ?? 0
-  const [index, setIndex] = useState(intialValueIndex)
+const SelectAvatar = ({ containerClassName }: Props) => {
+  const { avatarIndex, setAvatarIndex, getAvatar } = useUser()
 
   const handlePrevious = () => {
-    const newIndex = index === 0 ? availableAvatars.length - 1 : index - 1
-    setIndex(newIndex)
+    const newIndex = avatarIndex === 0 ? AVATARS.length - 1 : avatarIndex - 1
 
-    onChange(availableAvatars[newIndex])
+    setAvatarIndex(newIndex)
   }
 
   const handleNext = () => {
-    const newIndex = index === availableAvatars.length - 1 ? 0 : index + 1
-    setIndex(newIndex)
-
-    onChange(availableAvatars[newIndex])
+    const newIndex = avatarIndex === AVATARS.length - 1 ? 0 : avatarIndex + 1
+    setAvatarIndex(newIndex)
   }
 
   return (
@@ -55,7 +29,7 @@ const SelectAvatar = ({
         onClick={handlePrevious}
       />
       <div className="flex flex-col gap-2">
-        <UserAvatar avatar={availableAvatars[index]} />
+        <UserAvatar avatar={getAvatar()} />
       </div>
       <ChevronRightIcon
         className="h-6 w-6 cursor-pointer dark:text-primary"

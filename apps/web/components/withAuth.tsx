@@ -9,7 +9,7 @@ const withAuth = <P extends object>(
   WrappedComponent: ComponentType<P>,
 ): React.FC<P> =>
   function UpdatedComponent(props: P) {
-    const { username, avatar } = useUser()
+    const { username, avatarIndex } = useUser()
     const { socket } = useSocket()
     const params = useParams()
     const router = useRouter()
@@ -17,10 +17,10 @@ const withAuth = <P extends object>(
 
     useEffect(() => {
       checkAuth()
-    }, [router, avatar, username, socket])
+    }, [router, avatarIndex, username, socket])
 
     const checkAuth = async () => {
-      if (username && avatar && socket) setVerified(true)
+      if (username && avatarIndex && socket) setVerified(true)
       else {
         const gameId = params?.id
 

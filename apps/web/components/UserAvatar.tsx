@@ -1,13 +1,13 @@
 import Image from "next/image"
 import { Avatar } from "shared/types/Player"
 
-type Props = {
+type UserAvatarProps = {
   avatar?: Avatar
   pseudo?: string
   score?: number
 }
 
-const UserAvatar = ({ avatar, pseudo, score }: Props) => {
+const UserAvatar = ({ avatar, pseudo, score }: UserAvatarProps) => {
   return (
     <div className="flex flex-col gap-2 items-center">
       {avatar ? (

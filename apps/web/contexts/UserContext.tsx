@@ -12,46 +12,66 @@ import React, {
 import { Avatar } from "shared/types/Player"
 
 const USERNAME_KEY = "username"
-const AVATAR_KEY = "avatar"
+const AVATAR_KEY = "avatar-index"
+
+export const AVATARS: Avatar[] = [
+  "bee",
+  "crab",
+  "dog",
+  "elephant",
+  "fox",
+  "frog",
+  "koala",
+  "octopus",
+  "penguin",
+  "turtle",
+  "whale",
+]
 
 type UserContextInterface = {
   username: string
-  avatar: Avatar
+  avatarIndex: number
   setUsername: Dispatch<SetStateAction<string>>
-  setAvatar: Dispatch<SetStateAction<Avatar>>
+  setAvatarIndex: Dispatch<SetStateAction<number>>
   saveUserInLocalStorage: () => void
+  getAvatar: () => Avatar
 }
 
 const UserContext = createContext({} as UserContextInterface)
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [username, setUsername] = useState<string>("")
-  const [avatar, setAvatar] = useState<Avatar>("bee")
+  const [avatarIndex, setAvatarIndex] = useState<number>(0)
 
   useEffect(() => {
     if (localStorage) {
       const username = localStorage.getItem(USERNAME_KEY)
-      const avatar = localStorage.getItem(AVATAR_KEY)
+      const localAvatarIndex = localStorage.getItem(AVATAR_KEY)
 
       if (username) setUsername(username)
-      if (avatar) setAvatar(avatar as Avatar)
+      if (localAvatarIndex) setAvatarIndex(+localAvatarIndex)
     }
   }, [])
 
+  const getAvatar = () => {
+    return AVATARS[avatarIndex] ?? AVATARS[0]
+  }
+
   const saveUserInLocalStorage = () => {
-    localStorage.setItem("username", username)
-    localStorage.setItem("avatar", avatar)
+    localStorage.setItem(USERNAME_KEY, username)
+    localStorage.setItem(AVATAR_KEY, avatarIndex.toString())
   }
 
   const value = useMemo(
     () => ({
       username,
-      avatar,
+      avatarIndex,
       setUsername,
-      setAvatar,
+      setAvatarIndex,
       saveUserInLocalStorage,
+      getAvatar,
     }),
-    [username, avatar],
+    [username, avatarIndex],
   )
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
