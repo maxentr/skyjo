@@ -11,9 +11,9 @@ export type Avatar =
   | "turtle"
   | "whale";
 
-export type PlayerToJSON = {
+export type PlayertoJson = {
   readonly name: string;
-  readonly socketID: string;
+  readonly socketId: string;
   readonly avatar: Avatar;
   readonly score: number;
   readonly wantReplay: boolean;

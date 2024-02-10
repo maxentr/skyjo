@@ -1,8 +1,8 @@
-import { PlayerToJSON } from "./Player"
+import { PlayertoJson } from "./Player"
 
 export type GAME_STATUS = "lobby" | "playing" | "finished" | "stopped"
 
-export type GameToJSON<TPlayer = PlayerToJSON> = {
+export type GametoJson<TPlayer = PlayertoJson> = {
   id: string
   private: boolean
   status: GAME_STATUS

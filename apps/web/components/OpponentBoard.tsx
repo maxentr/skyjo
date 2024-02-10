@@ -1,10 +1,10 @@
 import { CardTable } from "@/components/CardTable"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { SkyjoPlayerToJSON } from "shared/types/SkyjoPlayer"
+import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
 
 type OpponentBoardProps = {
-  opponent: SkyjoPlayerToJSON
+  opponent: SkyjoPlayertoJson
   isPlayerTurn: boolean
 }
 

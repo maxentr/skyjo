@@ -3,7 +3,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { canTurnTwoCards, isCurrentUserTurn } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import { SkyjoCardToJSON } from "shared/types/SkyjoCard"
+import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
 
 const sizeClass = cva(
   "grid grid-rows-3 grid-flow-col transition-all duration-300",
@@ -18,7 +18,7 @@ const sizeClass = cva(
 )
 
 type CardTableProps = {
-  cards: SkyjoCardToJSON[][]
+  cards: SkyjoCardtoJson[][]
   size?: "small" | "normal"
   cardDisabled?: boolean
 }

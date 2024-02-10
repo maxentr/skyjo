@@ -8,8 +8,8 @@ export const playSkyjoGeneral = z.object({
 export const playSkyjoGeneralWithCardIndex = z.object({
   gameId: z.string(),
   playerId: z.string(),
-  cardColumnIndex: z.number().int().min(0).max(3),
-  cardRowIndex: z.number().int().min(0).max(2),
+  column: z.number().int().min(0).max(3),
+  row: z.number().int().min(0).max(2),
 })
 
 export const playSkyjoTakeCard = playSkyjoGeneral.extend({

@@ -10,15 +10,15 @@ import {
   useEffect,
   useState,
 } from "react"
-import { SkyjoToJSON } from "shared/types/Skyjo"
-import { SkyjoPlayerToJSON } from "shared/types/SkyjoPlayer"
+import { SkyjotoJson } from "shared/types/Skyjo"
+import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
 import { PlaySkyjoActionTypeTakeFromPile } from "shared/validations/play"
 import { Socket } from "socket.io-client"
 
 type SkyjoContextInterface = {
-  game: SkyjoToJSON
-  player: SkyjoPlayerToJSON
-  opponents: SkyjoPlayerToJSON[]
+  game: SkyjotoJson
+  player: SkyjoPlayertoJson
+  opponents: SkyjoPlayertoJson[]
   actions: {
     startGame: () => void
     turnCard: (column: number, row: number) => void
@@ -42,7 +42,7 @@ const SkyjoContextProvider = ({
   const { socket } = useSocket()
   const { username } = useUser()
 
-  const [game, setGame] = useState<SkyjoToJSON>()
+  const [game, setGame] = useState<SkyjotoJson>()
 
   const player = getCurrentUser(game?.players, username)
   const opponents = getOpponents(game?.players, username)
@@ -61,7 +61,7 @@ const SkyjoContextProvider = ({
   }, [socket, gameId])
 
   //#region game listeners
-  const onGameUpdate = async (game: SkyjoToJSON) => {
+  const onGameUpdate = async (game: SkyjotoJson) => {
     console.log("game update", game)
     setGame(game)
   }
@@ -79,16 +79,16 @@ const SkyjoContextProvider = ({
   const turnCard = (column: number, row: number) => {
     socket?.emit("turnCard", {
       gameId: gameId,
-      playerId: player.socketID,
-      cardColumnIndex: column,
-      cardRowIndex: row,
+      playerId: player.socketId,
+      column: column,
+      row: row,
     })
   }
 
   const takeCardFromPile = (actionType: PlaySkyjoActionTypeTakeFromPile) => {
     socket?.emit("play", {
       gameId: gameId,
-      playerId: player.socketID,
+      playerId: player.socketId,
       actionType: actionType,
     })
   }
@@ -96,17 +96,17 @@ const SkyjoContextProvider = ({
   const replaceCard = (column: number, row: number) => {
     socket?.emit("play", {
       gameId: gameId,
-      playerId: player.socketID,
+      playerId: player.socketId,
       actionType: "replace",
-      cardColumnIndex: column,
-      cardRowIndex: row,
+      column: column,
+      row: row,
     })
   }
 
   const throwSelectedCard = () => {
     socket?.emit("play", {
       gameId: gameId,
-      playerId: player.socketID,
+      playerId: player.socketId,
       actionType: "throwSelectedCard",
     })
   }
@@ -114,10 +114,10 @@ const SkyjoContextProvider = ({
   const turnCardAfterThrowing = (column: number, row: number) => {
     socket?.emit("play", {
       gameId: gameId,
-      playerId: player.socketID,
+      playerId: player.socketId,
       actionType: "turnACard",
-      cardColumnIndex: column,
-      cardRowIndex: row,
+      column: column,
+      row: row,
     })
   }
 

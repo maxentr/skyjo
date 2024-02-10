@@ -24,7 +24,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
         />
         <meta
           name="keywords"
-          content="Skyjo, online, game, multiplayer, free, play with friends"
+          content="Skyjo, online, game, multPlayerInterface, free, play with friends"
         />
         <meta name="author" content="Maxent" />
 

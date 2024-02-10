@@ -1,29 +1,24 @@
-import { SkyjoPlayerToJSON } from "shared/types/SkyjoPlayer"
-import { IPlayer, Player } from "./Player"
+import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
+import { CardConstants } from "../constants"
+import { Player, PlayerInterface } from "./Player"
 import { SkyjoCard } from "./SkyjoCard"
 
-//  Each player has 12 cards. 4 columns, 3 rows.
-const CARDS_PER_ROW = 3
-const CARDS_PER_COLUMN = 4
-// Number of cards a player can turn at the beginning of the game
-const INITIAL_TURNED_CARDS_COUNT = 2
-
-interface ISkyjoPlayer extends IPlayer {
+interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]
   scores: number[]
-  toJSON(): SkyjoPlayerToJSON
+  toJson(): SkyjoPlayertoJson
 }
-export class SkyjoPlayer extends Player implements ISkyjoPlayer {
+export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
   scores: number[] = []
 
   public setCards(cardsValue: number[]) {
     this.cards = []
 
-    for (let columnI = 0; columnI < CARDS_PER_COLUMN; columnI++) {
+    for (let columnI = 0; columnI < CardConstants.PER_COLUMN; columnI++) {
       this.cards.push([])
-      for (let rowJ = 0; rowJ < CARDS_PER_ROW; rowJ++) {
-        const index = columnI * CARDS_PER_ROW + rowJ
+      for (let rowJ = 0; rowJ < CardConstants.PER_ROW; rowJ++) {
+        const index = columnI * CardConstants.PER_ROW + rowJ
         this.cards[columnI].push(new SkyjoCard(cardsValue[index]))
       }
     }
@@ -42,18 +37,12 @@ export class SkyjoPlayer extends Player implements ISkyjoPlayer {
     return deletedColumn[0]
   }
 
-  public hasTurnedSpecifiedNumberOfCards() {
-    let count = 0
+  public hasTurnedCardCount(count: number) {
+    const currentCount = this.cards
+      .flat()
+      .filter((card) => card.isVisible).length
 
-    this.cards.forEach((column) => {
-      column.forEach((card) => {
-        if (card.isVisible) {
-          count++
-        }
-      })
-    })
-
-    return count === INITIAL_TURNED_CARDS_COUNT
+    return currentCount === count
   }
 
   public checkColumns() {
@@ -71,46 +60,18 @@ export class SkyjoPlayer extends Player implements ISkyjoPlayer {
     return cardsToDiscard
   }
 
-  public hasTurnedAllCards() {
-    let count = 0
-
-    this.cards.forEach((column) => {
-      column.forEach((card) => {
-        if (card.isVisible) {
-          count++
-        }
-      })
-    })
-
-    return count === this.cards.length * CARDS_PER_ROW
-  }
-
-  public currentScore() {
-    let currentScore = 0
-
-    this.cards.forEach((column) => {
-      column.forEach((card) => {
-        if (card.isVisible) {
-          currentScore += card.value
-        }
-      })
-    })
-
-    return currentScore
-  }
-
   public currentScoreArray() {
     const currentScore: number[] = []
 
-    this.cards.forEach((column) => {
-      column.forEach((card) => {
-        if (card.isVisible) {
-          currentScore.push(card.value)
-        }
-      })
+    this.cards.flat().forEach((card) => {
+      if (card.isVisible) currentScore.push(card.value)
     })
 
     return currentScore
+  }
+
+  public currentScore() {
+    return this.currentScoreArray().reduce((a, b) => a + b, 0)
   }
 
   public finalRoundScore() {
@@ -125,7 +86,7 @@ export class SkyjoPlayer extends Player implements ISkyjoPlayer {
 
     this.scores.push(finalScore)
 
-    this.score = this.scores.reduce((a, b) => a + b, 0)
+    this.recalculateScore()
   }
 
   public recalculateScore() {
@@ -136,12 +97,12 @@ export class SkyjoPlayer extends Player implements ISkyjoPlayer {
     this.cards = []
   }
 
-  override toJSON() {
+  override toJson() {
     const player = {
-      ...super.toJSON(),
+      ...super.toJson(),
       scores: this.scores,
       currentScore: this.currentScore(),
-      cards: this.cards.map((column) => column.map((card) => card.toJSON())),
+      cards: this.cards.map((column) => column.map((card) => card.toJson())),
     }
 
     return player

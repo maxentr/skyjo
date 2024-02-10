@@ -1,5 +1,5 @@
-import { SkyjoToJSON, TurnState } from "shared/types/Skyjo"
-import { SkyjoPlayerToJSON } from "shared/types/SkyjoPlayer"
+import { SkyjotoJson, TurnState } from "shared/types/Skyjo"
+import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
 
 const TURN_STATE_MESSAGES: Record<TurnState, string> = {
   chooseAPile: "Choisissez une pile",
@@ -13,7 +13,7 @@ const WAITING_TURN_MESSAGE = (username: string) =>
   `C'est au tour de ${username}`
 
 export const getCurrentUser = (
-  players: SkyjoToJSON["players"] | undefined,
+  players: SkyjotoJson["players"] | undefined,
   username: string,
 ) => {
   if (!players) {
@@ -24,9 +24,9 @@ export const getCurrentUser = (
 }
 
 export const getOpponents = (
-  players: SkyjoToJSON["players"] | undefined,
+  players: SkyjotoJson["players"] | undefined,
   username: string,
-): SkyjoToJSON["players"] => {
+): SkyjotoJson["players"] => {
   if (!players) {
     return []
   }
@@ -34,7 +34,7 @@ export const getOpponents = (
   return players.filter((player) => player.name !== username)
 }
 
-export const isCurrentUserTurn = (game?: SkyjoToJSON, username?: string) => {
+export const isCurrentUserTurn = (game?: SkyjotoJson, username?: string) => {
   if (!username || !game) return false
 
   if (
@@ -46,20 +46,20 @@ export const isCurrentUserTurn = (game?: SkyjoToJSON, username?: string) => {
   return game.players[game.turn].name === username
 }
 
-export const canTurnTwoCards = (game: SkyjoToJSON) => {
+export const canTurnTwoCards = (game: SkyjotoJson) => {
   return (
     game.status === "playing" &&
     game.roundState === "waitingPlayersToTurnTwoCards"
   )
 }
 
-export const getWinner = (game: SkyjoToJSON) => {
+export const getWinner = (game: SkyjotoJson) => {
   return game.players.reduce((prev, current) =>
     prev.score < current.score ? prev : current,
   )
 }
 
-export const getGameInfo = (player?: SkyjoPlayerToJSON, game?: SkyjoToJSON) => {
+export const getGameInfo = (player?: SkyjoPlayertoJson, game?: SkyjotoJson) => {
   if (!player || !game) return WAITING_MESSAGE
 
   const playerWhoHasToPlay = game.players[game.turn]

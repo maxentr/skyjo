@@ -3,7 +3,7 @@ import { Socket } from "socket.io"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
-export interface IGameController {
+interface SkyjoGameControllerInterface {
   games: Skyjo[]
   addGame(game: Skyjo): void
   removeGame(gameId: string): void
@@ -18,7 +18,9 @@ export interface IGameController {
   onLeave(socket: Socket): Promise<void>
 }
 
-export abstract class GameController implements IGameController {
+export abstract class SkyjoGameController
+  implements SkyjoGameControllerInterface
+{
   private _games: Skyjo[] = []
 
   get games() {
@@ -44,10 +46,10 @@ export abstract class GameController implements IGameController {
     })
   }
 
-  private retrieveGameByPlayerSocket(socketId: string) {
+  private findGameByPlayerSocket(socketId: string) {
     return this.games.find((game) => {
       return game.players.find((player) => {
-        return player.socketID === socketId
+        return player.socketId === socketId
       })
     })
   }
@@ -61,50 +63,49 @@ export abstract class GameController implements IGameController {
   async onCreate(socket: Socket, player: SkyjoPlayer, game: Skyjo) {
     this.games.push(game)
 
-    this.onJoin(socket, game.id, player)
+    await this.onJoin(socket, game.id, player)
   }
 
   async onGet(socket: Socket, gameId: string) {
     const game = this.getGame(gameId)
-    if (game) socket.emit("game", game.toJSON())
+    if (game) socket.emit("game", game.toJson())
   }
 
-  async sendGame(socket: Socket, gameId: string) {
+  async broadcastGame(socket: Socket, gameId: string) {
     const game = this.getGame(gameId)
     if (!game) return
 
-    socket.emit("game", game.toJSON())
+    socket.emit("game", game.toJson())
 
-    socket.to(game.id).emit("game", game.toJSON())
+    socket.to(game.id).emit("game", game.toJson())
   }
 
   async onJoin(socket: Socket, gameId: string, player: SkyjoPlayer) {
     const game = this.getGame(gameId)
 
-    if (!game || game.isFull()) throw "game-not-found"
+    if (!game) throw "game-not-found"
     else if (game.status !== "lobby") throw "game-already-started"
-    else if (game.isFull()) throw "game-is-full"
 
     game.addPlayer(player)
     await socket.join(gameId)
 
-    socket.emit("joinGame", game.toJSON())
+    socket.emit("joinGame", game.toJson())
 
-    socket.to(gameId).emit("game", game.toJSON())
+    socket.to(gameId).emit("game", game.toJson())
   }
 
   async onWin(socket: Socket, game: Skyjo, winner: SkyjoPlayer) {
     game.status = "finished"
-    game.getPlayer(winner.socketID)?.addPoint()
+    game.getPlayer(winner.socketId)?.addPoint()
 
-    socket.emit("winner", game.toJSON(), winner.toJSON())
-    socket.to(game.id).emit("winner", game.toJSON(), winner.toJSON())
+    socket.emit("winner", game.toJson(), winner.toJson())
+    socket.to(game.id).emit("winner", game.toJson(), winner.toJson())
   }
 
   async onDraw(socket: Socket, game: Skyjo) {
     game.status = "finished"
-    socket.emit("draw", game.toJSON())
-    socket.to(game.id).emit("draw", game.toJSON())
+    socket.emit("draw", game.toJson())
+    socket.to(game.id).emit("draw", game.toJson())
   }
 
   async onReplay(socket: Socket, gameId: string) {
@@ -118,13 +119,12 @@ export abstract class GameController implements IGameController {
       game.reset()
       game.start()
 
-      socket.emit("game", game)
-      socket.to(game.id).emit("game", game.toJSON())
-    } else socket.to(game.id).emit("replay", game.toJSON())
+      await this.broadcastGame(socket, game.id)
+    } else socket.to(game.id).emit("replay", game.toJson())
   }
 
   async onLeave(socket: Socket) {
-    const game = this.retrieveGameByPlayerSocket(socket.id)
+    const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return
 
     game.removePlayer(socket.id)
@@ -134,7 +134,7 @@ export abstract class GameController implements IGameController {
     if (game.players.length === 0) {
       this.removeGame(game.id)
     } else {
-      socket.to(game.id).emit("playerLeave", game.toJSON())
+      socket.to(game.id).emit("playerLeave", game.toJson())
     }
   }
 }

@@ -1,16 +1,13 @@
-import {
-  PlaySkyjo,
-  PlaySkyjoReplace,
-  PlaySkyjoTurnCard,
-} from "shared/validations/play"
+import { PlaySkyjo } from "shared/validations/play"
 import { CreatePlayer } from "shared/validations/player"
 import { TurnCard } from "shared/validations/turnCard"
 import { Socket } from "socket.io"
-import { GameController } from "./class/GameController"
 import { Skyjo } from "./class/Skyjo"
+import { SkyjoGameController } from "./class/SkyjoGameController"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
+import { CardConstants } from "./constants"
 
-export default class SkyjoController extends GameController {
+export default class SkyjoController extends SkyjoGameController {
   private static instance: SkyjoController
 
   static getInstance(): SkyjoController {
@@ -21,42 +18,46 @@ export default class SkyjoController extends GameController {
     return SkyjoController.instance
   }
 
-  async create(socket: Socket, player: CreatePlayer, isPrivate = true) {
+  async create(socket: Socket, player: CreatePlayer, privateGame = true) {
     const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
 
-    const game = new Skyjo(newPlayer, isPrivate)
+    const game = new Skyjo(newPlayer, privateGame)
 
     this.onCreate(socket, newPlayer, game)
   }
 
-  async turnCard(socket: Socket, data: TurnCard) {
-    const game = this.getGame(data.gameId)
+  async turnCard(socket: Socket, turnData: TurnCard) {
+    const { gameId, column, row } = turnData
+
+    const game = this.getGame(gameId)
     if (!game) return
 
     const player = game.getPlayer(socket.id)
     if (!player) return
 
-    if (player.hasTurnedSpecifiedNumberOfCards()) return
+    if (player.hasTurnedCardCount(CardConstants.INITIAL_TURNED_COUNT)) return
 
-    player.turnCard(data.cardColumnIndex, data.cardRowIndex)
+    player.turnCard(column, row)
 
-    game.checkIfAllPlayersTurnedAmountOfCards()
+    game.checkAllPlayersTurnedCards(CardConstants.INITIAL_TURNED_COUNT)
 
-    this.sendGame(socket, data.gameId)
+    await this.broadcastGame(socket, gameId)
   }
 
   async startGame(socket: Socket, gameId: string) {
     const game = this.getGame(gameId)
     if (!game) return
 
-    if (game.admin.socketID !== socket.id) return
+    if (!game.isAdmin(socket.id)) return
 
     game.start()
-    this.sendGame(socket, gameId)
+    await this.broadcastGame(socket, gameId)
   }
 
-  async play(socket: Socket, data: PlaySkyjo) {
-    const game = this.getGame(data.gameId)
+  async play(socket: Socket, playData: PlaySkyjo) {
+    const { gameId, actionType } = playData
+
+    const game = this.getGame(gameId)
     if (
       !game ||
       game.status !== "playing" ||
@@ -69,46 +70,50 @@ export default class SkyjoController extends GameController {
 
     if (!game.checkTurn(socket.id)) return
 
-    if (game.turnState === "chooseAPile") {
-      this.pickCardFromPile(game, data.actionType)
-    } else if (
-      data.actionType === "replace" &&
-      (game.turnState === "throwOrReplace" || game.turnState === "replaceACard")
-    ) {
-      this.replaceCard(socket, game, player, data)
-    } else if (
-      data.actionType === "throwSelectedCard" &&
-      game.turnState === "throwOrReplace"
-    ) {
-      game.putCardInDiscardPile(game.selectedCard!)
-    } else if (
-      data.actionType === "turnACard" &&
-      game.turnState === "turnACard"
-    ) {
-      this.turnCardAfterThrowing(socket, game, player, data)
-    } else {
-      // If user try an impossible move
-      console.log(
-        `Invalid actionType ${data.actionType} for turnState ${game.turnState}`,
-      )
+    switch (game.turnState) {
+      case "chooseAPile":
+        this.pickCardFromPile(game, actionType)
+        break
+      case "throwOrReplace":
+      case "replaceACard":
+        if (actionType === "replace") {
+          this.replaceCard(socket, game, player, playData.column, playData.row)
+        } else {
+          game.discardCard(game.selectedCard!)
+        }
+        break
+      case "turnACard":
+        if (actionType === "turnACard")
+          this.turnCardAfterThrowing(
+            socket,
+            game,
+            player,
+            playData.column,
+            playData.row,
+          )
+        break
+      default:
+        console.log(
+          `Invalid actionType ${actionType} for turnState ${game.turnState}`,
+        )
     }
 
-    this.sendGame(socket, data.gameId)
+    await this.broadcastGame(socket, gameId)
   }
 
   private pickCardFromPile(game: Skyjo, actionType: PlaySkyjo["actionType"]) {
-    if (actionType === "takeFromDrawPile") game.pickCardFromDrawPile()
-    else if (actionType === "takeFromDiscardPile")
-      game.pickCardFromDiscardPile()
+    if (actionType === "takeFromDrawPile") game.drawCard()
+    else if (actionType === "takeFromDiscardPile") game.pickFromDiscard()
   }
 
   private replaceCard(
     socket: Socket,
     game: Skyjo,
     player: SkyjoPlayer,
-    data: PlaySkyjoReplace,
+    column: number,
+    row: number,
   ) {
-    game.replaceCard(data.cardColumnIndex, data.cardRowIndex)
+    game.replaceCard(column, row)
 
     this.checkEndTurn(socket, game, player)
   }
@@ -117,9 +122,10 @@ export default class SkyjoController extends GameController {
     socket: Socket,
     game: Skyjo,
     player: SkyjoPlayer,
-    data: PlaySkyjoTurnCard,
+    column: number,
+    row: number,
   ) {
-    player.turnCard(data.cardColumnIndex, data.cardRowIndex)
+    player.turnCard(column, row)
 
     this.checkEndTurn(socket, game, player)
   }
@@ -127,25 +133,28 @@ export default class SkyjoController extends GameController {
   private checkEndTurn(socket: Socket, game: Skyjo, player: SkyjoPlayer) {
     const cardsToDiscard = player.checkColumns()
     if (cardsToDiscard.length > 0) {
-      cardsToDiscard.forEach((card) => game.putCardInDiscardPile(card))
+      cardsToDiscard.forEach((card) => game.discardCard(card))
     }
 
     // check if the player has turned all his cards
-    const hasPlayerFinished = player.hasTurnedAllCards()
+    const hasPlayerFinished = player.hasTurnedCardCount(
+      player.cards.flat().length,
+    )
+
     if (hasPlayerFinished && !game.firstPlayerToFinish) {
       game.firstPlayerToFinish = player
       game.roundState = "lastLap"
     } else if (game.firstPlayerToFinish) {
       // check if the turn comes to the first player who finished
-      game.checkRoundEnd()
+      game.checkEndOfRound()
       // check if the game is finished (player with more than 100 points)
       game.checkEndGame()
 
       // if the round is over and the game is not finished, start a new round after 10 seconds
       if (game.roundState === "over" && game.status !== "finished") {
         setTimeout(() => {
-          game.newRound()
-          this.sendGame(socket, game.id)
+          game.startNewRound()
+          this.broadcastGame(socket, game.id)
         }, 10000)
       }
     }

@@ -1,28 +1,30 @@
-import { RoundState, SkyjoToJSON, TurnState } from "shared/types/Skyjo"
-import { SkyjoCardToJSON } from "shared/types/SkyjoCard"
+import { RoundState, SkyjotoJson, TurnState } from "shared/types/Skyjo"
+import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
 import { shuffle } from "../utils/shuffle"
-import { Game, IGame } from "./Game"
+import { Game, GameInterface } from "./Game"
 import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
-interface ISkyjo extends IGame<SkyjoPlayer> {
-  selectedCard: SkyjoCardToJSON | null
+const SHUFFLE_ITERATIONS = 3
+
+interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
+  selectedCard: SkyjoCardtoJson | null
   firstPlayerToFinish: SkyjoPlayer | null
   turnState: TurnState
-  resetCardPiles(): void
+  initializeCardPiles(): void
   givePlayersCards(player: SkyjoPlayer): void
-  checkIfAllPlayersTurnedAmountOfCards(): void
-  pickCardFromDrawPile(): void
-  pickCardFromDiscardPile(): void
-  putCardInDiscardPile(card: SkyjoCardToJSON): void
-  checkRoundEnd(): void
+  checkAllPlayersTurnedCards(count: number): void
+  drawCard(): void
+  pickFromDiscard(): void
+  discardCard(card: SkyjoCardtoJson): void
+  checkEndOfRound(): void
   endGame(): void
   reset(): void
 
-  toJSON(): SkyjoToJSON
+  toJson(): SkyjotoJson
 }
 
-export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
+export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   selectedCard: SkyjoCard | null = null
   turnState: TurnState = "chooseAPile"
   private _discardPile: number[] = []
@@ -49,7 +51,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     this._drawPile = value
   }
 
-  public resetCardPiles() {
+  public initializeCardPiles() {
     const defaultCards = [
       ...Array(5).fill(-2),
       ...Array(10).fill(-1),
@@ -68,13 +70,13 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
       ...Array(10).fill(12),
     ]
 
-    this.drawPile = shuffle(defaultCards, 3)
+    this.drawPile = shuffle(defaultCards, SHUFFLE_ITERATIONS)
     this.discardPile = []
   }
 
   private reloadDrawPile() {
     const lastCardOfDiscardPile = this.discardPile.pop()!
-    this.drawPile = shuffle(this.discardPile, 3)
+    this.drawPile = shuffle(this.discardPile, SHUFFLE_ITERATIONS)
     this.discardPile = [lastCardOfDiscardPile]
   }
 
@@ -125,9 +127,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     })
   }
 
-  public checkIfAllPlayersTurnedAmountOfCards() {
+  public checkAllPlayersTurnedCards(count: number) {
     const allPlayersTurnedCards = this.players.every((player) =>
-      player.hasTurnedSpecifiedNumberOfCards(),
+      player.hasTurnedCardCount(count),
     )
 
     if (allPlayersTurnedCards) {
@@ -136,7 +138,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     }
   }
 
-  public pickCardFromDrawPile() {
+  public drawCard() {
     if (this.drawPile.length === 0) this.reloadDrawPile()
 
     const cardValue = this.drawPile.shift()!
@@ -147,7 +149,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     this.turnState = "throwOrReplace"
   }
 
-  public pickCardFromDiscardPile() {
+  public pickFromDiscard() {
     if (this.discardPile.length === 0) return
     const cardValue = this.discardPile.pop()!
     const card = new SkyjoCard(cardValue)
@@ -157,7 +159,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     this.turnState = "replaceACard"
   }
 
-  public putCardInDiscardPile(card: SkyjoCard) {
+  public discardCard(card: SkyjoCard) {
     this.discardPile.push(card.value)
     this.selectedCard = null
 
@@ -168,7 +170,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     const player = this.getCurrentPlayer()
     const oldCard = player.cards[column][row]
     const selectedCard = this.selectedCard
-    this.putCardInDiscardPile(oldCard)
+    this.discardCard(oldCard)
     player.replaceCard(column, row, selectedCard!)
   }
 
@@ -177,7 +179,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     super.nextTurn()
   }
 
-  public checkRoundEnd() {
+  public checkEndOfRound() {
     const nextTurn = (this.turn + 1) % this.players.length
 
     if (this.players[nextTurn] === this.firstPlayerToFinish) {
@@ -185,7 +187,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
         player.finalRoundScore()
       })
 
-      this.checkFirstPlayerHasToDoubleScore()
+      this.doubleScoreForFirstPlayer()
 
       if (this.players.some((player) => player.score >= 100)) {
         this.endGame()
@@ -195,7 +197,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     }
   }
 
-  private checkFirstPlayerHasToDoubleScore() {
+  private doubleScoreForFirstPlayer() {
     const lastScoreIndex = this.roundNumber - 1
     const firstToFinishPlayerScore =
       this.firstPlayerToFinish!.scores[lastScoreIndex]
@@ -215,15 +217,15 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     }
   }
 
-  public newRound() {
+  public startNewRound() {
     this.roundNumber++
-    this.resetRound()
+    this.initializeRound()
   }
 
-  public resetRound() {
+  public initializeRound() {
     this.firstPlayerToFinish = null
     this.selectedCard = null
-    this.resetCardPiles()
+    this.initializeCardPiles()
     this.resetPlayers()
 
     // Give to each player 12 cards
@@ -240,7 +242,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     this.roundNumber = 1
     this.firstPlayerToFinish = null
     this.selectedCard = null
-    this.resetCardPiles()
+    this.initializeCardPiles()
     this.resetPlayers()
 
     // Give to each player 12 cards
@@ -264,12 +266,12 @@ export class Skyjo extends Game<SkyjoPlayer> implements ISkyjo {
     this.status = "finished"
   }
 
-  override toJSON() {
+  override toJson() {
     return {
-      ...super.toJSON(),
-      admin: this.admin.toJSON(),
-      players: this.players.map((player) => player.toJSON()),
-      selectedCard: this.selectedCard?.toJSON(),
+      ...super.toJson(),
+      admin: this.admin.toJson(),
+      players: this.players.map((player) => player.toJson()),
+      selectedCard: this.selectedCard?.toJson(),
       lastDiscardCardValue: this.discardPile[this.discardPile.length - 1],
       roundState: this.roundState,
       turnState: this.turnState,

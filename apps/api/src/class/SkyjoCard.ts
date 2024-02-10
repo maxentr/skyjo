@@ -1,14 +1,14 @@
-import { SkyjoCardToJSON } from "shared/types/SkyjoCard"
+import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
 
-interface ISkyjoCardToJSON {
+interface SkyjoCardInterface {
   readonly value: number
   readonly isVisible: boolean
 
   turnVisible(): void
-  toJSON(): SkyjoCardToJSON
+  toJson(): SkyjoCardtoJson
 }
 
-export class SkyjoCard implements ISkyjoCardToJSON {
+export class SkyjoCard implements SkyjoCardInterface {
   private _value: number
   private _isVisible: boolean = false
 
@@ -32,7 +32,7 @@ export class SkyjoCard implements ISkyjoCardToJSON {
     this.isVisible = true
   }
 
-  public toJSON() {
+  public toJson() {
     return {
       value: this.isVisible ? this.value : undefined,
       isVisible: this.isVisible,

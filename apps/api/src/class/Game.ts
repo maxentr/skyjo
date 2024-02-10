@@ -1,28 +1,32 @@
-import { GAME_STATUS, GameToJSON } from "shared/types/Game"
+import { GAME_STATUS, GametoJson } from "shared/types/Game"
+import { MIN_PLAYERS } from "../constants"
 import { Player } from "./Player"
 
-export interface IGame<TPlayer extends Player> {
+export interface GameInterface<TPlayer extends Player> {
   readonly id: string
   readonly private: boolean
   status: GAME_STATUS
   maxPlayers: number
   players: TPlayer[]
   turn: number
+  admin: TPlayer
 
   getCurrentPlayer(): TPlayer
-  getPlayer(playerSocketID: string): TPlayer | undefined
+  getPlayer(playerSocketId: string): TPlayer | undefined
   addPlayer(player: TPlayer): void
-  removePlayer(playerSocketID: string): void
+  removePlayer(playerSocketId: string): void
   isFull(): boolean
   start(): void
-  checkTurn(playerSocketID: string): boolean
+  checkTurn(playerSocketId: string): boolean
   nextTurn(): void
   reset(): void
 
-  toJSON(): GameToJSON
+  toJson(): GametoJson
 }
 
-export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
+export abstract class Game<TPlayer extends Player>
+  implements GameInterface<TPlayer>
+{
   // generate a random game id with 8 characters (a-z, A-Z, 0-9)
   readonly _id: string = Math.random().toString(36).substring(2, 10)
   private: boolean
@@ -32,10 +36,10 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
   turn: number = 0
   admin: TPlayer
 
-  constructor(player: TPlayer, maxPlayers: number, privateGame: boolean) {
-    this.admin = player
+  constructor(adminPlayer: TPlayer, maxPlayers: number, isPrivate: boolean) {
+    this.admin = adminPlayer
     this.maxPlayers = maxPlayers
-    this.private = privateGame
+    this.private = isPrivate
   }
 
   public get id(): string {
@@ -46,21 +50,25 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
     return this.players[this.turn]
   }
 
-  getPlayer(playerSocketID: string) {
+  getPlayer(playerSocketId: string) {
     return this.players.find((player) => {
-      return player.socketID === playerSocketID
+      return player.socketId === playerSocketId
     })
   }
 
   addPlayer(player: TPlayer) {
-    if (this.isFull()) return
+    if (this.isFull()) throw "game-is-full"
     this.players.push(player)
   }
 
-  removePlayer(playerSocketID: string) {
+  removePlayer(playerSocketId: string) {
     this.players = this.players.filter((player) => {
-      return player.socketID !== playerSocketID
+      return player.socketId !== playerSocketId
     })
+  }
+
+  isAdmin(playerSocketId: string) {
+    return this.admin.socketId === playerSocketId
   }
 
   isFull() {
@@ -68,8 +76,7 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
   }
 
   start() {
-    // The game can't start if there are less than 2 players
-    if (this.players.length < 2) return
+    if (this.players.length < MIN_PLAYERS) return
 
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
@@ -77,8 +84,8 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
     console.log(`Game ${this.id} started`)
   }
 
-  checkTurn(playerSocketID: string) {
-    return this.players[this.turn].socketID === playerSocketID
+  checkTurn(playerSocketId: string) {
+    return this.players[this.turn].socketId === playerSocketId
   }
 
   nextTurn() {
@@ -90,14 +97,14 @@ export abstract class Game<TPlayer extends Player> implements IGame<TPlayer> {
     this.turn = 0
   }
 
-  toJSON() {
+  toJson() {
     return {
       id: this.id,
       private: this.private,
       status: this.status,
-      admin: this.admin.toJSON(),
+      admin: this.admin.toJson(),
       maxPlayers: this.maxPlayers,
-      players: this.players.map((player) => player.toJSON()),
+      players: this.players.map((player) => player.toJson()),
       turn: this.turn,
     }
   }

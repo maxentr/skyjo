@@ -6,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { SkyjoPlayerToJSON } from "shared/types/SkyjoPlayer"
+import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
 
 type Props = {
-  players: SkyjoPlayerToJSON[]
-  winner?: SkyjoPlayerToJSON
+  players: SkyjoPlayertoJson[]
+  winner?: SkyjoPlayertoJson
 }
 
 const ScoreTable = ({ players, winner }: Props) => {
@@ -31,12 +31,12 @@ const ScoreTable = ({ players, winner }: Props) => {
       </TableHeader>
       <TableBody>
         {players.map((player, index) => (
-          <TableRow key={player.socketID}>
+          <TableRow key={player.socketId}>
             <TableCell className="text-center w-32">
-              {player.name} {winner?.socketID === player.socketID && "🏆"}
+              {player.name} {winner?.socketId === player.socketId && "🏆"}
             </TableCell>
             {player.scores.map((score) => (
-              <TableCell key={player.socketID + score} className="text-center">
+              <TableCell key={player.socketId + score} className="text-center">
                 {score}
               </TableCell>
             ))}

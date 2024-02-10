@@ -4,7 +4,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 const AdminLobby = () => {
   const { game, actions, player } = useSkyjo()
 
-  if (game.admin.socketID === player.socketID && game.status === "lobby" && game.players.length > 1)
+  if (game.admin.socketId === player.socketId && game.status === "lobby" && game.players.length > 1)
     return (
       <Button onClick={actions.startGame}>
         Start the game
