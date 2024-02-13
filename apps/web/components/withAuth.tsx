@@ -20,7 +20,7 @@ const withAuth = <P extends object>(
     }, [router, avatarIndex, username, socket])
 
     const checkAuth = async () => {
-      if (username && avatarIndex && socket) setVerified(true)
+      if (username && avatarIndex >= 0 && socket) setVerified(true)
       else {
         const gameId = params?.id
 
