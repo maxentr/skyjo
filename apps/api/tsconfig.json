@@ -6,6 +6,5 @@
     "target": "ESNext",
     "module": "NodeNext",
     "sourceMap": true,
-    "moduleResolution": "NodeNext",
   },
 }

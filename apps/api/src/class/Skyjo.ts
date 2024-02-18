@@ -1,9 +1,9 @@
-import { RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo.js"
-import { SkyjoCardToJson } from "shared/types/skyjoCard.js"
-import { shuffle } from "../utils/shuffle.js"
-import { Game, GameInterface } from "./Game.js"
-import { SkyjoCard } from "./SkyjoCard.js"
-import { SkyjoPlayer } from "./SkyjoPlayer.js"
+import { RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo"
+import { SkyjoCardToJson } from "shared/types/skyjoCard"
+import { shuffle } from "../utils/shuffle"
+import { Game, GameInterface } from "./Game"
+import { SkyjoCard } from "./SkyjoCard"
+import { SkyjoPlayer } from "./SkyjoPlayer"
 
 const SHUFFLE_ITERATIONS = 3
 

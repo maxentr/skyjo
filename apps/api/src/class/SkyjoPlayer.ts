@@ -1,7 +1,7 @@
-import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer.js"
-import { CardConstants } from "../constants.js"
-import { Player, PlayerInterface } from "./Player.js"
-import { SkyjoCard } from "./SkyjoCard.js"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
+import { CardConstants } from "../constants"
+import { Player, PlayerInterface } from "./Player"
+import { SkyjoCard } from "./SkyjoCard"
 
 interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]

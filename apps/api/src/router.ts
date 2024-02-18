@@ -1,4 +1,4 @@
-import { JoinGame, joinGame } from "shared/validations/joinGame.js"
+import { JoinGame, joinGame } from "shared/validations/joinGame"
 import {
   PlayDiscardSelectedCard,
   PlayPickCard,
@@ -10,13 +10,14 @@ import {
   playReplaceCard,
   playRevealCard,
   playTurnCard,
-} from "shared/validations/play.js"
-import { CreatePlayer, createPlayer } from "shared/validations/player.js"
-import { StartGame, startGame } from "shared/validations/start.js"
+} from "shared/validations/play"
+import { CreatePlayer, createPlayer } from "shared/validations/player"
+import { StartGame, startGame } from "shared/validations/start"
+
 import { Namespace } from "socket.io"
-import { SkyjoPlayer } from "./class/SkyjoPlayer.js"
-import skyjoController from "./controller.js"
-import { SkyjoSocket } from "./types/skyjoSocket.js"
+import { SkyjoPlayer } from "./class/SkyjoPlayer"
+import skyjoController from "./controller"
+import { SkyjoSocket } from "./types/skyjoSocket"
 
 const instance = skyjoController.getInstance()
 

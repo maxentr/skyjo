@@ -4,13 +4,13 @@ import {
   PlayReplaceCard,
   PlayRevealCard,
   PlayTurnCard,
-} from "shared/validations/play.js"
-import { CreatePlayer } from "shared/validations/player.js"
+} from "shared/validations/play"
+import { CreatePlayer } from "shared/validations/player"
 import { Socket } from "socket.io"
-import { Skyjo } from "./class/Skyjo.js"
-import { SkyjoGameController } from "./class/SkyjoGameController.js"
-import { SkyjoPlayer } from "./class/SkyjoPlayer.js"
-import { CardConstants } from "./constants.js"
+import { Skyjo } from "./class/Skyjo"
+import { SkyjoGameController } from "./class/SkyjoGameController"
+import { SkyjoPlayer } from "./class/SkyjoPlayer"
+import { CardConstants } from "./constants"
 
 export default class SkyjoController extends SkyjoGameController {
   private static instance: SkyjoController

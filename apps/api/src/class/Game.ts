@@ -1,6 +1,6 @@
-import { GAME_STATUS, GameToJson } from "shared/types/game.js"
-import { MIN_PLAYERS } from "../constants.js"
-import { Player } from "./Player.js"
+import { GAME_STATUS, GameToJson } from "shared/types/game"
+import { MIN_PLAYERS } from "../constants"
+import { Player } from "./Player"
 
 export interface GameInterface<TPlayer extends Player> {
   readonly id: string
