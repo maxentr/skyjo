@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { Avatar } from "../types/Player"
+import { Avatar } from "../types/player"
 
 const avatar: z.ZodType<Avatar> = z.enum([
   "bee",
