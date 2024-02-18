@@ -1,6 +1,18 @@
 {
   "name": "shared",
   "version": "1.0.0",
+  "types": "./dist/*.d.ts",
+  "exports": {
+    "./validations/*": "./dist/validations/*.js",
+    "./types/*": "./dist/types/*.d.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsc",
     "format": "prettier --write ."
