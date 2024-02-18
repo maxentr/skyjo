@@ -2,7 +2,8 @@
   "name": "shared",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "zod": "^3.22.4"
