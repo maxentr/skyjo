@@ -10,9 +10,11 @@ const server = serve({
   fetch: app.fetch,
   port,
 })
-const io = new Server(server as HttpServer)
+const io = new Server(server as HttpServer, {
+  connectionStateRecovery: {},
+})
 
-skyjoRouter(io.of("/skyjo"))
+skyjoRouter(io)
 
 app.get("/", (c) => {
   return c.text("API is running!")

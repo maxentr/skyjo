@@ -15,7 +15,7 @@ type Props = { gameId?: string }
 const IndexPage = ({ gameId }: Props) => {
   const hasGameId = !!gameId
   const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
-  const { connect } = useSocket()
+  const { socket } = useSocket()
 
   const router = useRouter()
 
@@ -26,7 +26,6 @@ const IndexPage = ({ gameId }: Props) => {
     saveUserInLocalStorage()
 
     if (!username) return
-    const socket = connect()
 
     const avatar = getAvatar()
     console.log(avatar)

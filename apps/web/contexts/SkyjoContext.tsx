@@ -1,6 +1,6 @@
 "use client"
 
-import { SkyjoSocket, useSocket } from "@/contexts/SocketContext"
+import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
 import {
@@ -47,22 +47,27 @@ const SkyjoContextProvider = ({
   const opponents = getOpponents(game?.players, username)
 
   useEffect(() => {
-    if (!socket || !gameId) return
+    if (!gameId) return
 
-    //#region init game listeners
-    socket.on("game", onGameUpdate)
-    //#endregion
+    initGameListeners()
 
     // get game
     socket.emit("get", gameId)
 
-    return () => gameListenersDestroy(socket)
+    return destroyGameListeners
   }, [socket, gameId])
 
-  //#region game listeners
+  //#region listeners
   const onGameUpdate = async (game: SkyjoToJson) => {
-    console.log("game update", game)
+    console.log("game updated", game)
     setGame(game)
+  }
+
+  const initGameListeners = () => {
+    socket.on("game", onGameUpdate)
+  }
+  const destroyGameListeners = () => {
+    socket.off("game", onGameUpdate)
   }
   //#endregion
 
@@ -70,13 +75,13 @@ const SkyjoContextProvider = ({
 
   //#region game actions
   const startGame = () => {
-    socket?.emit("start", {
+    socket.emit("start", {
       gameId: gameId,
     })
   }
 
   const playRevealCard = (column: number, row: number) => {
-    socket?.emit("play:reveal-card", {
+    socket.emit("play:reveal-card", {
       gameId: gameId,
       column: column,
       row: row,
@@ -84,14 +89,14 @@ const SkyjoContextProvider = ({
   }
 
   const pickCardFromPile = (pile: PlayPickCard["pile"]) => {
-    socket?.emit("play:pick-card", {
+    socket.emit("play:pick-card", {
       gameId: gameId,
       pile,
     })
   }
 
   const replaceCard = (column: number, row: number) => {
-    socket?.emit("play:replace-card", {
+    socket.emit("play:replace-card", {
       gameId: gameId,
       column: column,
       row: row,
@@ -99,13 +104,13 @@ const SkyjoContextProvider = ({
   }
 
   const discardSelectedCard = () => {
-    socket?.emit("play:discard-selected-card", {
+    socket.emit("play:discard-selected-card", {
       gameId: gameId,
     })
   }
 
   const turnCard = (column: number, row: number) => {
-    socket?.emit("play:turn-card", {
+    socket.emit("play:turn-card", {
       gameId: gameId,
       column: column,
       row: row,
@@ -134,10 +139,6 @@ const SkyjoContextProvider = ({
       {children}
     </SkyjoContext.Provider>
   )
-}
-
-const gameListenersDestroy = (socket: SkyjoSocket) => {
-  socket.off("game")
 }
 
 export const useSkyjo = () => useContext(SkyjoContext)

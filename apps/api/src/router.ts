@@ -21,9 +21,8 @@ import { SkyjoSocket } from "./types/skyjoSocket"
 
 const instance = skyjoController.getInstance()
 
-const skyjoRouter = (namespace: Namespace) => {
-  namespace.on("connection", (socket: SkyjoSocket) => {
-    console.log("Socket connected!", socket.id)
+const skyjoRouter = (io: Server) => {
+  io.on("connection", (socket: SkyjoSocket) => {
 
     socket.on("createPrivate", (player: CreatePlayer) => {
       try {
