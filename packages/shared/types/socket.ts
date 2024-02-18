@@ -1,14 +1,14 @@
-import { SkyjoToJson } from "../types/skyjo.js"
-import { JoinGame } from "../validations/joinGame.js"
+import { SkyjoToJson } from "../types/skyjo"
+import { JoinGame } from "../validations/joinGame"
 import {
   PlayDiscardSelectedCard,
   PlayPickCard,
   PlayReplaceCard,
   PlayRevealCard,
   PlayTurnCard,
-} from "../validations/play.js"
-import { CreatePlayer } from "../validations/player.js"
-import { StartGame } from "../validations/start.js"
+} from "../validations/play"
+import { CreatePlayer } from "../validations/player"
+import { StartGame } from "../validations/start"
 
 export type EmitEvents = {
   createPrivate: (player: CreatePlayer) => void
