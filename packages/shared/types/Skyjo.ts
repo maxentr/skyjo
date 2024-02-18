@@ -1,6 +1,6 @@
-import { GameToJson } from "./game"
-import { SkyjoCardToJson } from "./skyjoCard"
-import { SkyjoPlayerToJson } from "./skyjoPlayer"
+import { GameToJson } from "./game.js"
+import { SkyjoCardToJson } from "./skyjoCard.js"
+import { SkyjoPlayerToJson } from "./skyjoPlayer.js"
 
 export type RoundState =
   | "waitingPlayersToTurnTwoCards"

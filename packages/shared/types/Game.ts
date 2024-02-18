@@ -1,4 +1,4 @@
-import { PlayerToJson } from "./player"
+import { PlayerToJson } from "./player.js"
 
 export type GAME_STATUS = "lobby" | "playing" | "finished" | "stopped"
 
