@@ -1,9 +1,9 @@
 import ScoreTable from "@/components/ScoreTable"
 import { useState } from "react"
-import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type Props = {
-  players: SkyjoPlayertoJson[]
+  players: SkyjoPlayerToJson[]
 }
 
 const ScoreSheet = ({ players }: Props) => {

@@ -6,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type Props = {
-  players: SkyjoPlayertoJson[]
-  winner?: SkyjoPlayertoJson
+  players: SkyjoPlayerToJson[]
+  winner?: SkyjoPlayerToJson
 }
 
 const ScoreTable = ({ players, winner }: Props) => {

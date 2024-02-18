@@ -1,6 +1,6 @@
-import { GametoJson } from "./Game"
-import { SkyjoCardtoJson } from "./SkyjoCard"
-import { SkyjoPlayertoJson } from "./SkyjoPlayer"
+import { GameToJson } from "./game"
+import { SkyjoCardToJson } from "./skyjoCard"
+import { SkyjoPlayerToJson } from "./skyjoPlayer"
 
 export type RoundState =
   | "waitingPlayersToTurnTwoCards"
@@ -14,8 +14,8 @@ export type TurnState =
   | "turnACard"
   | "replaceACard"
 
-export interface SkyjotoJson extends GametoJson<SkyjoPlayertoJson> {
-  selectedCard?: SkyjoCardtoJson
+export interface SkyjoToJson extends GameToJson<SkyjoPlayerToJson> {
+  selectedCard?: SkyjoCardToJson
   roundState: RoundState
   turnState: TurnState
   lastDiscardCardValue?: number

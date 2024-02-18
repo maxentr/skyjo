@@ -26,7 +26,7 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
     <Dialog open={isGameFinished}>
       <DialogContent allowClose={false}>
         <DialogHeader>
-          <DialogTitle className="text-center">Partie terminée</DialogTitle>
+          <DialogTitle className="text-center">Partie terminée !</DialogTitle>
           <DialogDescription>
             <p className="mt-2">
               {winner.name} a gagné avec {winner.score} points !

@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
-import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
+import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
   "border border-slate-900 flex justify-center items-center shadow-sm transition-all duration-300",
@@ -60,7 +60,7 @@ const cardValue: Record<string, CardValue> = {
 }
 
 type CardProps = {
-  card: SkyjoCardtoJson
+  card: SkyjoCardToJson
   size?: "small" | "normal"
   onClick?: () => void
   className?: ClassValue

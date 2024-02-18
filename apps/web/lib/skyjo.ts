@@ -1,5 +1,5 @@
-import { SkyjotoJson, TurnState } from "shared/types/Skyjo"
-import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
+import { SkyjoToJson, TurnState } from "shared/types/skyjo"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 const TURN_STATE_MESSAGES: Record<TurnState, string> = {
   chooseAPile: "Choisissez une pile",
@@ -13,7 +13,7 @@ const WAITING_TURN_MESSAGE = (username: string) =>
   `C'est au tour de ${username}`
 
 export const getCurrentUser = (
-  players: SkyjotoJson["players"] | undefined,
+  players: SkyjoToJson["players"] | undefined,
   username: string,
 ) => {
   if (!players) {
@@ -24,9 +24,9 @@ export const getCurrentUser = (
 }
 
 export const getOpponents = (
-  players: SkyjotoJson["players"] | undefined,
+  players: SkyjoToJson["players"] | undefined,
   username: string,
-): SkyjotoJson["players"] => {
+): SkyjoToJson["players"] => {
   if (!players) {
     return []
   }
@@ -34,7 +34,7 @@ export const getOpponents = (
   return players.filter((player) => player.name !== username)
 }
 
-export const isCurrentUserTurn = (game?: SkyjotoJson, username?: string) => {
+export const isCurrentUserTurn = (game?: SkyjoToJson, username?: string) => {
   if (!username || !game) return false
 
   if (
@@ -46,20 +46,20 @@ export const isCurrentUserTurn = (game?: SkyjotoJson, username?: string) => {
   return game.players[game.turn].name === username
 }
 
-export const canTurnTwoCards = (game: SkyjotoJson) => {
+export const canTurnTwoCards = (game: SkyjoToJson) => {
   return (
     game.status === "playing" &&
     game.roundState === "waitingPlayersToTurnTwoCards"
   )
 }
 
-export const getWinner = (game: SkyjotoJson) => {
+export const getWinner = (game: SkyjoToJson) => {
   return game.players.reduce((prev, current) =>
     prev.score < current.score ? prev : current,
   )
 }
 
-export const getGameInfo = (player?: SkyjoPlayertoJson, game?: SkyjotoJson) => {
+export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
   if (!player || !game) return WAITING_MESSAGE
 
   const playerWhoHasToPlay = game.players[game.turn]
@@ -89,6 +89,6 @@ export const getGameInfo = (player?: SkyjoPlayertoJson, game?: SkyjotoJson) => {
   }
 
   if (game.status === "stopped") {
-    return "Partie terminée"
+    return "Partie terminée !"
   }
 }

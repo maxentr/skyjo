@@ -9,12 +9,12 @@ export type Avatar =
   | "octopus"
   | "penguin"
   | "turtle"
-  | "whale";
+  | "whale"
 
-export type PlayertoJson = {
-  readonly name: string;
-  readonly socketId: string;
-  readonly avatar: Avatar;
-  readonly score: number;
-  readonly wantReplay: boolean;
-};
+export type PlayerToJson = {
+  readonly name: string
+  readonly socketId: string
+  readonly avatar: Avatar
+  readonly score: number
+  readonly wantReplay: boolean
+}

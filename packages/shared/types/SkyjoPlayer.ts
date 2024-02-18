@@ -1,8 +1,8 @@
-import { PlayertoJson } from "./Player";
-import { SkyjoCardtoJson } from "./SkyjoCard";
+import { PlayerToJson } from "./player"
+import { SkyjoCardToJson } from "./skyjoCard"
 
-export interface SkyjoPlayertoJson extends PlayertoJson {
-  readonly scores: number[];
-  readonly currentScore: number;
-  readonly cards: SkyjoCardtoJson[][];
+export interface SkyjoPlayerToJson extends PlayerToJson {
+  readonly scores: number[]
+  readonly currentScore: number
+  readonly cards: SkyjoCardToJson[][]
 }

@@ -1,4 +1,4 @@
-import { Avatar, PlayertoJson } from "shared/types/Player"
+import type { Avatar, PlayerToJson } from "shared/types/player"
 
 export interface PlayerInterface {
   readonly name: string
@@ -10,7 +10,7 @@ export interface PlayerInterface {
   addPoint(): void
   toggleReplay(): void
   resetReplay(): void
-  toJson(): PlayertoJson
+  toJson(): PlayerToJson
 }
 export class Player implements PlayerInterface {
   readonly name!: string

@@ -1,4 +1,4 @@
-import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 import { CardConstants } from "../constants"
 import { Player, PlayerInterface } from "./Player"
 import { SkyjoCard } from "./SkyjoCard"
@@ -6,7 +6,7 @@ import { SkyjoCard } from "./SkyjoCard"
 interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]
   scores: number[]
-  toJson(): SkyjoPlayertoJson
+  toJson(): SkyjoPlayerToJson
 }
 export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
@@ -37,7 +37,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return deletedColumn[0]
   }
 
-  public hasTurnedCardCount(count: number) {
+  public hasRevealedCardCount(count: number) {
     const currentCount = this.cards
       .flat()
       .filter((card) => card.isVisible).length

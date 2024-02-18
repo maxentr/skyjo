@@ -1,4 +1,4 @@
-import { GAME_STATUS, GametoJson } from "shared/types/Game"
+import { GAME_STATUS, GameToJson } from "shared/types/game"
 import { MIN_PLAYERS } from "../constants"
 import { Player } from "./Player"
 
@@ -21,7 +21,7 @@ export interface GameInterface<TPlayer extends Player> {
   nextTurn(): void
   reset(): void
 
-  toJson(): GametoJson
+  toJson(): GameToJson
 }
 
 export abstract class Game<TPlayer extends Player>
@@ -57,7 +57,7 @@ export abstract class Game<TPlayer extends Player>
   }
 
   addPlayer(player: TPlayer) {
-    if (this.isFull()) throw "game-is-full"
+    if (this.isFull()) throw new Error("game-is-full")
     this.players.push(player)
   }
 

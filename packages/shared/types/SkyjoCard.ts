@@ -1,4 +1,4 @@
-export type SkyjoCardtoJson = {
-  value: number | undefined;
-  isVisible: boolean;
-};
+export type SkyjoCardToJson = {
+  value: number | undefined
+  isVisible: boolean
+}

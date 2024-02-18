@@ -12,9 +12,9 @@ const DiscardPile = () => {
       game.lastDiscardCardValue !== undefined &&
       game.turnState === "chooseAPile"
     ) {
-      actions.takeCardFromPile("takeFromDiscardPile")
+      actions.pickCardFromPile("discard")
     } else if (game.turnState === "throwOrReplace") {
-      actions.throwSelectedCard()
+      actions.discardSelectedCard()
     }
   }
 

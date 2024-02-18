@@ -7,7 +7,7 @@ import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { SkyjotoJson } from "shared/types/Skyjo"
+import { SkyjoToJson } from "shared/types/skyjo"
 import { CreatePlayer } from "shared/validations/player"
 
 type Props = { gameId?: string }
@@ -38,7 +38,7 @@ const IndexPage = ({ gameId }: Props) => {
     if (gameId && type === "join") socket.emit("join", { gameId, player })
     else socket.emit(type, player)
 
-    socket.on("joinGame", (game: SkyjotoJson) => {
+    socket.on("joinGame", (game: SkyjoToJson) => {
       setLoading(false)
 
       router.push(`/${game.id}`)

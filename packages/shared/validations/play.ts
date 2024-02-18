@@ -1,47 +1,27 @@
 import { z } from "zod"
 
-export const playSkyjoGeneral = z.object({
+export const playGeneral = z.object({
   gameId: z.string(),
-  playerId: z.string(),
 })
 
-export const playSkyjoGeneralWithCardIndex = z.object({
-  gameId: z.string(),
-  playerId: z.string(),
+export const playGeneralWithCardIndex = playGeneral.extend({
   column: z.number().int().min(0).max(3),
   row: z.number().int().min(0).max(2),
 })
 
-export const playSkyjoTakeCard = playSkyjoGeneral.extend({
-  actionType: z.enum(["takeFromDrawPile", "takeFromDiscardPile"]),
+export const playRevealCard = playGeneralWithCardIndex
+export type PlayRevealCard = z.infer<typeof playRevealCard>
+
+export const playPickCard = playGeneral.extend({
+  pile: z.enum(["draw", "discard"]),
 })
-export type PlaySkyjoTakeCard = z.infer<typeof playSkyjoTakeCard>
+export type PlayPickCard = z.infer<typeof playPickCard>
 
-export const playSkyjoReplace = playSkyjoGeneralWithCardIndex.extend({
-  actionType: z.literal("replace"),
-})
-export type PlaySkyjoReplace = z.infer<typeof playSkyjoReplace>
+export const playReplaceCard = playGeneralWithCardIndex
+export type PlayReplaceCard = z.infer<typeof playReplaceCard>
 
-export const playSkyjoThrow = playSkyjoGeneral.extend({
-  actionType: z.literal("throwSelectedCard"),
-})
-export type PlaySkyjoThrow = z.infer<typeof playSkyjoThrow>
+export const playDiscardSelectedCard = playGeneral
+export type PlayDiscardSelectedCard = z.infer<typeof playDiscardSelectedCard>
 
-export const playSkyjoTurnCard = playSkyjoGeneralWithCardIndex.extend({
-  actionType: z.literal("turnACard"),
-})
-export type PlaySkyjoTurnCard = z.infer<typeof playSkyjoTurnCard>
-
-export const playSkyjo = z.union([
-  playSkyjoTakeCard,
-  playSkyjoReplace,
-  playSkyjoThrow,
-  playSkyjoTurnCard,
-])
-export type PlaySkyjo = z.infer<typeof playSkyjo>
-export type PlaySkyjoActionType = PlaySkyjo["actionType"]
-
-export type PlaySkyjoActionTypeTakeFromPile = Extract<
-  PlaySkyjoActionType,
-  "takeFromDrawPile" | "takeFromDiscardPile"
->
+export const playTurnCard = playGeneralWithCardIndex
+export type PlayTurnCard = z.infer<typeof playTurnCard>

@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Avatar } from "shared/types/Player"
+import { Avatar } from "shared/types/player"
 
 type UserAvatarProps = {
   avatar?: Avatar

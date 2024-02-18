@@ -8,17 +8,20 @@ import {
   useMemo,
   useState,
 } from "react"
+import { EmitEvents, ListenEvents } from "shared/types/socket"
 import { io, Socket } from "socket.io-client"
 
+export type SkyjoSocket = Socket<ListenEvents, EmitEvents>
+
 type SocketContextInterface = {
-  socket: Socket | undefined
-  getSocket: () => Socket | undefined
-  connect: () => Socket
+  socket: SkyjoSocket | undefined
+  getSocket: () => SkyjoSocket | undefined
+  connect: () => SkyjoSocket
 }
 const SocketContext = createContext({} as SocketContextInterface)
 
 const SocketContextProvider = ({ children }: PropsWithChildren) => {
-  const [socket, setSocket] = useState<Socket>()
+  const [socket, setSocket] = useState<SkyjoSocket>()
 
   useEffect(() => {
     return () => {

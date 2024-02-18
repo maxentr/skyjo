@@ -1,33 +1,96 @@
 import { Socket } from "socket.io"
 
+import { TurnState } from "shared/types/skyjo"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
-interface SkyjoGameControllerInterface {
-  games: Skyjo[]
-  addGame(game: Skyjo): void
-  removeGame(gameId: string): void
-  getGame(gameId: string): Skyjo | undefined
-  getGameWithFreePlace(): Skyjo | undefined
-  onCreate(socket: Socket, player: SkyjoPlayer, game: Skyjo): Promise<void>
-  onGet(socket: Socket, gameId: string): Promise<void>
-  onJoin(socket: Socket, gameId: string, player: SkyjoPlayer): Promise<void>
-  onWin(socket: Socket, game: Skyjo, winner: SkyjoPlayer): Promise<void>
-  onDraw(socket: Socket, game: Skyjo): Promise<void>
-  onReplay(socket: Socket, gameId: string): Promise<void>
-  onLeave(socket: Socket): Promise<void>
-}
-
-export abstract class SkyjoGameController
-  implements SkyjoGameControllerInterface
-{
+export abstract class SkyjoGameController {
   private _games: Skyjo[] = []
 
-  get games() {
+  private get games() {
     return this._games
   }
   private set games(games: Skyjo[]) {
     this._games = games
+  }
+
+  //#region private
+
+  private findGameByPlayerSocket(socketId: string) {
+    return this.games.find((game) => {
+      return game.players.find((player) => {
+        return player.socketId === socketId
+      })
+    })
+  }
+
+  //#endregion
+
+  //#region protected
+
+  protected checkPlayAuthorization(
+    socket: Socket,
+    gameId: string,
+    allowedStates: TurnState[],
+  ) {
+    const game = this.getGame(gameId)
+    if (
+      !game ||
+      game.status !== "playing" ||
+      (game.roundState !== "start" && game.roundState !== "lastLap")
+    )
+      throw new Error(`game-not-found`)
+
+    const player = game.getPlayer(socket.id)
+    if (!player) throw new Error(`player-not-found`)
+
+    if (!game.checkTurn(socket.id)) throw new Error(`not-your-turn`)
+
+    if (allowedStates.length > 0 && !allowedStates.includes(game.turnState))
+      throw new Error(`invalid-turn-state`)
+
+    return { player, game }
+  }
+
+  protected async finishTurn(socket: Socket, game: Skyjo, player: SkyjoPlayer) {
+    const cardsToDiscard = player.checkColumns()
+    if (cardsToDiscard.length > 0) {
+      cardsToDiscard.forEach((card) => game.discardCard(card))
+    }
+
+    // check if the player has turned all his cards
+    const hasPlayerFinished = player.hasRevealedCardCount(
+      player.cards.flat().length,
+    )
+
+    if (hasPlayerFinished && !game.firstPlayerToFinish) {
+      game.firstPlayerToFinish = player
+      game.roundState = "lastLap"
+    } else if (game.firstPlayerToFinish) {
+      // check if the turn comes to the first player who finished
+      game.checkEndOfRound()
+      // check if the game is finished (player with more than 100 points)
+      game.checkEndGame()
+
+      // if the round is over and the game is not finished, start a new round after 10 seconds
+      if (game.roundState === "over" && game.status !== "finished") {
+        setTimeout(() => {
+          game.startNewRound()
+          this.broadcastGame(socket, game.id)
+        }, 10000)
+      }
+    }
+
+    // next turn
+    game.nextTurn()
+  }
+
+  //#endregion
+
+  getGameWithFreePlace() {
+    return this.games.find((game) => {
+      return !game.isFull() && game.status === "lobby" && !game.private
+    })
   }
 
   addGame(game: Skyjo) {
@@ -43,20 +106,6 @@ export abstract class SkyjoGameController
   getGame(gameId: string) {
     return this.games.find((game) => {
       return game.id === gameId
-    })
-  }
-
-  private findGameByPlayerSocket(socketId: string) {
-    return this.games.find((game) => {
-      return game.players.find((player) => {
-        return player.socketId === socketId
-      })
-    })
-  }
-
-  getGameWithFreePlace() {
-    return this.games.find((game) => {
-      return !game.isFull() && game.status === "lobby" && !game.private
     })
   }
 
@@ -83,15 +132,15 @@ export abstract class SkyjoGameController
   async onJoin(socket: Socket, gameId: string, player: SkyjoPlayer) {
     const game = this.getGame(gameId)
 
-    if (!game) throw "game-not-found"
-    else if (game.status !== "lobby") throw "game-already-started"
+    if (!game) throw new Error("game-not-found")
+    else if (game.status !== "lobby") throw new Error("game-already-started")
 
     game.addPlayer(player)
     await socket.join(gameId)
 
     socket.emit("joinGame", game.toJson())
-
     socket.to(gameId).emit("game", game.toJson())
+    this.broadcastGame(socket, gameId)
   }
 
   async onWin(socket: Socket, game: Skyjo, winner: SkyjoPlayer) {

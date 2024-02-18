@@ -1,11 +1,11 @@
-import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
+import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 interface SkyjoCardInterface {
   readonly value: number
   readonly isVisible: boolean
 
   turnVisible(): void
-  toJson(): SkyjoCardtoJson
+  toJson(): SkyjoCardToJson
 }
 
 export class SkyjoCard implements SkyjoCardInterface {

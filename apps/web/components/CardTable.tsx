@@ -3,7 +3,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { canTurnTwoCards, isCurrentUserTurn } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
+import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const sizeClass = cva(
   "grid grid-rows-3 grid-flow-col transition-all duration-300",
@@ -18,7 +18,7 @@ const sizeClass = cva(
 )
 
 type CardTableProps = {
-  cards: SkyjoCardtoJson[][]
+  cards: SkyjoCardToJson[][]
   size?: "small" | "normal"
   cardDisabled?: boolean
 }
@@ -39,12 +39,12 @@ const CardTable = ({
       game.turnState === "throwOrReplace"
 
     if (canTurnCardAtBeginning) {
-      actions.turnCard(column, row)
+      actions.playRevealCard(column, row)
     } else if (isCurrentUserTurn(game, player.name)) {
       if (replaceAfterTakingFromDrawPile || replaceAfterTakingFromDiscardPile)
         actions.replaceCard(column, row)
       else if (game.turnState === "turnACard" && !cards[column][row].isVisible)
-        actions.turnCardAfterThrowing(column, row)
+        actions.turnCard(column, row)
     }
   }
 

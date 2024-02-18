@@ -1,5 +1,5 @@
-import { RoundState, SkyjotoJson, TurnState } from "shared/types/Skyjo"
-import { SkyjoCardtoJson } from "shared/types/SkyjoCard"
+import { RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo"
+import { SkyjoCardToJson } from "shared/types/skyjoCard"
 import { shuffle } from "../utils/shuffle"
 import { Game, GameInterface } from "./Game"
 import { SkyjoCard } from "./SkyjoCard"
@@ -8,20 +8,20 @@ import { SkyjoPlayer } from "./SkyjoPlayer"
 const SHUFFLE_ITERATIONS = 3
 
 interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
-  selectedCard: SkyjoCardtoJson | null
+  selectedCard: SkyjoCardToJson | null
   firstPlayerToFinish: SkyjoPlayer | null
   turnState: TurnState
   initializeCardPiles(): void
   givePlayersCards(player: SkyjoPlayer): void
-  checkAllPlayersTurnedCards(count: number): void
+  checkAllPlayersRevealedCards(count: number): void
   drawCard(): void
   pickFromDiscard(): void
-  discardCard(card: SkyjoCardtoJson): void
+  discardCard(card: SkyjoCardToJson): void
   checkEndOfRound(): void
   endGame(): void
   reset(): void
 
-  toJson(): SkyjotoJson
+  toJson(): SkyjoToJson
 }
 
 export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
@@ -127,9 +127,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     })
   }
 
-  public checkAllPlayersTurnedCards(count: number) {
+  public checkAllPlayersRevealedCards(count: number) {
     const allPlayersTurnedCards = this.players.every((player) =>
-      player.hasTurnedCardCount(count),
+      player.hasRevealedCardCount(count),
     )
 
     if (allPlayersTurnedCards) {

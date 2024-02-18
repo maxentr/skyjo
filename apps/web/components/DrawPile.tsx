@@ -16,7 +16,7 @@ const DrawPile = () => {
       isCurrentUserTurn(game, player.name) &&
       game.turnState === "chooseAPile"
     ) {
-      actions.takeCardFromPile("takeFromDrawPile")
+      actions.pickCardFromPile("draw")
     }
   }
 

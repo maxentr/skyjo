@@ -9,7 +9,7 @@ import React, {
   useMemo,
   useState,
 } from "react"
-import { Avatar } from "shared/types/Player"
+import { Avatar } from "shared/types/player"
 
 const USERNAME_KEY = "username"
 const AVATAR_KEY = "avatar-index"

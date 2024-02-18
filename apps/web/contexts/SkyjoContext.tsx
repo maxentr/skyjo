@@ -1,6 +1,6 @@
 "use client"
 
-import { useSocket } from "@/contexts/SocketContext"
+import { SkyjoSocket, useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
 import {
@@ -10,22 +10,21 @@ import {
   useEffect,
   useState,
 } from "react"
-import { SkyjotoJson } from "shared/types/Skyjo"
-import { SkyjoPlayertoJson } from "shared/types/SkyjoPlayer"
-import { PlaySkyjoActionTypeTakeFromPile } from "shared/validations/play"
-import { Socket } from "socket.io-client"
+import { SkyjoToJson } from "shared/types/skyjo"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
+import { PlayPickCard } from "shared/validations/play"
 
 type SkyjoContextInterface = {
-  game: SkyjotoJson
-  player: SkyjoPlayertoJson
-  opponents: SkyjoPlayertoJson[]
+  game: SkyjoToJson
+  player: SkyjoPlayerToJson
+  opponents: SkyjoPlayerToJson[]
   actions: {
     startGame: () => void
-    turnCard: (column: number, row: number) => void
-    takeCardFromPile: (actionType: PlaySkyjoActionTypeTakeFromPile) => void
+    playRevealCard: (column: number, row: number) => void
+    pickCardFromPile: (pile: PlayPickCard["pile"]) => void
     replaceCard: (column: number, row: number) => void
-    throwSelectedCard: () => void
-    turnCardAfterThrowing: (column: number, row: number) => void
+    discardSelectedCard: () => void
+    turnCard: (column: number, row: number) => void
   }
 }
 
@@ -42,7 +41,7 @@ const SkyjoContextProvider = ({
   const { socket } = useSocket()
   const { username } = useUser()
 
-  const [game, setGame] = useState<SkyjotoJson>()
+  const [game, setGame] = useState<SkyjoToJson>()
 
   const player = getCurrentUser(game?.players, username)
   const opponents = getOpponents(game?.players, username)
@@ -61,7 +60,7 @@ const SkyjoContextProvider = ({
   }, [socket, gameId])
 
   //#region game listeners
-  const onGameUpdate = async (game: SkyjotoJson) => {
+  const onGameUpdate = async (game: SkyjoToJson) => {
     console.log("game update", game)
     setGame(game)
   }
@@ -76,46 +75,38 @@ const SkyjoContextProvider = ({
     })
   }
 
-  const turnCard = (column: number, row: number) => {
-    socket?.emit("turnCard", {
+  const playRevealCard = (column: number, row: number) => {
+    socket?.emit("play:reveal-card", {
       gameId: gameId,
-      playerId: player.socketId,
       column: column,
       row: row,
     })
   }
 
-  const takeCardFromPile = (actionType: PlaySkyjoActionTypeTakeFromPile) => {
-    socket?.emit("play", {
+  const pickCardFromPile = (pile: PlayPickCard["pile"]) => {
+    socket?.emit("play:pick-card", {
       gameId: gameId,
-      playerId: player.socketId,
-      actionType: actionType,
+      pile,
     })
   }
 
   const replaceCard = (column: number, row: number) => {
-    socket?.emit("play", {
+    socket?.emit("play:replace-card", {
       gameId: gameId,
-      playerId: player.socketId,
-      actionType: "replace",
       column: column,
       row: row,
     })
   }
 
-  const throwSelectedCard = () => {
-    socket?.emit("play", {
+  const discardSelectedCard = () => {
+    socket?.emit("play:discard-selected-card", {
       gameId: gameId,
-      playerId: player.socketId,
-      actionType: "throwSelectedCard",
     })
   }
 
-  const turnCardAfterThrowing = (column: number, row: number) => {
-    socket?.emit("play", {
+  const turnCard = (column: number, row: number) => {
+    socket?.emit("play:turn-card", {
       gameId: gameId,
-      playerId: player.socketId,
-      actionType: "turnACard",
       column: column,
       row: row,
     })
@@ -123,11 +114,11 @@ const SkyjoContextProvider = ({
 
   const actions = {
     startGame,
-    turnCard,
-    takeCardFromPile,
+    playRevealCard,
+    pickCardFromPile,
     replaceCard,
-    throwSelectedCard,
-    turnCardAfterThrowing,
+    discardSelectedCard,
+    turnCard,
   }
   //#endregion
 
@@ -145,7 +136,7 @@ const SkyjoContextProvider = ({
   )
 }
 
-const gameListenersDestroy = (socket: Socket) => {
+const gameListenersDestroy = (socket: SkyjoSocket) => {
   socket.off("game")
 }
 
