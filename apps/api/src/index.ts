@@ -2,7 +2,7 @@ import { serve } from "@hono/node-server"
 import { Hono } from "hono"
 import { Server as HttpServer } from "http"
 import { Server } from "socket.io"
-import skyjoRouter from "./router"
+import skyjoRouter from "./router.js"
 
 const app = new Hono()
 const port = 3001

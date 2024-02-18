@@ -1,4 +1,4 @@
-import { SkyjoCardToJson } from "shared/types/skyjoCard"
+import { SkyjoCardToJson } from "shared/types/skyjoCard.js"
 
 interface SkyjoCardInterface {
   readonly value: number

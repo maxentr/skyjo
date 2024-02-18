@@ -1,4 +1,4 @@
-import type { Avatar, PlayerToJson } from "shared/types/player"
+import type { Avatar, PlayerToJson } from "shared/types/player.js"
 
 export interface PlayerInterface {
   readonly name: string

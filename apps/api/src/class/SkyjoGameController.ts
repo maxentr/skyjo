@@ -1,8 +1,8 @@
 import { Socket } from "socket.io"
 
-import { TurnState } from "shared/types/skyjo"
-import { Skyjo } from "./Skyjo"
-import { SkyjoPlayer } from "./SkyjoPlayer"
+import { TurnState } from "shared/types/skyjo.js"
+import { Skyjo } from "./Skyjo.js"
+import { SkyjoPlayer } from "./SkyjoPlayer.js"
 
 export abstract class SkyjoGameController {
   private _games: Skyjo[] = []
