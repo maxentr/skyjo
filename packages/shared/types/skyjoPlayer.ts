@@ -1,5 +1,5 @@
-import { PlayerToJson } from "./player.js"
-import { SkyjoCardToJson } from "./skyjoCard.js"
+import { PlayerToJson } from "./player"
+import { SkyjoCardToJson } from "./skyjoCard"
 
 export interface SkyjoPlayerToJson extends PlayerToJson {
   readonly scores: number[]
