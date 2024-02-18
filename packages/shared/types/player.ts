@@ -10,6 +10,7 @@ export type Avatar =
   | "penguin"
   | "turtle"
   | "whale"
+export type ConnectionStatus = "connected" | "connection-lost" | "disconnected"
 
 export type PlayerToJson = {
   readonly name: string
@@ -17,4 +18,5 @@ export type PlayerToJson = {
   readonly avatar: Avatar
   readonly score: number
   readonly wantReplay: boolean
+  readonly connectionStatus: ConnectionStatus
 }

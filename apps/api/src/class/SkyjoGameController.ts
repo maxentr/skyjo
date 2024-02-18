@@ -172,6 +172,26 @@ export abstract class SkyjoGameController {
     } else socket.to(game.id).emit("replay", game.toJson())
   }
 
+  async onConnectionLost(socket: Socket) {
+    const game = this.findGameByPlayerSocket(socket.id)
+    if (!game) return
+
+    const player = game.getPlayer(socket.id)
+    player!.status = "connection-lost"
+
+    await this.broadcastGame(socket, game.id)
+  }
+
+  async onReconnect(socket: Socket) {
+    const game = this.findGameByPlayerSocket(socket.id)
+    if (!game) return
+
+    const player = game.getPlayer(socket.id)
+    player!.status = "connected"
+
+    await this.broadcastGame(socket, game.id)
+  }
+
   async onLeave(socket: Socket) {
     const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return

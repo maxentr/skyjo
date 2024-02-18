@@ -14,7 +14,7 @@ import {
 import { CreatePlayer, createPlayer } from "shared/validations/player"
 import { StartGame, startGame } from "shared/validations/start"
 
-import { Namespace } from "socket.io"
+import { DisconnectReason, Server } from "socket.io"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import skyjoController from "./controller"
 import { SkyjoSocket } from "./types/skyjoSocket"
@@ -23,6 +23,9 @@ const instance = skyjoController.getInstance()
 
 const skyjoRouter = (io: Server) => {
   io.on("connection", (socket: SkyjoSocket) => {
+    if (socket.recovered) {
+      instance.onReconnect(socket)
+    }
 
     socket.on("createPrivate", (player: CreatePlayer) => {
       try {
@@ -152,12 +155,15 @@ const skyjoRouter = (io: Server) => {
       }
     })
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", (reason: DisconnectReason) => {
       try {
-        console.log("Socket disconnected!", socket.id)
-        instance.onLeave(socket)
+        if (reason === "ping timeout" || reason === "transport close")
+          instance.onConnectionLost(socket)
+        else {
+          instance.onLeave(socket)
+        }
       } catch (error) {
-        console.error(`Error while leaving a game : ${error}`)
+        console.error(`Error while disconnecting a game : ${error}`)
       }
     })
   })

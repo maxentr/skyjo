@@ -1,4 +1,8 @@
-import type { Avatar, PlayerToJson } from "shared/types/player"
+import type {
+  Avatar,
+  ConnectionStatus,
+  PlayerToJson,
+} from "shared/types/player"
 
 export interface PlayerInterface {
   readonly name: string
@@ -12,10 +16,12 @@ export interface PlayerInterface {
   resetReplay(): void
   toJson(): PlayerToJson
 }
+
 export class Player implements PlayerInterface {
   readonly name!: string
   readonly socketId: string
   readonly avatar!: Avatar
+  connectionStatus: ConnectionStatus = "connected"
   score: number = 0
   wantReplay: boolean = false
 
@@ -44,6 +50,7 @@ export class Player implements PlayerInterface {
       avatar: this.avatar,
       score: this.score,
       wantReplay: this.wantReplay,
+      connectionStatus: this.connectionStatus,
     }
   }
 }
