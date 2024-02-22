@@ -11,6 +11,7 @@ export interface GameInterface<TPlayer extends Player> {
   turn: number
   admin: TPlayer
 
+  getConnectedPlayers(): TPlayer[]
   getCurrentPlayer(): TPlayer
   getPlayer(playerSocketId: string): TPlayer | undefined
   addPlayer(player: TPlayer): void
@@ -46,6 +47,12 @@ export abstract class Game<TPlayer extends Player>
     return this._id
   }
 
+  getConnectedPlayers() {
+    return this.players.filter(
+      (player) => player.connectionStatus !== "disconnected",
+    )
+  }
+
   getCurrentPlayer() {
     return this.players[this.turn]
   }
@@ -72,11 +79,11 @@ export abstract class Game<TPlayer extends Player>
   }
 
   isFull() {
-    return this.players.length === this.maxPlayers
+    return this.getConnectedPlayers().length === this.maxPlayers
   }
 
   start() {
-    if (this.players.length < MIN_PLAYERS) return
+    if (this.getConnectedPlayers().length < MIN_PLAYERS) return
 
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
@@ -88,13 +95,32 @@ export abstract class Game<TPlayer extends Player>
     return this.players[this.turn].socketId === playerSocketId
   }
 
+  getNextTurn() {
+    let nextTurn = (this.turn + 1) % this.players.length
+
+    while (this.players[nextTurn].connectionStatus !== "connected") {
+      nextTurn = (nextTurn + 1) % this.players.length
+    }
+
+    return nextTurn
+  }
   nextTurn() {
-    this.turn = (this.turn + 1) % this.players.length
+    let nextTurn = (this.turn + 1) % this.players.length
+
+    while (this.players[nextTurn].connectionStatus !== "connected") {
+      nextTurn = (nextTurn + 1) % this.players.length
+    }
+
+    this.turn = nextTurn
   }
 
   reset() {
     this.status = "lobby"
     this.turn = 0
+  }
+
+  haveAtLeastTwoConnected() {
+    return this.getConnectedPlayers().length >= 2
   }
 
   toJson() {

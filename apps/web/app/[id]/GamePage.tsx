@@ -10,19 +10,33 @@ import EndRoundDialog from "@/components/EndRoundDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import ScoreSheet from "@/components/ScoreSheet"
+import { Button } from "@/components/ui/button"
 import { useSkyjo } from "@/contexts/SkyjoContext"
+import { useSocket } from "@/contexts/SocketContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
+  const { socket } = useSocket()
+
+  const handleConnect = () => {
+    if (socket.connected) {
+      socket.io.engine.close()
+    } else {
+      socket.connect()
+    }
+  }
 
   return (
     <div className="relative h-dvh w-dvw p-6 bg-slate-100 flex flex-col">
       <div className="w-full h-2/5 flex flex-row justify-evenly">
+        <Button onClick={handleConnect}>
+          <p>{socket.connected ? "Se déconnecté" : "Se connecter"}</p>
+        </Button>
         {opponents.map((opponent) => (
           <OpponentBoard
             opponent={opponent}
-            key={opponent.name}
+            key={opponent.socketId}
             isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
           />
         ))}

@@ -81,13 +81,13 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   private resetPlayers() {
-    this.players.forEach((player) => {
+    this.getConnectedPlayers().forEach((player) => {
       player.reset()
     })
   }
 
   private setFirstPlayerToStart() {
-    const playersScore = this.players.map((player, i) => {
+    const playersScore = this.getConnectedPlayers().map((player, i) => {
       const arrayScore = player.currentScoreArray()
 
       return {
@@ -121,19 +121,19 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   public givePlayersCards() {
-    this.players.forEach((player) => {
+    this.getConnectedPlayers().forEach((player) => {
       const cards = this.drawPile.splice(0, 12)
       player.setCards(cards)
     })
   }
 
   public checkAllPlayersRevealedCards(count: number) {
-    const allPlayersTurnedCards = this.players.every((player) =>
+    const allPlayersTurnedCards = this.getConnectedPlayers().every((player) =>
       player.hasRevealedCardCount(count),
     )
 
     if (allPlayersTurnedCards) {
-      this.roundState = "start"
+      this.roundState = "playing"
       this.setFirstPlayerToStart()
     }
   }
@@ -180,16 +180,17 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   public checkEndOfRound() {
-    const nextTurn = (this.turn + 1) % this.players.length
+    const connectedPlayers = this.getConnectedPlayers()
+    const nextTurn = this.getNextTurn()
 
-    if (this.players[nextTurn] === this.firstPlayerToFinish) {
+    if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
       this.players.forEach((player) => {
         player.finalRoundScore()
       })
 
       this.doubleScoreForFirstPlayer()
 
-      if (this.players.some((player) => player.score >= 100)) {
+      if (connectedPlayers.some((player) => player.score >= 100)) {
         this.endGame()
       } else {
         this.roundState = "over"
@@ -202,17 +203,20 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     const firstToFinishPlayerScore =
       this.firstPlayerToFinish!.scores[lastScoreIndex]
 
-    const playersWithoutFirstPlayerToFinish = this.players.filter(
+    const playersWithoutFirstPlayerToFinish = this.getConnectedPlayers().filter(
       (player) => player !== this.firstPlayerToFinish,
     )
-    // Check if there is any player with a lower or equal score than the first player to finish
+
     const opponentWithALowerOrEqualScore =
       playersWithoutFirstPlayerToFinish.some(
-        (obj) => obj.scores[lastScoreIndex] <= firstToFinishPlayerScore,
+        (player) =>
+          player.scores[lastScoreIndex] <= firstToFinishPlayerScore &&
+          player.scores[lastScoreIndex] !== "-",
       )
 
     if (opponentWithALowerOrEqualScore) {
-      this.firstPlayerToFinish!.scores[lastScoreIndex] *= 2
+      this.firstPlayerToFinish!.scores[lastScoreIndex] =
+        +this.firstPlayerToFinish!.scores[lastScoreIndex] * 2
       this.firstPlayerToFinish!.recalculateScore()
     }
   }
@@ -256,7 +260,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   public checkEndGame() {
-    if (this.players.some((player) => player.score >= 100)) {
+    if (this.getConnectedPlayers().some((player) => player.score >= 100)) {
       this.endGame()
     }
   }

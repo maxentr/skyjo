@@ -39,6 +39,7 @@ const SkyjoContextProvider = ({
   gameId,
 }: SkyjoContextProviderProps) => {
   const { socket } = useSocket()
+
   const { username } = useUser()
 
   const [game, setGame] = useState<SkyjoToJson>()
@@ -63,11 +64,22 @@ const SkyjoContextProvider = ({
     setGame(game)
   }
 
+  const onPlayerLeave = async (
+    game: SkyjoToJson,
+    player: SkyjoPlayerToJson,
+  ) => {
+    console.log("player left", player)
+    //TODO add system message in chat when chat is implemented
+    setGame(game)
+  }
+
   const initGameListeners = () => {
     socket.on("game", onGameUpdate)
+    socket.on("playerLeave", onPlayerLeave)
   }
   const destroyGameListeners = () => {
     socket.off("game", onGameUpdate)
+    socket.off("playerLeave", onPlayerLeave)
   }
   //#endregion
 

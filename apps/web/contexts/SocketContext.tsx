@@ -9,7 +9,7 @@ const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
   reconnectionDelay: 1000,
   reconnectionDelayMax: 20000,
   reconnectionAttempts: 3,
-  autoConnect: false,
+  autoConnect: true,
 })
 
 export type SkyjoSocket = Socket<ListenEvents, EmitEvents>
@@ -21,14 +21,13 @@ const SocketContext = createContext({} as SocketContextInterface)
 
 const SocketContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
-    socket.connect()
     initGameListeners()
 
     return () => {
       destroyGameListeners()
-      if (socket.connected) socket.disconnect()
+      // if (socket.connected) socket.disconnect()
     }
-  }, [])
+  }, [socket])
 
   //#region listeners
   const onConnect = () => {

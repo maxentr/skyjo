@@ -8,6 +8,7 @@ export interface PlayerInterface {
   readonly name: string
   readonly socketId: string
   readonly avatar: Avatar
+  connectionStatus: ConnectionStatus
   score: number
   wantReplay: boolean
 

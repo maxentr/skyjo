@@ -155,12 +155,12 @@ const skyjoRouter = (io: Server) => {
       }
     })
 
-    socket.on("disconnect", (reason: DisconnectReason) => {
+    socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
-        if (reason === "ping timeout" || reason === "transport close")
-          instance.onConnectionLost(socket)
+        if (reason === "ping timeout")
+          await instance.onConnectionLost(socket)
         else {
-          instance.onLeave(socket)
+          await instance.onLeave(socket)
         }
       } catch (error) {
         console.error(`Error while disconnecting a game : ${error}`)

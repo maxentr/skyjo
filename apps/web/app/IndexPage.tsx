@@ -28,7 +28,7 @@ const IndexPage = ({ gameId }: Props) => {
     if (!username) return
 
     const avatar = getAvatar()
-    console.log(avatar)
+
     const player: CreatePlayer = {
       username,
       avatar: getAvatar(),

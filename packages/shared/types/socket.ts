@@ -1,3 +1,4 @@
+import { SkyjoPlayerToJson } from "types/skyjoPlayer"
 import { JoinGame } from "../validations/joinGame"
 import {
   PlayDiscardSelectedCard,
@@ -31,5 +32,5 @@ export type ListenEvents = {
   game: (game: SkyjoToJson) => void
   winner: (game: SkyjoToJson, winner: SkyjoToJson) => void
   draw: (game: SkyjoToJson) => void
-  playerLeave: (game: SkyjoToJson) => void
+  playerLeave: (game: SkyjoToJson, player: SkyjoPlayerToJson) => void
 }

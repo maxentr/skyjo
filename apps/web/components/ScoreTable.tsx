@@ -41,7 +41,9 @@ const ScoreTable = ({ players, winner }: Props) => {
               </TableCell>
             ))}
             <TableCell className="text-center">
-              {player.scores.reduce((a, b) => a + b, 0)}
+              {player.scores
+                .filter((score) => Number.isInteger(score))
+                .reduce((a, b) => +a + +b, 0)}
             </TableCell>
           </TableRow>
         ))}

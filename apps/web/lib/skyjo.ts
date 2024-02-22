@@ -31,12 +31,15 @@ export const getOpponents = (
     return []
   }
 
-  return players.filter((player) => player.name !== username)
+  return players.filter(
+    (player) =>
+      player.name !== username && player.connectionStatus !== "disconnected",
+  )
 }
 
 export const isCurrentUserTurn = (game?: SkyjoToJson, username?: string) => {
   if (!username || !game) return false
-
+  console.log(game, username)
   if (
     game.status !== "playing" ||
     game.roundState === "waitingPlayersToTurnTwoCards"
@@ -77,7 +80,7 @@ export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
 
   if (
     game.status === "playing" &&
-    (game.roundState === "start" || game.roundState === "lastLap")
+    (game.roundState === "playing" || game.roundState === "lastLap")
   ) {
     return isCurrentUserTurn(game, player.name)
       ? TURN_STATE_MESSAGES[game.turnState]
@@ -88,7 +91,11 @@ export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
     return "Manche terminée"
   }
 
-  if (game.status === "stopped") {
+  if (game.status === "finished") {
     return "Partie terminée !"
+  }
+
+  if (game.status === "stopped") {
+    return "Partie arrêtée"
   }
 }

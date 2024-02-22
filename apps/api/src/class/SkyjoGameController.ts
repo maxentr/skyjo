@@ -1,6 +1,7 @@
 import { Socket } from "socket.io"
 
 import { TurnState } from "shared/types/skyjo"
+import { MIN_PLAYERS } from "../constants"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
@@ -18,7 +19,7 @@ export abstract class SkyjoGameController {
 
   private findGameByPlayerSocket(socketId: string) {
     return this.games.find((game) => {
-      return game.players.find((player) => {
+      return game.getConnectedPlayers().find((player) => {
         return player.socketId === socketId
       })
     })
@@ -37,7 +38,7 @@ export abstract class SkyjoGameController {
     if (
       !game ||
       game.status !== "playing" ||
-      (game.roundState !== "start" && game.roundState !== "lastLap")
+      (game.roundState !== "playing" && game.roundState !== "lastLap")
     )
       throw new Error(`game-not-found`)
 
@@ -163,8 +164,8 @@ export abstract class SkyjoGameController {
 
     game.getPlayer(socket.id)?.toggleReplay()
 
-    // restart game if all players want replay
-    if (game.players.every((player) => player.wantReplay)) {
+    // restart game if all connected players want replay
+    if (game.getConnectedPlayers().every((player) => player.wantReplay)) {
       game.reset()
       game.start()
 
@@ -177,7 +178,7 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.status = "connection-lost"
+    player!.connectionStatus = "connection-lost"
 
     await this.broadcastGame(socket, game.id)
   }
@@ -187,7 +188,7 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.status = "connected"
+    player!.connectionStatus = "connected"
 
     await this.broadcastGame(socket, game.id)
   }
@@ -196,14 +197,26 @@ export abstract class SkyjoGameController {
     const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return
 
-    game.removePlayer(socket.id)
-    game.status = "stopped"
-    await socket.leave(game.id)
+    const player = game.getPlayer(socket.id)
+    player!.connectionStatus = "disconnected"
 
-    if (game.players.length === 0) {
+    if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
+
+    if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
+      game.status = "stopped"
+      await this.broadcastGame(socket, game.id)
       this.removeGame(game.id)
+      this.broadcastGame(socket, game.id)
     } else {
-      socket.to(game.id).emit("playerLeave", game.toJson())
+      if (game.status === "lobby") game.removePlayer(socket.id)
+
+      socket.to(game.id).emit("playerLeave", game.toJson(), player?.toJson())
     }
+    if (game.roundState === "waitingPlayersToTurnTwoCards") {
+      game.checkAllPlayersRevealedCards(MIN_PLAYERS)
+      await this.broadcastGame(socket, game.id)
+    }
+
+    // await socket.leave(game.id)
   }
 }

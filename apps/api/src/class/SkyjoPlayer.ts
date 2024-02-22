@@ -1,16 +1,16 @@
-import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
+import { SkyjoPlayerScores, SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 import { CardConstants } from "../constants"
 import { Player, PlayerInterface } from "./Player"
 import { SkyjoCard } from "./SkyjoCard"
 
 interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]
-  scores: number[]
+  scores: SkyjoPlayerScores
   toJson(): SkyjoPlayerToJson
 }
 export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
-  scores: number[] = []
+  scores: SkyjoPlayerScores = []
 
   public setCards(cardsValue: number[]) {
     this.cards = []
@@ -42,6 +42,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
       .flat()
       .filter((card) => card.isVisible).length
 
+    console.log(currentCount, count)
     return currentCount === count
   }
 
@@ -77,6 +78,11 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   public finalRoundScore() {
     let finalScore = 0
 
+    if (this.connectionStatus === "disconnected") {
+      this.scores.push("-")
+      return
+    }
+
     this.cards.forEach((column) => {
       column.forEach((card) => {
         card.turnVisible()
@@ -90,7 +96,9 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   }
 
   public recalculateScore() {
-    this.score = this.scores.reduce((a, b) => a + b, 0)
+    this.score = (
+      this.scores.filter((score) => Number.isInteger(score)) as number[]
+    ).reduce((a, b) => +a + +b, 0)
   }
 
   public reset() {
