@@ -26,8 +26,8 @@ export class Player implements PlayerInterface {
   score: number = 0
   wantReplay: boolean = false
 
-  constructor(ename: string, socketId: string, avatar: Avatar) {
-    this.name = ename
+  constructor(name: string, socketId: string, avatar: Avatar) {
+    this.name = name
     this.socketId = socketId
     this.avatar = avatar
   }
