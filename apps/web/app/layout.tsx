@@ -5,7 +5,7 @@ import Providers from "@/app/providers"
 import { PropsWithChildren } from "react"
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin-ext"],
   weight: "variable",
   display: "swap",
 })

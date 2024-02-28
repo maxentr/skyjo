@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 const shantell = Shantell_Sans({
-  subsets: ["latin"],
+  subsets: ["latin-ext"],
   weight: "700",
   display: "swap",
 })
