@@ -42,7 +42,6 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
       .flat()
       .filter((card) => card.isVisible).length
 
-    console.log(currentCount, count)
     return currentCount === count
   }
 
