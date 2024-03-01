@@ -200,23 +200,27 @@ export abstract class SkyjoGameController {
     const player = game.getPlayer(socket.id)
     player!.connectionStatus = "disconnected"
 
-    if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
-
     if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
       game.status = "stopped"
+    }
+
+    if (
+      game.status === "lobby" ||
+      game.status === "finished" ||
+      game.status === "stopped"
+    ) {
+      game.removePlayer(socket.id)
       await this.broadcastGame(socket, game.id)
-      this.removeGame(game.id)
-      this.broadcastGame(socket, game.id)
     } else {
-      if (game.status === "lobby") game.removePlayer(socket.id)
+      if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
+
+      if (game.roundState === "waitingPlayersToTurnTwoCards")
+        game.checkAllPlayersRevealedCards(MIN_PLAYERS)
 
       socket.to(game.id).emit("playerLeave", game.toJson(), player?.toJson())
     }
-    if (game.roundState === "waitingPlayersToTurnTwoCards") {
-      game.checkAllPlayersRevealedCards(MIN_PLAYERS)
-      await this.broadcastGame(socket, game.id)
-    }
 
-    // await socket.leave(game.id)
+    if (game.players.length === 0) this.removeGame(game.id)
+    await socket.leave(game.id)
   }
 }
