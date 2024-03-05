@@ -1,7 +1,6 @@
 import "@/app/globals.css"
-import { Inter } from "next/font/google"
-
 import Providers from "@/app/providers"
+import { Inter } from "next/font/google"
 import { PropsWithChildren } from "react"
 
 const inter = Inter({
@@ -12,7 +11,7 @@ const inter = Inter({
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.className}>
+    <html lang="fr" suppressHydrationWarning className={inter.className}>
       <head>
         <title>Skyjo - Play Online with Friends</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />

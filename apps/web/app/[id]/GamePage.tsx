@@ -2,6 +2,7 @@
 
 import AdminLobby from "@/components/AdminLobby"
 import { Card } from "@/components/Card"
+import Chat from "@/components/Chat"
 import CopyLink from "@/components/CopyLink"
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
@@ -9,7 +10,8 @@ import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
-import ScoreSheet from "@/components/ScoreSheet"
+import Score from "@/components/Score"
+import Settings from "@/components/Settings"
 import { Button } from "@/components/ui/button"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useSocket } from "@/contexts/SocketContext"
@@ -28,18 +30,32 @@ const GamePage = () => {
   }
 
   return (
-    <div className="relative h-dvh w-dvw p-6 bg-slate-100 flex flex-col">
-      <div className="w-full h-2/5 flex flex-row justify-evenly">
-        <Button onClick={handleConnect}>
-          <p>{socket.connected ? "Se déconnecté" : "Se connecter"}</p>
-        </Button>
-        {opponents.map((opponent) => (
-          <OpponentBoard
-            opponent={opponent}
-            key={opponent.socketId}
-            isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
-          />
-        ))}
+    <div className="relative h-dvh w-dvw p-4 bg-slate-100 flex flex-col">
+      <div className="w-full h-2/5 flex flex-row">
+        <div className="w-10"></div>
+        <div className="absolute top-6 left-6 flex flex-col justify-start">
+          {/** //! Debug do not push */}
+          <Button onClick={handleConnect}>
+            <p>{socket.connected ? "Se déconnecté" : "Se connecter"}</p>
+          </Button>
+          {game.roundState === "lastLap" && (
+            <p className="font-bold">Dernier tour !</p>
+          )}
+          <p>{getGameInfo(player, game)}</p>
+        </div>
+        <div className="h-2/5 flex flex-grow flex-row justify-evenly">
+          {opponents.map((opponent) => (
+            <OpponentBoard
+              opponent={opponent}
+              key={opponent.socketId}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+            />
+          ))}
+        </div>
+        <div className="w-10 flex flex-col gap-2 items-end justify-start">
+          <Settings />
+          <Score />
+        </div>
       </div>
       <div className="w-full h-1/5 grid grid-cols-3 grid-flow-row">
         <div className="col-start-2 flex flex-col justify-center items-center gap-4">
@@ -67,15 +83,9 @@ const GamePage = () => {
           />
         )}
       </div>
-      <div className="absolute top-6 right-6">
-        {game.roundState === "lastLap" && (
-          <p className="font-bold">Dernier tour !</p>
-        )}
-        <p>{getGameInfo(player, game)}</p>
-      </div>
       <EndRoundDialog />
       <EndGameDialog />
-      <ScoreSheet players={game.players} />
+      <Chat />
     </div>
   )
 }

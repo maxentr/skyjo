@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from "react"
+import { ChatMessage } from "shared/types/chat"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 import { PlayPickCard } from "shared/validations/play"
@@ -19,6 +20,7 @@ type SkyjoContextInterface = {
   player: SkyjoPlayerToJson
   opponents: SkyjoPlayerToJson[]
   actions: {
+    sendMessage: (message: string) => void
     startGame: () => void
     playRevealCard: (column: number, row: number) => void
     pickCardFromPile: (pile: PlayPickCard["pile"]) => void
@@ -26,6 +28,7 @@ type SkyjoContextInterface = {
     discardSelectedCard: () => void
     turnCard: (column: number, row: number) => void
   }
+  chat: ChatMessage[]
 }
 
 const SkyjoContext = createContext({} as SkyjoContextInterface)
@@ -43,6 +46,7 @@ const SkyjoContextProvider = ({
   const { username } = useUser()
 
   const [game, setGame] = useState<SkyjoToJson>()
+  const [chat, setChat] = useState<ChatMessage[]>([])
 
   const player = getCurrentUser(game?.players, username)
   const opponents = getOpponents(game?.players, username)
@@ -64,28 +68,30 @@ const SkyjoContextProvider = ({
     setGame(game)
   }
 
-  const onPlayerLeave = async (
-    game: SkyjoToJson,
-    player: SkyjoPlayerToJson,
-  ) => {
-    console.log("player left", player)
-    //TODO add system message in chat when chat is implemented
-    setGame(game)
+  const onMessageReceived = (message: ChatMessage) => {
+    setChat((prev) => [...prev, message])
   }
 
   const initGameListeners = () => {
     socket.on("game", onGameUpdate)
-    socket.on("playerLeave", onPlayerLeave)
+    socket.on("message", onMessageReceived)
   }
   const destroyGameListeners = () => {
     socket.off("game", onGameUpdate)
-    socket.off("playerLeave", onPlayerLeave)
+    socket.off("message", onMessageReceived)
   }
   //#endregion
 
   if (!game || !player) return null
 
-  //#region game actions
+  //#region actions
+  const sendMessage = (message: string) => {
+    socket.emit("message", {
+      message,
+      username: player.name,
+    })
+  }
+
   const startGame = () => {
     socket.emit("start", {
       gameId: gameId,
@@ -130,6 +136,7 @@ const SkyjoContextProvider = ({
   }
 
   const actions = {
+    sendMessage,
     startGame,
     playRevealCard,
     pickCardFromPile,
@@ -146,6 +153,7 @@ const SkyjoContextProvider = ({
         player,
         opponents,
         actions,
+        chat,
       }}
     >
       {children}

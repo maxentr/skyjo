@@ -23,7 +23,7 @@ export default class SkyjoController extends SkyjoGameController {
     return SkyjoController.instance
   }
 
-  async create(socket: Socket, player: CreatePlayer, privateGame = true) {
+  async create(socket: SkyjoSocket, player: CreatePlayer, privateGame = true) {
     const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
 
     const game = new Skyjo(newPlayer, privateGame)
@@ -31,7 +31,7 @@ export default class SkyjoController extends SkyjoGameController {
     this.onCreate(socket, newPlayer, game)
   }
 
-  async playRevealCard(socket: Socket, turnData: PlayRevealCard) {
+  async playRevealCard(socket: SkyjoSocket, turnData: PlayRevealCard) {
     const { gameId, column, row } = turnData
 
     const game = this.getGame(gameId)
@@ -49,7 +49,7 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async startGame(socket: Socket, gameId: string) {
+  async startGame(socket: SkyjoSocket, gameId: string) {
     const game = this.getGame(gameId)
     if (!game) return
 
@@ -59,7 +59,7 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async pickCard(socket: Socket, { gameId, pile }: PlayPickCard) {
+  async pickCard(socket: SkyjoSocket, { gameId, pile }: PlayPickCard) {
     const { game } = this.checkPlayAuthorization(socket, gameId, [
       "chooseAPile",
     ])
@@ -70,7 +70,7 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async replaceCard(socket: Socket, { gameId, column, row }: PlayReplaceCard) {
+  async replaceCard(socket: SkyjoSocket, { gameId, column, row }: PlayReplaceCard) {
     const { game, player } = this.checkPlayAuthorization(socket, gameId, [
       "replaceACard",
       "throwOrReplace",
@@ -82,7 +82,7 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async discardCard(socket: Socket, { gameId }: PlayDiscardSelectedCard) {
+  async discardCard(socket: SkyjoSocket, { gameId }: PlayDiscardSelectedCard) {
     const { game } = this.checkPlayAuthorization(socket, gameId, [
       "throwOrReplace",
     ])
@@ -92,7 +92,7 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async turnCard(socket: Socket, { gameId, column, row }: PlayTurnCard) {
+  async turnCard(socket: SkyjoSocket, { gameId, column, row }: PlayTurnCard) {
     const { game, player } = this.checkPlayAuthorization(socket, gameId, [
       "turnACard",
     ])

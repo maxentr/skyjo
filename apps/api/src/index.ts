@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server"
 import { Hono } from "hono"
 import { Server as HttpServer } from "http"
+import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { Server } from "socket.io"
 import skyjoRouter from "./router"
 
@@ -10,9 +11,12 @@ const server = serve({
   fetch: app.fetch,
   port,
 })
-const io = new Server(server as HttpServer, {
-  connectionStateRecovery: {},
-})
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(
+  server as HttpServer,
+  {
+    connectionStateRecovery: {},
+  },
+)
 
 skyjoRouter(io)
 

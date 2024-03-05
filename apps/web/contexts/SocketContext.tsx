@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, PropsWithChildren, useContext, useEffect } from "react"
-import { EmitEvents, ListenEvents } from "shared/types/socket"
+import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { io, Socket } from "socket.io-client"
 
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
@@ -12,7 +12,7 @@ const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
   autoConnect: true,
 })
 
-export type SkyjoSocket = Socket<ListenEvents, EmitEvents>
+export type SkyjoSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 type SocketContextInterface = {
   socket: SkyjoSocket

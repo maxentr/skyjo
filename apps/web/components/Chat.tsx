@@ -1,0 +1,119 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useSkyjo } from "@/contexts/SkyjoContext"
+import { cn } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { cva } from "class-variance-authority"
+import { SendIcon } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { ChatMessage } from "shared/types/chat"
+import { z } from "zod"
+
+const Chat = () => {
+  const [open, setOpen] = useState(false)
+  const { chat } = useSkyjo()
+
+  return (
+    <div className="absolute right-8 bottom-0 z-10 flex items-center justify-end">
+      <div
+        className={`w-80 h-fit px-2 pb-2 bg-white shadow border rounded-t-lg boder-slate-600 flex flex-col items-center duration-300 transition-transform ease-in-out ${
+          open ? "translate-y-0" : "-translate-y-[calc(-100%+2.75rem)]"
+        }`}
+      >
+        <button
+          className="text-center text-slate-800 font-semibold w-full px-4 py-2 border-b"
+          onClick={() => setOpen(!open)}
+        >
+          Chat
+        </button>
+        <div className="h-96 w-full flex flex-col">
+          <div className="overflow-y-auto flex flex-grow flex-col py-2 pr-2.5 -mr-2 gap-2">
+            {chat.map((message) => (
+              <ChatMessage key={message.message} message={message} />
+            ))}
+          </div>
+          <ChatForm />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type ChatMessageProps = {
+  message: ChatMessage
+}
+
+const chatMessageClasses = cva({
+  message: "text-slate-800",
+  system: "text-yellow-500",
+})
+
+const ChatMessage = ({ message }: ChatMessageProps) => (
+  <p className={cn("font-inter text-sm", chatMessageClasses)}>
+    {message?.username && (
+      <span className="font-bold">{message?.username} : </span>
+    )}
+    {message.message}
+  </p>
+)
+
+const ChatForm = () => {
+  const formSchema = z.object({
+    message: z.string(),
+  })
+  const { actions } = useSkyjo()
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      message: "",
+    },
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.message) return
+
+    actions.sendMessage(values.message)
+    form.reset()
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-row items-center w-full gap-2"
+      >
+        <FormField
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <FormItem className="flex flex-1">
+              <FormControl>
+                <Input
+                  placeholder="Message"
+                  className="flex flex-1"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button size="icon" type="submit">
+          <SendIcon width={16} height={16} />
+        </Button>
+      </form>
+    </Form>
+  )
+}
+
+export default Chat

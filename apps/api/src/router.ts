@@ -14,6 +14,10 @@ import {
 import { CreatePlayer, createPlayer } from "shared/validations/player"
 import { StartGame, startGame } from "shared/validations/start"
 
+import {
+  SendChatMessage,
+  sendChatMessage,
+} from "shared/validations/chatMessage"
 import { DisconnectReason, Server } from "socket.io"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import skyjoController from "./controller"
@@ -91,6 +95,16 @@ const skyjoRouter = (io: Server) => {
         instance.startGame(socket, startGameData.gameId)
       } catch (error) {
         console.error(`Error while getting a game : ${error}`)
+      }
+    })
+
+    socket.on("message", (data: SendChatMessage) => {
+      try {
+        const message = sendChatMessage.parse(data)
+
+        instance.onMessage(socket, message)
+      } catch (error) {
+        console.error(`Error while chatting : ${error}`)
       }
     })
 

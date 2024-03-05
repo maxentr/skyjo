@@ -20,19 +20,19 @@ const ScoreTable = ({ players, winner }: Props) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-12"></TableHead>
+          <TableHead className="w-full">Nom</TableHead>
           {Array.from({ length: nbRounds }).map((_, index) => (
             <TableHead key={index} className="text-center w-fit text-nowrap">
               Round {index + 1}
             </TableHead>
           ))}
-          <TableHead className="text-center">Total</TableHead>
+          <TableHead>Total</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {players.map((player, index) => (
           <TableRow key={player.socketId}>
-            <TableCell className="text-center w-32">
+            <TableCell>
               {player.name} {winner?.socketId === player.socketId && "🏆"}
             </TableCell>
             {player.scores.map((score) => (
@@ -40,7 +40,7 @@ const ScoreTable = ({ players, winner }: Props) => {
                 {score}
               </TableCell>
             ))}
-            <TableCell className="text-center">
+            <TableCell>
               {player.scores
                 .filter((score) => Number.isInteger(score))
                 .reduce((a, b) => +a + +b, 0)}
