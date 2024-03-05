@@ -30,7 +30,7 @@ export type ClientToServerEvents = {
 }
 
 export type ServerToClientEvents = {
-  errorJoin: (error: unknown) => void
+  errorJoin: (message: string) => void
   joinGame: (game: SkyjoToJson) => void
   game: (game: SkyjoToJson) => void
   message: (message: ChatMessage) => void

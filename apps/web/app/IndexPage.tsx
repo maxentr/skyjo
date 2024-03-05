@@ -3,6 +3,7 @@
 import SelectAvatar from "@/components/SelectAvatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { useRouter } from "next/navigation"
@@ -14,9 +15,10 @@ type Props = { gameId?: string }
 
 const IndexPage = ({ gameId }: Props) => {
   const hasGameId = !!gameId
+
   const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
   const { socket } = useSocket()
-
+  const { toast } = useToast()
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -37,7 +39,15 @@ const IndexPage = ({ gameId }: Props) => {
     if (gameId && type === "join") socket.emit("join", { gameId, player })
     else socket.emit(type, player)
 
-    socket.on("joinGame", (game: SkyjoToJson) => {
+    socket.once("errorJoin", (message: string) => {
+      setLoading(false)
+      if (message === "game-not-found") {
+        router.replace(`/`)
+        toast({ description: "La partie n'existe pas", variant: "destructive", duration: 3000 })
+      }
+    })
+
+    socket.once("joinGame", (game: SkyjoToJson) => {
       setLoading(false)
 
       router.push(`/${game.id}`)

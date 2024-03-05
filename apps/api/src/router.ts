@@ -73,10 +73,9 @@ const skyjoRouter = (io: Server) => {
         )
 
         await instance.onJoin(socket, gameId, newPlayer)
-      } catch (error) {
-        console.error(`Error while joining a game : ${error}`)
-
-        socket.emit("errorJoin", error)
+      } catch (error: any) {
+        socket.emit("errorJoin", error.message)
+        console.error(`Error while joining a game : ${error.message}`)
       }
     })
 
