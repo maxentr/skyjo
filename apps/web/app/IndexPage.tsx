@@ -23,7 +23,7 @@ const IndexPage = ({ gameId }: Props) => {
 
   const [loading, setLoading] = useState(false)
 
-  const handleButtons = (type: "join" | "find" | "createPrivate") => {
+  const handleButtons = (type: "join" | "find" | "create-private") => {
     setLoading(true)
     saveUserInLocalStorage()
 
@@ -39,15 +39,19 @@ const IndexPage = ({ gameId }: Props) => {
     if (gameId && type === "join") socket.emit("join", { gameId, player })
     else socket.emit(type, player)
 
-    socket.once("errorJoin", (message: string) => {
+    socket.once("error:join", (message: string) => {
       setLoading(false)
       if (message === "game-not-found") {
         router.replace(`/`)
-        toast({ description: "La partie n'existe pas", variant: "destructive", duration: 3000 })
+        toast({
+          description: "La partie n'existe pas",
+          variant: "destructive",
+          duration: 3000,
+        })
       }
     })
 
-    socket.once("joinGame", (game: SkyjoToJson) => {
+    socket.once("join", (game: SkyjoToJson) => {
       setLoading(false)
 
       router.push(`/${game.id}`)
@@ -83,7 +87,7 @@ const IndexPage = ({ gameId }: Props) => {
           Trouver une partie
         </Button>
         <Button
-          onClick={() => handleButtons("createPrivate")}
+          onClick={() => handleButtons("create-private")}
           className="w-full"
           disabled={!username || loading}
         >

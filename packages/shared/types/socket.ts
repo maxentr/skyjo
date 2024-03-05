@@ -14,7 +14,7 @@ import { StartGame } from "../validations/start"
 import { SkyjoToJson } from "./skyjo"
 
 export type ClientToServerEvents = {
-  createPrivate: (player: CreatePlayer) => void
+  "create-private": (player: CreatePlayer) => void
   find: (player: CreatePlayer) => void
   join: (data: JoinGame) => void
   get: (gameId: string) => void
@@ -30,8 +30,8 @@ export type ClientToServerEvents = {
 }
 
 export type ServerToClientEvents = {
-  errorJoin: (message: string) => void
-  joinGame: (game: SkyjoToJson) => void
+  "error:join": (message: string) => void
+  join: (game: SkyjoToJson) => void
   game: (game: SkyjoToJson) => void
   message: (message: ChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void

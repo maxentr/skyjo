@@ -31,7 +31,7 @@ const skyjoRouter = (io: Server) => {
       instance.onReconnect(socket)
     }
 
-    socket.on("createPrivate", (player: CreatePlayer) => {
+    socket.on("create-private", (player: CreatePlayer) => {
       try {
         // Check if the player is valid
         createPlayer.parse(player)
@@ -74,7 +74,7 @@ const skyjoRouter = (io: Server) => {
 
         await instance.onJoin(socket, gameId, newPlayer)
       } catch (error: any) {
-        socket.emit("errorJoin", error.message)
+        socket.emit("error:join", error.message)
         console.error(`Error while joining a game : ${error.message}`)
       }
     })

@@ -144,7 +144,7 @@ export abstract class SkyjoGameController {
     game.addPlayer(player)
     await socket.join(gameId)
 
-    socket.emit("joinGame", game.toJson())
+    socket.emit("join", game.toJson())
     socket.to(gameId).emit("game", game.toJson())
     this.broadcastGame(socket, gameId)
   }
