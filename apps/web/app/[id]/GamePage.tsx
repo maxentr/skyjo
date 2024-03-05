@@ -12,7 +12,6 @@ import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import Score from "@/components/Score"
 import Settings from "@/components/Settings"
-import { Button } from "@/components/ui/button"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useSocket } from "@/contexts/SocketContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
@@ -21,23 +20,11 @@ const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
   const { socket } = useSocket()
 
-  const handleConnect = () => {
-    if (socket.connected) {
-      socket.io.engine.close()
-    } else {
-      socket.connect()
-    }
-  }
-
   return (
     <div className="relative h-dvh w-dvw p-4 bg-slate-100 flex flex-col">
       <div className="w-full h-2/5 flex flex-row">
         <div className="w-10"></div>
         <div className="absolute top-6 left-6 flex flex-col justify-start">
-          {/** //! Debug do not push */}
-          <Button onClick={handleConnect}>
-            <p>{socket.connected ? "Se déconnecté" : "Se connecter"}</p>
-          </Button>
           {game.roundState === "lastLap" && (
             <p className="font-bold">Dernier tour !</p>
           )}
