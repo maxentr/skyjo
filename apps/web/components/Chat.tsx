@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -89,7 +90,13 @@ const ChatForm = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.message) return
 
-    actions.sendMessage(values.message)
+    if (values.message.length > 200) {
+      toast({
+        description: "Message trop long (200 caractères maximum)",
+        variant: "destructive",
+        duration: 3000,
+      })
+    } else actions.sendMessage(values.message)
     form.reset()
   }
 
@@ -97,7 +104,7 @@ const ChatForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-row items-center w-full gap-2"
+        className="flex flex-row items-end w-full gap-2"
       >
         <FormField
           control={form.control}
@@ -107,11 +114,14 @@ const ChatForm = () => {
               <FormControl>
                 <Input
                   placeholder="Message"
-                  className="flex flex-1"
+                  className={cn(
+                    "flex flex-1",
+                    form.formState.errors.message &&
+                      "focus-visible:ring-red-500",
+                  )}
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
