@@ -27,6 +27,7 @@ type SkyjoContextInterface = {
     replaceCard: (column: number, row: number) => void
     discardSelectedCard: () => void
     turnCard: (column: number, row: number) => void
+    replay: () => void
   }
   chat: ChatMessage[]
 }
@@ -135,6 +136,10 @@ const SkyjoContextProvider = ({
     })
   }
 
+  const replay = () => {
+    socket.emit("replay", gameId)
+  }
+
   const actions = {
     sendMessage,
     startGame,
@@ -143,6 +148,7 @@ const SkyjoContextProvider = ({
     replaceCard,
     discardSelectedCard,
     turnCard,
+    replay,
   }
   //#endregion
 

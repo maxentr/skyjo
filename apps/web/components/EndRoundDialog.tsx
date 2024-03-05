@@ -14,7 +14,7 @@ const EndRoundDialog = ({}: EndRoundDialogProps) => {
   const { game } = useSkyjo()
   const [open, setOpen] = useState(false)
 
-  const isRoundOver = game.roundState === "over" && game.status !== "finished"
+  const isRoundOver = game.roundState === "over" && game.status === "playing"
 
   useEffect(() => {
     setOpen(isRoundOver)

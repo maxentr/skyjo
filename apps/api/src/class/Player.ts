@@ -14,7 +14,6 @@ export interface PlayerInterface {
 
   addPoint(): void
   toggleReplay(): void
-  resetReplay(): void
   toJson(): PlayerToJson
 }
 
@@ -38,10 +37,6 @@ export class Player implements PlayerInterface {
 
   toggleReplay() {
     this.wantReplay = !this.wantReplay
-  }
-
-  resetReplay() {
-    this.wantReplay = false
   }
 
   toJson() {

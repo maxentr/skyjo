@@ -177,13 +177,14 @@ export abstract class SkyjoGameController {
     game.getPlayer(socket.id)?.toggleReplay()
 
     // restart game if all connected players want replay
-    if (game.getConnectedPlayers().every((player) => player.wantReplay)) {
+    if (
+      game.getConnectedPlayers().every((player) => player.wantReplay) &&
+      game.status === "finished"
+    ) {
       game.reset()
       game.start()
-
-      await this.broadcastGame(socket, game.id)
     }
-    // else socket.to(game.id).emit("replay", game.toJson())
+    await this.broadcastGame(socket, game.id)
   }
 
   async onConnectionLost(socket: SkyjoSocket) {

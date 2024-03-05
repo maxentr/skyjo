@@ -102,6 +102,9 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
 
   public reset() {
     this.cards = []
+    this.wantReplay = false
+    this.scores = []
+    this.score = 0
   }
 
   override toJson() {

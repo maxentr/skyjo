@@ -87,15 +87,15 @@ export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
       : WAITING_TURN_MESSAGE(playerWhoHasToPlay.name)
   }
 
+  if (game.status === "stopped") {
+    return "Partie arrêtée"
+  }
+
   if (game.roundState === "over" && game.status !== "finished") {
     return "Manche terminée"
   }
 
   if (game.status === "finished") {
     return "Partie terminée !"
-  }
-
-  if (game.status === "stopped") {
-    return "Partie arrêtée"
   }
 }
