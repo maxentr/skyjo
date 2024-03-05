@@ -1,6 +1,5 @@
-import { ChatMessage } from "shared/types/chat"
+import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
-import { SendChatMessage } from "shared/validations/chatMessage"
 import { MIN_PLAYERS } from "../constants"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
@@ -145,8 +144,16 @@ export abstract class SkyjoGameController {
     await socket.join(gameId)
 
     socket.emit("join", game.toJson())
-    socket.to(gameId).emit("game", game.toJson())
-    this.broadcastGame(socket, gameId)
+    await this.onMessage(
+      socket,
+      {
+        username: undefined,
+        message: `${player.name} a rejoint la partie`,
+      },
+      "player-join",
+    )
+
+    await this.broadcastGame(socket, gameId)
   }
 
   async onWin(socket: SkyjoSocket, game: Skyjo, winner: SkyjoPlayer) {
@@ -222,11 +229,19 @@ export abstract class SkyjoGameController {
 
       if (game.roundState === "waitingPlayersToTurnTwoCards")
         game.checkAllPlayersRevealedCards(MIN_PLAYERS)
+    }
 
+    socket.to(game.id).emit("message", {
+      id: crypto.randomUUID(),
+      message: `${player!.name} a quitté la partie`,
+      type: "player-leave",
+    })
+
+    if (game.status === "stopped") {
       socket.to(game.id).emit("message", {
         id: crypto.randomUUID(),
-        message: `${player!.name} a quitté la partie.`,
-        type: "system",
+        message: `La partie a été arrêtée car il n'y a plus assez de joueurs`,
+        type: "warn",
       })
     }
 
@@ -234,7 +249,11 @@ export abstract class SkyjoGameController {
     await socket.leave(game.id)
   }
 
-  async onMessage(socket: SkyjoSocket, { username, message }: SendChatMessage) {
+  async onMessage(
+    socket: SkyjoSocket,
+    { username, message }: Omit<ChatMessage, "id" | "type">,
+    type: ChatMessageType = "message",
+  ) {
     const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return
 
@@ -242,7 +261,7 @@ export abstract class SkyjoGameController {
       id: crypto.randomUUID(),
       username,
       message,
-      type: "message",
+      type,
     }
 
     socket.to(game.id).emit("message", newMessage)

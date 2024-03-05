@@ -1,4 +1,9 @@
-export type ChatMessageType = "message" | "system"
+export type ChatMessageType =
+  | "message"
+  | "info"
+  | "warn"
+  | "player-join"
+  | "player-leave"
 
 export type ChatMessage = {
   id: string

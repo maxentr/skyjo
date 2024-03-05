@@ -1,13 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
@@ -53,13 +47,25 @@ type ChatMessageProps = {
   message: ChatMessage
 }
 
-const chatMessageClasses = cva({
-  message: "text-slate-800",
-  system: "text-yellow-500",
+const chatMessageClasses = cva("font-medium", {
+  variants: {
+    type: {
+      message: "text-slate-800",
+      info: "text-blue-600",
+      warn: "text-yellow-600",
+      "player-join": "text-green-600",
+      "player-leave": "text-red-600",
+    },
+  },
 })
 
 const ChatMessage = ({ message }: ChatMessageProps) => (
-  <p className={cn("font-inter text-sm", chatMessageClasses)}>
+  <p
+    className={cn(
+      "font-inter text-sm",
+      chatMessageClasses({ type: message.type }),
+    )}
+  >
     {message?.username && (
       <span className="font-bold">{message?.username} : </span>
     )}
@@ -68,8 +74,9 @@ const ChatMessage = ({ message }: ChatMessageProps) => (
 )
 
 const ChatForm = () => {
+  const { toast } = useToast()
   const formSchema = z.object({
-    message: z.string(),
+    message: z.string().max(200),
   })
   const { actions } = useSkyjo()
   const form = useForm<z.infer<typeof formSchema>>({
