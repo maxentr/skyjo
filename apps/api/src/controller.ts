@@ -6,11 +6,11 @@ import {
   PlayTurnCard,
 } from "shared/validations/play"
 import { CreatePlayer } from "shared/validations/player"
-import { Socket } from "socket.io"
 import { Skyjo } from "./class/Skyjo"
 import { SkyjoGameController } from "./class/SkyjoGameController"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import { CardConstants } from "./constants"
+import { SkyjoSocket } from "./types/skyjoSocket"
 
 export default class SkyjoController extends SkyjoGameController {
   private static instance: SkyjoController
@@ -70,7 +70,10 @@ export default class SkyjoController extends SkyjoGameController {
     await this.broadcastGame(socket, gameId)
   }
 
-  async replaceCard(socket: SkyjoSocket, { gameId, column, row }: PlayReplaceCard) {
+  async replaceCard(
+    socket: SkyjoSocket,
+    { gameId, column, row }: PlayReplaceCard,
+  ) {
     const { game, player } = this.checkPlayAuthorization(socket, gameId, [
       "replaceACard",
       "throwOrReplace",
