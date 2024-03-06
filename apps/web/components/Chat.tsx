@@ -36,7 +36,7 @@ const Chat = () => {
         <div className="h-96 w-full flex flex-col">
           <div className="overflow-y-auto flex flex-grow flex-col py-2 pr-2.5 -mr-2 gap-2">
             {chat.map((message) => (
-              <ChatMessage key={message.message} message={message} />
+              <ChatMessage key={message.id} message={message} />
             ))}
           </div>
           <ChatForm />
