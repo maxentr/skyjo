@@ -68,6 +68,12 @@ export abstract class Game<TPlayer extends Player>
     this.players.push(player)
   }
 
+  changeAdmin() {
+    if (this.players.length === 0) return
+
+    this.admin = this.players[0]
+  }
+
   removePlayer(playerSocketId: string) {
     this.players = this.players.filter((player) => {
       return player.socketId !== playerSocketId
