@@ -1,3 +1,6 @@
+import { ChatMessage } from "../types/chat"
+import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
+import { SendChatMessage } from "../validations/chatMessage"
 import { JoinGame } from "../validations/joinGame"
 import {
   PlayDiscardSelectedCard,
@@ -10,12 +13,13 @@ import { CreatePlayer } from "../validations/player"
 import { StartGame } from "../validations/start"
 import { SkyjoToJson } from "./skyjo"
 
-export type EmitEvents = {
-  createPrivate: (player: CreatePlayer) => void
+export type ClientToServerEvents = {
+  "create-private": (player: CreatePlayer) => void
   find: (player: CreatePlayer) => void
   join: (data: JoinGame) => void
   get: (gameId: string) => void
   start: (data: StartGame) => void
+  message: (message: SendChatMessage) => void
   "play:reveal-card": (data: PlayRevealCard) => void
   "play:pick-card": (data: PlayPickCard) => void
   "play:replace-card": (data: PlayReplaceCard) => void
@@ -25,11 +29,11 @@ export type EmitEvents = {
   disconnect: () => void
 }
 
-export type ListenEvents = {
-  errorJoin: (error: unknown) => void
-  joinGame: (game: SkyjoToJson) => void
+export type ServerToClientEvents = {
+  "error:join": (message: string) => void
+  join: (game: SkyjoToJson) => void
   game: (game: SkyjoToJson) => void
-  winner: (game: SkyjoToJson, winner: SkyjoToJson) => void
+  message: (message: ChatMessage) => void
+  winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   draw: (game: SkyjoToJson) => void
-  playerLeave: (game: SkyjoToJson) => void
 }

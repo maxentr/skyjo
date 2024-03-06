@@ -1,60 +1,62 @@
 "use client"
 
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
-import { EmitEvents, ListenEvents } from "shared/types/socket"
+import { createContext, PropsWithChildren, useContext, useEffect } from "react"
+import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { io, Socket } from "socket.io-client"
 
-export type SkyjoSocket = Socket<ListenEvents, EmitEvents>
+const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+  transports: ["websocket"],
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 20000,
+  reconnectionAttempts: 3,
+  autoConnect: true,
+})
+
+export type SkyjoSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 type SocketContextInterface = {
-  socket: SkyjoSocket | undefined
-  getSocket: () => SkyjoSocket | undefined
-  connect: () => SkyjoSocket
+  socket: SkyjoSocket
 }
 const SocketContext = createContext({} as SocketContextInterface)
 
 const SocketContextProvider = ({ children }: PropsWithChildren) => {
-  const [socket, setSocket] = useState<SkyjoSocket>()
-
   useEffect(() => {
+    initGameListeners()
+
     return () => {
-      if (socket) socket.disconnect()
+      destroyGameListeners()
+      // if (socket.connected) socket.disconnect()
     }
   }, [socket])
 
-  const connect = () => {
-    if (socket) socket.disconnect()
-
-    const newSocket = io(`${process.env.NEXT_PUBLIC_API_URL}/skyjo`, {
-      transports: ["websocket"],
-    })
-
-    setSocket(newSocket)
-    return newSocket
+  //#region listeners
+  const onConnect = () => {
+    if (socket.recovered) console.log("Socket reconnected")
+    else console.log("Socket connected")
   }
 
-  const getSocket = () => {
-    if (socket) return socket
+  const onConnectionLost = (reason: string) => {
+    console.log("Socket disconnected", reason)
   }
 
-  const value = useMemo(
-    () => ({
-      getSocket,
-      socket,
-      connect,
-    }),
-    [socket],
-  )
+  const initGameListeners = () => {
+    socket.on("connect", onConnect)
+    socket.on("disconnect", onConnectionLost)
+  }
+  const destroyGameListeners = () => {
+    socket.off("connect", onConnect)
+    socket.off("disconnect", onConnectionLost)
+  }
+  //#endregion
 
   return (
-    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
+    <SocketContext.Provider
+      value={{
+        socket,
+      }}
+    >
+      {children}
+    </SocketContext.Provider>
   )
 }
 

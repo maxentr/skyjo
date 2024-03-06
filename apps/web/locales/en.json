@@ -1,0 +1,123 @@
+{
+  "head": {
+    "title": "Play online with friends",
+    "description": "Play Skyjo online with friends for free!",
+    "keywords": "Skyjo,game,online,multiplayer,free,play with friends"
+  },
+  "pages": {
+    "Index": {
+      "name-input-placeholder": "Name",
+      "join-game-button": "Join the game",
+      "find-game-button": "Find a game",
+      "create-private-game-button": "Create a private game",
+      "buy-game": "Buy the game",
+      "game-not-found": {
+        "description": "The game you are looking for does not exist"
+      }
+    },
+    "GamePage": {
+      "last-turn": "Last turn!",
+      "selected-card": "Selected card"
+    }
+  },
+  "components": {
+    "AdminLobby": {
+      "start-game-button": "Start the game"
+    },
+    "chat": {
+      "title": "Chat",
+      "unread-messages": "{count} unread message(s)",
+      "form": {
+        "message-input-placeholder": "Message",
+        "button-title": "Send",
+        "message-too-long": {
+          "description": "The message is too long (max 200 characters)"
+        }
+      }
+    },
+    "CopyLink": {
+      "message": "Link copied!",
+      "button-title": "Copy link"
+    },
+    "DiscardPile": {
+      "title": "Discard pile"
+    },
+    "DrawPile": {
+      "title": "Draw pile"
+    },
+    "EndGameDialog": {
+      "title": "Game over !",
+      "description": "{name} has won with {score} points !",
+      "replay-button": {
+        "cancel": "Do not replay",
+        "replay": "Replay"
+      }
+    },
+    "EndRoundDialog": {
+      "title": "End of the round",
+      "description": "The next round will start in few seconds..."
+    },
+    "LanguageSettings": {
+      "title": "Language",
+      "en": "English",
+      "fr": "French"
+    },
+    "OpponentBoard": {
+      "connection-lost": "Connection lost"
+    },
+    "PlayerBoard": {
+      "you": "You"
+    },
+    "Scoreboard": {
+      "button-title": "Show scoreboard"
+    },
+    "ScoreDialog": {
+      "title": "Score",
+      "description": "{name} has won with {score} points !"
+    },
+    "ScoreSheet": {
+      "see-scores": "See scores"
+    },
+    "ScoreTable": {
+      "name": "Name",
+      "round": "Round",
+      "total": "Total"
+    },
+    "Avatar": {
+      "bee": "bee",
+      "crab": "crab",
+      "dog": "dog",
+      "elephant": "elephant",
+      "fox": "fox",
+      "frog": "frog",
+      "koala": "koala",
+      "octopus": "octopus",
+      "penguin": "penguin",
+      "turtle": "turtle",
+      "whale": "whale"
+    }
+  },
+  "utils": {
+    "skyjo": {
+      "waiting": "Waiting players",
+      "turn-cards": "Turn {number} cards",
+      "turn": {
+        "chooseAPile": "Choose a pile",
+        "throwOrReplace": "Replace a card or discard the drawn card",
+        "replaceACard": "Select a card to replace",
+        "turnACard": "Select a card to return"
+      },
+      "player-turn": "It's {playerName}'s turn",
+      "game-stopped": "Game stopped",
+      "round-over": "Round finished",
+      "game-ended": "Game over!"
+    },
+    "server": {
+      "messages": {
+        "player-joined": "{username} joined the game",
+        "player-left": "{username} left the game",
+        "game-stopped": "The game has been stopped because there are not enough players"
+      }
+    }
+  }
+}

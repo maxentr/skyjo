@@ -3,9 +3,12 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
+import { useTranslations } from "next-intl"
 
 const DiscardPile = () => {
   const { game, player, actions } = useSkyjo()
+  const t = useTranslations("components.DiscardPile")
+
   const onClick = () => {
     if (
       isCurrentUserTurn(game, player.name) &&
@@ -31,7 +34,7 @@ const DiscardPile = () => {
     <Card
       card={card}
       onClick={onClick}
-      title="Paquet de défausse"
+      title={t("title")}
       className="shadow-md"
       disabled={disabled}
     />

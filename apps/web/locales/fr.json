@@ -1,0 +1,123 @@
+{
+  "head": {
+    "title": "Jouer en ligne avec vos amis",
+    "description": "Jouez gratuitement à Skyjo en ligne avec des amis !",
+    "keywords": "Skyjo,jeu,en ligne,multijoueur,gratuit,jouer avec des amis"
+  },
+  "pages": {
+    "Index": {
+      "name-input-placeholder": "Nom",
+      "join-game-button": "Rejoindre la partie",
+      "find-game-button": "Trouver une partie",
+      "create-private-game-button": "Créer une partie privée",
+      "buy-game": "Acheter le jeu",
+      "game-not-found": {
+        "description": "La partie que vous cherchez n'existe pas"
+      }
+    },
+    "GamePage": {
+      "last-turn": "Dernier tour !",
+      "selected-card": "Carte sélectionnée"
+    }
+  },
+  "components": {
+    "AdminLobby": {
+      "start-game-button": "Commencer la partie"
+    },
+    "chat": {
+      "title": "Chat",
+      "unread-messages": "{count} message(s) non lus",
+      "form": {
+        "message-input-placeholder": "Message",
+        "button-title": "Envoyer",
+        "message-too-long": {
+          "description": "Le message est trop long (200 caractères maximum)"
+        }
+      }
+    },
+    "CopyLink": {
+      "message": "Lien copié !",
+      "button-title": "Copier le lien"
+    },
+    "DiscardPile": {
+      "title": "Paquet de défausse"
+    },
+    "DrawPile": {
+      "title": "Paquet de pioche"
+    },
+    "EndGameDialog": {
+      "title": "Partie terminée !",
+      "description": "{name} a gagné avec {score} points !",
+      "replay-button": {
+        "cancel": "Ne pas rejouer",
+        "replay": "Rejouer"
+      }
+    },
+    "EndRoundDialog": {
+      "title": "Fin de la manche",
+      "description": "La manche suivante va commencer dans quelques secondes..."
+    },
+    "LanguageSettings": {
+      "title": "Langue",
+      "en": "Anglais",
+      "fr": "Français"
+    },
+    "OpponentBoard": {
+      "connection-lost": "Connexion perdue"
+    },
+    "PlayerBoard": {
+      "you": "Vous"
+    },
+    "Scoreboard": {
+      "button-title": "Voir le tableau des scores"
+    },
+    "ScoreDialog": {
+      "title": "Score",
+      "description": "{name} a gagné avec {score} points !"
+    },
+    "ScoreSheet": {
+      "see-scores": "Voir scores"
+    },
+    "ScoreTable": {
+      "name": "Nom",
+      "round": "Manche",
+      "total": "Total"
+    },
+    "Avatar": {
+      "bee": "abeille",
+      "crab": "crabe",
+      "dog": "chien",
+      "elephant": "éléphant",
+      "fox": "renard",
+      "frog": "grenouille",
+      "koala": "koala",
+      "octopus": "pieuvre",
+      "penguin": "pingouin",
+      "turtle": "tortue",
+      "whale": "baleine"
+    }
+  },
+  "utils": {
+    "skyjo": {
+      "waiting": "En attente de joueurs",
+      "turn-cards": "Retourner {number} cartes",
+      "turn": {
+        "chooseAPile": "Choisissez une pile",
+        "throwOrReplace": "Remplacez une carte ou défaussez la carte piochée",
+        "replaceACard": "Sélectionnez une carte à remplacer",
+        "turnACard": "Sélectionnez une carte à retourner"
+      },
+      "player-turn": "C'est au tour de {playerName}",
+      "game-stopped": "Partie arrêtée",
+      "round-over": "Manche terminée",
+      "game-ended": "Partie terminée !"
+    },
+    "server": {
+      "messages": {
+        "player-joined": "{username} a rejoint la partie",
+        "player-left": "{username} a quitté la partie",
+        "game-stopped": "La partie a été arrêtée car il n'y a plus assez de joueurs"
+      }
+    }
+  }
+}

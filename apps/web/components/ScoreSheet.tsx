@@ -1,4 +1,5 @@
 import ScoreTable from "@/components/ScoreTable"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
@@ -7,6 +8,8 @@ type Props = {
 }
 
 const ScoreSheet = ({ players }: Props) => {
+  const t = useTranslations("components.ScoreSheet")
+
   const [open, setOpen] = useState(false)
 
   return (
@@ -20,7 +23,7 @@ const ScoreSheet = ({ players }: Props) => {
           className="text-center text-slate-800 font-semibold w-full px-4 py-2 border-b"
           onClick={() => setOpen(!open)}
         >
-          Voir scores
+          {t("see-scores")}
         </button>
         <ScoreTable players={players} />
       </div>

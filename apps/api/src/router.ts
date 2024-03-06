@@ -14,18 +14,24 @@ import {
 import { CreatePlayer, createPlayer } from "shared/validations/player"
 import { StartGame, startGame } from "shared/validations/start"
 
-import { Namespace } from "socket.io"
+import {
+  SendChatMessage,
+  sendChatMessage,
+} from "shared/validations/chatMessage"
+import { DisconnectReason, Server } from "socket.io"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import skyjoController from "./controller"
 import { SkyjoSocket } from "./types/skyjoSocket"
 
 const instance = skyjoController.getInstance()
 
-const skyjoRouter = (namespace: Namespace) => {
-  namespace.on("connection", (socket: SkyjoSocket) => {
-    console.log("Socket connected!", socket.id)
+const skyjoRouter = (io: Server) => {
+  io.on("connection", (socket: SkyjoSocket) => {
+    if (socket.recovered) {
+      instance.onReconnect(socket)
+    }
 
-    socket.on("createPrivate", (player: CreatePlayer) => {
+    socket.on("create-private", (player: CreatePlayer) => {
       try {
         // Check if the player is valid
         createPlayer.parse(player)
@@ -67,10 +73,9 @@ const skyjoRouter = (namespace: Namespace) => {
         )
 
         await instance.onJoin(socket, gameId, newPlayer)
-      } catch (error) {
-        console.error(`Error while joining a game : ${error}`)
-
-        socket.emit("errorJoin", error)
+      } catch (error: any) {
+        socket.emit("error:join", error.message)
+        console.error(`Error while joining a game : ${error.message}`)
       }
     })
 
@@ -89,6 +94,16 @@ const skyjoRouter = (namespace: Namespace) => {
         instance.startGame(socket, startGameData.gameId)
       } catch (error) {
         console.error(`Error while getting a game : ${error}`)
+      }
+    })
+
+    socket.on("message", (data: SendChatMessage) => {
+      try {
+        const message = sendChatMessage.parse(data)
+
+        instance.onMessage(socket, message)
+      } catch (error) {
+        console.error(`Error while chatting : ${error}`)
       }
     })
 
@@ -153,12 +168,13 @@ const skyjoRouter = (namespace: Namespace) => {
       }
     })
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
-        console.log("Socket disconnected!", socket.id)
-        instance.onLeave(socket)
+        console.log(`Socket ${socket.id} disconnected for reason ${reason}`)
+        if (reason === "ping timeout") await instance.onConnectionLost(socket)
+        else await instance.onLeave(socket)
       } catch (error) {
-        console.error(`Error while leaving a game : ${error}`)
+        console.error(`Error while disconnecting a game : ${error}`)
       }
     })
   })

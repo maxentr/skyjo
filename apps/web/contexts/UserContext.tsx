@@ -12,7 +12,7 @@ import React, {
 import { Avatar } from "shared/types/player"
 
 const USERNAME_KEY = "username"
-const AVATAR_KEY = "avatar-index"
+const AVATAR_KEY = "Avatar-index"
 
 export const AVATARS: Avatar[] = [
   "bee",

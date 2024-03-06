@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useTranslations } from "next-intl"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type Props = {
@@ -14,25 +15,27 @@ type Props = {
 }
 
 const ScoreTable = ({ players, winner }: Props) => {
+  const t = useTranslations("components.ScoreTable")
+
   const nbRounds = players[0].scores.length
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-12"></TableHead>
+          <TableHead className="w-full">{t("name")}</TableHead>
           {Array.from({ length: nbRounds }).map((_, index) => (
             <TableHead key={index} className="text-center w-fit text-nowrap">
-              Round {index + 1}
+              {t("round")} {index + 1}
             </TableHead>
           ))}
-          <TableHead className="text-center">Total</TableHead>
+          <TableHead>{t("total")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {players.map((player, index) => (
           <TableRow key={player.socketId}>
-            <TableCell className="text-center w-32">
+            <TableCell>
               {player.name} {winner?.socketId === player.socketId && "🏆"}
             </TableCell>
             {player.scores.map((score) => (
@@ -40,8 +43,10 @@ const ScoreTable = ({ players, winner }: Props) => {
                 {score}
               </TableCell>
             ))}
-            <TableCell className="text-center">
-              {player.scores.reduce((a, b) => a + b, 0)}
+            <TableCell>
+              {player.scores
+                .filter((score) => Number.isInteger(score))
+                .reduce((a, b) => +a + +b, 0)}
             </TableCell>
           </TableRow>
         ))}

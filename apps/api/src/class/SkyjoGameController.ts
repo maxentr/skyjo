@@ -1,6 +1,7 @@
-import { Socket } from "socket.io"
-
+import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
+import { MIN_PLAYERS } from "../constants"
+import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
@@ -18,7 +19,7 @@ export abstract class SkyjoGameController {
 
   private findGameByPlayerSocket(socketId: string) {
     return this.games.find((game) => {
-      return game.players.find((player) => {
+      return game.getConnectedPlayers().find((player) => {
         return player.socketId === socketId
       })
     })
@@ -29,7 +30,7 @@ export abstract class SkyjoGameController {
   //#region protected
 
   protected checkPlayAuthorization(
-    socket: Socket,
+    socket: SkyjoSocket,
     gameId: string,
     allowedStates: TurnState[],
   ) {
@@ -37,7 +38,7 @@ export abstract class SkyjoGameController {
     if (
       !game ||
       game.status !== "playing" ||
-      (game.roundState !== "start" && game.roundState !== "lastLap")
+      (game.roundState !== "playing" && game.roundState !== "lastLap")
     )
       throw new Error(`game-not-found`)
 
@@ -52,7 +53,11 @@ export abstract class SkyjoGameController {
     return { player, game }
   }
 
-  protected async finishTurn(socket: Socket, game: Skyjo, player: SkyjoPlayer) {
+  protected async finishTurn(
+    socket: SkyjoSocket,
+    game: Skyjo,
+    player: SkyjoPlayer,
+  ) {
     const cardsToDiscard = player.checkColumns()
     if (cardsToDiscard.length > 0) {
       cardsToDiscard.forEach((card) => game.discardCard(card))
@@ -109,18 +114,18 @@ export abstract class SkyjoGameController {
     })
   }
 
-  async onCreate(socket: Socket, player: SkyjoPlayer, game: Skyjo) {
+  async onCreate(socket: SkyjoSocket, player: SkyjoPlayer, game: Skyjo) {
     this.games.push(game)
 
     await this.onJoin(socket, game.id, player)
   }
 
-  async onGet(socket: Socket, gameId: string) {
+  async onGet(socket: SkyjoSocket, gameId: string) {
     const game = this.getGame(gameId)
     if (game) socket.emit("game", game.toJson())
   }
 
-  async broadcastGame(socket: Socket, gameId: string) {
+  async broadcastGame(socket: SkyjoSocket, gameId: string) {
     const game = this.getGame(gameId)
     if (!game) return
 
@@ -129,7 +134,7 @@ export abstract class SkyjoGameController {
     socket.to(game.id).emit("game", game.toJson())
   }
 
-  async onJoin(socket: Socket, gameId: string, player: SkyjoPlayer) {
+  async onJoin(socket: SkyjoSocket, gameId: string, player: SkyjoPlayer) {
     const game = this.getGame(gameId)
 
     if (!game) throw new Error("game-not-found")
@@ -138,12 +143,20 @@ export abstract class SkyjoGameController {
     game.addPlayer(player)
     await socket.join(gameId)
 
-    socket.emit("joinGame", game.toJson())
-    socket.to(gameId).emit("game", game.toJson())
-    this.broadcastGame(socket, gameId)
+    socket.emit("join", game.toJson())
+    await this.onMessage(
+      socket,
+      {
+        username: player.name,
+        message: "player-joined",
+      },
+      "player-joined",
+    )
+
+    await this.broadcastGame(socket, gameId)
   }
 
-  async onWin(socket: Socket, game: Skyjo, winner: SkyjoPlayer) {
+  async onWin(socket: SkyjoSocket, game: Skyjo, winner: SkyjoPlayer) {
     game.status = "finished"
     game.getPlayer(winner.socketId)?.addPoint()
 
@@ -151,39 +164,112 @@ export abstract class SkyjoGameController {
     socket.to(game.id).emit("winner", game.toJson(), winner.toJson())
   }
 
-  async onDraw(socket: Socket, game: Skyjo) {
+  async onDraw(socket: SkyjoSocket, game: Skyjo) {
     game.status = "finished"
     socket.emit("draw", game.toJson())
     socket.to(game.id).emit("draw", game.toJson())
   }
 
-  async onReplay(socket: Socket, gameId: string) {
+  async onReplay(socket: SkyjoSocket, gameId: string) {
     const game = this.getGame(gameId)
     if (!game) return
 
     game.getPlayer(socket.id)?.toggleReplay()
 
-    // restart game if all players want replay
-    if (game.players.every((player) => player.wantReplay)) {
+    // restart game if all connected players want replay
+    if (
+      game.getConnectedPlayers().every((player) => player.wantReplay) &&
+      game.status === "finished"
+    ) {
       game.reset()
       game.start()
-
-      await this.broadcastGame(socket, game.id)
-    } else socket.to(game.id).emit("replay", game.toJson())
+    }
+    await this.broadcastGame(socket, game.id)
   }
 
-  async onLeave(socket: Socket) {
+  async onConnectionLost(socket: SkyjoSocket) {
     const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return
 
-    game.removePlayer(socket.id)
-    game.status = "stopped"
-    await socket.leave(game.id)
+    const player = game.getPlayer(socket.id)
+    player!.connectionStatus = "connection-lost"
 
-    if (game.players.length === 0) {
-      this.removeGame(game.id)
-    } else {
-      socket.to(game.id).emit("playerLeave", game.toJson())
+    await this.broadcastGame(socket, game.id)
+  }
+
+  async onReconnect(socket: SkyjoSocket) {
+    const game = this.findGameByPlayerSocket(socket.id)
+    if (!game) return
+
+    const player = game.getPlayer(socket.id)
+    player!.connectionStatus = "connected"
+
+    await this.broadcastGame(socket, game.id)
+  }
+
+  async onLeave(socket: SkyjoSocket) {
+    const game = this.findGameByPlayerSocket(socket.id)
+    if (!game) return
+
+    const player = game.getPlayer(socket.id)
+    player!.connectionStatus = "disconnected"
+
+    if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
+      game.status = "stopped"
     }
+
+    if (
+      game.status === "lobby" ||
+      game.status === "finished" ||
+      game.status === "stopped"
+    ) {
+      game.removePlayer(socket.id)
+      if (socket.id === game.admin.socketId) game.changeAdmin()
+
+      await this.broadcastGame(socket, game.id)
+    } else {
+      if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
+
+      if (game.roundState === "waitingPlayersToTurnTwoCards")
+        game.checkAllPlayersRevealedCards(MIN_PLAYERS)
+    }
+
+    socket.to(game.id).emit("message", {
+      id: crypto.randomUUID(),
+      username: player!.name,
+      message: "player-left",
+      type: "player-left",
+    })
+
+    if (game.status === "stopped") {
+      socket.to(game.id).emit("message", {
+        id: crypto.randomUUID(),
+        message: "game-stopped",
+        type: "warn",
+      })
+    }
+
+    if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
+    await socket.leave(game.id)
+  }
+
+  async onMessage(
+    socket: SkyjoSocket,
+    { username, message }: Omit<ChatMessage, "id" | "type">,
+    type: ChatMessageType = "message",
+  ) {
+    const game = this.findGameByPlayerSocket(socket.id)
+    if (!game) return
+
+    const newMessage = {
+      id: crypto.randomUUID(),
+      username,
+      message,
+      type,
+    } as ChatMessage
+
+    socket.to(game.id).emit("message", newMessage)
+
+    socket.emit("message", newMessage)
   }
 }

@@ -1,11 +1,13 @@
-import IndexPage from "@/app/IndexPage"
+import IndexPage from "@/app/[locale]/IndexPage"
+import LanguageSettings from "@/components/LanguageSettings"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import { Shantell_Sans } from "next/font/google"
 import Image from "next/image"
 import Link from "next/link"
 
 const shantell = Shantell_Sans({
-  subsets: ["latin"],
+  subsets: ["latin-ext"],
   weight: "700",
   display: "swap",
 })
@@ -14,10 +16,18 @@ type IndexServerPageProps = {
   searchParams: {
     gameId?: string
   }
+  params: {
+    locale: string
+  }
 }
-const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
+const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
+  const t = useTranslations("pages.Index")
+
   return (
     <div className="flex h-dvh items-center justify-center bg-white">
+      <div className="absolute top-4 right-4">
+        <LanguageSettings locale={params.locale} />
+      </div>
       <div className="bg-slate-200 border border-slate-300 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
         <h1
           className={cn(
@@ -43,7 +53,7 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
           target="_blank"
           className="absolute bottom-4 right-4 text-slate-900 underline"
         >
-          Acheter le jeu
+          {t("buy-game")}
         </Link>
       </div>
     </div>
