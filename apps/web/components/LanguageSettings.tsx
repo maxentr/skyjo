@@ -7,8 +7,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { locales } from "@/i18n"
 import { usePathname, useRouter } from "@/navigation"
 import { LanguagesIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 
 type LanguageSettingsProps = Readonly<{
@@ -19,6 +21,7 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const query = useSearchParams()
+  const t = useTranslations("components.LanguageSettings")
 
   const handleLanguageChange = (locale: string) => {
     let route = pathname
@@ -41,8 +44,11 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
           value={locale}
           onValueChange={handleLanguageChange}
         >
-          <DropdownMenuRadioItem value="en">English</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="fr">French</DropdownMenuRadioItem>
+          {locales.map((locale) => (
+            <DropdownMenuRadioItem key={locale} value={locale}>
+              {t(locale)}
+            </DropdownMenuRadioItem>
+          ))}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

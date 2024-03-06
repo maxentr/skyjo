@@ -55,6 +55,11 @@
       "title": "Fin de la manche",
       "description": "La manche suivante va commencer dans quelques secondes..."
     },
+    "LanguageSettings": {
+      "title": "Langue",
+      "en": "Anglais",
+      "fr": "Français"
+    },
     "OpponentBoard": {
       "connection-lost": "Connexion perdue"
     },
