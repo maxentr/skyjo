@@ -29,7 +29,6 @@ export const getOpponents = (
 
 export const isCurrentUserTurn = (game?: SkyjoToJson, username?: string) => {
   if (!username || !game) return false
-  console.log(game, username)
   if (
     game.status !== "playing" ||
     game.roundState === "waitingPlayersToTurnTwoCards"
