@@ -71,7 +71,6 @@ export default async function LocaleLayout({
   children,
   params: { locale },
 }: LocaleLayoutProps) {
-  const t = await getTranslations("head")
   const messages = await getMessages()
 
   return (
