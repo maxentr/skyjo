@@ -10,15 +10,42 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { cva } from "class-variance-authority"
 import { SendIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { ChatMessage } from "shared/types/chat"
 import { z } from "zod"
 
 const Chat = () => {
-  const [open, setOpen] = useState(false)
   const { chat } = useSkyjo()
   const t = useTranslations("components.chat")
+
+  const [open, setOpen] = useState(false)
+  const [unreadMessages, setUnreadMessages] = useState<ChatMessage[]>([])
+  const [hasUnreadMessage, setHasUnreadMessage] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (open === false) {
+      const lastMessage = chat[chat.length - 1]
+
+      if (lastMessage) {
+        setUnreadMessages((prev) => [...prev, lastMessage])
+        setHasUnreadMessage(true)
+      }
+    }
+  }, [chat])
+
+  const toggleOpening = () => {
+    const newOpenState = !open
+    setOpen(newOpenState)
+
+    if (newOpenState === true) {
+      setHasUnreadMessage(false)
+    }
+
+    setTimeout(() => {
+      if (newOpenState === false) setUnreadMessages([])
+    }, 300)
+  }
 
   return (
     <div className="absolute right-8 top-full z-10 flex items-center justify-end">
@@ -29,13 +56,35 @@ const Chat = () => {
       >
         <button
           className="text-center text-slate-800 font-semibold w-full px-4 py-2 border-b"
-          onClick={() => setOpen(!open)}
+          onClick={toggleOpening}
         >
           {t("title")}
         </button>
+        {hasUnreadMessage && (
+          <>
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+          </>
+        )}
         <div className="h-96 w-full flex flex-col">
           <div className="overflow-y-auto flex flex-grow flex-col py-2 pr-2.5 -mr-2 gap-2">
-            {chat.map((message) => (
+            {chat
+              .filter((message) => !unreadMessages.includes(message))
+              .map((message) => (
+                <ChatMessage key={message.id} message={message} />
+              ))}
+
+            {unreadMessages.length > 0 && (
+              <div className="flex flex-row items-center">
+                <hr className="flex-grow border-red-500" />
+                <p className="font-inter text-sm text-red-500 px-2">
+                  {t("unread-messages", { count: unreadMessages.length })}
+                </p>
+                <hr className="flex-grow border-red-500" />
+              </div>
+            )}
+
+            {unreadMessages.map((message) => (
               <ChatMessage key={message.id} message={message} />
             ))}
           </div>

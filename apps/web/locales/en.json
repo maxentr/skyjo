@@ -26,6 +26,7 @@
     },
     "chat": {
       "title": "Chat",
+      "unread-messages": "{count} unread message(s)",
       "form": {
         "message-input-placeholder": "Message",
         "button-title": "Send",

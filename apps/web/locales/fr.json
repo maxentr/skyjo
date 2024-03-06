@@ -26,6 +26,7 @@
     },
     "chat": {
       "title": "Chat",
+      "unread-messages": "{count} message(s) non lus",
       "form": {
         "message-input-placeholder": "Message",
         "button-title": "Envoyer",
