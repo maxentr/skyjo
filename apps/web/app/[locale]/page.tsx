@@ -1,5 +1,6 @@
-import IndexPage from "@/app/IndexPage"
+import IndexPage from "@/app/[locale]/IndexPage"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import { Shantell_Sans } from "next/font/google"
 import Image from "next/image"
 import Link from "next/link"
@@ -16,6 +17,8 @@ type IndexServerPageProps = {
   }
 }
 const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
+  const t = useTranslations("pages.Index")
+
   return (
     <div className="flex h-dvh items-center justify-center bg-white">
       <div className="bg-slate-200 border border-slate-300 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
@@ -43,7 +46,7 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
           target="_blank"
           className="absolute bottom-4 right-4 text-slate-900 underline"
         >
-          Acheter le jeu
+          {t("buy-game")}
         </Link>
       </div>
     </div>

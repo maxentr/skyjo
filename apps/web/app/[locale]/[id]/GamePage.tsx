@@ -15,10 +15,12 @@ import Settings from "@/components/Settings"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useSocket } from "@/contexts/SocketContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
+import { useTranslations } from "next-intl"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
   const { socket } = useSocket()
+  const t = useTranslations("pages.GamePage")
 
   return (
     <div className="relative h-dvh w-dvw p-4 bg-slate-100 flex flex-col">
@@ -26,7 +28,7 @@ const GamePage = () => {
         <div className="w-10"></div>
         <div className="absolute top-6 left-6 flex flex-col justify-start">
           {game.roundState === "lastLap" && (
-            <p className="font-bold">Dernier tour !</p>
+            <p className="font-bold">{t("last-turn")}</p>
           )}
           <p>{getGameInfo(player, game)}</p>
         </div>
@@ -56,7 +58,7 @@ const GamePage = () => {
           {game.selectedCard && (
             <div className="flex flex-col items-center justify-center gap-2">
               <Card card={game.selectedCard} disabled />
-              <p>Carte sélectionnée</p>
+              <p>{t("selected-card")}</p>
             </div>
           )}
         </div>

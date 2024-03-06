@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/navigation"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { CreatePlayer } from "shared/validations/player"
@@ -16,6 +17,7 @@ type Props = { gameId?: string }
 const IndexPage = ({ gameId }: Props) => {
   const hasGameId = !!gameId
 
+  const t = useTranslations("pages.Index")
   const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
   const { socket } = useSocket()
   const { toast } = useToast()
@@ -42,7 +44,7 @@ const IndexPage = ({ gameId }: Props) => {
       if (message === "game-not-found") {
         router.replace(`/`)
         toast({
-          description: "La partie n'existe pas",
+          description: t("game-not-found.description"),
           variant: "destructive",
           duration: 3000,
         })
@@ -60,7 +62,7 @@ const IndexPage = ({ gameId }: Props) => {
     <>
       <SelectAvatar containerClassName="mb-4" />
       <Input
-        placeholder="Nom"
+        placeholder={t("name-input-placeholder")}
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
@@ -72,7 +74,7 @@ const IndexPage = ({ gameId }: Props) => {
             className="w-full mb-4"
             disabled={!username || loading}
           >
-            Rejoindre la partie
+            {t("join-game-button")}
           </Button>
         )}
 
@@ -82,14 +84,14 @@ const IndexPage = ({ gameId }: Props) => {
           className="w-full"
           disabled={!username || loading}
         >
-          Trouver une partie
+          {t("find-game-button")}
         </Button>
         <Button
           onClick={() => handleButtons("create-private")}
           className="w-full"
           disabled={!username || loading}
         >
-          Créer une partie privée
+          {t("create-private-game-button")}
         </Button>
       </div>
     </>

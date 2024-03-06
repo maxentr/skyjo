@@ -1,6 +1,6 @@
-import { ChatMessage } from "types/chat"
-import { SkyjoPlayerToJson } from "types/skyjoPlayer"
-import { SendChatMessage } from "validations/chatMessage"
+import { ChatMessage } from "../types/chat"
+import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
+import { SendChatMessage } from "../validations/chatMessage"
 import { JoinGame } from "../validations/joinGame"
 import {
   PlayDiscardSelectedCard,

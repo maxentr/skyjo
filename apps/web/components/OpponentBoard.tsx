@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { AlertTriangleIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
@@ -16,6 +17,8 @@ type OpponentBoardProps = {
 }
 
 const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
+  const t = useTranslations("components")
+
   return (
     <div
       className={`flex flex-col items-center justify-start duration-300 ease-in-out ${
@@ -26,7 +29,8 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
         src={`/avatars/${opponent.avatar}.png`}
         width={40}
         height={40}
-        alt={opponent.avatar}
+        alt={t(`Avatar.${opponent.avatar}`)}
+        title={t(`Avatar.${opponent.avatar}`)}
         className={`select-none ${isPlayerTurn && "animate-bounce-slow"}`}
         priority
       />
@@ -44,7 +48,7 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
                 <AlertTriangleIcon size={16} className="text-yellow-700" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Connexion instable</p>
+                <p>{t("OpponentBoard.connection-lost")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

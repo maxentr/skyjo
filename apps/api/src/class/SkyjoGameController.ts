@@ -147,10 +147,10 @@ export abstract class SkyjoGameController {
     await this.onMessage(
       socket,
       {
-        username: undefined,
-        message: `${player.name} a rejoint la partie`,
+        username: player.name,
+        message: "player-joined",
       },
-      "player-join",
+      "player-joined",
     )
 
     await this.broadcastGame(socket, gameId)
@@ -234,14 +234,15 @@ export abstract class SkyjoGameController {
 
     socket.to(game.id).emit("message", {
       id: crypto.randomUUID(),
-      message: `${player!.name} a quitté la partie`,
-      type: "player-leave",
+      username: player!.name,
+      message: "player-left",
+      type: "player-left",
     })
 
     if (game.status === "stopped") {
       socket.to(game.id).emit("message", {
         id: crypto.randomUUID(),
-        message: `La partie a été arrêtée car il n'y a plus assez de joueurs`,
+        message: "game-stopped",
         type: "warn",
       })
     }
@@ -258,12 +259,12 @@ export abstract class SkyjoGameController {
     const game = this.findGameByPlayerSocket(socket.id)
     if (!game) return
 
-    const newMessage: ChatMessage = {
+    const newMessage = {
       id: crypto.randomUUID(),
       username,
       message,
       type,
-    }
+    } as ChatMessage
 
     socket.to(game.id).emit("message", newMessage)
 

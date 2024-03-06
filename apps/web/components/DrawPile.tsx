@@ -3,6 +3,7 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
+import { useTranslations } from "next-intl"
 
 const DRAW_CARD = {
   value: undefined,
@@ -11,6 +12,8 @@ const DRAW_CARD = {
 
 const DrawPile = () => {
   const { game, player, actions } = useSkyjo()
+  const t = useTranslations("components.DrawPile")
+
   const onClick = () => {
     if (
       isCurrentUserTurn(game, player.name) &&
@@ -24,7 +27,7 @@ const DrawPile = () => {
     <Card
       card={DRAW_CARD}
       onClick={onClick}
-      title="Paquet de pioche"
+      title={t("title")}
       className="shadow-md"
       disabled={
         !(

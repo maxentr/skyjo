@@ -1,16 +1,6 @@
-import { SkyjoToJson, TurnState } from "shared/types/skyjo"
+import { useTranslations } from "next-intl"
+import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
-
-const TURN_STATE_MESSAGES: Record<TurnState, string> = {
-  chooseAPile: "Choisissez une pile",
-  throwOrReplace: "Remplacez une carte ou défaussez la carte piochée",
-  replaceACard: "Sélectionnez une carte à remplacer",
-  turnACard: "Sélectionnez une carte à retourner",
-}
-const WAITING_MESSAGE = "En attente de joueurs"
-const TURN_TWO_CARDS_MESSAGE = "Retourner deux cartes"
-const WAITING_TURN_MESSAGE = (username: string) =>
-  `C'est au tour de ${username}`
 
 export const getCurrentUser = (
   players: SkyjoToJson["players"] | undefined,
@@ -63,19 +53,21 @@ export const getWinner = (game: SkyjoToJson) => {
 }
 
 export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
-  if (!player || !game) return WAITING_MESSAGE
+  const t = useTranslations("utils.skyjo")
+  if (!player || !game) return t("waiting")
 
   const playerWhoHasToPlay = game.players[game.turn]
 
   if (game.status === "lobby") {
-    return WAITING_MESSAGE
+    return t("waiting")
   }
 
   if (
     game.status === "playing" &&
     game.roundState === "waitingPlayersToTurnTwoCards"
   ) {
-    return TURN_TWO_CARDS_MESSAGE
+    //TODO use game parameters to get the number of cards to turn
+    return t("turn-cards", { number: 2 })
   }
 
   if (
@@ -83,19 +75,21 @@ export const getGameInfo = (player?: SkyjoPlayerToJson, game?: SkyjoToJson) => {
     (game.roundState === "playing" || game.roundState === "lastLap")
   ) {
     return isCurrentUserTurn(game, player.name)
-      ? TURN_STATE_MESSAGES[game.turnState]
-      : WAITING_TURN_MESSAGE(playerWhoHasToPlay.name)
+      ? t(`turn.${game.turnState}`)
+      : t("player-turn", {
+          playerName: playerWhoHasToPlay.name,
+        })
   }
 
   if (game.status === "stopped") {
-    return "Partie arrêtée"
+    return t("game-stopped")
   }
 
   if (game.roundState === "over" && game.status !== "finished") {
-    return "Manche terminée"
+    return t("round-over")
   }
 
   if (game.status === "finished") {
-    return "Partie terminée !"
+    return t("game-ended")
   }
 }

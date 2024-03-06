@@ -1,13 +1,25 @@
-export type ChatMessageType =
-  | "message"
+export type SystemChatMessageType =
   | "info"
   | "warn"
-  | "player-join"
-  | "player-leave"
+  | "player-joined"
+  | "player-left"
 
-export type ChatMessage = {
+export type PlayerChatMessageType = "message"
+
+export type ChatMessageType = SystemChatMessageType | PlayerChatMessageType
+
+export type PlayerChatMessage = {
   id: string
   username?: string
   message: string
-  type: ChatMessageType
+  type: PlayerChatMessageType
 }
+
+export type SystemChatMessage = {
+  id: string
+  username?: string
+  message: "game-stopped" | "player-joined" | "player-left"
+  type: SystemChatMessageType
+}
+
+export type ChatMessage = PlayerChatMessage | SystemChatMessage

@@ -3,6 +3,7 @@
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
+import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
   createContext,
@@ -43,8 +44,8 @@ const SkyjoContextProvider = ({
   gameId,
 }: SkyjoContextProviderProps) => {
   const { socket } = useSocket()
-
   const { username } = useUser()
+  const t = useTranslations("utils.server.messages")
 
   const [game, setGame] = useState<SkyjoToJson>()
   const [chat, setChat] = useState<ChatMessage[]>([])
@@ -70,7 +71,20 @@ const SkyjoContextProvider = ({
   }
 
   const onMessageReceived = (message: ChatMessage) => {
-    setChat((prev) => [...prev, message])
+    if (message.type === "message") setChat((prev) => [...prev, message])
+    else {
+      const messageContent = t(message.message, { username: message.username })
+
+      setChat((prev) => [
+        ...prev,
+        {
+          id: message.id,
+          username: undefined,
+          message: messageContent,
+          type: message.type,
+        } as ChatMessage,
+      ])
+    }
   }
 
   const initGameListeners = () => {

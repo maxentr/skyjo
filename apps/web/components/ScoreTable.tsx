@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useTranslations } from "next-intl"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type Props = {
@@ -14,19 +15,21 @@ type Props = {
 }
 
 const ScoreTable = ({ players, winner }: Props) => {
+  const t = useTranslations("components.ScoreTable")
+
   const nbRounds = players[0].scores.length
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-full">Nom</TableHead>
+          <TableHead className="w-full">{t("name")}</TableHead>
           {Array.from({ length: nbRounds }).map((_, index) => (
             <TableHead key={index} className="text-center w-fit text-nowrap">
-              Round {index + 1}
+              {t("round")} {index + 1}
             </TableHead>
           ))}
-          <TableHead>Total</TableHead>
+          <TableHead>{t("total")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

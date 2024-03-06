@@ -1,4 +1,4 @@
-import GamePage from "@/app/[id]/GamePage"
+import GamePage from "@/app/[locale]/[id]/GamePage"
 import SkyjoContextProvider from "@/contexts/SkyjoContext"
 
 type GameServerPageProps = {

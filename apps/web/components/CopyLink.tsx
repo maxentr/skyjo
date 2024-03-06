@@ -3,12 +3,14 @@
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn, getGameInviteLink } from "@/lib/utils"
 import { ClassValue } from "clsx"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 type Props = { className?: ClassValue }
 
 const CopyLink = ({ className }: Props) => {
   const { game } = useSkyjo()
+  const t = useTranslations("components.CopyLink")
   const [copied, setCopied] = useState(false)
 
   const inviteLink = getGameInviteLink(window.location.href)
@@ -39,7 +41,7 @@ const CopyLink = ({ className }: Props) => {
               : "opacity-0 translate-y-4 scale-[85%]",
           )}
         >
-          Lien copié !
+          {t("message")}
         </p>
         <div className="bg-white px-2 py-1 shadow rounded-md">
           <button

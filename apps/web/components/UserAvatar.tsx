@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { Avatar } from "shared/types/player"
 
@@ -8,6 +9,8 @@ type UserAvatarProps = {
 }
 
 const UserAvatar = ({ avatar, pseudo, score }: UserAvatarProps) => {
+  const t = useTranslations("components.Avatar")
+
   return (
     <div className="flex flex-col gap-2 items-center">
       {avatar ? (
@@ -15,7 +18,8 @@ const UserAvatar = ({ avatar, pseudo, score }: UserAvatarProps) => {
           src={`/avatars/${avatar}.png`}
           width={100}
           height={100}
-          alt={avatar}
+          alt={t(avatar)}
+          title={t(avatar)}
           className="select-none"
           priority
         />

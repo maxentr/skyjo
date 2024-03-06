@@ -2,7 +2,8 @@
 
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "@/navigation"
+import { useParams } from "next/navigation"
 import React, { ComponentType, useEffect, useState } from "react"
 
 const withAuth = <P extends object>(

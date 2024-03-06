@@ -6,9 +6,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getGameInviteLink = (currentUrl: string) => {
-  const indexOfLastSlash = currentUrl.lastIndexOf("/")
-  const baseUrl = currentUrl.slice(0, indexOfLastSlash)
-  const gameId = currentUrl.slice(indexOfLastSlash + 1)
+  const thirdSlashIndex = currentUrl.indexOf("/", 10)
+  const lastSlashIndex = currentUrl.lastIndexOf("/")
+  const baseUrl = currentUrl.slice(0, thirdSlashIndex)
+  const gameId = currentUrl.slice(lastSlashIndex + 1)
 
   return `${baseUrl}/?gameId=${gameId}`
 }
