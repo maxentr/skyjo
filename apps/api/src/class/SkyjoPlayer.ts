@@ -107,6 +107,10 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     this.score = 0
   }
 
+  public resetRound() {
+    this.cards = []
+  }
+
   override toJson() {
     const player = {
       ...super.toJson(),

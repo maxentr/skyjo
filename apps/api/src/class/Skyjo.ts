@@ -86,6 +86,12 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     })
   }
 
+  private resetRoundPlayers() {
+    this.getConnectedPlayers().forEach((player) => {
+      player.resetRound()
+    })
+  }
+
   private setFirstPlayerToStart() {
     const playersScore = this.getConnectedPlayers().map((player, i) => {
       const arrayScore = player.currentScoreArray()
@@ -190,11 +196,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
       this.doubleScoreForFirstPlayer()
 
-      if (connectedPlayers.some((player) => player.score >= 100)) {
-        this.endGame()
-      } else {
-        this.roundState = "over"
-      }
+      this.roundState = "over"
     }
   }
 
@@ -230,7 +232,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.firstPlayerToFinish = null
     this.selectedCard = null
     this.initializeCardPiles()
-    this.resetPlayers()
+    this.resetRoundPlayers()
 
     // Give to each player 12 cards
     this.givePlayersCards()
