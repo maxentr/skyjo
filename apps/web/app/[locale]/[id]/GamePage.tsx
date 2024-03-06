@@ -10,16 +10,13 @@ import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
-import Score from "@/components/Score"
-import Settings from "@/components/Settings"
+import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { useSocket } from "@/contexts/SocketContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
 import { useTranslations } from "next-intl"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
-  const { socket } = useSocket()
   const t = useTranslations("pages.GamePage")
 
   return (
@@ -42,8 +39,7 @@ const GamePage = () => {
           ))}
         </div>
         <div className="w-10 flex flex-col gap-2 items-end justify-start">
-          <Settings />
-          <Score />
+          <Scoreboard />
         </div>
       </div>
       <div className="w-full h-1/5 grid grid-cols-3 grid-flow-row">

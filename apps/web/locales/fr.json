@@ -67,6 +67,9 @@
     "PlayerBoard": {
       "you": "Vous"
     },
+    "Scoreboard": {
+      "button-title": "Voir le tableau des scores"
+    },
     "ScoreDialog": {
       "title": "Score",
       "description": "{name} a gagné avec {score} points !"
