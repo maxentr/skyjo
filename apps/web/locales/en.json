@@ -12,7 +12,7 @@
       "create-private-game-button": "Create a private game",
       "buy-game": "Buy the game",
       "game-not-found": {
-        "description": "The game you are looking for does not exist."
+        "description": "The game you are looking for does not exist"
       }
     },
     "GamePage": {
@@ -36,7 +36,8 @@
       }
     },
     "CopyLink": {
-      "message": "Lien copié !"
+      "message": "Link copied!",
+      "button-title": "Copy link"
     },
     "DiscardPile": {
       "title": "Discard pile"

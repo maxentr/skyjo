@@ -47,6 +47,7 @@ const CopyLink = ({ className }: Props) => {
           <button
             className={cn("select-all text-sm text-slate-800")}
             onClick={onCopy}
+            title={t("button-title")}
           >
             {inviteLink}
           </button>

@@ -12,7 +12,7 @@
       "create-private-game-button": "Créer une partie privée",
       "buy-game": "Acheter le jeu",
       "game-not-found": {
-        "description": "La partie que vous cherchez n'existe pas."
+        "description": "La partie que vous cherchez n'existe pas"
       }
     },
     "GamePage": {
@@ -36,7 +36,8 @@
       }
     },
     "CopyLink": {
-      "message": "Lien copié !"
+      "message": "Lien copié !",
+      "button-title": "Copier le lien"
     },
     "DiscardPile": {
       "title": "Paquet de défausse"
