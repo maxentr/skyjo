@@ -5,7 +5,7 @@ import { getMessages, getTranslations } from "next-intl/server"
 import { Inter } from "next/font/google"
 
 const inter = Inter({
-  subsets: ["latin-ext"],
+  subsets: ["latin"],
   weight: "variable",
   display: "swap",
 })
