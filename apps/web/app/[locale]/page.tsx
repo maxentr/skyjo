@@ -1,16 +1,8 @@
 import IndexPage from "@/app/[locale]/IndexPage"
 import LanguageSettings from "@/components/LanguageSettings"
-import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
-import { Shantell_Sans } from "next/font/google"
 import Image from "next/image"
 import Link from "next/link"
-
-const shantell = Shantell_Sans({
-  subsets: ["latin-ext"],
-  weight: "700",
-  display: "swap",
-})
 
 type IndexServerPageProps = {
   searchParams: {
@@ -29,13 +21,17 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
         <LanguageSettings locale={params.locale} />
       </div>
       <div className="bg-slate-200 border border-slate-300 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
-        <h1
-          className={cn(
-            "text-4xl text-center mb-5 text-slate-900",
-            shantell.className,
-          )}
-        >
-          Skyjo
+        <h1 className="mb-5">
+          <Image
+            src="/svg/logo.svg"
+            width={0}
+            height={0}
+            style={{ width: "auto", height: "2.5rem" }}
+            priority
+            loading="eager"
+            title="Skyjo"
+            alt="Skyjo"
+          />
         </h1>
         <IndexPage gameId={searchParams.gameId} />
         <div className="absolute bottom-4 mx-auto flex flex-row justify-center items-center gap-4">
