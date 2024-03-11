@@ -60,7 +60,10 @@
     "LanguageSettings": {
       "title": "Language",
       "en": "English",
-      "fr": "French"
+      "fr": "French",
+      "button": {
+        "aria-label": "Change the game language"
+      }
     },
     "OpponentBoard": {
       "connection-lost": "Connection lost"
