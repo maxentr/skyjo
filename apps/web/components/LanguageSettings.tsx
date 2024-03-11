@@ -36,7 +36,10 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="h-10 w-10 flex items-center justify-center">
+      <DropdownMenuTrigger
+        className="h-10 w-10 flex items-center justify-center"
+        aria-label={t("button.aria-label")}
+      >
         <LanguagesIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mx-2">
