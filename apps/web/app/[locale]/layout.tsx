@@ -28,7 +28,7 @@ export async function generateMetadata({
     category: "game",
     metadataBase: baseUrl,
     alternates: {
-      canonical: "/",
+      canonical: baseUrl,
       languages: {
         en: "/en",
         fr: "/fr",
