@@ -160,9 +160,9 @@ const skyjoRouter = (io: Server) => {
       }
     })
 
-    socket.on("replay", async (gameId: string) => {
+    socket.on("replay", async () => {
       try {
-        await instance.onReplay(socket, gameId)
+        await instance.onReplay(socket)
       } catch (error) {
         console.error(`Error while replaying a game : ${error}`)
       }
