@@ -18,6 +18,7 @@ const Scoreboard = () => {
         variant="ghost"
         onClick={() => setOpen(!open)}
         title={t("button-title")}
+        className="w-6 h-6"
       >
         <ListIcon />
       </Button>

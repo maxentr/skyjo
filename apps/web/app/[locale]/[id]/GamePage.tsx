@@ -10,6 +10,7 @@ import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
+import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
@@ -38,8 +39,9 @@ const GamePage = () => {
             />
           ))}
         </div>
-        <div className="w-10 flex flex-col gap-2 items-end justify-start">
+        <div className="mt-2 w-10 flex flex-col gap-4 items-center justify-start">
           <Scoreboard />
+          <RulesDialog />
         </div>
       </div>
       <div className="w-full h-1/5 grid grid-cols-3 grid-flow-row">

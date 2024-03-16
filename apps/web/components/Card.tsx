@@ -6,10 +6,11 @@ import { ClassValue } from "clsx"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
-  "border border-slate-900 flex justify-center items-center shadow-sm transition-all duration-300",
+  "text-black border border-slate-900 flex justify-center items-center shadow-sm transition-all duration-300",
   {
     variants: {
       size: {
+        tiny: "w-8 h-12 rounded",
         small: "w-12 h-16 rounded",
         normal: "w-14 h-20 rounded-md",
       },
@@ -61,7 +62,7 @@ const cardValue: Record<string, CardValue> = {
 
 type CardProps = {
   card: SkyjoCardToJson
-  size?: "small" | "normal"
+  size?: "tiny" | "small" | "normal"
   onClick?: () => void
   className?: ClassValue
   title?: string

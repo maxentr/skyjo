@@ -71,6 +71,70 @@
     "PlayerBoard": {
       "you": "Vous"
     },
+    "RulesDialog": {
+      "title": "Règles du jeu",
+      "cards-section-title": "{number} cartes de jeu :",
+      "game-goal": {
+        "title": "But du jeu",
+        "content": "Le jeu Skyjo se déroule en plusieurs manches et se termine dès qu'un joueur atteint 100 points ou plus. Celui qui a obtenu le moins de points gagne la partie."
+      },
+      "round-preparation": {
+        "title": "Préparation d'une manche",
+        "content-1": "Tout d'abord, chaque joueur reçoit 12 cartes distribuées face cachée. Ensuite, une carte de la pioche est placée face visible au milieu de la table, elle constitue le début de la pile de défausse. Les cartes restantes sont placées à côté face cachée et forment la pioche.",
+        "content-2": "Chaque joueur place ses 12 cartes en quatre colonnes de trois cartes face cachée devant lui. Enfin, chaque joueur retourne face visible deux cartes de son choix."
+      },
+      "round-start": {
+        "title": "Début d'une manche",
+        "choice": "choix {number}",
+        "content-1": "Le joueur peut choisir la première carte retournée de la défausse",
+        "content-2": "ou la première carte face cachée de la pioche",
+        "choice-1": {
+          "title": "Choix 1 :",
+          "description": "Prendre la première carte retournée de la défausse.",
+          "content": "Le joueur doit immédiatement échanger cette carte avec l'une de ses 12 cartes et la poser face visible. Il peut choisir librement entre les cartes visibles et cachées. Les cartes cachées ne doivent pas être vues avant l'échange. La carte échangée est déposée face visible sur la pile de défausse."
+        },
+        "choice-2": {
+          "title": "Choix 2 :",
+          "description": "Prendre la première carte face cachée de la pioche.",
+          "content-1": "Le joueur peut regarder la carte et choisir s'il veut l'échanger contre l'une de ses cartes (cachées ou visibles) ou bien la défausser. S'il veut garder la carte tirée, il l'échange avec l'une de ses cartes comme décrit ci-dessus dans le",
+          "choice-1": "Choix 1",
+          "content-2": "S'il ne veut pas garder la carte tirée, il la dépose sur la pile de défausse et doit retourner face visible une de ses cartes."
+        },
+        "end-of-turn": "Son tour est alors terminé et c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre)."
+      },
+      "special-rule": {
+        "title": "Règle spéciale :",
+        "content": "Si un joueur a 3 cartes identiques dans une colonne, le joueur se débarrasse de ces 3 cartes en les plaçant sur la défausse. Si une colonne de cartes identiques est obtenue à la suite d'un échange avec une carte de la pioche ou de la défausse, les trois cartes identiques doivent toujours être déposées sur la pile de défausse après la carte échangée."
+      },
+      "round-end": {
+        "title": "Fin d'une manche",
+        "content-1": "Quand un joueur a révélé toutes ses cartes, il a joué son dernier tour.",
+        "content-2": "Tous les joueurs suivants jouent encore une fois pour terminer le tour de table."
+      },
+      "scoring": {
+        "title": "Décompte des points",
+        "description": "Les joueurs ayant encore des cartes face cachée les retournent face visible. Chaque joueur comptabilise son total de points.",
+        "list": {
+          "content-1": "Si le total de points est positif, il l'additionne au total de points des manches précédentes.",
+          "content-2": "Si le total est négatif, il le soustrait au total de points des manches précédentes."
+        },
+        "first-to-finish": {
+          "content": "Si le joueur qui a terminé la manche (le 1er à avoir retourné toutes ses cartes) n'a pas obtenu, strictement, le plus petit nombre de points de cette manche, alors, la somme de ses points pour cette manche est doublée.",
+          "note": {
+            "title": "Attention :",
+            "content": "cette règle ne s'applique qu'aux points positifs !"
+          }
+        },
+        "example": {
+          "title": "Exemple :",
+          "content": "le joueur A révèle toutes ses cartes et termine la manche. À la fin de la manche, il a obtenu 10 points, le joueur B a 24 points et le joueur C a également 10 points. Le joueur A n'ayant pas, strictement, le plus petit nombre de points, ses points sont doublés à 20."
+        }
+      },
+      "end-of-game": {
+        "title": "Fin de la partie",
+        "content": "À la fin de chaque manche, les points de chaque joueur sont ajoutés au score total obtenu lors des manches précédentes. Le jeu se termine dès qu'un joueur atteint 100 points ou plus. Le joueur avec le plus petit score gagne la partie."
+      }
+    },
     "Scoreboard": {
       "button-title": "Voir le tableau des scores"
     },

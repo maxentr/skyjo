@@ -1,5 +1,6 @@
 import IndexPage from "@/app/[locale]/IndexPage"
 import LanguageSettings from "@/components/LanguageSettings"
+import RulesDialog from "@/components/RulesDialog"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,8 +18,9 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
 
   return (
     <div className="flex h-dvh items-center justify-center bg-white">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-6 right-4 w-10 flex flex-col gap-4 items-center justify-center">
         <LanguageSettings locale={params.locale} />
+        <RulesDialog />
       </div>
       <div className="bg-slate-200 border border-slate-300 px-16 py-12 rounded-xl w-3/6 max-w-2xl flex flex-col items-center">
         <h1 className="mb-5">
