@@ -93,7 +93,7 @@ const Chat = () => {
               <ChatMessage key={message.id} message={message} />
             ))}
           </div>
-          <ChatForm onMessageSent={onMessageSent} />
+          <ChatForm chatOpen={open} onMessageSent={onMessageSent} />
         </div>
       </div>
     </div>
