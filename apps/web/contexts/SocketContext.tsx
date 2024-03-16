@@ -1,6 +1,12 @@
 "use client"
 
-import { createContext, PropsWithChildren, useContext, useEffect } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { io, Socket } from "socket.io-client"
 
@@ -25,7 +31,6 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
 
     return () => {
       destroyGameListeners()
-      // if (socket.connected) socket.disconnect()
     }
   }, [socket])
 
@@ -49,14 +54,15 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   }
   //#endregion
 
+  const value = useMemo(
+    () => ({
+      socket,
+    }),
+    [socket],
+  )
+
   return (
-    <SocketContext.Provider
-      value={{
-        socket,
-      }}
-    >
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   )
 }
 
