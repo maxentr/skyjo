@@ -14,11 +14,9 @@ const Scoreboard = () => {
   return (
     <>
       <Button
-        size="icon"
-        variant="ghost"
+        variant="icon"
         onClick={() => setOpen(!open)}
         title={t("button-title")}
-        className="w-6 h-6"
       >
         <ListIcon />
       </Button>
