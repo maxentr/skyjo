@@ -151,7 +151,7 @@ const SkyjoContextProvider = ({
   }
 
   const replay = () => {
-    socket.emit("replay", gameId)
+    socket.emit("replay")
   }
 
   const actions = {
