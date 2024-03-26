@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 
 const Chat = () => {
   const { chat } = useSkyjo()
-  const t = useTranslations("components.chat")
+  const t = useTranslations("components.Chat")
 
   const [open, setOpen] = useState(false)
   const [unreadMessages, setUnreadMessages] = useState<ChatMessage[]>([])
@@ -55,23 +55,26 @@ const Chat = () => {
   return (
     <div className="absolute right-8 top-full z-10 flex items-center justify-end">
       <div
-        className={`w-80 h-fit px-2 pb-2 bg-white shadow border rounded-t-lg boder-slate-600 flex flex-col items-center duration-300 transition-transform ease-in-out ${
-          open ? "-translate-y-full" : "-translate-y-11"
+        className={`w-80 h-fit pb-2 bg-white shadow border-2 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
+          open ? "-translate-y-full" : "-translate-y-12"
         }`}
       >
         <button
-          className="text-center text-slate-800 font-semibold w-full px-4 py-2 border-b"
+          className="text-center text-black w-full px-4 py-2 transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4"
           onClick={toggleOpening}
         >
           {t("title")}
         </button>
+        <div className="px-2 w-full">
+          <hr className="w-full bg-black h-0.5" />
+        </div>
         {hasUnreadMessage && (
           <>
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-400" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-400 animate-ping" />
           </>
         )}
-        <div className="h-96 w-full flex flex-col">
+        <div className="h-96 w-full flex flex-col  px-2">
           <div className="overflow-y-auto flex flex-grow flex-col py-2 pr-2.5 -mr-2 gap-2">
             {chat
               .filter((message) => !unreadMessages.includes(message))

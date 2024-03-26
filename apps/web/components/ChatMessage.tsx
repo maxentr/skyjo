@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
+import { useTranslations } from "next-intl"
 import { ChatMessage } from "shared/types/chat"
 
 type ChatMessageProps = {
@@ -17,18 +18,24 @@ const chatMessageClasses = cva("font-medium", {
     },
   },
 })
-const ChatMessage = ({ message }: ChatMessageProps) => (
-  <p
-    className={cn(
-      "font-inter text-sm",
-      chatMessageClasses({ type: message.type }),
-    )}
-  >
-    {message?.username && (
-      <span className="font-bold">{message?.username} : </span>
-    )}
-    {message.message}
-  </p>
-)
+const ChatMessage = ({ message }: ChatMessageProps) => {
+  const t = useTranslations("components.ChatMessage")
+  return (
+    <p
+      className={cn(
+        "font-inter text-sm",
+        chatMessageClasses({ type: message.type }),
+      )}
+    >
+      {message?.username && (
+        <span>
+          {message?.username}
+          {t("separator")}
+        </span>
+      )}
+      {message.message}
+    </p>
+  )
+}
 
 export default ChatMessage

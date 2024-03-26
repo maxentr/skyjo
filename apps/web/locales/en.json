@@ -24,16 +24,19 @@
     "AdminLobby": {
       "start-game-button": "Start the game"
     },
-    "chat": {
+    "Chat": {
       "title": "Chat",
-      "unread-messages": "{count} unread message(s)",
-      "form": {
-        "message-input-placeholder": "Message",
-        "button-title": "Send",
-        "message-too-long": {
-          "description": "The message is too long (max 200 characters)"
-        }
+      "unread-messages": "{count} unread message(s)"
+    },
+    "ChatForm": {
+      "message-input-placeholder": "Message",
+      "button-title": "Send",
+      "message-too-long": {
+        "description": "The message is too long (max 200 characters)"
       }
+    },
+    "ChatMessage": {
+      "separator": ": "
     },
     "CopyLink": {
       "message": "Link copied!",
