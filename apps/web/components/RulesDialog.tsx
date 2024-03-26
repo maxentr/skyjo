@@ -1,4 +1,5 @@
 import { Card } from "@/components/Card"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -13,8 +14,10 @@ const RulesDialog = () => {
   const t = useTranslations("components.RulesDialog")
   return (
     <Dialog>
-      <DialogTrigger>
-        <BookOpenIcon />
+      <DialogTrigger asChild>
+        <Button variant="icon" aria-label={t("trigger.aria-label")}>
+          <BookOpenIcon />
+        </Button>
       </DialogTrigger>
       <DialogContent className="h-2/3 px-0">
         <DialogHeader className="px-6">
