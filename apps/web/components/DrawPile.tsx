@@ -28,7 +28,7 @@ const DrawPile = () => {
       card={DRAW_CARD}
       onClick={onClick}
       title={t("title")}
-      className="shadow-md"
+      className="shadow-[4px_4px_0px_0px_rgba(0,0,0)]"
       disabled={
         !(
           isCurrentUserTurn(game, player.name) &&
