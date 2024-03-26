@@ -25,7 +25,7 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
         height={40}
         alt={t(`Avatar.${player.avatar}`)}
         title={t(`Avatar.${player.avatar}`)}
-        className="mt-4 select-none"
+        className="mt-2 select-none"
         priority
       />
       <p
