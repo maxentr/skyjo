@@ -18,6 +18,19 @@ const config = {
       },
     },
     extend: {
+      colors: {
+
+        card: {
+          "dark-blue": "#5992E7",
+          "light-blue": "#A0C4FF",
+          green: "#7ACE7A",
+          yellow: "#F3E948",
+          red: "#F56E6E",
+        },
+        background: "#F8F7EB",
+        "dutch-white": "#F6E9C9",
+        "off-white": "#fefdf7",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
