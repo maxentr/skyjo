@@ -6,22 +6,25 @@ import { ClassValue } from "clsx"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
-  "text-black border border-slate-900 flex justify-center items-center shadow-sm transition-all duration-300",
+  "text-black border-2 border-slate-900 flex justify-center items-center transition-all duration-300",
   {
     variants: {
       size: {
-        tiny: "w-8 h-12 rounded",
-        small: "w-12 h-16 rounded",
-        normal: "w-14 h-20 rounded-md",
+        tiny: "w-8 h-12 rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
+        small:
+          "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-base",
+        normal:
+          "w-14 h-20 rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base",
+        big: "w-[70px] h-[100px] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base",
       },
       value: {
-        "no-card": "bg-transparent border-dashed",
-        "not-visible": "bg-white",
-        negative: "bg-indigo-500",
-        neutral: "bg-sky-500",
-        low: "bg-green-500",
-        medium: "bg-yellow-500",
-        high: "bg-red-500",
+        "no-card": "bg-transparent border-dashed shadow-none",
+        "not-visible": " bg-off-white",
+        negative: " bg-card-dark-blue",
+        neutral: " bg-card-light-blue",
+        low: " bg-card-green",
+        medium: " bg-card-yellow",
+        high: " bg-card-red",
       },
       disabled: {
         true: "",
