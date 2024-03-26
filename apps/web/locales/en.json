@@ -25,8 +25,7 @@
       "start-game-button": "Start the game"
     },
     "Chat": {
-      "title": "Chat",
-      "unread-messages": "{count} unread message(s)"
+      "title": "Chat"
     },
     "ChatForm": {
       "message-input-placeholder": "Message",
@@ -37,6 +36,9 @@
     },
     "ChatMessage": {
       "separator": ": "
+    },
+    "ChatMessageList": {
+      "unread-messages": "{count} unread message(s)"
     },
     "CopyLink": {
       "message": "Link copied!",

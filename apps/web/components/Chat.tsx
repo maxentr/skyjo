@@ -2,6 +2,7 @@
 
 import ChatForm from "@/components/ChatForm"
 import ChatMessage from "@/components/ChatMessage"
+import ChatMessageList from "@/components/ChatMessageList"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
@@ -15,7 +16,7 @@ const Chat = () => {
   const [hasUnreadMessage, setHasUnreadMessage] = useState<boolean>(false)
 
   const addUnreadMessage = (message: ChatMessage) => {
-    setUnreadMessages((prev) => [...prev, message])
+    setUnreadMessages((prev) => [message, ...prev])
     setHasUnreadMessage(true)
   }
 
@@ -25,7 +26,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (open === false) {
-      const lastMessage = chat[chat.length - 1]
+      const lastMessage = chat?.[0]
 
       if (lastMessage) {
         addUnreadMessage(lastMessage)
@@ -75,27 +76,7 @@ const Chat = () => {
           </>
         )}
         <div className="h-96 w-full flex flex-col  px-2">
-          <div className="overflow-y-auto flex flex-grow flex-col py-2 pr-2.5 -mr-2 gap-2">
-            {chat
-              .filter((message) => !unreadMessages.includes(message))
-              .map((message) => (
-                <ChatMessage key={message.id} message={message} />
-              ))}
-
-            {unreadMessages.length > 0 && (
-              <div className="flex flex-row items-center">
-                <hr className="flex-grow border-red-500" />
-                <p className="font-inter text-sm text-red-500 px-2">
-                  {t("unread-messages", { count: unreadMessages.length })}
-                </p>
-                <hr className="flex-grow border-red-500" />
-              </div>
-            )}
-
-            {unreadMessages.map((message) => (
-              <ChatMessage key={message.id} message={message} />
-            ))}
-          </div>
+          <ChatMessageList unreadMessages={unreadMessages} />
           <ChatForm chatOpen={open} onMessageSent={onMessageSent} />
         </div>
       </div>
