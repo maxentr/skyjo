@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,10 +37,12 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger aria-label={t("button.aria-label")}>
-        <LanguagesIcon />
+      <DropdownMenuTrigger asChild>
+        <Button variant="icon" aria-label={t("button.aria-label")}>
+          <LanguagesIcon />
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mx-2">
+      <DropdownMenuContent className="mr-6">
         <DropdownMenuRadioGroup
           value={locale}
           onValueChange={handleLanguageChange}
