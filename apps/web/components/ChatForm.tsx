@@ -24,7 +24,7 @@ type ChatFormProps = {
 const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
   const { toast } = useToast()
   const { actions } = useSkyjo()
-  const t = useTranslations("components.chat.form")
+  const t = useTranslations("components.ChatForm")
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
     defaultValues: {
@@ -78,7 +78,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
           )}
         />
         <Button
-          size="icon"
+          variant="icon"
           type="submit"
           title={t("button-title")}
           tabIndex={isFocusable}
