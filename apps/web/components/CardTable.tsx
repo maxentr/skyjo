@@ -1,21 +1,7 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { canTurnTwoCards, isCurrentUserTurn } from "@/lib/skyjo"
-import { cn } from "@/lib/utils"
-import { cva } from "class-variance-authority"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
-
-const sizeClass = cva(
-  "grid grid-rows-3 grid-flow-col transition-all duration-300",
-  {
-    variants: {
-      size: {
-        small: "gap-1",
-        normal: "gap-2",
-      },
-    },
-  },
-)
 
 type CardTableProps = {
   cards: SkyjoCardToJson[][]
@@ -49,7 +35,7 @@ const CardTable = ({
   }
 
   return (
-    <div className={cn(sizeClass({ size }))}>
+    <div className="grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2">
       {cards.map((column, columnIndex) => {
         return column.map((card, rowIndex) => (
           <Card
