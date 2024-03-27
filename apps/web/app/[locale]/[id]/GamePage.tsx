@@ -21,17 +21,11 @@ const GamePage = () => {
   const t = useTranslations("pages.GamePage")
 
   return (
-    <div className="relative h-dvh w-dvw p-4 bg-slate-100 flex flex-col">
-      <div className="w-full h-2/5 flex flex-row">
+    <div className="h-full w-full bg-background flex flex-col">
+      <div className="w-full flex flex-row items-start h-1/3">
         <div className="w-10"></div>
-        <div className="absolute top-6 left-6 flex flex-col justify-start">
-          {game.roundState === "lastLap" && (
-            <p className="font-bold">{t("last-turn")}</p>
-          )}
-          <p>{getGameInfo(player, game)}</p>
-        </div>
-        <div className="h-2/5 flex flex-grow flex-row justify-evenly">
-          {opponents.map((opponent) => (
+        <div className="flex flex-1 flex-row justify-evenly">
+          {opponents[1].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
@@ -39,30 +33,57 @@ const GamePage = () => {
             />
           ))}
         </div>
-        <div className="mt-2 w-10 flex flex-col gap-4 items-center justify-start">
-          <Scoreboard />
-          <RulesDialog />
+        <div className="flex flex-row justify-end">
+          <div className="flex flex-col gap-4 items-center justify-start">
+            <Scoreboard />
+            <RulesDialog />
+          </div>
         </div>
       </div>
-      <div className="w-full h-1/5 grid grid-cols-3 grid-flow-row">
-        <div className="col-start-2 flex flex-col justify-center items-center gap-4">
-          <div className="flex flex-row items-center gap-10">
+      <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row">
+        <div className="flex flex-col items-start">
+          {opponents[0].map((opponent) => (
+            <OpponentBoard
+              opponent={opponent}
+              key={opponent.socketId}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col justify-center items-center gap-4">
+          <div className="relative flex flex-row items-center gap-10">
+            {game.selectedCard && (
+              <Card
+                card={game.selectedCard}
+                className="absolute top-0 left-0 -rotate-[10deg] w-[70px] h-[100px] -translate-y-2 z-10"
+                disabled
+              />
+            )}
             <DrawPile />
             <DiscardPile />
           </div>
           <AdminLobby />
         </div>
-        <div className="col-start-3 flex justify-end items-center">
-          {game.selectedCard && (
-            <div className="flex flex-col items-center justify-center gap-2">
-              <Card card={game.selectedCard} disabled />
-              <p>{t("selected-card")}</p>
-            </div>
-          )}
+        <div className="flex flex-col items-end">
+          {opponents[2].map((opponent) => (
+            <OpponentBoard
+              opponent={opponent}
+              key={opponent.socketId}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+            />
+          ))}
         </div>
       </div>
-      <div className="w-full h-2/5 grid grid-cols-3 grid-flow-row items-end">
-        <CopyLink />
+      <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row items-end">
+        <div>
+          <CopyLink />
+          <div className="flex flex-col justify-start">
+            {game.roundState === "lastLap" && (
+              <p className="font-bold">{t("last-turn")}</p>
+            )}
+            <p>{getGameInfo(player, game)}</p>
+          </div>
+        </div>
         {player && (
           <PlayerBoard
             player={player}
