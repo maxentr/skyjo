@@ -15,13 +15,16 @@ import { z } from "zod"
 const chatFormSchema = z.object({
   message: z.string().max(200),
 })
+
 type ChatFormProps = {
+  chatOpen: boolean
   onMessageSent: () => void
 }
-const ChatForm = ({ onMessageSent }: ChatFormProps) => {
+
+const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
   const { toast } = useToast()
   const { actions } = useSkyjo()
-  const t = useTranslations("components.chat.form")
+  const t = useTranslations("components.ChatForm")
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
     defaultValues: {
@@ -29,7 +32,9 @@ const ChatForm = ({ onMessageSent }: ChatFormProps) => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof chatFormSchema>) {
+  const isFocusable = chatOpen ? 0 : -1
+
+  const onSubmit = (values: z.infer<typeof chatFormSchema>) => {
     if (!values.message) return
 
     if (values.message.length > 200) {
@@ -65,13 +70,19 @@ const ChatForm = ({ onMessageSent }: ChatFormProps) => {
                     form.formState.errors.message &&
                       "focus-visible:ring-red-500",
                   )}
+                  tabIndex={isFocusable}
                   {...field}
                 />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button size="icon" type="submit" title={t("button-title")}>
+        <Button
+          variant="icon"
+          type="submit"
+          title={t("button-title")}
+          tabIndex={isFocusable}
+        >
           <SendIcon width={16} height={16} />
         </Button>
       </form>

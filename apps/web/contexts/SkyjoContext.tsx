@@ -3,6 +3,7 @@
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
+import { Opponents } from "@/types/opponents"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -19,7 +20,7 @@ import { PlayPickCard } from "shared/validations/play"
 type SkyjoContextInterface = {
   game: SkyjoToJson
   player: SkyjoPlayerToJson
-  opponents: SkyjoPlayerToJson[]
+  opponents: Opponents
   actions: {
     sendMessage: (message: string) => void
     startGame: () => void
@@ -71,18 +72,18 @@ const SkyjoContextProvider = ({
   }
 
   const onMessageReceived = (message: ChatMessage) => {
-    if (message.type === "message") setChat((prev) => [...prev, message])
+    if (message.type === "message") setChat((prev) => [message, ...prev])
     else {
       const messageContent = t(message.message, { username: message.username })
 
       setChat((prev) => [
-        ...prev,
         {
           id: message.id,
           username: undefined,
           message: messageContent,
           type: message.type,
         } as ChatMessage,
+        ...prev,
       ])
     }
   }
@@ -151,7 +152,7 @@ const SkyjoContextProvider = ({
   }
 
   const replay = () => {
-    socket.emit("replay", gameId)
+    socket.emit("replay")
   }
 
   const actions = {

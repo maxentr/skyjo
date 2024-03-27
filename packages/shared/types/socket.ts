@@ -25,7 +25,7 @@ export type ClientToServerEvents = {
   "play:replace-card": (data: PlayReplaceCard) => void
   "play:discard-selected-card": (data: PlayDiscardSelectedCard) => void
   "play:turn-card": (data: PlayTurnCard) => void
-  replay: (gameId: string) => void
+  replay: () => void
   disconnect: () => void
 }
 
@@ -36,4 +36,8 @@ export type ServerToClientEvents = {
   message: (message: ChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   draw: (game: SkyjoToJson) => void
+}
+
+export type SocketData = {
+  gameId: string
 }

@@ -35,7 +35,7 @@ const DiscardPile = () => {
       card={card}
       onClick={onClick}
       title={t("title")}
-      className="shadow-md"
+      className={card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]"}
       disabled={disabled}
     />
   )

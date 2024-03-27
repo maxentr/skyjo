@@ -2,9 +2,9 @@ import Providers from "@/app/[locale]/providers"
 import { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getTranslations } from "next-intl/server"
-import { Inter } from "next/font/google"
+import { Fredoka } from "next/font/google"
 
-const inter = Inter({
+const fredoka = Fredoka({
   subsets: ["latin"],
   weight: "variable",
   display: "swap",
@@ -74,8 +74,8 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning className={inter.className}>
-      <body className="h-dvh bg-background antialiased overflow-hidden">
+    <html lang={locale} suppressHydrationWarning className={fredoka.className}>
+      <body className="bg-background antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

@@ -21,9 +21,10 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-start duration-300 ease-in-out ${
-        isPlayerTurn ? "scale-105" : ""
-      }`}
+      className={cn(
+        "flex flex-col items-center justify-start duration-300 ease-in-out",
+        isPlayerTurn && "scale-105",
+      )}
     >
       <Image
         src={`/avatars/${opponent.avatar}.png`}
@@ -31,12 +32,12 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
         height={40}
         alt={t(`Avatar.${opponent.avatar}`)}
         title={t(`Avatar.${opponent.avatar}`)}
-        className={`select-none ${isPlayerTurn && "animate-bounce-slow"}`}
+        className={cn("select-none", isPlayerTurn && "animate-bounce-slow")}
         priority
       />
       <p
         className={cn(
-          "text-center select-none text-sm mb-4 flex flex-row items-center gap-1",
+          "text-center select-none text-sm mb-2 flex flex-row items-center gap-1",
           isPlayerTurn && "font-semibold",
         )}
       >
@@ -54,7 +55,7 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
           </TooltipProvider>
         )}
       </p>
-      <CardTable cards={opponent.cards} size="small" cardDisabled={true} />
+      <CardTable cards={opponent.cards} size="tiny" cardDisabled={true} />
     </div>
   )
 }

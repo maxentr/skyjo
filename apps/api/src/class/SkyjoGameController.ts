@@ -15,18 +15,6 @@ export abstract class SkyjoGameController {
     this._games = games
   }
 
-  //#region private
-
-  private findGameByPlayerSocket(socketId: string) {
-    return this.games.find((game) => {
-      return game.getConnectedPlayers().find((player) => {
-        return player.socketId === socketId
-      })
-    })
-  }
-
-  //#endregion
-
   //#region protected
 
   protected checkPlayAuthorization(
@@ -143,6 +131,10 @@ export abstract class SkyjoGameController {
     game.addPlayer(player)
     await socket.join(gameId)
 
+    socket.data = {
+      gameId,
+    }
+
     socket.emit("join", game.toJson())
     await this.onMessage(
       socket,
@@ -170,8 +162,8 @@ export abstract class SkyjoGameController {
     socket.to(game.id).emit("draw", game.toJson())
   }
 
-  async onReplay(socket: SkyjoSocket, gameId: string) {
-    const game = this.getGame(gameId)
+  async onReplay(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     game.getPlayer(socket.id)?.toggleReplay()
@@ -188,7 +180,7 @@ export abstract class SkyjoGameController {
   }
 
   async onConnectionLost(socket: SkyjoSocket) {
-    const game = this.findGameByPlayerSocket(socket.id)
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     const player = game.getPlayer(socket.id)
@@ -198,7 +190,7 @@ export abstract class SkyjoGameController {
   }
 
   async onReconnect(socket: SkyjoSocket) {
-    const game = this.findGameByPlayerSocket(socket.id)
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     const player = game.getPlayer(socket.id)
@@ -208,7 +200,7 @@ export abstract class SkyjoGameController {
   }
 
   async onLeave(socket: SkyjoSocket) {
-    const game = this.findGameByPlayerSocket(socket.id)
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     const player = game.getPlayer(socket.id)
@@ -258,7 +250,7 @@ export abstract class SkyjoGameController {
     { username, message }: Omit<ChatMessage, "id" | "type">,
     type: ChatMessageType = "message",
   ) {
-    const game = this.findGameByPlayerSocket(socket.id)
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     const newMessage = {

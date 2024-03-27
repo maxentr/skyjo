@@ -16,24 +16,28 @@
       }
     },
     "GamePage": {
-      "last-turn": "Last turn!",
-      "selected-card": "Selected card"
+      "last-turn": "Last turn!"
     }
   },
   "components": {
     "AdminLobby": {
       "start-game-button": "Start the game"
     },
-    "chat": {
-      "title": "Chat",
-      "unread-messages": "{count} unread message(s)",
-      "form": {
-        "message-input-placeholder": "Message",
-        "button-title": "Send",
-        "message-too-long": {
-          "description": "The message is too long (max 200 characters)"
-        }
+    "Chat": {
+      "title": "Chat"
+    },
+    "ChatForm": {
+      "message-input-placeholder": "Message",
+      "button-title": "Send",
+      "message-too-long": {
+        "description": "The message is too long (max 200 characters)"
       }
+    },
+    "ChatMessage": {
+      "separator": ": "
+    },
+    "ChatMessageList": {
+      "unread-messages": "{count} unread message(s)"
     },
     "CopyLink": {
       "message": "Link copied!",
@@ -70,6 +74,76 @@
     },
     "PlayerBoard": {
       "you": "You"
+    },
+    "RulesDialog": {
+      "title": "Game rules",
+      "trigger": {
+        "aria-label": "Show game rules"
+      }
+    },
+    "Rules": {
+      "title": "Game rules",
+      "cards-section-title": "{number} game cards:",
+      "game-goal": {
+        "title": "Game goal",
+        "content": "The Skyjo game is played over several rounds and ends as soon as a player reaches 100 points or more. The player with the fewest points wins the game."
+      },
+      "round-preparation": {
+        "title": "Round preparation",
+        "content-1": "First, each player is dealt 12 cards face-down. Next, one card from the draw pile is placed face-up in the middle of the table, forming the beginning of the discard pile. The remaining cards are placed face-down next to each other and form the draw pile.",
+        "content-2": "Each player places his 12 cards in four columns of three cards face down in front of him. Finally, each player turns face-up two cards of their choice."
+      },
+      "round-start": {
+        "title": "Round start",
+        "choice": "choice {number}",
+        "content-1": "The player can choose the first card turned over from the discard pile",
+        "content-2": "or the first face-down card of the draw pile",
+        "choice-1": {
+          "title": "Choice 1:",
+          "description": "Take the first card from the discard pile.",
+          "content": "The player must immediately swap this card with one of his or her 12 cards and place it face up. He can choose freely between face-up and face-down cards. Hidden cards must not be must not be seen before the exchange. The exchanged card is placed face-up on the discard pile."
+        },
+        "choice-2": {
+          "title": "Choice 2:",
+          "description": "Take the first card face down from the draw pile.",
+          "content-1": "The player can look at the card and choose whether to exchange it for one of his cards (hidden or visible) or discard it. If he wants to keep the drawn card, he exchanges it with one of his cards as described above in the",
+          "choice-1": "Choice 1",
+          "content-2": "If he does not wish to keep the drawn card, he places it on the discard pile and must turn face-up one of his cards."
+        },
+        "end-of-turn": "His turn is then over, and it's the next player's turn (clockwise)."
+      },
+      "special-rule": {
+        "title": "Special rule:",
+        "content": "If a player has 3 identical cards in a column, the player discards these 3 cards by placing them on the discard pile. If a column of identical cards is obtained by exchanging with a card from the draw pile or discard pile, the three identical cards identical cards must always be placed on the discard pile after the exchanged card."
+      },
+      "round-end": {
+        "title": "End of the round",
+        "content-1": "When a player has revealed all his cards, he has played his last turn.",
+        "content-2": "All subsequent players play once more to complete the round."
+      },
+      "scoring": {
+        "title": "Scoring",
+        "description": "Players who still have cards face down turn them face up. Each player counts his total points.",
+        "list": {
+          "content-1": "If the total of points is positive, he adds it to the total of points from previous rounds.",
+          "content-2": "If the total is negative, it is subtracted from the total points of the previous rounds."
+        },
+        "first-to-finish": {
+          "content": "If the player who has completed the round (the 1st to have turned over all his cards) has not obtained, strictly speaking, the lowest number of points for that round, then the sum of his points for that round is doubled.",
+          "note": {
+            "title": "Please note:",
+            "content": "this rule only applies to positive points!"
+          }
+        },
+        "example": {
+          "title": "Example:",
+          "content": "Player A reveals all his cards and finishes the round. At the end of the round, he has 10 points, player B has 24 points and player C also has 10 points. As player A does not strictly have the lowest number of points, his points are doubled to 20."
+        }
+      },
+      "end-of-game": {
+        "title": "End of game",
+        "content": "At the end of each round, each player's points are added to the total score obtained in the previous rounds. The game ends as soon as a player reaches 100 points or more. The player with the lowest score wins the game."
+      }
     },
     "Scoreboard": {
       "button-title": "Show scoreboard"

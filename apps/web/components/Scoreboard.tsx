@@ -14,8 +14,7 @@ const Scoreboard = () => {
   return (
     <>
       <Button
-        size="icon"
-        variant="ghost"
+        variant="icon"
         onClick={() => setOpen(!open)}
         title={t("button-title")}
       >
