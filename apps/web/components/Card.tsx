@@ -6,11 +6,11 @@ import { ClassValue } from "clsx"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
-  "text-black border-2 border-slate-900 flex justify-center items-center transition-all duration-300",
+  "text-black border-2 border-black flex justify-center items-center transition-all duration-300",
   {
     variants: {
       size: {
-        tiny: "w-8 h-12 rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
+        tiny: "w-8 h-12 border-[1.5px] rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
         small:
           "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-base",
         normal:
