@@ -54,7 +54,7 @@ const IndexPage = ({ gameId }: Props) => {
     socket.once("join", (game: SkyjoToJson) => {
       setLoading(false)
 
-      router.push(`/${game.id}`)
+      router.push(`/game/${game.id}`)
     })
   }
 

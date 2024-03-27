@@ -76,9 +76,12 @@
       "you": "You"
     },
     "RulesDialog": {
+      "title": "Game rules",
       "trigger": {
         "aria-label": "Show game rules"
-      },
+      }
+    },
+    "Rules": {
       "title": "Game rules",
       "cards-section-title": "{number} game cards:",
       "game-goal": {

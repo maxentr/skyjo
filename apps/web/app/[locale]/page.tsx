@@ -17,7 +17,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
   const t = useTranslations("pages.Index")
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-dvh !p-6 bg-background overflow-hidden flex flex-col">
       <div className="w-full grid grid-cols-3 grid-flow-row h-1/6">
         <div></div>
         <div></div>

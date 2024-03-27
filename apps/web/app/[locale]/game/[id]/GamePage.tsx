@@ -17,7 +17,11 @@ import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
 import { InfoIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-const GamePage = () => {
+type GamePageProps = {
+  locale: string
+}
+
+const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
   const t = useTranslations("pages.GamePage")
 
@@ -79,7 +83,7 @@ const GamePage = () => {
         <div className="flex flex-col gap-2">
           <CopyLink />
           <div className="flex flex-row items-center gap-2 p-2 bg-off-white border-2 border-black rounded w-[300px]">
-            <InfoIcon size={20}/>
+            <InfoIcon size={20} />
             <div className="flex flex-col justify-start">
               {game.roundState === "lastLap" && (
                 <p className="font-bold">{t("last-turn")}</p>

@@ -56,10 +56,10 @@ const Chat = () => {
   }
 
   return (
-    <div className="absolute right-2 top-full z-10 flex items-center justify-end">
+    <div className="absolute right-6 top-full z-10 flex items-center justify-end">
       <div
-        className={`w-80 h-fit pb-2 bg-white shadow border-2 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
-          open ? "-translate-y-[calc(100%-24px)]" : "-translate-y-6"
+        className={`w-80 h-fit pb-2 bg-white shadow border-2 border-b-0 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
+          open ? "-translate-y-full" : "-translate-y-12"
         }`}
       >
         <button
