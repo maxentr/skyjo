@@ -55,7 +55,7 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
           </TooltipProvider>
         )}
       </p>
-      <CardTable cards={opponent.cards} size="small" cardDisabled={true} />
+      <CardTable cards={opponent.cards} size="tiny" cardDisabled={true} />
     </div>
   )
 }
