@@ -10,7 +10,7 @@ const cardClass = cva(
   {
     variants: {
       size: {
-        tiny: "w-8 h-12 border-[1.5px] rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
+        tiny: "w-8 h-12 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
         small:
           "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-base",
         normal:
