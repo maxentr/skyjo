@@ -31,6 +31,8 @@ const Chat = () => {
       if (lastMessage) {
         addUnreadMessage(lastMessage)
       }
+    } else {
+      clearUnreadMessages()
     }
   }, [chat])
 
