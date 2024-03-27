@@ -75,7 +75,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning className={fredoka.className}>
-      <body className="h-[calc(100dvh-48px)] !m-6 bg-background antialiased overflow-hidden">
+      <body className="relative h-[calc(100dvh-48px)] !m-6 bg-background antialiased overflow-hidden">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

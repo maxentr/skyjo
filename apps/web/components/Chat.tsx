@@ -54,10 +54,10 @@ const Chat = () => {
   }
 
   return (
-    <div className="absolute right-8 top-full z-10 flex items-center justify-end">
+    <div className="absolute right-2 top-full z-10 flex items-center justify-end">
       <div
         className={`w-80 h-fit pb-2 bg-white shadow border-2 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
-          open ? "-translate-y-full" : "-translate-y-12"
+          open ? "-translate-y-[calc(100%-24px)]" : "-translate-y-6"
         }`}
       >
         <button
@@ -67,7 +67,7 @@ const Chat = () => {
           {t("title")}
         </button>
         <div className="px-2 w-full">
-          <hr className="w-full bg-black h-0.5" />
+          <hr className="w-full border-black border-t-2" />
         </div>
         {hasUnreadMessage && (
           <>
