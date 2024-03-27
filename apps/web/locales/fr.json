@@ -16,8 +16,7 @@
       }
     },
     "GamePage": {
-      "last-turn": "Dernier tour !",
-      "selected-card": "Carte sélectionnée"
+      "last-turn": "Dernier tour !"
     }
   },
   "components": {

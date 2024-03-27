@@ -3,6 +3,7 @@
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
+import { Opponents } from "@/types/opponents"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -19,7 +20,7 @@ import { PlayPickCard } from "shared/validations/play"
 type SkyjoContextInterface = {
   game: SkyjoToJson
   player: SkyjoPlayerToJson
-  opponents: SkyjoPlayerToJson[]
+  opponents: Opponents
   actions: {
     sendMessage: (message: string) => void
     startGame: () => void
