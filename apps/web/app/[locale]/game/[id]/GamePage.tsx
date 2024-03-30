@@ -7,6 +7,7 @@ import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
+import GameInfo from "@/components/GameInfo"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import RulesDialog from "@/components/RulesDialog"
@@ -73,6 +74,7 @@ const GamePage = ({ locale }: GamePageProps) => {
       <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row items-end">
         <div className="flex flex-col gap-2">
           <CopyLink />
+          <GameInfo />
         </div>
         {player && (
           <PlayerBoard
