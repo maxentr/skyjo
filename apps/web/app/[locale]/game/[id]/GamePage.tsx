@@ -1,7 +1,6 @@
 "use client"
 
 import AdminLobby from "@/components/AdminLobby"
-import { Card } from "@/components/Card"
 import Chat from "@/components/Chat"
 import CopyLink from "@/components/CopyLink"
 import DiscardPile from "@/components/DiscardPile"
@@ -12,6 +11,7 @@ import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
+import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
 import { InfoIcon } from "lucide-react"
@@ -57,13 +57,7 @@ const GamePage = ({ locale }: GamePageProps) => {
         </div>
         <div className="flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center gap-10">
-            {game.selectedCard && (
-              <Card
-                card={game.selectedCard}
-                className="absolute top-0 left-0 -rotate-[10deg] w-[70px] h-[100px] -translate-y-2 z-10"
-                disabled
-              />
-            )}
+            <SelectedCard />
             <DrawPile />
             <DiscardPile />
           </div>
