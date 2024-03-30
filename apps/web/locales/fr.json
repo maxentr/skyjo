@@ -15,9 +15,7 @@
         "description": "La partie que vous cherchez n'existe pas"
       }
     },
-    "GamePage": {
-      "last-turn": "Dernier tour !"
-    }
+    "GamePage": {}
   },
   "components": {
     "AdminLobby": {
@@ -61,6 +59,9 @@
     "EndRoundDialog": {
       "title": "Fin de la manche",
       "description": "La manche suivante va commencer dans quelques secondes..."
+    },
+    "GameInfo": {
+      "last-turn": "Last turn!"
     },
     "LanguageSettings": {
       "title": "Langue",

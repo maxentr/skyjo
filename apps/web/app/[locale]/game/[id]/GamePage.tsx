@@ -13,9 +13,7 @@ import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
 import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { getGameInfo, isCurrentUserTurn } from "@/lib/skyjo"
-import { InfoIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { isCurrentUserTurn } from "@/lib/skyjo"
 
 type GamePageProps = {
   locale: string
@@ -23,7 +21,6 @@ type GamePageProps = {
 
 const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
-  const t = useTranslations("pages.GamePage")
 
   return (
     <div className="h-full w-full bg-background flex flex-col">
@@ -76,15 +73,6 @@ const GamePage = ({ locale }: GamePageProps) => {
       <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row items-end">
         <div className="flex flex-col gap-2">
           <CopyLink />
-          <div className="flex flex-row items-center gap-2 p-2 bg-off-white border-2 border-black rounded w-[300px]">
-            <InfoIcon size={20} />
-            <div className="flex flex-col justify-start">
-              {game.roundState === "lastLap" && (
-                <p className="font-bold">{t("last-turn")}</p>
-              )}
-              <p>{getGameInfo(player, game)}</p>
-            </div>
-          </div>
         </div>
         {player && (
           <PlayerBoard

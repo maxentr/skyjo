@@ -15,9 +15,7 @@
         "description": "The game you are looking for does not exist"
       }
     },
-    "GamePage": {
-      "last-turn": "Last turn!"
-    }
+    "GamePage": {}
   },
   "components": {
     "AdminLobby": {
@@ -61,6 +59,9 @@
     "EndRoundDialog": {
       "title": "End of the round",
       "description": "The next round will start in few seconds..."
+    },
+    "GameInfo": {
+      "last-turn": "Dernier tour !"
     },
     "LanguageSettings": {
       "title": "Language",
