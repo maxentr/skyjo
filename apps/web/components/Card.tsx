@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { cva } from "class-variance-authority"
+import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
@@ -10,12 +10,12 @@ const cardClass = cva(
   {
     variants: {
       size: {
-        tiny: "w-8 h-12 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-sm",
+        tiny: "w-8 h-12 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
         small:
-          "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-base",
+          "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-xl",
         normal:
-          "w-14 h-20 rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base",
-        big: "w-[70px] h-[100px] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base",
+          "w-14 h-20 rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-2xl ",
+        big: "w-[70px] h-[100px] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
       },
       value: {
         "no-card": "bg-transparent border-dashed shadow-none",
@@ -65,7 +65,7 @@ const cardValue: Record<string, CardValue> = {
 
 type CardProps = {
   card: SkyjoCardToJson
-  size?: "tiny" | "small" | "normal"
+  size?: VariantProps<typeof cardClass>["size"]
   onClick?: () => void
   className?: ClassValue
   title?: string
