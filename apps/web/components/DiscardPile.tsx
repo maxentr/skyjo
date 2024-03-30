@@ -14,11 +14,30 @@ const DiscardPile = () => {
       isCurrentUserTurn(game, player.name) &&
       game.lastDiscardCardValue !== undefined &&
       game.turnState === "chooseAPile"
-    ) {
+    )
       actions.pickCardFromPile("discard")
-    } else if (game.turnState === "throwOrReplace") {
-      actions.discardSelectedCard()
-    }
+  }
+
+  const onDiscard = () => {
+    if (isCurrentUserTurn(game, player.name)) actions.discardSelectedCard()
+  }
+
+  if (
+    isCurrentUserTurn(game, player.name) &&
+    game.turnState === "throwOrReplace"
+  ) {
+    return (
+      <Card
+        card={{
+          value: -98,
+          isVisible: false,
+        }}
+        onClick={onDiscard}
+        title={t("throw")}
+        className="translate-y-1"
+        disabled={false}
+      />
+    )
   }
 
   const card = {
@@ -27,9 +46,9 @@ const DiscardPile = () => {
   }
 
   const disabled = !(
-    isCurrentUserTurn(game, player.name) &&
-    (game.turnState === "chooseAPile" || game.turnState === "throwOrReplace")
+    isCurrentUserTurn(game, player.name) && game.turnState === "chooseAPile"
   )
+
   return (
     <Card
       card={card}

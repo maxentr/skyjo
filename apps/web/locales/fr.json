@@ -44,7 +44,8 @@
       "button-title": "Copier le lien"
     },
     "DiscardPile": {
-      "title": "Paquet de défausse"
+      "title": "Paquet de défausse",
+      "throw": "Défausser"
     },
     "DrawPile": {
       "title": "Paquet de pioche"

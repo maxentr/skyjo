@@ -44,7 +44,8 @@
       "button-title": "Copy link"
     },
     "DiscardPile": {
-      "title": "Discard pile"
+      "title": "Discard pile",
+      "throw": "Throw"
     },
     "DrawPile": {
       "title": "Draw pile"
