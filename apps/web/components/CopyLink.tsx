@@ -6,7 +6,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getGameInviteLink } from "@/lib/utils"
 import { CheckIcon, ClipboardCopyIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 
 const CopyLink = () => {
   const { game } = useSkyjo()
@@ -15,19 +15,30 @@ const CopyLink = () => {
   const [interval, setInterval] = useState<NodeJS.Timeout>()
   const inviteLink = getGameInviteLink(window.location.href)
 
-  const onCopy = () => {
+  const copyLink = () => {
     navigator.clipboard.writeText(inviteLink)
     setCopied(true)
 
     if (copied) clearInterval(interval)
-    setInterval(setTimeout(() => setCopied(false), 3000))
+    setInterval(setTimeout(() => setCopied(false), 2000))
+  }
+
+  const onCopyFromInput = (e: MouseEvent<HTMLInputElement>) => {
+    e.currentTarget.select()
+    copyLink()
   }
 
   if (game.status === "lobby")
     return (
       <div className="flex flex-row items-center gap-2">
-        <Input type="text" value={inviteLink} readOnly className="w-[300px]" />
-        <Button variant="icon" onClick={onCopy}>
+        <Input
+          type="text"
+          value={inviteLink}
+          onClick={onCopyFromInput}
+          readOnly
+          className="w-[300px] select-text"
+        />
+        <Button variant="icon" onClick={copyLink}>
           {copied ? <CheckIcon /> : <ClipboardCopyIcon />}
         </Button>
       </div>
