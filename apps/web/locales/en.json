@@ -15,9 +15,7 @@
         "description": "The game you are looking for does not exist"
       }
     },
-    "GamePage": {
-      "last-turn": "Last turn!"
-    }
+    "GamePage": {}
   },
   "components": {
     "AdminLobby": {
@@ -37,14 +35,15 @@
       "separator": ": "
     },
     "ChatMessageList": {
-      "unread-messages": "{count} unread message(s)"
+      "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
     "CopyLink": {
       "message": "Link copied!",
       "button-title": "Copy link"
     },
     "DiscardPile": {
-      "title": "Discard pile"
+      "title": "Discard pile",
+      "throw": "Throw"
     },
     "DrawPile": {
       "title": "Draw pile"
@@ -60,6 +59,9 @@
     "EndRoundDialog": {
       "title": "End of the round",
       "description": "The next round will start in few seconds..."
+    },
+    "GameInfo": {
+      "last-turn": "Dernier tour !"
     },
     "LanguageSettings": {
       "title": "Language",

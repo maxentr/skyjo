@@ -53,7 +53,6 @@ export async function generateMetadata({
     ],
     metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: baseUrl,
       languages: {
         en: "/en",
         fr: "/fr",
