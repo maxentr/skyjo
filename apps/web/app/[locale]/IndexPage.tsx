@@ -46,7 +46,7 @@ const IndexPage = ({ gameId }: Props) => {
         toast({
           description: t("game-not-found.description"),
           variant: "destructive",
-          duration: 3000,
+          duration: 5000,
         })
       }
     })
