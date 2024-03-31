@@ -1,5 +1,7 @@
 "use client"
 
+import { useToast } from "@/components/ui/use-toast"
+import { useTranslations } from "next-intl"
 import {
   createContext,
   PropsWithChildren,
@@ -26,6 +28,9 @@ type SocketContextInterface = {
 const SocketContext = createContext({} as SocketContextInterface)
 
 const SocketContextProvider = ({ children }: PropsWithChildren) => {
+  const { toast } = useToast()
+  const t = useTranslations("contexts.SocketContext")
+
   useEffect(() => {
     initGameListeners()
 
@@ -42,15 +47,25 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
 
   const onConnectionLost = (reason: string) => {
     console.log("Socket disconnected", reason)
+    toast({
+      description: t("connection-lost"),
+      variant: "destructive",
+      duration: 5000,
+    })
+  }
+
+  const onConnectionError = (err: any) => {
   }
 
   const initGameListeners = () => {
     socket.on("connect", onConnect)
     socket.on("disconnect", onConnectionLost)
+    socket.on("connect_error", onConnectionError)
   }
   const destroyGameListeners = () => {
     socket.off("connect", onConnect)
     socket.off("disconnect", onConnectionLost)
+    socket.off("connect_error", onConnectionError)
   }
   //#endregion
 

@@ -198,5 +198,10 @@
         "game-stopped": "The game has been stopped because there are not enough players"
       }
     }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Connection to the server has been lost"
+    }
   }
 }
