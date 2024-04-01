@@ -23,6 +23,8 @@ type GamePageProps = {
 const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
+  const isPlayerTurn = isCurrentUserTurn(game, player?.name)
+
   return (
     <div className="h-full w-full bg-background flex flex-col gap-6">
       <div className="w-full flex flex-row items-start h-full">
@@ -56,8 +58,8 @@ const GamePage = ({ locale }: GamePageProps) => {
         <div className="flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center justify-center gap-10 h-full w-fit">
             <SelectedCard />
-            <DrawPile />
-            <DiscardPile />
+            <DrawPile isPlayerTurn={isPlayerTurn} />
+            <DiscardPile isPlayerTurn={isPlayerTurn} />
           </div>
           <AdminLobby />
         </div>
@@ -77,12 +79,7 @@ const GamePage = ({ locale }: GamePageProps) => {
           <GameInfo />
         </div>
 
-        {player && (
-          <PlayerBoard
-            player={player}
-            isPlayerTurn={isCurrentUserTurn(game, player.name)}
-          />
-        )}
+        {player && <PlayerBoard player={player} isPlayerTurn={isPlayerTurn} />}
       </div>
       <EndRoundDialog />
       <EndGameDialog />

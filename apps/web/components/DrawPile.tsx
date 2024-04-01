@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { isCurrentUserTurn } from "@/lib/skyjo"
+import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 
 const DRAW_CARD = {
@@ -10,31 +10,30 @@ const DRAW_CARD = {
   isVisible: false,
 }
 
-const DrawPile = () => {
-  const { game, player, actions } = useSkyjo()
+type DrawPileProps = {
+  isPlayerTurn: boolean
+}
+
+const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
+  const { game, actions } = useSkyjo()
   const t = useTranslations("components.DrawPile")
 
   const onClick = () => {
-    if (
-      isCurrentUserTurn(game, player.name) &&
-      game.turnState === "chooseAPile"
-    ) {
+    if (isPlayerTurn && game.turnState === "chooseAPile") {
       actions.pickCardFromPile("draw")
     }
   }
+
+  const animation =
+    isPlayerTurn && game.turnState === "chooseAPile" ? "animate-scale" : ""
 
   return (
     <Card
       card={DRAW_CARD}
       onClick={onClick}
       title={t("title")}
-      className="shadow-[4px_4px_0px_0px_rgba(0,0,0)]"
-      disabled={
-        !(
-          isCurrentUserTurn(game, player.name) &&
-          game.turnState === "chooseAPile"
-        )
-      }
+      className={cn("shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
+      disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
     />
   )
 }

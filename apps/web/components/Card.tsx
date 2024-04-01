@@ -7,7 +7,7 @@ import { Trash2Icon } from "lucide-react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
-  "text-black border-2 border-black flex justify-center items-center transition-all duration-300 select-none",
+  "text-black border-2 border-black flex justify-center items-center select-none",
   {
     variants: {
       size: {
@@ -30,7 +30,7 @@ const cardClass = cva(
       },
       disabled: {
         true: "",
-        false: "hover:scale-105",
+        false: "",
       },
     },
   },

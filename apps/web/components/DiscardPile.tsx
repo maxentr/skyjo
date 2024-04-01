@@ -2,16 +2,20 @@
 
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { isCurrentUserTurn } from "@/lib/skyjo"
+import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 
-const DiscardPile = () => {
-  const { game, player, actions } = useSkyjo()
+type DiscardPileProps = {
+  isPlayerTurn: boolean
+}
+
+const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
+  const { game, actions } = useSkyjo()
   const t = useTranslations("components.DiscardPile")
 
   const onClick = () => {
     if (
-      isCurrentUserTurn(game, player.name) &&
+      isPlayerTurn &&
       game.lastDiscardCardValue !== undefined &&
       game.turnState === "chooseAPile"
     )
@@ -19,13 +23,10 @@ const DiscardPile = () => {
   }
 
   const onDiscard = () => {
-    if (isCurrentUserTurn(game, player.name)) actions.discardSelectedCard()
+    if (isPlayerTurn) actions.discardSelectedCard()
   }
 
-  if (
-    isCurrentUserTurn(game, player.name) &&
-    game.turnState === "throwOrReplace"
-  ) {
+  if (isPlayerTurn && game.turnState === "throwOrReplace") {
     return (
       <Card
         card={{
@@ -34,7 +35,7 @@ const DiscardPile = () => {
         }}
         onClick={onDiscard}
         title={t("throw")}
-        className="translate-y-1"
+        className="translate-y-1 animate-scale"
         disabled={false}
       />
     )
@@ -45,17 +46,20 @@ const DiscardPile = () => {
     isVisible: game.lastDiscardCardValue !== undefined,
   }
 
-  const disabled = !(
-    isCurrentUserTurn(game, player.name) && game.turnState === "chooseAPile"
-  )
+  const isPlayerTurnAndChooseAPile =
+    isPlayerTurn && game.turnState === "chooseAPile"
+
 
   return (
     <Card
       card={card}
       onClick={onClick}
       title={t("title")}
-      className={card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]"}
-      disabled={disabled}
+      className={cn(
+        card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]",
+        isPlayerTurnAndChooseAPile ? "animate-scale" : ""
+      )}
+      disabled={!isPlayerTurnAndChooseAPile}
     />
   )
 }
