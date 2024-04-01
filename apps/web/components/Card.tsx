@@ -3,7 +3,9 @@
 import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
+import { motion, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
+import { useEffect } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
@@ -85,6 +87,7 @@ type CardProps = {
   className?: ClassValue
   title?: string
   disabled?: boolean
+  flipAnimation?: boolean
 }
 const Card = ({
   card,
@@ -93,7 +96,27 @@ const Card = ({
   className,
   title,
   disabled = false,
+  flipAnimation = true,
 }: CardProps) => {
+  const [scope, animate] = useAnimate()
+  const controls = useAnimationControls()
+
+  useEffect(() => {
+    const animation = async () => {
+      await animate(scope.current, {
+        rotateY: 360,
+        transformStyle: "preserve-3d",
+        transition: {
+          duration: 1,
+        },
+      })
+
+      controls.set({ rotateY: 0 })
+    }
+
+    if (flipAnimation && card.isVisible) animation()
+  }, [flipAnimation, card.isVisible])
+
   let cardContent: string | JSX.Element = ""
 
   if (card.value === -98) {
@@ -103,7 +126,9 @@ const Card = ({
   }
 
   return (
-    <button
+    <motion.button
+      ref={scope}
+      animate={controls}
       className={cn(
         cardClass({
           size,
@@ -117,7 +142,7 @@ const Card = ({
       disabled={disabled}
     >
       {cardContent}
-    </button>
+    </motion.button>
   )
 }
 

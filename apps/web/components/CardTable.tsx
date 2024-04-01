@@ -1,7 +1,8 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { canTurnTwoCards, isCurrentUserTurn } from "@/lib/skyjo"
+import { canTurnTwoCards, hasTurnedCard, isCurrentUserTurn } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
+import { AnimatePresence } from "framer-motion"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
@@ -18,14 +19,14 @@ const CardTable = ({
 }: CardTableProps) => {
   const { game, player, actions } = useSkyjo()
 
-  const canTurnCardAtBeginning =
-    canTurnTwoCards(game) && game.roundState === "waitingPlayersToTurnTwoCards"
+  const canTurnCardsAtBeginning =
+    canTurnTwoCards(game) && !hasTurnedCard(player)
   const canReplaceCard =
     game.turnState === "throwOrReplace" || game.turnState === "replaceACard"
   const canTurnCard = game.turnState === "turnACard"
 
   const onClick = (column: number, row: number) => {
-    if (canTurnCardAtBeginning) {
+    if (canTurnCardsAtBeginning) {
       actions.playRevealCard(column, row)
     } else if (isCurrentUserTurn(game, player.name)) {
       if (canReplaceCard) actions.replaceCard(column, row)
