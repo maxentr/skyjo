@@ -55,9 +55,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             />
           ))}
         </div>
-        <div className="flex flex-col justify-center items-center gap-4">
-          <div className="relative flex flex-row items-center justify-center gap-10 h-full w-fit">
-            <SelectedCard />
+        <div className="relative flex flex-col justify-center items-center gap-4">
             <DrawPile isPlayerTurn={isPlayerTurn} />
             <DiscardPile isPlayerTurn={isPlayerTurn} />
           </div>
