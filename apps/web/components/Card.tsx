@@ -11,15 +11,15 @@ const cardClass = cva(
   {
     variants: {
       size: {
-        tiny: "w-8 h-12 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
+        tiny: " h-full max-h-12 aspect-[8/12] border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
         small:
-          "w-12 h-16 rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-xl",
+          " h-full max-h-16 aspect-[8/12] rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-xl",
         normal:
-          "w-14 h-20 rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-2xl ",
-        big: "w-[70px] h-[100px] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
+          " h-full max-h-20 aspect-[8/12] rounded-md shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-2xl ",
+        big: "h-full max-h-[90px] aspect-[8/12] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
       },
       value: {
-        "discard": "bg-transparent border-dashed border-red-600 shadow-none",
+        discard: "bg-transparent border-dashed border-red-600 shadow-none",
         "no-card": "bg-transparent border-dashed shadow-none",
         "not-visible": " bg-off-white",
         negative: " bg-card-dark-blue",
@@ -39,10 +39,10 @@ const cardClass = cva(
 const throwIconClass = cva("text-red-600", {
   variants: {
     size: {
-      tiny: "w-4 h-4",
-      small: " w-5 h-5",
-      normal: " w-6 h-6",
-      big: " w-8 h-8",
+      tiny: "w-4 aspect-square",
+      small: " w-5 aspect-square",
+      normal: " w-6 aspect-square",
+      big: " w-8 aspect-square",
     },
   },
 })

@@ -14,15 +14,14 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col items-center col-start-2 duration-300 ease-in-out",
-        isPlayerTurn ? "scale-110" : "",
+        "flex flex-col items-center justify-end col-start-2 duration-300 ease-in-out w-full h-full",
       )}
     >
-      <CardTable cards={player.cards} size={"small"} />
+      <CardTable cards={player.cards} size="normal" />
       <Image
         src={`/avatars/${player.avatar}.png`}
-        width={40}
-        height={40}
+        width={32}
+        height={32}
         alt={t(`Avatar.${player.avatar}`)}
         title={t(`Avatar.${player.avatar}`)}
         className="mt-2 select-none"

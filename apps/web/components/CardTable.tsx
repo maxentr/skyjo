@@ -6,7 +6,7 @@ import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
   cards: SkyjoCardToJson[][]
-  size?: "tiny" | "small" | "normal"
+  size?: "tiny" | "small" | "normal" | "big"
   cardDisabled?: boolean
 }
 const CardTable = ({
@@ -38,8 +38,8 @@ const CardTable = ({
   return (
     <div
       className={cn(
-        "grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2",
-        size === "tiny" ? "gap-1.5" : "gap-2",
+        "grid grid-rows-3 grid-flow-col transition-all duration-300 gap-1.5 w-fit h-full aspect-[31/32]",
+        size === "tiny" ? "max-h-40" : "max-h-[208px]",
       )}
     >
       {cards.map((column, columnIndex) => {
