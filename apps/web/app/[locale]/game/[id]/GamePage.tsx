@@ -55,12 +55,13 @@ const GamePage = ({ locale }: GamePageProps) => {
             />
           ))}
         </div>
-        <div className="relative flex flex-col justify-center items-center gap-4">
-            <DrawPile isPlayerTurn={isPlayerTurn} />
-            <DiscardPile isPlayerTurn={isPlayerTurn} />
-          </div>
+        <div className="relative flex flex-row justify-center items-center gap-4">
+          <DrawPile isPlayerTurn={isPlayerTurn} />
+          <DiscardPile isPlayerTurn={isPlayerTurn} />
+          <SelectedCard />
           <AdminLobby />
         </div>
+
         <div className="flex flex-col items-end">
           {opponents[2].map((opponent) => (
             <OpponentBoard
