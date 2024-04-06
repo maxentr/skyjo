@@ -50,7 +50,7 @@ const GameInfo = () => {
   }
 
   return (
-    <div className="flex flex-row items-center gap-2 p-2 bg-off-white border-2 border-black rounded w-[300px] select-none">
+    <div className="flex flex-row items-center gap-2 p-2 bg-off-white border-2 border-black rounded max-w-[300px] select-none">
       <InfoIcon size={20} />
       <div className="flex flex-col justify-start">
         {game.roundState === "lastLap" && (

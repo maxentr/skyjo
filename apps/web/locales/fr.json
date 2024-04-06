@@ -15,7 +15,11 @@
         "description": "La partie que vous cherchez n'existe pas"
       }
     },
-    "GamePage": {}
+    "GamePage": {},
+    "Rules": {
+      "back": "Retour à l'accueil",
+      "title": "Règles du jeu Skyjo"
+    }
   },
   "components": {
     "AdminLobby": {
@@ -84,7 +88,6 @@
       }
     },
     "Rules": {
-      "title": "Règles du jeu",
       "cards-section-title": "{number} cartes de jeu :",
       "game-goal": {
         "title": "But du jeu",
@@ -197,6 +200,11 @@
         "player-left": "{username} a quitté la partie",
         "game-stopped": "La partie a été arrêtée car il n'y a plus assez de joueurs"
       }
+    }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Connexion au serveur perdue"
     }
   }
 }

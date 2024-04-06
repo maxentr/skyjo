@@ -17,22 +17,22 @@ type OpponentBoardProps = {
 }
 
 const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
-  const t = useTranslations("components")
+  const ta = useTranslations("components.Avatar")
+  const to = useTranslations("components.OpponentBoard")
 
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-start duration-300 ease-in-out",
-        isPlayerTurn && "scale-105",
+        "flex flex-col items-center justify-start duration-300 ease-in-out w-full h-full",
       )}
     >
       <Image
         src={`/avatars/${opponent.avatar}.png`}
-        width={40}
-        height={40}
-        alt={t(`Avatar.${opponent.avatar}`)}
-        title={t(`Avatar.${opponent.avatar}`)}
-        className={cn("select-none", isPlayerTurn && "animate-bounce-slow")}
+        width={32}
+        height={32}
+        alt={ta(opponent.avatar)}
+        title={ta(opponent.avatar)}
+        className={cn("select-none", isPlayerTurn && "animate-bounce")}
         priority
       />
       <p
@@ -49,13 +49,13 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
                 <AlertTriangleIcon size={16} className="text-yellow-700" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>{t("OpponentBoard.connection-lost")}</p>
+                <p>{to("connection-lost")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )}
       </p>
-      <CardTable cards={opponent.cards} size="tiny" cardDisabled={true} />
+      <CardTable cards={opponent.cards} size="normal" cardDisabled={true} />
     </div>
   )
 }

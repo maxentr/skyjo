@@ -11,10 +11,10 @@ const SelectedCard = () => {
     <Card
       card={game.selectedCard}
       className={cn(
-        "absolute top-0 -translate-y-2 z-10",
+        "absolute -translate-y-2 z-10",
         game.turnState === "throwOrReplace"
-          ? "left-0 -rotate-[10deg]"
-          : "right-0 rotate-[10deg]",
+          ? "top-5 -left-12 -rotate-[10deg]"
+          : "top-5 -right-12 rotate-[10deg]",
       )}
       size="big"
       disabled

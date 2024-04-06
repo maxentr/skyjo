@@ -11,7 +11,7 @@ const AdminLobby = () => {
     game.status === "lobby" &&
     game.players.length > 1
   )
-    return <Button onClick={actions.startGame}>{t("start-game-button")}</Button>
+    return <Button onClick={actions.startGame} className="absolute top-[120%]">{t("start-game-button")}</Button>
 }
 
 export default AdminLobby

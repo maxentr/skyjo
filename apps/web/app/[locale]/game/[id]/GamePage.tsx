@@ -23,11 +23,13 @@ type GamePageProps = {
 const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
+  const isPlayerTurn = isCurrentUserTurn(game, player?.name)
+
   return (
-    <div className="h-full w-full bg-background flex flex-col">
-      <div className="w-full flex flex-row items-start h-1/3">
+    <div className="h-full w-full bg-background flex flex-col gap-6">
+      <div className="w-full flex flex-row items-start h-full">
         <div className="w-10"></div>
-        <div className="flex flex-1 flex-row justify-evenly">
+        <div className="flex flex-1 flex-row justify-evenly w-full h-full">
           {opponents[1].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
@@ -43,7 +45,7 @@ const GamePage = ({ locale }: GamePageProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row">
+      <div className="w-full h-2/6 grid grid-cols-3 grid-flow-row">
         <div className="flex flex-col items-start">
           {opponents[0].map((opponent) => (
             <OpponentBoard
@@ -53,11 +55,9 @@ const GamePage = ({ locale }: GamePageProps) => {
             />
           ))}
         </div>
-        <div className="flex flex-col justify-center items-center gap-4">
-          <div className="relative flex flex-row items-center gap-10">
-            <SelectedCard />
-            <DrawPile />
-            <DiscardPile />
+        <div className="relative flex flex-col justify-center items-center gap-4">
+            <DrawPile isPlayerTurn={isPlayerTurn} />
+            <DiscardPile isPlayerTurn={isPlayerTurn} />
           </div>
           <AdminLobby />
         </div>
@@ -71,17 +71,13 @@ const GamePage = ({ locale }: GamePageProps) => {
           ))}
         </div>
       </div>
-      <div className="w-full h-1/3 grid grid-cols-3 grid-flow-row items-end">
+      <div className="w-full h-full grid grid-cols-3 grid-flow-row items-end">
         <div className="flex flex-col gap-2">
           <CopyLink />
           <GameInfo />
         </div>
-        {player && (
-          <PlayerBoard
-            player={player}
-            isPlayerTurn={isCurrentUserTurn(game, player.name)}
-          />
-        )}
+
+        {player && <PlayerBoard player={player} isPlayerTurn={isPlayerTurn} />}
       </div>
       <EndRoundDialog />
       <EndGameDialog />

@@ -15,7 +15,11 @@
         "description": "The game you are looking for does not exist"
       }
     },
-    "GamePage": {}
+    "GamePage": {},
+    "Rules": {
+      "back": "Back to the home page",
+      "title": "Skyjo game rules"
+    }
   },
   "components": {
     "AdminLobby": {
@@ -84,7 +88,6 @@
       }
     },
     "Rules": {
-      "title": "Game rules",
       "cards-section-title": "{number} game cards:",
       "game-goal": {
         "title": "Game goal",
@@ -197,6 +200,11 @@
         "player-left": "{username} left the game",
         "game-stopped": "The game has been stopped because there are not enough players"
       }
+    }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Connection to the server has been lost"
     }
   }
 }

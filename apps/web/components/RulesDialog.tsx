@@ -25,7 +25,7 @@ const RulesDialog = () => {
           <DialogTitle className="text-2xl">{t("title")}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-6 text-slate-900 bg-off-white overflow-y-auto">
-          <Rules showTitle={false} />
+          <Rules />
         </div>
       </DialogContent>
     </Dialog>
