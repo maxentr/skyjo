@@ -25,6 +25,11 @@ const GamePage = ({ locale }: GamePageProps) => {
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.name)
 
+  const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
+  const onRulesDialogOpenChange = () => {
+    if (isFirstPlayerGame) localStorage.setItem("firstGame", "false")
+  }
+
   return (
     <div className="h-full w-full bg-background flex flex-col gap-6">
       <div className="w-full flex flex-row items-start h-full">
@@ -41,7 +46,10 @@ const GamePage = ({ locale }: GamePageProps) => {
         <div className="flex flex-row justify-end">
           <div className="flex flex-col gap-4 items-center justify-start">
             <Scoreboard />
-            <RulesDialog />
+            <RulesDialog
+              defaultOpen={isFirstPlayerGame === "true"}
+              onOpenChange={onRulesDialogOpenChange}
+            />
           </div>
         </div>
       </div>
