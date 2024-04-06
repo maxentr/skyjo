@@ -1,16 +1,11 @@
 import { Card } from "@/components/Card"
 import { useTranslations } from "next-intl"
 
-type RulesProps = {
-  showTitle?: boolean
-}
-
-const Rules = ({ showTitle = true }: RulesProps) => {
+const Rules = () => {
   const t = useTranslations("components.Rules")
 
   return (
     <div className="flex flex-col gap-6 text-slate-900 px-6">
-      {showTitle && <h1 className="text-2xl">{t("title")}</h1>}
       <div className="bg-slate-100 rounded-md pt-2 pb-4">
         <h3 className="md:pl-2 text-lg">
           {t("cards-section-title", { number: 150 })}

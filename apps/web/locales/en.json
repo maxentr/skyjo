@@ -15,7 +15,11 @@
         "description": "The game you are looking for does not exist"
       }
     },
-    "GamePage": {}
+    "GamePage": {},
+    "Rules": {
+      "back": "Back to the home page",
+      "title": "Skyjo game rules"
+    }
   },
   "components": {
     "AdminLobby": {
@@ -84,7 +88,6 @@
       }
     },
     "Rules": {
-      "title": "Game rules",
       "cards-section-title": "{number} game cards:",
       "game-goal": {
         "title": "Game goal",
