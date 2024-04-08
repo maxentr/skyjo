@@ -20,6 +20,7 @@ const Rules = () => {
               }}
               size="tiny"
               className="w-8"
+              flipAnimation={false}
               disabled
             />
           </div>
@@ -32,6 +33,7 @@ const Rules = () => {
               }}
               size="tiny"
               className="w-8"
+              flipAnimation={false}
               disabled
             />
           </div>
@@ -47,6 +49,7 @@ const Rules = () => {
                   }}
                   size="tiny"
                   className="w-8"
+                  flipAnimation={false}
                   disabled
                 />
               ))}
