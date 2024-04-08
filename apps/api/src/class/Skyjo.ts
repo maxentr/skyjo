@@ -1,4 +1,4 @@
-import { RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo"
+import { Move, RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 import { shuffle } from "../utils/shuffle"
 import { Game, GameInterface } from "./Game"
@@ -11,6 +11,7 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
   selectedCard: SkyjoCardToJson | null
   firstPlayerToFinish: SkyjoPlayer | null
   turnState: TurnState
+  lastMove: Move
   initializeCardPiles(): void
   givePlayersCards(player: SkyjoPlayer): void
   checkAllPlayersRevealedCards(count: number): void
@@ -27,6 +28,7 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
 export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   selectedCard: SkyjoCard | null = null
   turnState: TurnState = "chooseAPile"
+  lastMove: Move = "turn"
   private _discardPile: number[] = []
   private _drawPile: number[] = []
   roundState: RoundState = "waitingPlayersToTurnTwoCards"
@@ -122,6 +124,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
   public start() {
     this.reset()
+    this.lastMove = "turn"
 
     super.start()
   }
@@ -153,6 +156,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.selectedCard = card
 
     this.turnState = "throwOrReplace"
+    this.lastMove = "pickFromDrawPile"
   }
 
   public pickFromDiscard() {
@@ -163,6 +167,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.selectedCard = card
 
     this.turnState = "replaceACard"
+    this.lastMove = "pickFromDiscardPile"
   }
 
   public discardCard(card: SkyjoCard) {
@@ -170,6 +175,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.selectedCard = null
 
     this.turnState = "turnACard"
+    this.lastMove = "throw"
   }
 
   public replaceCard(column: number, row: number) {
@@ -178,6 +184,12 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     const selectedCard = this.selectedCard
     this.discardCard(oldCard)
     player.replaceCard(column, row, selectedCard!)
+    this.lastMove = "replace"
+  }
+
+  public turnCard(player: SkyjoPlayer, column: number, row: number) {
+    player.turnCard(column, row)
+    this.lastMove = "turn"
   }
 
   override nextTurn() {
@@ -281,6 +293,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
       lastDiscardCardValue: this.discardPile[this.discardPile.length - 1],
       roundState: this.roundState,
       turnState: this.turnState,
+      lastMove: this.lastMove,
     }
   }
 }

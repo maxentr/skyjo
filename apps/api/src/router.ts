@@ -153,7 +153,6 @@ const skyjoRouter = (io: Server) => {
     socket.on("play:turn-card", async (data: PlayTurnCard) => {
       try {
         const playData = playTurnCard.parse(data)
-
         await instance.turnCard(socket, playData)
       } catch (error) {
         console.error(`Error while playing a game : ${error}`)

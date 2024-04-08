@@ -100,7 +100,7 @@ export default class SkyjoController extends SkyjoGameController {
       "turnACard",
     ])
 
-    player.turnCard(column, row)
+    game.turnCard(player, column, row)
 
     await this.finishTurn(socket, game, player)
     await this.broadcastGame(socket, gameId)
