@@ -23,7 +23,7 @@ type GamePageProps = {
 const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
-  const isPlayerTurn = isCurrentUserTurn(game, player?.name)
+  const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
 
   const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
   const onRulesDialogOpenChange = () => {
@@ -39,7 +39,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>
@@ -59,7 +59,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>
@@ -76,7 +76,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>

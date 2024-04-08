@@ -1,7 +1,6 @@
 "use client"
 
 import { useSocket } from "@/contexts/SocketContext"
-import { useUser } from "@/contexts/UserContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
 import { Opponents } from "@/types/opponents"
 import { useTranslations } from "next-intl"
@@ -46,14 +45,13 @@ const SkyjoContextProvider = ({
   gameId,
 }: SkyjoContextProviderProps) => {
   const { socket } = useSocket()
-  const { username } = useUser()
   const t = useTranslations("utils.server.messages")
 
   const [game, setGame] = useState<SkyjoToJson>()
   const [chat, setChat] = useState<ChatMessage[]>([])
 
-  const player = getCurrentUser(game?.players, username)
-  const opponents = getOpponents(game?.players, username)
+  const player = getCurrentUser(game?.players, socket.id ?? "")
+  const opponents = getOpponents(game?.players, socket.id ?? "")
 
   useEffect(() => {
     if (!gameId) return
@@ -176,7 +174,7 @@ const SkyjoContextProvider = ({
       actions,
       chat,
     }),
-    [game, chat],
+    [game, chat, opponents, player],
   )
 
   if (!game || !player) return null

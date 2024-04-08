@@ -4,24 +4,26 @@ import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 export const getCurrentUser = (
   players: SkyjoToJson["players"] | undefined,
-  username: string,
+  socketId: string,
 ) => {
   if (!players) {
     return undefined
   }
 
-  return players.find((player) => player.name === username)
+  return players.find((player) => player.socketId === socketId)
 }
 
 export const getOpponents = (
   players: SkyjoToJson["players"] | undefined,
-  username: string,
+  socketId: string,
 ): Opponents => {
   if (!players) {
     return [[], [], []]
   }
 
-  const playerIndex = players.findIndex((player) => player.name === username)
+  const playerIndex = players.findIndex(
+    (player) => player.socketId === socketId,
+  )
 
   const connectedPlayers = players.filter(
     (player) => player.connectionStatus !== "disconnected",
@@ -49,15 +51,15 @@ export const getOpponents = (
   }
 }
 
-export const isCurrentUserTurn = (game?: SkyjoToJson, username?: string) => {
-  if (!username || !game) return false
+export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
+  if (!socketId || !game) return false
   if (
     game.status !== "playing" ||
     game.roundState === "waitingPlayersToTurnTwoCards"
   )
     return false
 
-  return game.players[game.turn].name === username
+  return game.players[game.turn].socketId === socketId
 }
 
 export const canTurnTwoCards = (game: SkyjoToJson) => {

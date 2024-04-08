@@ -29,7 +29,7 @@ const GameInfo = () => {
       game.status === "playing" &&
       (game.roundState === "playing" || game.roundState === "lastLap")
     ) {
-      return isCurrentUserTurn(game, player.name)
+      return isCurrentUserTurn(game, player.socketId)
         ? t(`turn.${game.turnState}`)
         : t("player-turn", {
             playerName: playerWhoHasToPlay.name,
