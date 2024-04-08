@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
+    "prod": "node dist/index.js",
     "format": "prettier --write ."
   },
   "dependencies": {

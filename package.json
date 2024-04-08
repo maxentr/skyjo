@@ -9,6 +9,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "start-api-prod": "pnpm run --filter api prod",
     "lint": "turbo run lint",
     "format": "turbo run format",
     "format:all": "prettier --write \"**/*.{ts,tsx,md}\""
