@@ -8,11 +8,11 @@ import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import GameInfo from "@/components/GameInfo"
+import GameStoppedDialog from "@/components/GameStoppedDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
-import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
 
@@ -24,6 +24,11 @@ const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.name)
+
+  const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
+  const onRulesDialogOpenChange = () => {
+    if (isFirstPlayerGame) localStorage.setItem("firstGame", "false")
+  }
 
   return (
     <div className="h-full w-full bg-background flex flex-col gap-6">
@@ -41,7 +46,10 @@ const GamePage = ({ locale }: GamePageProps) => {
         <div className="flex flex-row justify-end">
           <div className="flex flex-col gap-4 items-center justify-start">
             <Scoreboard />
-            <RulesDialog />
+            <RulesDialog
+              defaultOpen={isFirstPlayerGame === "true"}
+              onOpenChange={onRulesDialogOpenChange}
+            />
           </div>
         </div>
       </div>
@@ -55,10 +63,11 @@ const GamePage = ({ locale }: GamePageProps) => {
             />
           ))}
         </div>
-        <div className="relative flex flex-row justify-center items-center gap-4">
-          <DrawPile isPlayerTurn={isPlayerTurn} />
-          <DiscardPile isPlayerTurn={isPlayerTurn} />
-          <SelectedCard />
+        <div className="relative flex flex-col justify-center items-center gap-4">
+          <div className="relative flex flex-row items-center justify-center gap-10 h-full max-h-20 w-fit">
+            <DrawPile isPlayerTurn={isPlayerTurn} />
+            <DiscardPile isPlayerTurn={isPlayerTurn} />
+          </div>
           <AdminLobby />
         </div>
 
@@ -82,6 +91,7 @@ const GamePage = ({ locale }: GamePageProps) => {
       </div>
       <EndRoundDialog />
       <EndGameDialog />
+      <GameStoppedDialog />
       <Chat />
     </div>
   )

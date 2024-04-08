@@ -1,5 +1,6 @@
 import { Opponents } from "@/types/opponents"
 import { SkyjoToJson } from "shared/types/skyjo"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 export const getCurrentUser = (
   players: SkyjoToJson["players"] | undefined,
@@ -64,6 +65,12 @@ export const canTurnTwoCards = (game: SkyjoToJson) => {
     game.status === "playing" &&
     game.roundState === "waitingPlayersToTurnTwoCards"
   )
+}
+
+export const hasTurnedCard = (player: SkyjoPlayerToJson) => {
+  const visibleCards = player.cards.flat().filter((card) => card.isVisible)
+
+  return visibleCards.length === 2
 }
 
 export const getWinner = (game: SkyjoToJson) => {

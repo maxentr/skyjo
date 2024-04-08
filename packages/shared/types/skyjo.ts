@@ -14,9 +14,17 @@ export type TurnState =
   | "turnACard"
   | "replaceACard"
 
+export type Move =
+  | "pickFromDrawPile"
+  | "pickFromDiscardPile"
+  | "throw"
+  | "replace"
+  | "turn"
+
 export interface SkyjoToJson extends GameToJson<SkyjoPlayerToJson> {
   selectedCard?: SkyjoCardToJson
   roundState: RoundState
   turnState: TurnState
   lastDiscardCardValue?: number
+  lastMove: Move
 }

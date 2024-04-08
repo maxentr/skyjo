@@ -1,6 +1,7 @@
 "use client"
 
 import { Card } from "@/components/Card"
+import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
@@ -28,13 +29,17 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
     isPlayerTurn && game.turnState === "chooseAPile" ? "animate-scale" : ""
 
   return (
-    <Card
-      card={DRAW_CARD}
-      onClick={onClick}
-      title={t("title")}
-      className={cn("shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
-      disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
-    />
+    <div className="relative h-full max-h-20 aspect-[8/12]">
+      <SelectedCard show={game.turnState === "throwOrReplace"} />
+      <Card
+        card={DRAW_CARD}
+        onClick={onClick}
+        title={t("title")}
+        className={cn("shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
+        disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
+        flipAnimation={false}
+      />
+    </div>
   )
 }
 

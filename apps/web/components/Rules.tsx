@@ -19,6 +19,8 @@ const Rules = () => {
                 isVisible: true,
               }}
               size="tiny"
+              className="w-8"
+              flipAnimation={false}
               disabled
             />
           </div>
@@ -30,6 +32,8 @@ const Rules = () => {
                 isVisible: true,
               }}
               size="tiny"
+              className="w-8"
+              flipAnimation={false}
               disabled
             />
           </div>
@@ -44,6 +48,8 @@ const Rules = () => {
                     isVisible: true,
                   }}
                   size="tiny"
+                  className="w-8"
+                  flipAnimation={false}
                   disabled
                 />
               ))}

@@ -7,13 +7,7 @@
   "pages": {
     "Index": {
       "name-input-placeholder": "Nom",
-      "join-game-button": "Rejoindre la partie",
-      "find-game-button": "Trouver une partie",
-      "create-private-game-button": "Créer une partie privée",
-      "buy-game": "Acheter le jeu",
-      "game-not-found": {
-        "description": "La partie que vous cherchez n'existe pas"
-      }
+      "buy-game": "Acheter le jeu"
     },
     "GamePage": {},
     "Rules": {
@@ -66,6 +60,19 @@
     },
     "GameInfo": {
       "last-turn": "Last turn!"
+    },
+    "GameLobbyButtons": {
+      "name-input-placeholder": "Nom",
+      "join-game-button": "Rejoindre la partie",
+      "find-game-button": "Trouver une partie",
+      "create-private-game-button": "Créer une partie privée",
+      "game-not-found": {
+        "description": "La partie que vous cherchez n'existe pas"
+      }
+    },
+    "GameStoppedDialog": {
+      "title": "La partie s'est arrêtée",
+      "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
     },
     "LanguageSettings": {
       "title": "Langue",

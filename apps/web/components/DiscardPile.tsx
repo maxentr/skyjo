@@ -1,6 +1,7 @@
 "use client"
 
 import { Card } from "@/components/Card"
+import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
@@ -37,6 +38,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
         title={t("throw")}
         className="translate-y-1 animate-scale"
         disabled={false}
+        flipAnimation={false}
       />
     )
   }
@@ -49,18 +51,21 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
   const isPlayerTurnAndChooseAPile =
     isPlayerTurn && game.turnState === "chooseAPile"
 
-
   return (
-    <Card
-      card={card}
-      onClick={onClick}
-      title={t("title")}
-      className={cn(
-        card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]",
-        isPlayerTurnAndChooseAPile ? "animate-scale" : ""
-      )}
-      disabled={!isPlayerTurnAndChooseAPile}
-    />
+    <div className="relative h-full max-h-20 aspect-[8/12]">
+      <SelectedCard show={game.turnState === "replaceACard"} />
+      <Card
+        card={card}
+        onClick={onClick}
+        title={t("title")}
+        className={cn(
+          card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]",
+          isPlayerTurnAndChooseAPile ? "animate-scale" : "",
+        )}
+        disabled={!isPlayerTurnAndChooseAPile}
+        flipAnimation={false}
+      />
+    </div>
   )
 }
 

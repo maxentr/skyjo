@@ -19,8 +19,7 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
   const t = useTranslations("components.EndGameDialog")
 
   const isGameFinished =
-    game.roundState === "over" &&
-    (game.status === "finished" || game.status === "stopped")
+    game.roundState === "over" && game.status === "finished"
 
   if (!isGameFinished) return null
 

@@ -10,6 +10,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
 import { ChatMessage } from "shared/types/chat"
@@ -98,10 +99,10 @@ const SkyjoContextProvider = ({
   }
   //#endregion
 
-  if (!game || !player) return null
-
   //#region actions
   const sendMessage = (message: string) => {
+    if (!player) return
+
     socket.emit("message", {
       message,
       username: player.name,
@@ -167,16 +168,21 @@ const SkyjoContextProvider = ({
   }
   //#endregion
 
+  const providerValue = useMemo(
+    () => ({
+      game: game as SkyjoToJson,
+      player: player as SkyjoPlayerToJson,
+      opponents,
+      actions,
+      chat,
+    }),
+    [game, chat],
+  )
+
+  if (!game || !player) return null
+
   return (
-    <SkyjoContext.Provider
-      value={{
-        game,
-        player,
-        opponents,
-        actions,
-        chat,
-      }}
-    >
+    <SkyjoContext.Provider value={providerValue}>
       {children}
     </SkyjoContext.Provider>
   )

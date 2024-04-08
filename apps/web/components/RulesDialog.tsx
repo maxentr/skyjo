@@ -1,3 +1,5 @@
+"use client"
+
 import Rules from "@/components/Rules"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,11 +12,19 @@ import {
 import { BookOpenIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-const RulesDialog = () => {
+type RulesDialogProps = {
+  defaultOpen?: boolean
+  onOpenChange?: () => void
+}
+
+const RulesDialog = ({
+  defaultOpen = false,
+  onOpenChange,
+}: RulesDialogProps) => {
   const t = useTranslations("components.RulesDialog")
 
   return (
-    <Dialog>
+    <Dialog defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="icon" aria-label={t("trigger.aria-label")}>
           <BookOpenIcon />
