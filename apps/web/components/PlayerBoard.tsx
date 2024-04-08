@@ -16,10 +16,11 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
   const tp = useTranslations("components.PlayerBoard")
 
   const showSelectionAnimation =
-    isPlayerTurn &&
-    (game.turnState === "turnACard" ||
-      game.turnState === "replaceACard" ||
-      game.turnState === "throwOrReplace")
+    game.roundState === "waitingPlayersToTurnTwoCards" ||
+    (isPlayerTurn &&
+      (game.turnState === "turnACard" ||
+        game.turnState === "replaceACard" ||
+        game.turnState === "throwOrReplace"))
 
   return (
     <div
