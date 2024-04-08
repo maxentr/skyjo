@@ -22,14 +22,14 @@ const cardClass = cva(
         big: "h-full max-h-[90px] aspect-[8/12] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
       },
       value: {
-        discard: "!bg-transparent border-dashed border-red-600 shadow-none",
-        "no-card": "!bg-transparent border-dashed shadow-none",
-        "not-visible": " !bg-off-white text-off-white",
-        negative: " !bg-card-dark-blue",
-        neutral: " !bg-card-light-blue",
-        low: " !bg-card-green",
-        medium: "!bg-card-yellow",
-        high: " !bg-card-red",
+        discard: "bg-transparent border-dashed border-red-600 shadow-none",
+        "no-card": "bg-transparent border-dashed shadow-none",
+        "not-visible": " bg-off-white text-off-white",
+        negative: " bg-card-dark-blue",
+        neutral: " bg-card-light-blue",
+        low: " bg-card-green",
+        medium: "bg-card-yellow",
+        high: " bg-card-red",
       },
       disabled: {
         true: "",
@@ -100,7 +100,7 @@ const Card = ({
   flipAnimation = true,
 }: CardProps) => {
   const {
-    game: { lastMove },
+    game,
   } = useSkyjo()
   const [scope, animate] = useAnimate()
   const controls = useAnimationControls()
@@ -131,7 +131,7 @@ const Card = ({
       controls.set({ rotateY: 0 })
     }
 
-    if (flipAnimation && card.isVisible && lastMove === "turn") animation()
+    if (flipAnimation && card.isVisible && game?.lastMove === "turn") animation()
   }, [flipAnimation, card.isVisible])
 
   let cardContent: string | JSX.Element = ""
