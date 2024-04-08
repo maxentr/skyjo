@@ -10,16 +10,18 @@ type SelectedCardProps = {
 const SelectedCard = ({ show }: SelectedCardProps) => {
   const { game } = useSkyjo()
 
-  const pickFromDrawPile = game.turnState === "throwOrReplace"
+  const pickFromDrawPile = game.lastMove === "pickFromDrawPile"
 
   let exit: TargetAndTransition = pickFromDrawPile
     ? {
         translateX: 92,
         rotate: "0deg",
         scale: 1,
+        transition: {
+          duration: 0.1,
+        }
       }
     : {
-        translateX: -100,
       }
 
   return (
@@ -35,11 +37,12 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
             rotateY: 0,
             transformStyle: "preserve-3d",
             transition: {
-              duration: pickFromDrawPile ? 0.2 : 0.1,
+              duration: pickFromDrawPile ? 0.175 : 0.1,
             },
             rotate: pickFromDrawPile ? "-10deg" : "10deg",
             scale: 1.2,
           }}
+          exit={exit}
         >
           <Card
             card={{
@@ -58,8 +61,8 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
             animate={{
               opacity: 1,
               transition: {
-                duration: pickFromDrawPile ? 0.2 : 0,
-                delay: pickFromDrawPile ? 0.1 : 0,
+                duration: pickFromDrawPile ? 0.175 : 0,
+                delay: pickFromDrawPile ? 0.075 : 0,
               },
             }}
           >
