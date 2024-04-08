@@ -70,6 +70,10 @@
         "description": "La partie que vous cherchez n'existe pas"
       }
     },
+    "GameStoppedDialog": {
+      "title": "La partie s'est arrêtée",
+      "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
+    },
     "LanguageSettings": {
       "title": "Langue",
       "en": "Anglais",

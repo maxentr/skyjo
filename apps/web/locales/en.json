@@ -69,6 +69,10 @@
         "description": "The game you are looking for does not exist"
       }
     },
+    "GameStoppedDialog": {
+      "title": "Game stopped",
+      "description": "The game has been stopped because there are not enough players"
+    },
     "LanguageSettings": {
       "title": "Language",
       "en": "English",

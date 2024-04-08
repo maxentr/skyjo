@@ -8,11 +8,11 @@ import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import GameInfo from "@/components/GameInfo"
+import GameStoppedDialog from "@/components/GameStoppedDialog"
 import OpponentBoard from "@/components/OpponentBoard"
 import PlayerBoard from "@/components/PlayerBoard"
 import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
-import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
 
@@ -91,6 +91,7 @@ const GamePage = ({ locale }: GamePageProps) => {
       </div>
       <EndRoundDialog />
       <EndGameDialog />
+      <GameStoppedDialog />
       <Chat />
     </div>
   )
