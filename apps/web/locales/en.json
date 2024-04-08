@@ -7,13 +7,7 @@
   "pages": {
     "Index": {
       "name-input-placeholder": "Name",
-      "join-game-button": "Join the game",
-      "find-game-button": "Find a game",
-      "create-private-game-button": "Create a private game",
-      "buy-game": "Buy the game",
-      "game-not-found": {
-        "description": "The game you are looking for does not exist"
-      }
+      "buy-game": "Buy the game"
     },
     "GamePage": {},
     "Rules": {
@@ -66,6 +60,14 @@
     },
     "GameInfo": {
       "last-turn": "Dernier tour !"
+    },
+    "GameLobbyButtons": {
+      "join-game-button": "Join the game",
+      "find-game-button": "Find a game",
+      "create-private-game-button": "Create a private game",
+      "game-not-found": {
+        "description": "The game you are looking for does not exist"
+      }
     },
     "LanguageSettings": {
       "title": "Language",
