@@ -217,8 +217,6 @@ export abstract class SkyjoGameController {
     ) {
       game.removePlayer(socket.id)
       if (socket.id === game.admin.socketId) game.changeAdmin()
-
-      await this.broadcastGame(socket, game.id)
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
@@ -233,13 +231,7 @@ export abstract class SkyjoGameController {
       type: "player-left",
     })
 
-    if (game.status === "stopped") {
-      socket.to(game.id).emit("message", {
-        id: crypto.randomUUID(),
-        message: "game-stopped",
-        type: "warn",
-      })
-    }
+    await this.broadcastGame(socket, game.id)
 
     if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
     await socket.leave(game.id)
