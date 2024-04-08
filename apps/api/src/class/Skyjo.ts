@@ -203,6 +203,8 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
     if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
       this.players.forEach((player) => {
+        player.turnAllCards()
+        player.checkColumns()
         player.finalRoundScore()
       })
 

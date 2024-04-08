@@ -74,6 +74,14 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return this.currentScoreArray().reduce((a, b) => a + b, 0)
   }
 
+  public turnAllCards() {
+    this.cards.forEach((column) => {
+      column.forEach((card) => {
+        card.turnVisible()
+      })
+    })
+  }
+
   public finalRoundScore() {
     let finalScore = 0
 
@@ -84,7 +92,6 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
 
     this.cards.forEach((column) => {
       column.forEach((card) => {
-        card.turnVisible()
         finalScore += card.value
       })
     })
