@@ -1,11 +1,12 @@
 "use client"
 
+import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
 import { motion, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
@@ -21,14 +22,14 @@ const cardClass = cva(
         big: "h-full max-h-[90px] aspect-[8/12] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
       },
       value: {
-        discard: "bg-transparent border-dashed border-red-600 shadow-none",
-        "no-card": "bg-transparent border-dashed shadow-none",
-        "not-visible": " bg-off-white",
-        negative: " bg-card-dark-blue",
-        neutral: " bg-card-light-blue",
-        low: " bg-card-green",
-        medium: " bg-card-yellow",
-        high: " bg-card-red",
+        discard: "!bg-transparent border-dashed border-red-600 shadow-none",
+        "no-card": "!bg-transparent border-dashed shadow-none",
+        "not-visible": " !bg-off-white text-off-white",
+        negative: " !bg-card-dark-blue",
+        neutral: " !bg-card-light-blue",
+        low: " !bg-card-green",
+        medium: "!bg-card-yellow",
+        high: " !bg-card-red",
       },
       disabled: {
         true: "",
@@ -98,23 +99,39 @@ const Card = ({
   disabled = false,
   flipAnimation = true,
 }: CardProps) => {
+  const {
+    game: { lastMove },
+  } = useSkyjo()
   const [scope, animate] = useAnimate()
   const controls = useAnimationControls()
 
+  const [isInAnimation, setIsInAnimation] = useState<boolean>(false)
+
   useEffect(() => {
     const animation = async () => {
-      await animate(scope.current, {
-        rotateY: 360,
-        transformStyle: "preserve-3d",
-        transition: {
-          duration: 1,
+      setIsInAnimation(true)
+      controls.set({ rotateY: -180 })
+      const animation = animate(
+        scope.current,
+        {
+          rotateY: 0,
+          transformStyle: "preserve-3d",
         },
-      })
+        {
+          duration: 0.4,
+        },
+      )
+
+      setTimeout(() => {
+        setIsInAnimation(false)
+      }, 220)
+
+      Promise.all([animation])
 
       controls.set({ rotateY: 0 })
     }
 
-    if (flipAnimation && card.isVisible) animation()
+    if (flipAnimation && card.isVisible && lastMove === "turn") animation()
   }, [flipAnimation, card.isVisible])
 
   let cardContent: string | JSX.Element = ""
@@ -132,7 +149,9 @@ const Card = ({
       className={cn(
         cardClass({
           size,
-          value: cardValue[card.value ?? "not-visible"],
+          value: isInAnimation
+            ? "not-visible"
+            : cardValue[card.value ?? "not-visible"],
           disabled,
         }),
         className,
