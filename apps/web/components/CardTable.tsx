@@ -44,7 +44,7 @@ const CardTable = ({
       {cards.map((column, columnIndex) => {
         return column.map((card, rowIndex) => {
           const canBeSelected =
-            ((canTurnCardAtBeginning || canTurnCard) && !card.isVisible) ||
+            ((canTurnCardsAtBeginning || canTurnCard) && !card.isVisible) ||
             canReplaceCard
           return (
             <Card
