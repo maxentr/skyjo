@@ -13,7 +13,7 @@ function ChatMessageList({ unreadMessages }: ChatMessageListProps) {
   return (
     <div
       id="messages-container"
-      className="overflow-y-auto flex flex-grow flex-col-reverse py-2 pr-2.5 -mr-2 gap-2"
+      className="overflow-y-auto flex flex-grow flex-col-reverse my-2 gap-2"
     >
       {unreadMessages.map((message) => (
         <ChatMessage key={message.id} message={message} />
