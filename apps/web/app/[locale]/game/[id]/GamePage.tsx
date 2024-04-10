@@ -53,7 +53,7 @@ const GamePage = ({ locale }: GamePageProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-2/6 grid grid-cols-3 grid-flow-row">
+      <div className="w-full h-full grid grid-cols-3 grid-flow-row">
         <div className="flex flex-col items-start">
           {opponents[0].map((opponent) => (
             <OpponentBoard
