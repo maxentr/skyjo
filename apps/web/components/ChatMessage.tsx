@@ -23,7 +23,7 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
   return (
     <p
       className={cn(
-        "font-inter text-sm",
+        "font-inter text-sm text-wrap break-all w-full",
         chatMessageClasses({ type: message.type }),
       )}
     >

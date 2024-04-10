@@ -38,9 +38,9 @@ const GameStoppedDialog = ({}: GameStoppedDialogProps) => {
           <DialogTitle className="text-center">{t("title")}</DialogTitle>
           <DialogDescription>
             <p className="mt-2 text-center">{t("description")}</p>
-            <GameLobbyButtons beforeButtonAction={beforeButtonAction} />
           </DialogDescription>
         </DialogHeader>
+        <GameLobbyButtons beforeButtonAction={beforeButtonAction} />
       </DialogContent>
     </Dialog>
   )

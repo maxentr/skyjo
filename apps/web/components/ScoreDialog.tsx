@@ -43,9 +43,9 @@ const ScoreDialog = ({ open, onOpenChange }: ScoreDialogProps) => {
                 })}
               </p>
             )}
-            <ScoreTable players={game.players} winner={winner} />
           </DialogDescription>
         </DialogHeader>
+        <ScoreTable players={game.players} winner={winner} />
       </DialogContent>
     </Dialog>
   )

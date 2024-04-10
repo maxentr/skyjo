@@ -187,7 +187,7 @@
   },
   "utils": {
     "skyjo": {
-      "waiting": "Waiting players",
+      "waiting": "Waiting for players",
       "turn-cards": "Turn {number} cards",
       "turn": {
         "chooseAPile": "Choose a pile",

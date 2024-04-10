@@ -4,28 +4,40 @@ import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 export const getCurrentUser = (
   players: SkyjoToJson["players"] | undefined,
-  username: string,
+  socketId: string,
 ) => {
   if (!players) {
     return undefined
   }
 
-  return players.find((player) => player.name === username)
+  return players.find((player) => player.socketId === socketId)
+}
+
+export const getConnectedPlayers = (
+  players: SkyjoToJson["players"] | undefined,
+) => {
+  if (!players) {
+    return []
+  }
+
+  return players.filter((player) => player.connectionStatus !== "disconnected")
 }
 
 export const getOpponents = (
   players: SkyjoToJson["players"] | undefined,
-  username: string,
+  socketId: string,
 ): Opponents => {
   if (!players) {
     return [[], [], []]
   }
 
-  const playerIndex = players.findIndex((player) => player.name === username)
+  console.log(players, socketId)
 
-  const connectedPlayers = players.filter(
-    (player) => player.connectionStatus !== "disconnected",
+  const playerIndex = players.findIndex(
+    (player) => player.socketId === socketId,
   )
+
+  const connectedPlayers = getConnectedPlayers(players)
 
   const connectedOpponents = [
     ...connectedPlayers.slice(playerIndex + 1),
@@ -49,15 +61,13 @@ export const getOpponents = (
   }
 }
 
-export const isCurrentUserTurn = (game?: SkyjoToJson, username?: string) => {
-  if (!username || !game) return false
-  if (
-    game.status !== "playing" ||
-    game.roundState === "waitingPlayersToTurnTwoCards"
-  )
-    return false
+export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
+  if (!socketId || !game) return false
+  if (game.roundState === "waitingPlayersToTurnTwoCards") return true
 
-  return game.players[game.turn].name === username
+  if (game.status !== "playing" || game.roundState === "over") return false
+
+  return game.players[game.turn].socketId === socketId
 }
 
 export const canTurnTwoCards = (game: SkyjoToJson) => {
@@ -74,7 +84,8 @@ export const hasTurnedCard = (player: SkyjoPlayerToJson) => {
 }
 
 export const getWinner = (game: SkyjoToJson) => {
-  return game.players.reduce((prev, current) =>
+  const connectedPlayers = getConnectedPlayers(game.players)
+  return connectedPlayers.reduce((prev, current) =>
     prev.score < current.score ? prev : current,
   )
 }

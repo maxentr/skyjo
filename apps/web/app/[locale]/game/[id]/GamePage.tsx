@@ -23,7 +23,7 @@ type GamePageProps = {
 const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
-  const isPlayerTurn = isCurrentUserTurn(game, player?.name)
+  const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
 
   const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
   const onRulesDialogOpenChange = () => {
@@ -39,7 +39,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>
@@ -53,20 +53,24 @@ const GamePage = ({ locale }: GamePageProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-2/6 grid grid-cols-3 grid-flow-row">
+      <div className="w-full h-full grid grid-cols-3 grid-flow-row">
         <div className="flex flex-col items-start">
           {opponents[0].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>
         <div className="relative flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center justify-center gap-10 h-full max-h-20 w-fit">
-            <DrawPile isPlayerTurn={isPlayerTurn} />
-            <DiscardPile isPlayerTurn={isPlayerTurn} />
+            <DrawPile
+              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
+            />
+            <DiscardPile
+              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
+            />
           </div>
           <AdminLobby />
         </div>
@@ -76,7 +80,7 @@ const GamePage = ({ locale }: GamePageProps) => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.name)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
             />
           ))}
         </div>

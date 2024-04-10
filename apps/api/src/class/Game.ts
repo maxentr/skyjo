@@ -111,13 +111,7 @@ export abstract class Game<TPlayer extends Player>
     return nextTurn
   }
   nextTurn() {
-    let nextTurn = (this.turn + 1) % this.players.length
-
-    while (this.players[nextTurn].connectionStatus !== "connected") {
-      nextTurn = (nextTurn + 1) % this.players.length
-    }
-
-    this.turn = nextTurn
+    this.turn = this.getNextTurn()
   }
 
   reset() {

@@ -23,3 +23,11 @@ pnpm dev --filter api
 ```bash
 pnpm build --filter api
 ```
+
+### Deploy the project
+
+If you want to deploy the project to fly.io from the root directory, you can run the following command:
+
+```bash
+flyctl deploy --config ./apps/api/fly.toml --dockerfile ./apps/api/Dockerfile
+```

@@ -1,6 +1,6 @@
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
-import { MIN_PLAYERS } from "../constants"
+import { CardConstants } from "../constants"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
@@ -217,13 +217,11 @@ export abstract class SkyjoGameController {
     ) {
       game.removePlayer(socket.id)
       if (socket.id === game.admin.socketId) game.changeAdmin()
-
-      await this.broadcastGame(socket, game.id)
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
       if (game.roundState === "waitingPlayersToTurnTwoCards")
-        game.checkAllPlayersRevealedCards(MIN_PLAYERS)
+        game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
     }
 
     socket.to(game.id).emit("message", {
@@ -233,13 +231,7 @@ export abstract class SkyjoGameController {
       type: "player-left",
     })
 
-    if (game.status === "stopped") {
-      socket.to(game.id).emit("message", {
-        id: crypto.randomUUID(),
-        message: "game-stopped",
-        type: "warn",
-      })
-    }
+    await this.broadcastGame(socket, game.id)
 
     if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
     await socket.leave(game.id)

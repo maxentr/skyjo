@@ -37,31 +37,31 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
                 score: winner.score,
               })}
             </p>
-            <ScoreTable players={game.players} winner={winner} />
-            {game.status !== "stopped" && (
-              <div className="mt-2 flex flex-col items-center gap-4">
-                <div className="flex flex-row gap-1">
-                  {game.players.map((player) =>
-                    player.wantReplay ? (
-                      <CheckCircle2Icon
-                        key={player.socketId}
-                        size={24}
-                        className="text-emerald-600"
-                      />
-                    ) : (
-                      <XCircleIcon key={player.socketId} size={24} />
-                    ),
-                  )}
-                </div>
-                <Button onClick={actions.replay} className="w-full">
-                  {player.wantReplay
-                    ? t("replay-button.cancel")
-                    : t("replay-button.replay")}
-                </Button>
-              </div>
-            )}
           </DialogDescription>
         </DialogHeader>
+        <ScoreTable players={game.players} winner={winner} />
+        {game.status !== "stopped" && (
+          <div className="mt-2 flex flex-col items-center gap-4">
+            <div className="flex flex-row gap-1">
+              {game.players.map((player) =>
+                player.wantReplay ? (
+                  <CheckCircle2Icon
+                    key={player.socketId}
+                    size={24}
+                    className="text-emerald-600"
+                  />
+                ) : (
+                  <XCircleIcon key={player.socketId} size={24} />
+                ),
+              )}
+            </div>
+            <Button onClick={actions.replay} className="w-full">
+              {player.wantReplay
+                ? t("replay-button.cancel")
+                : t("replay-button.replay")}
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )

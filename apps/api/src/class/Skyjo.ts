@@ -82,10 +82,14 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.discardPile = [lastCardOfDiscardPile]
   }
 
+  private removeDisconnectedPlayers() {
+    this.players = this.getConnectedPlayers()
+  }
+
   private resetPlayers() {
-    this.getConnectedPlayers().forEach((player) => {
-      player.reset()
-    })
+    this.removeDisconnectedPlayers()
+
+    this.getConnectedPlayers().forEach((player) => player.reset())
   }
 
   private resetRoundPlayers() {
@@ -95,7 +99,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   private setFirstPlayerToStart() {
-    const playersScore = this.getConnectedPlayers().map((player, i) => {
+    const playersScore = this.players.map((player, i) => {
+      if (player.connectionStatus === "disconnected") return undefined
+
       const arrayScore = player.currentScoreArray()
 
       return {
@@ -106,6 +112,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
     // the player with the highest score will start. If there is a tie, the player who have the highest card will start
     const playerToStart = playersScore.reduce((a, b) => {
+      if (!a) return b
+      if (!b) return a
+
       const aSum = a.arrayScore.reduce((acc, cur) => acc + cur, 0)
       const bSum = b.arrayScore.reduce((acc, cur) => acc + cur, 0)
 
@@ -119,7 +128,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
       return aSum > bSum ? a : b
     })
 
-    this.turn = playerToStart.index
+    this.turn = playerToStart!.index
   }
 
   public start() {
@@ -203,6 +212,8 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
     if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
       this.players.forEach((player) => {
+        player.turnAllCards()
+        player.checkColumns()
         player.finalRoundScore()
       })
 
@@ -243,6 +254,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   public initializeRound() {
     this.firstPlayerToFinish = null
     this.selectedCard = null
+    this.lastMove = "turn"
     this.initializeCardPiles()
     this.resetRoundPlayers()
 
