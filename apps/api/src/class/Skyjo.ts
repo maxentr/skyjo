@@ -99,7 +99,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   }
 
   private setFirstPlayerToStart() {
-    const playersScore = this.getConnectedPlayers().map((player, i) => {
+    const playersScore = this.players.map((player, i) => {
+      if (player.connectionStatus === "disconnected") return undefined
+
       const arrayScore = player.currentScoreArray()
 
       return {
@@ -110,6 +112,9 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
 
     // the player with the highest score will start. If there is a tie, the player who have the highest card will start
     const playerToStart = playersScore.reduce((a, b) => {
+      if (!a) return b
+      if (!b) return a
+
       const aSum = a.arrayScore.reduce((acc, cur) => acc + cur, 0)
       const bSum = b.arrayScore.reduce((acc, cur) => acc + cur, 0)
 
@@ -123,7 +128,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
       return aSum > bSum ? a : b
     })
 
-    this.turn = playerToStart.index
+    this.turn = playerToStart!.index
   }
 
   public start() {
