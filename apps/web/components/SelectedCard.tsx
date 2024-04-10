@@ -12,17 +12,17 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
 
   const pickFromDrawPile = game.lastMove === "pickFromDrawPile"
 
-  let exit: TargetAndTransition = pickFromDrawPile
-    ? {
-        translateX: 92,
-        rotate: "0deg",
-        scale: 1,
-        transition: {
-          duration: 0.1,
-        }
-      }
-    : {
-      }
+  // let exit: TargetAndTransition = pickFromDrawPile
+  //   ? {
+  //       translateX: 92,
+  //       rotate: "0deg",
+  //       scale: 1,
+  //       transition: {
+  //         duration: 0.1,
+  //       }
+  //     }
+  //   : {
+  //     }
 
   return (
     <AnimatePresence>
@@ -42,7 +42,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
             rotate: pickFromDrawPile ? "-10deg" : "10deg",
             scale: 1.2,
           }}
-          exit={exit}
+          // exit={exit}
         >
           <Card
             card={{
