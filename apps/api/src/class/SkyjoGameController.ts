@@ -122,6 +122,13 @@ export abstract class SkyjoGameController {
     socket.to(game.id).emit("game", game.toJson())
   }
 
+  async emitToRoom(socket: SkyjoSocket, gameId: string) {
+    const game = this.getGame(gameId)
+    if (!game) return
+
+    socket.to(game.id).emit("game", game.toJson())
+  }
+
   async onJoin(socket: SkyjoSocket, gameId: string, player: SkyjoPlayer) {
     const game = this.getGame(gameId)
 
@@ -231,7 +238,7 @@ export abstract class SkyjoGameController {
       type: "player-left",
     })
 
-    await this.broadcastGame(socket, game.id)
+    await this.emitToRoom(socket, game.id)
 
     if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
     await socket.leave(game.id)
