@@ -33,13 +33,16 @@ const ScoreTable = ({ players, winner }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {players.map((player, index) => (
+        {players.map((player) => (
           <TableRow key={player.socketId}>
             <TableCell>
               {player.name} {winner?.socketId === player.socketId && "🏆"}
             </TableCell>
-            {player.scores.map((score) => (
-              <TableCell key={player.socketId + score} className="text-center">
+            {player.scores.map((score, scoreIndex) => (
+              <TableCell
+                key={player.socketId + scoreIndex}
+                className="text-center w-fit"
+              >
                 {score}
               </TableCell>
             ))}
