@@ -34,16 +34,14 @@ const ScoreDialog = ({ open, onOpenChange }: ScoreDialogProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>
-          <DialogDescription>
-            {winner && (
-              <p className="mt-2">
-                {t("description", {
-                  name: winner.name,
-                  score: winner.score,
-                })}
-              </p>
-            )}
-          </DialogDescription>
+          {winner && (
+            <DialogDescription className="mt-2">
+              {t("description", {
+                name: winner.name,
+                score: winner.score,
+              })}
+            </DialogDescription>
+          )}
         </DialogHeader>
         <ScoreTable players={game.players} winner={winner} />
       </DialogContent>

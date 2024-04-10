@@ -30,13 +30,11 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
       <DialogContent allowClose={false}>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>
-          <DialogDescription>
-            <p className="mt-2 text-center">
-              {t("description", {
-                name: winner.name,
-                score: winner.score,
-              })}
-            </p>
+          <DialogDescription className="mt-2 text-center">
+            {t("description", {
+              name: winner.name,
+              score: winner.score,
+            })}
           </DialogDescription>
         </DialogHeader>
         <ScoreTable players={game.players} winner={winner} />
