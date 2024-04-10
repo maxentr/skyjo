@@ -65,6 +65,7 @@ export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   if (!socketId || !game) return false
   if (
     game.status !== "playing" ||
+    game.roundState === "over" ||
     game.roundState === "waitingPlayersToTurnTwoCards"
   )
     return false
