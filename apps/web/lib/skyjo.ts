@@ -13,6 +13,16 @@ export const getCurrentUser = (
   return players.find((player) => player.socketId === socketId)
 }
 
+export const getConnectedPlayers = (
+  players: SkyjoToJson["players"] | undefined,
+) => {
+  if (!players) {
+    return []
+  }
+
+  return players.filter((player) => player.connectionStatus !== "disconnected")
+}
+
 export const getOpponents = (
   players: SkyjoToJson["players"] | undefined,
   socketId: string,
@@ -21,13 +31,13 @@ export const getOpponents = (
     return [[], [], []]
   }
 
+  console.log(players, socketId)
+
   const playerIndex = players.findIndex(
     (player) => player.socketId === socketId,
   )
 
-  const connectedPlayers = players.filter(
-    (player) => player.connectionStatus !== "disconnected",
-  )
+  const connectedPlayers = getConnectedPlayers(players)
 
   const connectedOpponents = [
     ...connectedPlayers.slice(playerIndex + 1),
@@ -76,7 +86,8 @@ export const hasTurnedCard = (player: SkyjoPlayerToJson) => {
 }
 
 export const getWinner = (game: SkyjoToJson) => {
-  return game.players.reduce((prev, current) =>
+  const connectedPlayers = getConnectedPlayers(game.players)
+  return connectedPlayers.reduce((prev, current) =>
     prev.score < current.score ? prev : current,
   )
 }
