@@ -82,10 +82,14 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
     this.discardPile = [lastCardOfDiscardPile]
   }
 
+  private removeDisconnectedPlayers() {
+    this.players = this.getConnectedPlayers()
+  }
+
   private resetPlayers() {
-    this.getConnectedPlayers().forEach((player) => {
-      player.reset()
-    })
+    this.removeDisconnectedPlayers()
+
+    this.getConnectedPlayers().forEach((player) => player.reset())
   }
 
   private resetRoundPlayers() {
