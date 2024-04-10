@@ -65,8 +65,12 @@ const GamePage = ({ locale }: GamePageProps) => {
         </div>
         <div className="relative flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center justify-center gap-10 h-full max-h-20 w-fit">
-            <DrawPile isPlayerTurn={isPlayerTurn} />
-            <DiscardPile isPlayerTurn={isPlayerTurn} />
+            <DrawPile
+              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
+            />
+            <DiscardPile
+              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
+            />
           </div>
           <AdminLobby />
         </div>
