@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useSkyjo } from "@/contexts/SkyjoContext"
+import { DialogDescription } from "@radix-ui/react-dialog"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
@@ -28,8 +29,10 @@ const EndRoundDialog = ({}: EndRoundDialogProps) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>
+          <DialogDescription>
+            <p className="mt-2 text-center">{t("description")}</p>
+          </DialogDescription>
         </DialogHeader>
-        <div className="mt-2 text-center">{t("description")}</div>
         <ScoreTable players={game.players} />
       </DialogContent>
     </Dialog>
