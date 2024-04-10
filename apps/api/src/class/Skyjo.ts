@@ -245,6 +245,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   public initializeRound() {
     this.firstPlayerToFinish = null
     this.selectedCard = null
+    this.lastMove = "turn"
     this.initializeCardPiles()
     this.resetRoundPlayers()
 
