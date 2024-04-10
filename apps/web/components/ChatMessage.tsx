@@ -7,7 +7,7 @@ type ChatMessageProps = {
   message: ChatMessage
 }
 
-const chatMessageClasses = cva("font-medium", {
+const chatMessageClasses = cva("", {
   variants: {
     type: {
       message: "text-slate-800",
@@ -28,7 +28,7 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
       )}
     >
       {message?.username && (
-        <span>
+        <span className="font-semibold">
           {message?.username}
           {t("separator")}
         </span>
