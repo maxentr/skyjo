@@ -31,13 +31,12 @@ export const getOpponents = (
     return [[], [], []]
   }
 
-  console.log(players, socketId)
+  const connectedPlayers = getConnectedPlayers(players)
 
-  const playerIndex = players.findIndex(
+  const playerIndex = connectedPlayers.findIndex(
     (player) => player.socketId === socketId,
   )
 
-  const connectedPlayers = getConnectedPlayers(players)
 
   const connectedOpponents = [
     ...connectedPlayers.slice(playerIndex + 1),
@@ -63,7 +62,11 @@ export const getOpponents = (
 
 export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   if (!socketId || !game) return false
-  if (game.roundState === "waitingPlayersToTurnTwoCards") return true
+  if (
+    game.roundState === "waitingPlayersToTurnTwoCards" &&
+    game.status === "playing"
+  )
+    return true
 
   if (game.status !== "playing" || game.roundState === "over") return false
 
