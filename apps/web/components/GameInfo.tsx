@@ -12,6 +12,8 @@ const GameInfo = () => {
     if (!player || !game) return t("waiting")
 
     const playerWhoHasToPlay = game.players[game.turn]
+    const roundInProgress =
+      game.roundState === "playing" || game.roundState === "lastLap"
 
     if (game.status === "lobby") {
       return t("waiting")
@@ -25,10 +27,7 @@ const GameInfo = () => {
       return t("turn-cards", { number: 2 })
     }
 
-    if (
-      game.status === "playing" &&
-      (game.roundState === "playing" || game.roundState === "lastLap")
-    ) {
+    if (game.status === "playing" && roundInProgress) {
       return isCurrentUserTurn(game, player.socketId)
         ? t(`turn.${game.turnState}`)
         : t("player-turn", {
