@@ -24,6 +24,8 @@ const GamePage = ({ locale }: GamePageProps) => {
   const { game, player, opponents } = useSkyjo()
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
+  const roundInProgress =
+    game.roundState === "playing" || game.roundState === "lastLap"
 
   const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
   const onRulesDialogOpenChange = () => {
@@ -65,12 +67,8 @@ const GamePage = ({ locale }: GamePageProps) => {
         </div>
         <div className="relative flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center justify-center gap-10 h-full max-h-20 w-fit">
-            <DrawPile
-              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
-            />
-            <DiscardPile
-              isPlayerTurn={isPlayerTurn && game.roundState === "playing"}
-            />
+            <DrawPile isPlayerTurn={isPlayerTurn && roundInProgress} />
+            <DiscardPile isPlayerTurn={isPlayerTurn && roundInProgress} />
           </div>
           <AdminLobby />
         </div>
