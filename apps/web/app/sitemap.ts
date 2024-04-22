@@ -1,4 +1,5 @@
 import { locales } from "@/i18n"
+import { DEFAULT_LOCALE } from "@/navigation"
 import { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -7,8 +8,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const sitemap = pages.map((page) => {
     return locales.map((locale) => {
+      const url =
+        locale === DEFAULT_LOCALE
+          ? `${baseUrl}/${page}`
+          : `${baseUrl}/${locale}/${page}`
+
       return {
-        url: `${baseUrl}/${locale}/${page}`,
+        url,
         lastModified: new Date(),
         priority: 1,
       }
