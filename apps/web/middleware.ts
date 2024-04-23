@@ -1,10 +1,11 @@
 import { locales } from "@/i18n"
 import createMiddleware from "next-intl/middleware"
-import { localePrefix } from "./navigation"
+import { DEFAULT_LOCALE, localePrefix } from "./navigation"
+
 export default createMiddleware({
   locales,
   localePrefix,
-  defaultLocale: "en",
+  defaultLocale: DEFAULT_LOCALE,
   localeDetection: true,
 })
 
