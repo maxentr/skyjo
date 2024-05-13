@@ -2,7 +2,6 @@ import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { canTurnTwoCards, hasTurnedCard, isCurrentUserTurn } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
-import { AnimatePresence } from "framer-motion"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
@@ -38,7 +37,7 @@ const CardTable = ({
   return (
     <div
       className={cn(
-        "inline-grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2 w-fit h-full aspect-[31/32] justify-center max-h-[208px]",
+        "inline-grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2 w-fit h-full aspect-[31/32] max-h-[208px]",
       )}
     >
       {cards.map((column, columnIndex) => {

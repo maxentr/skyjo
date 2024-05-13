@@ -11,6 +11,11 @@
     },
     "GamePage": {},
     "Rules": {
+      "head": {
+        "title": "Règles du jeu Skyjo",
+        "description": "Les règles du jeu Skyjo",
+        "keywords": "Règles du jeu Skyjo,jeu,en ligne,multijoueur,gratuit,jouer avec des amis,règles,règles du jeu"
+      },
       "back": "Retour à l'accueil",
       "title": "Règles du jeu Skyjo"
     }

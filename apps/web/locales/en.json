@@ -11,6 +11,11 @@
     },
     "GamePage": {},
     "Rules": {
+      "head": {
+        "title": "Skyjo game rules",
+        "description": "The rules of the card game Skyjo",
+        "keywords": "Skyjo rules,game,online,multiplayer,free,play with friends,rules,game rules,card game rules"
+      },
       "back": "Back to the home page",
       "title": "Skyjo game rules"
     }

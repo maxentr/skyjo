@@ -1,4 +1,5 @@
 import Providers from "@/app/[locale]/providers"
+import { getCurrentUrl } from "@/lib/utils"
 import { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getTranslations } from "next-intl/server"
@@ -24,6 +25,7 @@ export async function generateMetadata({
 
   const title = `Skyjo - ${t("title")}`
   const baseUrl = process.env.SITE_URL ?? ""
+  const currentUrl = getCurrentUrl("", locale)
   const githubUrl = new URL("https://github.com/Maxentr")
 
   const metadata: Metadata = {
@@ -58,8 +60,9 @@ export async function generateMetadata({
     ],
     metadataBase: new URL(baseUrl),
     alternates: {
+      canonical: currentUrl,
       languages: {
-        en: "/en",
+        en: "/",
         fr: "/fr",
       },
     },
@@ -67,7 +70,7 @@ export async function generateMetadata({
     openGraph: {
       title: title,
       description: t("description"),
-      url: baseUrl,
+      url: currentUrl,
       type: "website",
       images: [
         {
@@ -117,7 +120,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning className={fredoka.className}>
+    <html lang={locale} suppressHydrationWarning style={fredoka.style}>
       <body className="bg-background antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
