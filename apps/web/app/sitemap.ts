@@ -8,10 +8,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const sitemap = pages.map((page) => {
     return locales.map((locale) => {
-      const url =
-        locale === DEFAULT_LOCALE
-          ? `${baseUrl}/${page}`
-          : `${baseUrl}/${locale}/${page}`
+      let url: string = ""
+      if (locale === DEFAULT_LOCALE) {
+        url = `${baseUrl}/${page}`
+      } else if (page === "") {
+        url = `${baseUrl}/${locale}`
+      } else {
+        url = `${baseUrl}/${locale}/${page}`
+      }
 
       return {
         url,
