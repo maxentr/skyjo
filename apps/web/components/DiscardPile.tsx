@@ -52,7 +52,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     isPlayerTurn && game.turnState === "chooseAPile"
 
   return (
-    <div className="relative h-full max-h-20 aspect-[8/12]">
+    <div className="relative">
       <SelectedCard show={game.turnState === "replaceACard"} />
       <Card
         card={card}

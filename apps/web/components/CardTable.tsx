@@ -37,7 +37,7 @@ const CardTable = ({
   return (
     <div
       className={cn(
-        "inline-grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2 w-fit h-full aspect-[31/32] max-h-[208px]",
+        "inline-grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2 w-fit",
       )}
     >
       {cards.map((column, columnIndex) => {

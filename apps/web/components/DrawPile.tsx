@@ -29,13 +29,13 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
     isPlayerTurn && game.turnState === "chooseAPile" ? "animate-scale" : ""
 
   return (
-    <div className="relative h-full max-h-20 aspect-[8/12]">
+    <div className="relative">
       <SelectedCard show={game.turnState === "throwOrReplace"} />
       <Card
         card={DRAW_CARD}
         onClick={onClick}
         title={t("title")}
-        className={cn("shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
+        className={cn("!shadow-[3px_3px_0px_0px_rgba(0,0,0)] !mdh:md:shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
         disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
         flipAnimation={false}
       />

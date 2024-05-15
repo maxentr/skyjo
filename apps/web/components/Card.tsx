@@ -14,16 +14,13 @@ const cardClass = cva(
   {
     variants: {
       size: {
-        tiny: " h-full max-h-12 aspect-[8/12] border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
-        small:
-          " h-full max-h-16 aspect-[8/12] rounded-md shadow-[1px_1px_0px_0px_rgba(0,0,0)] text-xl",
+        tiny: " h-12 w-8 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
         normal:
-          " h-full max-h-20 aspect-[8/12] rounded-md shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-2xl ",
-        big: "h-full max-h-[90px] aspect-[8/12] rounded-lg shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-3xl ",
+          " h-12 w-8 mdh:md:h-16 mdh:md:w-12 rounded mdh:md:rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] mdh:md:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base mdh:md:text-2xl ",
       },
       value: {
-        discard: "bg-transparent border-dashed border-red-600 shadow-none",
-        "no-card": "bg-transparent border-dashed shadow-none",
+        discard: "bg-transparent border-dashed border-red-600 !shadow-none",
+        "no-card": "bg-transparent border-dashed !shadow-none",
         "not-visible": " bg-off-white text-off-white",
         negative: " bg-card-dark-blue",
         neutral: " bg-card-light-blue",
@@ -99,9 +96,7 @@ const Card = ({
   disabled = false,
   flipAnimation = true,
 }: CardProps) => {
-  const {
-    game,
-  } = useSkyjo()
+  const { game } = useSkyjo()
   const [scope, animate] = useAnimate()
   const controls = useAnimationControls()
 
@@ -131,7 +126,8 @@ const Card = ({
       controls.set({ rotateY: 0 })
     }
 
-    if (flipAnimation && card.isVisible && game?.lastMove === "turn") animation()
+    if (flipAnimation && card.isVisible && game?.lastMove === "turn")
+      animation()
   }, [flipAnimation, card.isVisible])
 
   let cardContent: string | JSX.Element = ""
