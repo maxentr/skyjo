@@ -30,7 +30,6 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
     >
       <CardTable
         cards={player.cards}
-        size="normal"
         showSelectionAnimation={showSelectionAnimation}
       />
       <Image

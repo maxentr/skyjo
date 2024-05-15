@@ -6,13 +6,11 @@ import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
   cards: SkyjoCardToJson[][]
-  size?: "tiny" | "small" | "normal" | "big"
   cardDisabled?: boolean
   showSelectionAnimation?: boolean
 }
 const CardTable = ({
   cards,
-  size = "normal",
   cardDisabled = false,
   showSelectionAnimation = false,
 }: CardTableProps) => {
@@ -49,7 +47,6 @@ const CardTable = ({
             <Card
               key={`${columnIndex}-${rowIndex}`}
               card={card}
-              size={size}
               onClick={() => onClick(columnIndex, rowIndex)}
               className={
                 showSelectionAnimation && canBeSelected
