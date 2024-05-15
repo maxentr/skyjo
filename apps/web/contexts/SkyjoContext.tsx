@@ -59,7 +59,7 @@ const SkyjoContextProvider = ({
     initGameListeners()
 
     // get game
-    socket.emit("get", gameId)
+    socket.emit("get")
 
     return destroyGameListeners
   }, [socket, gameId])
@@ -108,14 +108,11 @@ const SkyjoContextProvider = ({
   }
 
   const startGame = () => {
-    socket.emit("start", {
-      gameId: gameId,
-    })
+    socket.emit("start")
   }
 
   const playRevealCard = (column: number, row: number) => {
     socket.emit("play:reveal-card", {
-      gameId: gameId,
       column: column,
       row: row,
     })
@@ -123,28 +120,23 @@ const SkyjoContextProvider = ({
 
   const pickCardFromPile = (pile: PlayPickCard["pile"]) => {
     socket.emit("play:pick-card", {
-      gameId: gameId,
       pile,
     })
   }
 
   const replaceCard = (column: number, row: number) => {
     socket.emit("play:replace-card", {
-      gameId: gameId,
       column: column,
       row: row,
     })
   }
 
   const discardSelectedCard = () => {
-    socket.emit("play:discard-selected-card", {
-      gameId: gameId,
-    })
+    socket.emit("play:discard-selected-card")
   }
 
   const turnCard = (column: number, row: number) => {
     socket.emit("play:turn-card", {
-      gameId: gameId,
       column: column,
       row: row,
     })

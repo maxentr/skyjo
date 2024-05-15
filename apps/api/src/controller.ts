@@ -1,5 +1,4 @@
 import {
-  PlayDiscardSelectedCard,
   PlayPickCard,
   PlayReplaceCard,
   PlayRevealCard,
@@ -32,7 +31,8 @@ export default class SkyjoController extends SkyjoGameController {
   }
 
   async playRevealCard(socket: SkyjoSocket, turnData: PlayRevealCard) {
-    const { gameId, column, row } = turnData
+    const { column, row } = turnData
+    const gameId = socket.data.gameId
 
     const game = this.getGame(gameId)
     if (!game) return
@@ -46,35 +46,30 @@ export default class SkyjoController extends SkyjoGameController {
 
     game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
 
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
-  async startGame(socket: SkyjoSocket, gameId: string) {
-    const game = this.getGame(gameId)
+  async startGame(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     if (!game.isAdmin(socket.id)) return
 
     game.start()
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
-  async pickCard(socket: SkyjoSocket, { gameId, pile }: PlayPickCard) {
-    const { game } = this.checkPlayAuthorization(socket, gameId, [
-      "chooseAPile",
-    ])
+  async pickCard(socket: SkyjoSocket, { pile }: PlayPickCard) {
+    const { game } = this.checkPlayAuthorization(socket, ["chooseAPile"])
 
     if (pile === "draw") game.drawCard()
     else game.pickFromDiscard()
 
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
-  async replaceCard(
-    socket: SkyjoSocket,
-    { gameId, column, row }: PlayReplaceCard,
-  ) {
-    const { game, player } = this.checkPlayAuthorization(socket, gameId, [
+  async replaceCard(socket: SkyjoSocket, { column, row }: PlayReplaceCard) {
+    const { game, player } = this.checkPlayAuthorization(socket, [
       "replaceACard",
       "throwOrReplace",
     ])
@@ -82,27 +77,23 @@ export default class SkyjoController extends SkyjoGameController {
     game.replaceCard(column, row)
 
     await this.finishTurn(socket, game, player)
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
-  async discardCard(socket: SkyjoSocket, { gameId }: PlayDiscardSelectedCard) {
-    const { game } = this.checkPlayAuthorization(socket, gameId, [
-      "throwOrReplace",
-    ])
+  async discardCard(socket: SkyjoSocket) {
+    const { game } = this.checkPlayAuthorization(socket, ["throwOrReplace"])
 
     game.discardCard(game.selectedCard!)
 
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
-  async turnCard(socket: SkyjoSocket, { gameId, column, row }: PlayTurnCard) {
-    const { game, player } = this.checkPlayAuthorization(socket, gameId, [
-      "turnACard",
-    ])
+  async turnCard(socket: SkyjoSocket, { column, row }: PlayTurnCard) {
+    const { game, player } = this.checkPlayAuthorization(socket, ["turnACard"])
 
     game.turnCard(player, column, row)
 
     await this.finishTurn(socket, game, player)
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 }
