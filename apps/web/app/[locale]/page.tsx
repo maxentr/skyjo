@@ -94,7 +94,11 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
               <AccordionTrigger>{t("faq.how-to-play.title")}</AccordionTrigger>
               <AccordionContent>
                 {t.rich("faq.how-to-play.content", {
-                  rules: (chunks) => <Link href="/rules" className="underline">{chunks}</Link>,
+                  rules: (chunks) => (
+                    <Link href="/rules" className="underline">
+                      {chunks}
+                    </Link>
+                  ),
                 })}
               </AccordionContent>
             </AccordionItem>
