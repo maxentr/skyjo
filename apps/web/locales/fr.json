@@ -67,6 +67,20 @@
     "ChatMessageList": {
       "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
     },
+    "FeedbackDialog": {
+      "title": "Laisser un commentaire",
+      "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
+      "error-message": "Une erreur est survenue, veuillez réessayer.",
+      "email-input": {
+        "label": "Votre email (facultatif)",
+        "placeholder": "exemple@exemple.fr"
+      },
+      "message-input": {
+        "label": "Votre message",
+        "placeholder": "Dites-nous ce que vous pensez, remarquez ou souhaitez..."
+      },
+      "button-title": "Envoyer"
+    },
     "CopyLink": {
       "message": "Lien copié !",
       "button-title": "Copier le lien"
@@ -91,7 +105,7 @@
       "description": "La manche suivante va commencer dans quelques secondes..."
     },
     "Footer": {
-      "comment": "Laisser un avis",
+      "feedback": "Laisser un avis",
       "buy-game": "Acheter le jeu",
       "explanation": "Qu'est-ce que Skyjo ?",
       "rules": "Règles du jeu",

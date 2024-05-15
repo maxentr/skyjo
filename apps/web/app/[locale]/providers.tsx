@@ -1,6 +1,7 @@
 "use client"
 
 import { Toaster } from "@/components/ui/toaster"
+import FeedbackContextProvider from "@/contexts/FeedbackContext"
 import SocketContextProvider from "@/contexts/SocketContext"
 import UserContextProvider from "@/contexts/UserContext"
 import { Analytics } from "@vercel/analytics/react"
@@ -13,8 +14,10 @@ const Providers = ({ children }: PropsWithChildren) => {
       <Analytics />
       <SpeedInsights />
       <SocketContextProvider>
-        <UserContextProvider>{children}</UserContextProvider>
-        <Toaster />
+        <FeedbackContextProvider>
+          <UserContextProvider>{children}</UserContextProvider>
+          <Toaster />
+        </FeedbackContextProvider>
       </SocketContextProvider>
     </>
   )

@@ -1,3 +1,4 @@
+import FeedbackLink from "@/components/FeedbackLink"
 import { Link } from "@/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
@@ -11,7 +12,7 @@ const Footer = ({}: Props) => {
     <footer className="w-full border-t-2 border-black bg-off-white">
       <div className="container grid grid-cols-3 grid-flow-row py-8">
         <div className="flex flex-col justify-center items-start gap-2">
-          <p className="text-slate-900 underline">{t("comment")}</p>
+          <FeedbackLink text={t("feedback")} />
           <Link href="/#explanation" className="text-slate-900 underline">
             {t("explanation")}
           </Link>
