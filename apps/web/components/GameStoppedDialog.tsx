@@ -33,7 +33,7 @@ const GameStoppedDialog = ({}: GameStoppedDialogProps) => {
 
   return (
     <Dialog open={isGameStopped}>
-      <DialogContent allowClose={false}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>
           <DialogDescription className="mt-2 text-center">

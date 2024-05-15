@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        mdh: { raw: "(min-height: 690px)" },
+        lgh: { raw: "(min-height: 800px)" },
+      },
       colors: {
         card: {
           "dark-blue": "#5992E7",
@@ -64,7 +68,15 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addVariant }: any) {
+      addVariant("notfirefox", ":not(:-moz-any(&))")
+    },
+  ],
+  variants: {
+    height: ["responsive"],
+  },
 } satisfies Config
 
 export default config

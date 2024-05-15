@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer"
 import { getCurrentUrl } from "@/lib/utils"
 import { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
@@ -45,5 +46,10 @@ export default async function RulesLayout({
   children,
   params: { locale },
 }: RulesLayoutProps) {
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <Footer />
+    </>
+  )
 }

@@ -7,6 +7,7 @@ import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
+import FeedbackButton from "@/components/FeedbackButton"
 import GameInfo from "@/components/GameInfo"
 import GameStoppedDialog from "@/components/GameStoppedDialog"
 import OpponentBoard from "@/components/OpponentBoard"
@@ -52,6 +53,7 @@ const GamePage = ({ locale }: GamePageProps) => {
               defaultOpen={isFirstPlayerGame === "true"}
               onOpenChange={onRulesDialogOpenChange}
             />
+            <FeedbackButton className="mt-4" />
           </div>
         </div>
       </div>

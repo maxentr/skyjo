@@ -1,10 +1,12 @@
 {
   "exclude": ["node_modules"],
+  "allowImportingTsExtensions": true,
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
-    "target": "ESNext",
-    "module": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "sourceMap": true,
+    "skipLibCheck": true,
   },
 }

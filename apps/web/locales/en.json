@@ -7,7 +7,34 @@
   "pages": {
     "Index": {
       "name-input-placeholder": "Name",
-      "buy-game": "Buy the game"
+      "explanation": {
+        "title": "What is Skyjo?",
+        "content": "Skyjo is an exciting card game and an excellent board game, enjoyed by games fans all over the world. This multiplayer card game is designed for a number of players ranging from 2 to 8, where each player receives 12 cards, initially hidden. The main aim of the game is to score as few points as possible. The game ends as soon as one player reaches 100 points. The rules of the game are simple and easy to understand, making it an ideal choice for game nights with family or friends. Game enthusiasts will be delighted to learn that it is now possible to play Skyjo online for free!",
+        "button": "See the rules"
+      },
+      "faq": {
+        "title": "Frequently asked questions (FAQ)",
+        "meaning": {
+          "title": "What does Skyjo mean?",
+          "content": "A Skyjo is a column of 3 identical cards in the game."
+        },
+        "pronounce": {
+          "title": "How do you pronounce Skyjo?",
+          "content": "The word Skyjo is pronounced [Skyjoe]."
+        },
+        "how-to-play": {
+          "title": "How to play Skyjo?",
+          "content": "To play Skyjo, deal 12 cards to each player face down. The goal is to have the fewest points possible by flipping and exchanging cards. Each turn, draw a card from the deck or discard pile, then decide to replace one of your visible cards. Numbered cards are worth their points, special cards have actions. The game ends when a player has flipped all their cards. The player with the fewest points wins. You can check <rules>the rules</rules> for more information."
+        },
+        "how-to-win": {
+          "title": "How to win at Skyjo?",
+          "content": "To win at Skyjo, it's essential to have the lowest score possible. To achieve this, adopt a balanced strategy between having the lowest cards, revealing your cards, and creating columns of identical cards. Avoid flipping first unless you're significantly ahead with visible cards. Remember to keep already visible cards to try to create columns with them, rather than optimizing them individually."
+        },
+        "play-classic-with-action": {
+          "title": "Can you play classic Skyjo with Skyjo Action?",
+          "content": "Yes, you just need to remove the action cards. If you're playing the online version, select the classic version to play Skyjo."
+        }
+      }
     },
     "GamePage": {},
     "Rules": {
@@ -40,6 +67,23 @@
     "ChatMessageList": {
       "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
+    "FeedbackButton": {
+      "aria-label": "Leave a feedback"
+    },
+    "FeedbackDialog": {
+      "title": "Leave a comment",
+      "description": "You can write a feedback to help us improve the game.",
+      "error-message": "An error occurred, please try again.",
+      "email-input": {
+        "label": "Your email (optional)",
+        "placeholder": "example@example.com"
+      },
+      "message-input": {
+        "label": "Your message",
+        "placeholder": "Tell us what you think, note or want to..."
+      },
+      "button-title": "Send"
+    },
     "CopyLink": {
       "message": "Link copied!",
       "button-title": "Copy link"
@@ -62,6 +106,14 @@
     "EndRoundDialog": {
       "title": "End of the round",
       "description": "The next round will start in few seconds..."
+    },
+    "Footer": {
+      "feedback": "Leave a comment",
+      "buy-game": "Buy the game",
+      "explanation": "What is Skyjo?",
+      "rules": "Game rules",
+      "home": "Home",
+      "release-notes": "Release notes"
     },
     "GameInfo": {
       "last-turn": "Dernier tour !"

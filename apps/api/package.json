@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.7.0",
+    "@hono/zod-validator": "^0.2.1",
+    "dotenv": "^16.4.5",
     "hono": "^3.12.8",
+    "nodemailer": "^6.9.13",
     "shared": "workspace:*",
     "socket.io": "^4.7.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.15",
     "tsx": "^3.12.2",
     "typescript": "^5.3.3"
   }
