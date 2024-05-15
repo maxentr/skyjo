@@ -224,6 +224,10 @@ export abstract class SkyjoGameController {
     ) {
       game.removePlayer(socket.id)
       if (socket.id === game.admin.socketId) game.changeAdmin()
+      if (game.getConnectedPlayers().every((player) => player.wantReplay)) {
+        game.reset()
+        game.start()
+      }
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
