@@ -7,7 +7,34 @@
   "pages": {
     "Index": {
       "name-input-placeholder": "Nom",
-      "buy-game": "Acheter le jeu"
+      "explanation": {
+        "title": "Qu'est-ce que Skyjo ?",
+        "content": "Skyjo est un jeu de cartes passionnant et un excellent jeu de société. Apprécié par les amateurs de jeux dans le monde entier, ce jeu de cartes multijoueur est conçu pour un nombre de joueurs allant de 2 à 8, où chacun reçoit 12 cartes, initialement cachées. L'objectif principal du jeu est de marquer le moins de points possible. La partie se termine dès qu'un joueur atteint 100 points. Les règles du jeu sont simples et faciles à comprendre ce qui en fait un choix idéal pour les soirées jeux en famille ou entre amis. Les passionnés de jeux seront ravis d'apprendre qu'il est maintenant possible de jouer à Skyjo en ligne et ce gratuitement !",
+        "button": "Voir les règles"
+      },
+      "faq": {
+        "title": "Foire aux questions (FAQ)",
+        "meaning": {
+          "title": "Que veut dire Skyjo ?",
+          "content": "Un Skyjo est une colonne de 3 cartes identiques dans le jeu."
+        },
+        "pronounce": {
+          "title": "Comment prononcer Skyjo ?",
+          "content": "Le mot Skyjo ce prononce [Skyjoe]."
+        },
+        "how-to-play": {
+          "title": "Comment jouer au Skyjo ?",
+          "content": "Pour jouer à Skyjo, distribuez 12 cartes à chaque joueur, face cachée. Le but est d'avoir le moins de points possible en retournant et échangeant des cartes. À chaque tour, piochez une carte de la pioche ou de la défausse, puis décidez de remplacer une de vos cartes visibles. Les cartes numérotées valent leurs points, les cartes spéciales ont des actions. Le jeu se termine lorsqu'un joueur a retourné toutes ses cartes. Le joueur ayant le moins de points gagne. Vous pouvez consulter <rules>les règles</rules> pour plus d'informations."
+        },
+        "how-to-win": {
+          "title": "Comment gagner au Skyjo ?",
+          "content": "Pour gagner au Skyjo, il est essentiel d'avoir le score le plus bas possible. Pour y parvenir, adoptez une stratégie équilibrée entre avoir les cartes les plus basses, découvrir vos cartes et créer des colonnes d'identiques. Évitez de retourner en premier sauf si vous êtes vraiment en avance sur les cartes visibles. N'oubliez pas de conserver les cartes déjà visibles pour essayer de créer des colonnes avec elles, plutôt que de les optimiser individuellement."
+        },
+        "play-classic-with-action": {
+          "title": "Peut-on jouer au Skyjo classique avec le Skyjo action ?",
+          "content": "Oui, il vous suffit d'enlever les cartes actions. Si vous êtes sur la version en ligne, séléctionnez la version classique pour jouer au Skyjo."
+        }
+      }
     },
     "GamePage": {},
     "Rules": {
@@ -62,6 +89,14 @@
     "EndRoundDialog": {
       "title": "Fin de la manche",
       "description": "La manche suivante va commencer dans quelques secondes..."
+    },
+    "Footer": {
+      "comment": "Laisser un avis",
+      "buy-game": "Acheter le jeu",
+      "explanation": "Qu'est-ce que Skyjo ?",
+      "rules": "Règles du jeu",
+      "home": "Accueil",
+      "release-notes": "Notes de version"
     },
     "GameInfo": {
       "last-turn": "Last turn!"

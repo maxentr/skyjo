@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
-  padding: 0!important;
+  padding: 0 !important;
+  scroll-behavior: smooth !important;
+}
+
+html:focus-within {
+  scroll-behavior: smooth !important;
 }
