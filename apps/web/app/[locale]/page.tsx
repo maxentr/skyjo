@@ -1,4 +1,5 @@
 import IndexPage from "@/app/[locale]/IndexPage"
+import FeedbackButton from "@/components/FeedbackButton"
 import Footer from "@/components/Footer"
 import LanguageSettings from "@/components/LanguageSettings"
 import MovingArrow from "@/components/MovingArrow"
@@ -36,6 +37,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
               <div className="w-10 flex flex-col gap-4">
                 <LanguageSettings locale={params.locale} />
                 <RulesDialog />
+                <FeedbackButton className="mt-4" />
               </div>
             </div>
           </div>

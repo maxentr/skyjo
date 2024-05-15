@@ -67,6 +67,9 @@
     "ChatMessageList": {
       "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
+    "FeedbackButton": {
+      "aria-label": "Leave a feedback"
+    },
     "FeedbackDialog": {
       "title": "Leave a comment",
       "description": "You can write a feedback to help us improve the game.",
