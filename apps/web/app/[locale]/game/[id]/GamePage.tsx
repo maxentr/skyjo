@@ -1,8 +1,6 @@
 "use client"
 
-import AdminLobby from "@/components/AdminLobby"
 import Chat from "@/components/Chat"
-import CopyLink from "@/components/CopyLink"
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndGameDialog from "@/components/EndGameDialog"
@@ -72,7 +70,6 @@ const GamePage = ({ locale }: GamePageProps) => {
             <DrawPile isPlayerTurn={isPlayerTurn && roundInProgress} />
             <DiscardPile isPlayerTurn={isPlayerTurn && roundInProgress} />
           </div>
-          <AdminLobby />
         </div>
 
         <div className="flex flex-col items-end">
@@ -87,7 +84,6 @@ const GamePage = ({ locale }: GamePageProps) => {
       </div>
       <div className="w-full h-full grid grid-cols-3 grid-flow-row items-end">
         <div className="flex flex-col gap-2">
-          <CopyLink />
           <GameInfo />
         </div>
 

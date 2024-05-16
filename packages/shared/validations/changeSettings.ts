@@ -3,14 +3,10 @@ import { SKYJO_DEFAULT_SETTINGS } from "../constants"
 
 export const changeSettings = z
   .object({
-    isPrivate: z.boolean(),
+    private: z.boolean(),
     allowSkyjoForColumn: z.boolean(),
     allowSkyjoForRow: z.boolean(),
-    initialTurnedCount: z
-      .number()
-      .int()
-      .min(1)
-      .max(SKYJO_DEFAULT_SETTINGS.cards.INITIAL_TURNED_COUNT),
+    initialTurnedCount: z.number().int().min(0),
     cardPerRow: z
       .number()
       .int()

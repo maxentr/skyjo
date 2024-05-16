@@ -15,6 +15,7 @@ import {
 import { ChatMessage } from "shared/types/chat"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
+import { ChangeSettings } from "shared/validations/changeSettings"
 import { PlayPickCard } from "shared/validations/play"
 
 type SkyjoContextInterface = {
@@ -23,6 +24,7 @@ type SkyjoContextInterface = {
   opponents: Opponents
   actions: {
     sendMessage: (message: string) => void
+    changeSettings: (settings: ChangeSettings) => void
     startGame: () => void
     playRevealCard: (column: number, row: number) => void
     pickCardFromPile: (pile: PlayPickCard["pile"]) => void
@@ -107,7 +109,22 @@ const SkyjoContextProvider = ({
     })
   }
 
+  const changeSettings = (settings: ChangeSettings) => {
+    if (socket.id !== game?.admin.socketId) return
+
+    if (
+      settings.cardPerColumn * settings.cardPerRow <=
+      settings.initialTurnedCount
+    )
+      settings.initialTurnedCount =
+        settings.cardPerColumn * settings.cardPerRow - 1
+
+    socket.emit("settings", settings)
+  }
+
   const startGame = () => {
+    if (socket.id !== game?.admin.socketId) return
+
     socket.emit("start")
   }
 
@@ -148,6 +165,7 @@ const SkyjoContextProvider = ({
 
   const actions = {
     sendMessage,
+    changeSettings,
     startGame,
     playRevealCard,
     pickCardFromPile,
