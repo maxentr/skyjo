@@ -8,6 +8,10 @@ const classValue = cva(
         true: " bg-dutch-white",
         false: "bg-white",
       },
+      disabled: {
+        true: "cursor-not-allowed opacity-50",
+        false: "",
+      },
     },
   },
 )
@@ -18,6 +22,7 @@ interface RadioNumberProps {
   selected: number
   onChange: (value: number) => void
   title?: string
+  disabled?: boolean
 }
 
 const RadioNumber = ({
@@ -26,13 +31,14 @@ const RadioNumber = ({
   onChange,
   name,
   title,
+  disabled = false,
 }: RadioNumberProps) => {
   return (
     <div className="flex flex-row gap-1 items-center">
       {Array.from({ length: max }, (_, index) => index + 1).map((index) => (
         <label
           htmlFor={`${name}-${index}`}
-          className={classValue({ selected: selected === index })}
+          className={classValue({ selected: selected === index, disabled })}
           title={title?.replace("{number}", index.toString())}
           key={index}
         >
@@ -44,6 +50,7 @@ const RadioNumber = ({
             value={index}
             checked={selected === index}
             onChange={(e) => onChange(+e.target.value)}
+            disabled={disabled}
             hidden
           />
         </label>
