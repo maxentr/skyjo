@@ -1,6 +1,5 @@
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
-import { CardConstants } from "../constants"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
@@ -81,7 +80,7 @@ export abstract class SkyjoGameController {
 
   getGameWithFreePlace() {
     return this.games.find((game) => {
-      return !game.isFull() && game.status === "lobby" && !game.private
+      return !game.isFull() && game.status === "lobby" && !game.settings.private
     })
   }
 
@@ -231,7 +230,7 @@ export abstract class SkyjoGameController {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
       if (game.roundState === "waitingPlayersToTurnTwoCards")
-        game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
+        game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
     }
 
     socket.to(game.id).emit("message", {

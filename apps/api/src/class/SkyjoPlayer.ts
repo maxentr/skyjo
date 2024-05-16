@@ -1,7 +1,7 @@
 import { SkyjoPlayerScores, SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
-import { CardConstants } from "../constants"
 import { Player, PlayerInterface } from "./Player"
 import { SkyjoCard } from "./SkyjoCard"
+import { SkyjoSettings } from "./SkyjoSettings"
 
 interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]
@@ -12,13 +12,13 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
   scores: SkyjoPlayerScores = []
 
-  public setCards(cardsValue: number[]) {
+  public setCards(cardsValue: number[], cardSettings: SkyjoSettings) {
     this.cards = []
 
-    for (let columnI = 0; columnI < CardConstants.PER_COLUMN; columnI++) {
+    for (let columnI = 0; columnI < cardSettings.cardPerColumn; columnI++) {
       this.cards.push([])
-      for (let rowJ = 0; rowJ < CardConstants.PER_ROW; rowJ++) {
-        const index = columnI * CardConstants.PER_ROW + rowJ
+      for (let rowJ = 0; rowJ < cardSettings.cardPerRow; rowJ++) {
+        const index = columnI * cardSettings.cardPerRow + rowJ
         this.cards[columnI].push(new SkyjoCard(cardsValue[index]))
       }
     }

@@ -4,6 +4,7 @@ import { shuffle } from "../utils/shuffle"
 import { Game, GameInterface } from "./Game"
 import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
+import { SkyjoSettings } from "./SkyjoSettings"
 
 const SHUFFLE_ITERATIONS = 3
 
@@ -25,7 +26,10 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
   toJson(): SkyjoToJson
 }
 
-export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
+export class Skyjo
+  extends Game<SkyjoPlayer, SkyjoSettings>
+  implements SkyjoInterface
+{
   selectedCard: SkyjoCard | null = null
   turnState: TurnState = "chooseAPile"
   lastMove: Move = "turn"
@@ -34,9 +38,10 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   roundState: RoundState = "waitingPlayersToTurnTwoCards"
   roundNumber: number = 1
   firstPlayerToFinish: SkyjoPlayer | null = null
+  settings: SkyjoSettings = new SkyjoSettings()
 
-  constructor(player: SkyjoPlayer, privateGame: boolean = false) {
-    super(player, 8, privateGame)
+  constructor(player: SkyjoPlayer, settings: SkyjoSettings) {
+    super(player, settings)
   }
 
   private get discardPile() {
@@ -141,7 +146,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
   public givePlayersCards() {
     this.getConnectedPlayers().forEach((player) => {
       const cards = this.drawPile.splice(0, 12)
-      player.setCards(cards)
+      player.setCards(cards, this.settings)
     })
   }
 
@@ -306,6 +311,7 @@ export class Skyjo extends Game<SkyjoPlayer> implements SkyjoInterface {
       roundState: this.roundState,
       turnState: this.turnState,
       lastMove: this.lastMove,
+      settings: this.settings.toJson(),
     }
   }
 }

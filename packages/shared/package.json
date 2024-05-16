@@ -4,7 +4,8 @@
   "types": "./dist/*.d.ts",
   "exports": {
     "./validations/*": "./dist/validations/*.js",
-    "./types/*": "./dist/types/*.d.ts"
+    "./types/*": "./dist/types/*.d.ts",
+    "./constants": "./dist/constants.js"
   },
   "typesVersions": {
     "*": {

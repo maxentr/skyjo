@@ -13,6 +13,10 @@ import { CreatePlayer, createPlayer } from "shared/validations/player"
 
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import {
+  ChangeSettings,
+  changeSettings,
+} from "shared/validations/changeSettings"
+import {
   SendChatMessage,
   sendChatMessage,
 } from "shared/validations/chatMessage"
@@ -87,9 +91,19 @@ const skyjoRouter = (
       }
     })
 
+    socket.on("settings", async (data: ChangeSettings) => {
+      try {
+        const newSettings = changeSettings.parse(data)
+
+        instance.changeSettings(socket, newSettings)
+      } catch (error) {
+        console.error(`Error while changing the game settings : ${error}`)
+      }
+    })
+
     socket.on("start", async () => {
       try {
-        instance.startGame(socket)
+        await instance.startGame(socket)
       } catch (error) {
         console.error(`Error while getting a game : ${error}`)
       }

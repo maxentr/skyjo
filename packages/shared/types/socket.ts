@@ -1,3 +1,4 @@
+import { ChangeSettings } from "validations/changeSettings"
 import { ChatMessage } from "../types/chat"
 import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
 import { SendChatMessage } from "../validations/chatMessage"
@@ -17,6 +18,7 @@ export type ClientToServerEvents = {
   join: (data: JoinGame) => void
   get: () => void
   start: () => void
+  settings: (data: ChangeSettings) => void
   message: (message: SendChatMessage) => void
   "play:reveal-card": (data: PlayRevealCard) => void
   "play:pick-card": (data: PlayPickCard) => void
