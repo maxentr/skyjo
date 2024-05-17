@@ -1,12 +1,11 @@
 import { GAME_STATUS, GameToJson } from "shared/types/game"
 import { MIN_PLAYERS } from "../constants"
+import { GameSettings } from "./GameSettings"
 import { Player } from "./Player"
 
 export interface GameInterface<TPlayer extends Player> {
   readonly id: string
-  readonly private: boolean
   status: GAME_STATUS
-  maxPlayers: number
   players: TPlayer[]
   turn: number
   admin: TPlayer
@@ -25,22 +24,22 @@ export interface GameInterface<TPlayer extends Player> {
   toJson(): GameToJson
 }
 
-export abstract class Game<TPlayer extends Player>
-  implements GameInterface<TPlayer>
+export abstract class Game<
+  TPlayer extends Player,
+  TSettings extends GameSettings,
+> implements GameInterface<TPlayer>
 {
   // generate a random game id with 8 characters (a-z, A-Z, 0-9)
   readonly _id: string = Math.random().toString(36).substring(2, 10)
-  private: boolean
   status: GAME_STATUS = "lobby"
-  maxPlayers!: number
   players: TPlayer[] = []
   turn: number = 0
   admin: TPlayer
+  settings: TSettings
 
-  constructor(adminPlayer: TPlayer, maxPlayers: number, isPrivate: boolean) {
+  constructor(adminPlayer: TPlayer, settings: TSettings) {
     this.admin = adminPlayer
-    this.maxPlayers = maxPlayers
-    this.private = isPrivate
+    this.settings = settings
   }
 
   public get id(): string {
@@ -85,7 +84,7 @@ export abstract class Game<TPlayer extends Player>
   }
 
   isFull() {
-    return this.getConnectedPlayers().length === this.maxPlayers
+    return this.getConnectedPlayers().length === this.settings.maxPlayers
   }
 
   start() {
@@ -126,12 +125,11 @@ export abstract class Game<TPlayer extends Player>
   toJson() {
     return {
       id: this.id,
-      private: this.private,
       status: this.status,
       admin: this.admin.toJson(),
-      maxPlayers: this.maxPlayers,
       players: this.players.map((player) => player.toJson()),
       turn: this.turn,
+      settings: this.settings.toJson(),
     }
   }
 }

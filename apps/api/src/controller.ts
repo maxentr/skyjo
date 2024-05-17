@@ -1,3 +1,4 @@
+import { ChangeSettings } from "shared/validations/changeSettings"
 import {
   PlayPickCard,
   PlayReplaceCard,
@@ -8,7 +9,7 @@ import { CreatePlayer } from "shared/validations/player"
 import { Skyjo } from "./class/Skyjo"
 import { SkyjoGameController } from "./class/SkyjoGameController"
 import { SkyjoPlayer } from "./class/SkyjoPlayer"
-import { CardConstants } from "./constants"
+import { SkyjoSettings } from "./class/SkyjoSettings"
 import { SkyjoSocket } from "./types/skyjoSocket"
 
 export default class SkyjoController extends SkyjoGameController {
@@ -24,8 +25,9 @@ export default class SkyjoController extends SkyjoGameController {
 
   async create(socket: SkyjoSocket, player: CreatePlayer, privateGame = true) {
     const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
+    const settings = new SkyjoSettings(privateGame)
 
-    const game = new Skyjo(newPlayer, privateGame)
+    const game = new Skyjo(newPlayer, settings)
 
     this.onCreate(socket, newPlayer, game)
   }
@@ -40,11 +42,20 @@ export default class SkyjoController extends SkyjoGameController {
     const player = game.getPlayer(socket.id)
     if (!player) return
 
-    if (player.hasRevealedCardCount(CardConstants.INITIAL_TURNED_COUNT)) return
+    if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
 
     player.turnCard(column, row)
 
-    game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
+    game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+    await this.broadcastGame(socket)
+  }
+
+  async changeSettings(socket: SkyjoSocket, settings: ChangeSettings) {
+    const game = this.getGame(socket.data.gameId)
+    if (!game) return
+
+    game.settings.changeSettings(settings)
 
     await this.broadcastGame(socket)
   }

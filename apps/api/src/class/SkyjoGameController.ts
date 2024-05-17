@@ -1,8 +1,8 @@
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
-import { CardConstants } from "../constants"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
+import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
 export abstract class SkyjoGameController {
@@ -45,7 +45,15 @@ export abstract class SkyjoGameController {
     game: Skyjo,
     player: SkyjoPlayer,
   ) {
-    const cardsToDiscard = player.checkColumns()
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (game.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumns()
+    }
+    if (game.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRows())
+    }
+
     if (cardsToDiscard.length > 0) {
       cardsToDiscard.forEach((card) => game.discardCard(card))
     }
@@ -81,7 +89,7 @@ export abstract class SkyjoGameController {
 
   getGameWithFreePlace() {
     return this.games.find((game) => {
-      return !game.isFull() && game.status === "lobby" && !game.private
+      return !game.isFull() && game.status === "lobby" && !game.settings.private
     })
   }
 
@@ -200,7 +208,10 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.connectionStatus = "connected"
+
+    if (!player) return
+
+    player.connectionStatus = "connected"
 
     await this.broadcastGame(socket)
   }
@@ -230,8 +241,8 @@ export abstract class SkyjoGameController {
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
-      if (game.roundState === "waitingPlayersToTurnTwoCards")
-        game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
+      if (game.roundState === "waitingPlayersToTurnInitialCards")
+        game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
     }
 
     socket.to(game.id).emit("message", {

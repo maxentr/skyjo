@@ -8,6 +8,14 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
+  safelist: [
+    "grid-rows-1",
+    "grid-rows-2",
+    "grid-rows-3",
+    "grid-rows-4",
+    "grid-rows-5",
+    "grid-rows-6",
+  ],
   prefix: "",
   theme: {
     container: {
