@@ -17,7 +17,7 @@ export interface PlayerInterface {
   toJson(): PlayerToJson
 }
 
-export class Player implements PlayerInterface {
+export abstract class Player implements PlayerInterface {
   readonly name!: string
   readonly socketId: string
   readonly avatar!: Avatar

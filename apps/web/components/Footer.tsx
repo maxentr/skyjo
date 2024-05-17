@@ -21,11 +21,7 @@ const Footer = ({}: Props) => {
           </Link>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          <Link
-            href="https://github.com/Maxentr/Skyjo/releases"
-            target="_blank"
-            className="text-slate-900 underline"
-          >
+          <Link href="/" className="text-slate-900 underline">
             {t("home")}
           </Link>
           <Link

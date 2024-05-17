@@ -1,7 +1,7 @@
 import { SkyjoPlayerScores, SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
-import { CardConstants } from "../constants"
 import { Player, PlayerInterface } from "./Player"
 import { SkyjoCard } from "./SkyjoCard"
+import { SkyjoSettings } from "./SkyjoSettings"
 
 interface SkyjoPlayerInterface extends PlayerInterface {
   cards: SkyjoCard[][]
@@ -12,13 +12,13 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
   scores: SkyjoPlayerScores = []
 
-  public setCards(cardsValue: number[]) {
+  public setCards(cardsValue: number[], cardSettings: SkyjoSettings) {
     this.cards = []
 
-    for (let columnI = 0; columnI < CardConstants.PER_COLUMN; columnI++) {
+    for (let columnI = 0; columnI < cardSettings.cardPerColumn; columnI++) {
       this.cards.push([])
-      for (let rowJ = 0; rowJ < CardConstants.PER_ROW; rowJ++) {
-        const index = columnI * CardConstants.PER_ROW + rowJ
+      for (let rowJ = 0; rowJ < cardSettings.cardPerRow; rowJ++) {
+        const index = columnI * cardSettings.cardPerRow + rowJ
         this.cards[columnI].push(new SkyjoCard(cardsValue[index]))
       }
     }
@@ -35,6 +35,11 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   public removeColumn(column: number) {
     const deletedColumn = this.cards.splice(column, 1)
     return deletedColumn[0]
+  }
+
+  public removeRow(row: number) {
+    const deletedRow = this.cards.map((column) => column.splice(row, 1))
+    return deletedRow.flat()
   }
 
   public hasRevealedCardCount(count: number) {
@@ -56,6 +61,26 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
         cardsToDiscard.push(...this.removeColumn(index))
       }
     })
+
+    return cardsToDiscard
+  }
+
+  public checkRows() {
+    const cardsToDiscard: SkyjoCard[] = []
+
+    for (let rowIndex = 0; rowIndex < this.cards[0].length; rowIndex++) {
+      const row = this.cards
+        .map((column) => column.slice(rowIndex, rowIndex + 1))
+        .flat()
+
+      const allCardsAreTheSameAndVisible = row.every(
+        (card) => card.value === row[0].value && card.isVisible,
+      )
+
+      if (allCardsAreTheSameAndVisible) {
+        cardsToDiscard.push(...this.removeRow(rowIndex))
+      }
+    }
 
     return cardsToDiscard
   }

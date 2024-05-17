@@ -48,9 +48,6 @@
     }
   },
   "components": {
-    "AdminLobby": {
-      "start-game-button": "Commencer la partie"
-    },
     "Chat": {
       "title": "Chat"
     },
@@ -137,6 +134,29 @@
       "fr": "Français",
       "button": {
         "aria-label": "Changer la langue du jeu"
+      }
+    },
+    "Lobby": {
+      "settings": {
+        "title": "Paramètres",
+        "allow-skyjo-for-column": "Autoriser les Skyjo pour de colonne",
+        "allow-skyjo-for-row": "Autoriser les Skyjo pour de ligne",
+        "nb-columns": {
+          "label": "Nombre de colonnes",
+          "title": "$number colonnes"
+        },
+        "nb-rows": {
+          "label": "Number of rows",
+          "title": "$number rows"
+        },
+        "initial-turned-count": {
+          "label": "Nombre de cartes retournées au début de la partie",
+          "title": "{number} cartes seront retournées au début de la partie"
+        }
+      },
+      "start-game-button": "Commencer la partie",
+      "player-section": {
+        "title": "Joueurs"
       }
     },
     "OpponentBoard": {

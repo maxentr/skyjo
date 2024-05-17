@@ -1,8 +1,8 @@
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
-import { CardConstants } from "../constants"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
+import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
 export abstract class SkyjoGameController {
@@ -19,10 +19,9 @@ export abstract class SkyjoGameController {
 
   protected checkPlayAuthorization(
     socket: SkyjoSocket,
-    gameId: string,
     allowedStates: TurnState[],
   ) {
-    const game = this.getGame(gameId)
+    const game = this.getGame(socket.data.gameId)
     if (
       !game ||
       game.status !== "playing" ||
@@ -46,7 +45,15 @@ export abstract class SkyjoGameController {
     game: Skyjo,
     player: SkyjoPlayer,
   ) {
-    const cardsToDiscard = player.checkColumns()
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (game.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumns()
+    }
+    if (game.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRows())
+    }
+
     if (cardsToDiscard.length > 0) {
       cardsToDiscard.forEach((card) => game.discardCard(card))
     }
@@ -69,7 +76,7 @@ export abstract class SkyjoGameController {
       if (game.roundState === "over" && game.status !== "finished") {
         setTimeout(() => {
           game.startNewRound()
-          this.broadcastGame(socket, game.id)
+          this.broadcastGame(socket)
         }, 10000)
       }
     }
@@ -82,7 +89,7 @@ export abstract class SkyjoGameController {
 
   getGameWithFreePlace() {
     return this.games.find((game) => {
-      return !game.isFull() && game.status === "lobby" && !game.private
+      return !game.isFull() && game.status === "lobby" && !game.settings.private
     })
   }
 
@@ -108,13 +115,13 @@ export abstract class SkyjoGameController {
     await this.onJoin(socket, game.id, player)
   }
 
-  async onGet(socket: SkyjoSocket, gameId: string) {
-    const game = this.getGame(gameId)
+  async onGet(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
     if (game) socket.emit("game", game.toJson())
   }
 
-  async broadcastGame(socket: SkyjoSocket, gameId: string) {
-    const game = this.getGame(gameId)
+  async broadcastGame(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     socket.emit("game", game.toJson())
@@ -122,8 +129,8 @@ export abstract class SkyjoGameController {
     socket.to(game.id).emit("game", game.toJson())
   }
 
-  async emitToRoom(socket: SkyjoSocket, gameId: string) {
-    const game = this.getGame(gameId)
+  async emitToRoom(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     socket.to(game.id).emit("game", game.toJson())
@@ -152,7 +159,7 @@ export abstract class SkyjoGameController {
       "player-joined",
     )
 
-    await this.broadcastGame(socket, gameId)
+    await this.broadcastGame(socket)
   }
 
   async onWin(socket: SkyjoSocket, game: Skyjo, winner: SkyjoPlayer) {
@@ -183,7 +190,7 @@ export abstract class SkyjoGameController {
       game.reset()
       game.start()
     }
-    await this.broadcastGame(socket, game.id)
+    await this.broadcastGame(socket)
   }
 
   async onConnectionLost(socket: SkyjoSocket) {
@@ -193,7 +200,7 @@ export abstract class SkyjoGameController {
     const player = game.getPlayer(socket.id)
     player!.connectionStatus = "connection-lost"
 
-    await this.broadcastGame(socket, game.id)
+    await this.broadcastGame(socket)
   }
 
   async onReconnect(socket: SkyjoSocket) {
@@ -201,9 +208,12 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.connectionStatus = "connected"
 
-    await this.broadcastGame(socket, game.id)
+    if (!player) return
+
+    player.connectionStatus = "connected"
+
+    await this.broadcastGame(socket)
   }
 
   async onLeave(socket: SkyjoSocket) {
@@ -231,8 +241,8 @@ export abstract class SkyjoGameController {
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
-      if (game.roundState === "waitingPlayersToTurnTwoCards")
-        game.checkAllPlayersRevealedCards(CardConstants.INITIAL_TURNED_COUNT)
+      if (game.roundState === "waitingPlayersToTurnInitialCards")
+        game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
     }
 
     socket.to(game.id).emit("message", {
@@ -242,7 +252,7 @@ export abstract class SkyjoGameController {
       type: "player-left",
     })
 
-    await this.emitToRoom(socket, game.id)
+    await this.emitToRoom(socket)
 
     if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
     await socket.leave(game.id)

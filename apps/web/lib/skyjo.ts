@@ -37,7 +37,6 @@ export const getOpponents = (
     (player) => player.socketId === socketId,
   )
 
-
   const connectedOpponents = [
     ...connectedPlayers.slice(playerIndex + 1),
     ...connectedPlayers.slice(0, playerIndex),
@@ -63,7 +62,7 @@ export const getOpponents = (
 export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   if (!socketId || !game) return false
   if (
-    game.roundState === "waitingPlayersToTurnTwoCards" &&
+    game.roundState === "waitingPlayersToTurnInitialCards" &&
     game.status === "playing"
   )
     return true
@@ -73,17 +72,17 @@ export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   return game.players[game.turn].socketId === socketId
 }
 
-export const canTurnTwoCards = (game: SkyjoToJson) => {
+export const canTurnInitialCard = (game: SkyjoToJson) => {
   return (
     game.status === "playing" &&
-    game.roundState === "waitingPlayersToTurnTwoCards"
+    game.roundState === "waitingPlayersToTurnInitialCards"
   )
 }
 
-export const hasTurnedCard = (player: SkyjoPlayerToJson) => {
+export const hasTurnedCard = (player: SkyjoPlayerToJson, count: number) => {
   const visibleCards = player.cards.flat().filter((card) => card.isVisible)
 
-  return visibleCards.length === 2
+  return visibleCards.length === count
 }
 
 export const getWinner = (game: SkyjoToJson) => {
