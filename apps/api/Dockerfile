@@ -12,7 +12,7 @@ COPY . .
 RUN turbo prune --scope=$APP_PKG_NAME --docker
 RUN find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
 
-FROM node:18-bookworm-slim AS base
+FROM node:20-slim AS base
 RUN apt-get update && apt-get install -y openssl
 RUN corepack enable
 WORKDIR /app
