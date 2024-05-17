@@ -88,10 +88,9 @@ const Lobby = () => {
                       onChange={(value) =>
                         changeSettings("cardPerColumn", value)
                       }
-                      title={t("settings.nb-columns.title", {
-                        number: settings.cardPerColumn,
-                      })}
+                      title={t("settings.nb-columns.title")}
                       disabled={!isAdmin}
+                      disabledRadioNumber={settings.cardPerRow === 1 ? [1] : []}
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -103,9 +102,7 @@ const Lobby = () => {
                       max={SKYJO_DEFAULT_SETTINGS.cards.PER_ROW}
                       selected={settings.cardPerRow}
                       onChange={(value) => changeSettings("cardPerRow", value)}
-                      title={t("settings.nb-rows.title", {
-                        number: settings.cardPerRow,
-                      })}
+                      title={t("settings.nb-rows.title")}
                       disabled={!isAdmin}
                     />
                   </div>

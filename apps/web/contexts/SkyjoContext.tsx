@@ -115,9 +115,14 @@ const SkyjoContextProvider = ({
     if (
       settings.cardPerColumn * settings.cardPerRow <=
       settings.initialTurnedCount
-    )
+    ) {
       settings.initialTurnedCount =
         settings.cardPerColumn * settings.cardPerRow - 1
+    }
+
+    if (settings.cardPerColumn === 1 && settings.cardPerRow === 1) {
+      settings.cardPerColumn = 2
+    }
 
     socket.emit("settings", settings)
   }

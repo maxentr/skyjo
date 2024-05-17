@@ -1,6 +1,6 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { canTurnTwoCards, hasTurnedCard, isCurrentUserTurn } from "@/lib/skyjo"
+import { canTurnInitialCard, hasTurnedCard, isCurrentUserTurn } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
@@ -17,7 +17,8 @@ const CardTable = ({
   const { game, player, actions } = useSkyjo()
 
   const canTurnCardsAtBeginning =
-    canTurnTwoCards(game) && !hasTurnedCard(player)
+    canTurnInitialCard(game) &&
+    !hasTurnedCard(player, game.settings.initialTurnedCount)
   const canReplaceCard =
     game.turnState === "throwOrReplace" || game.turnState === "replaceACard"
   const canTurnCard = game.turnState === "turnACard"
@@ -35,7 +36,8 @@ const CardTable = ({
   return (
     <div
       className={cn(
-        "inline-grid grid-rows-3 grid-flow-col transition-all duration-300 gap-2 w-fit",
+        "inline-grid grid-flow-col transition-all duration-300 gap-2 w-fit",
+        `grid-rows-${cards?.[0]?.length}`,
       )}
     >
       {cards.map((column, columnIndex) => {

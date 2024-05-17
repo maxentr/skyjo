@@ -21,7 +21,7 @@ const GameInfo = () => {
 
     if (
       game.status === "playing" &&
-      game.roundState === "waitingPlayersToTurnTwoCards"
+      game.roundState === "waitingPlayersToTurnInitialCards"
     ) {
       //TODO use game parameters to get the number of cards to turn
       return t("turn-cards", { number: 2 })

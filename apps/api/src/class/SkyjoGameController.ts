@@ -2,6 +2,7 @@ import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
+import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
 export abstract class SkyjoGameController {
@@ -44,7 +45,15 @@ export abstract class SkyjoGameController {
     game: Skyjo,
     player: SkyjoPlayer,
   ) {
-    const cardsToDiscard = player.checkColumns()
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (game.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumns()
+    }
+    if (game.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRows())
+    }
+
     if (cardsToDiscard.length > 0) {
       cardsToDiscard.forEach((card) => game.discardCard(card))
     }
@@ -199,7 +208,10 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.connectionStatus = "connected"
+
+    if (!player) return
+
+    player.connectionStatus = "connected"
 
     await this.broadcastGame(socket)
   }
@@ -229,7 +241,7 @@ export abstract class SkyjoGameController {
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
-      if (game.roundState === "waitingPlayersToTurnTwoCards")
+      if (game.roundState === "waitingPlayersToTurnInitialCards")
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
     }
 

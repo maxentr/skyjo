@@ -35,7 +35,7 @@ export class Skyjo
   lastMove: Move = "turn"
   private _discardPile: number[] = []
   private _drawPile: number[] = []
-  roundState: RoundState = "waitingPlayersToTurnTwoCards"
+  roundState: RoundState = "waitingPlayersToTurnInitialCards"
   roundNumber: number = 1
   firstPlayerToFinish: SkyjoPlayer | null = null
   settings: SkyjoSettings = new SkyjoSettings()
@@ -139,6 +139,7 @@ export class Skyjo
   public start() {
     this.reset()
     this.lastMove = "turn"
+    if (this.settings.initialTurnedCount === 0) this.roundState = "playing"
 
     super.start()
   }
@@ -270,7 +271,9 @@ export class Skyjo
     this.discardPile.push(this.drawPile.shift()!)
 
     this.turnState = "chooseAPile"
-    this.roundState = "waitingPlayersToTurnTwoCards"
+
+    if (this.settings.initialTurnedCount === 0) this.roundState = "playing"
+    else this.roundState = "waitingPlayersToTurnInitialCards"
   }
 
   public reset() {
@@ -287,7 +290,7 @@ export class Skyjo
     this.discardPile.push(this.drawPile.shift()!)
 
     this.turnState = "chooseAPile"
-    this.roundState = "waitingPlayersToTurnTwoCards"
+    this.roundState = "waitingPlayersToTurnInitialCards"
   }
 
   public checkEndGame() {

@@ -4,7 +4,7 @@ import { SkyjoCardToJson } from "./skyjoCard"
 import { SkyjoPlayerToJson } from "./skyjoPlayer"
 
 export type RoundState =
-  | "waitingPlayersToTurnTwoCards"
+  | "waitingPlayersToTurnInitialCards"
   | "playing"
   | "lastLap"
   | "over"

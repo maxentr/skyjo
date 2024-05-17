@@ -37,6 +37,11 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return deletedColumn[0]
   }
 
+  public removeRow(row: number) {
+    const deletedRow = this.cards.map((column) => column.splice(row, 1))
+    return deletedRow.flat()
+  }
+
   public hasRevealedCardCount(count: number) {
     const currentCount = this.cards
       .flat()
@@ -56,6 +61,26 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
         cardsToDiscard.push(...this.removeColumn(index))
       }
     })
+
+    return cardsToDiscard
+  }
+
+  public checkRows() {
+    const cardsToDiscard: SkyjoCard[] = []
+
+    for (let rowIndex = 0; rowIndex < this.cards[0].length; rowIndex++) {
+      const row = this.cards
+        .map((column) => column.slice(rowIndex, rowIndex + 1))
+        .flat()
+
+      const allCardsAreTheSameAndVisible = row.every(
+        (card) => card.value === row[0].value && card.isVisible,
+      )
+
+      if (allCardsAreTheSameAndVisible) {
+        cardsToDiscard.push(...this.removeRow(rowIndex))
+      }
+    }
 
     return cardsToDiscard
   }
