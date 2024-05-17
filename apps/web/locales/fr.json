@@ -143,11 +143,11 @@
         "allow-skyjo-for-row": "Autoriser les Skyjo pour de ligne",
         "nb-columns": {
           "label": "Nombre de colonnes",
-          "title": "{number} colonnes"
+          "title": "$number colonnes"
         },
         "nb-rows": {
           "label": "Number of rows",
-          "title": "{number} rows"
+          "title": "$number rows"
         },
         "initial-turned-count": {
           "label": "Nombre de cartes retournées au début de la partie",

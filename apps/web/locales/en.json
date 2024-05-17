@@ -142,11 +142,11 @@
         "allow-skyjo-for-row": "Allow Skyjo for row",
         "nb-columns": {
           "label": "Number of columns",
-          "title": "{number} columns"
+          "title": "$number columns"
         },
         "nb-rows": {
           "label": "Number of rows",
-          "title": "{number} rows"
+          "title": "$number rows"
         },
         "initial-turned-count": {
           "label": "Number of card turned at the beginning of a round",
