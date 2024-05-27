@@ -188,7 +188,7 @@ export abstract class SkyjoGameController {
       game.status === "finished"
     ) {
       game.reset()
-      game.start()
+      game.status = "lobby"
     }
     await this.broadcastGame(socket)
   }
