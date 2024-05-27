@@ -6,6 +6,11 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "test": {},
+    "test:coverage": {},
+    "test:ui": {
+      "dependsOn": ["^build"]
+    },
     "lint": {
       "outputs": []
     },
