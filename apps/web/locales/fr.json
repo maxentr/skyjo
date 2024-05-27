@@ -70,7 +70,15 @@
     "FeedbackDialog": {
       "title": "Laisser un commentaire",
       "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
-      "error-message": "Une erreur est survenue, veuillez réessayer.",
+      "toast": {
+        "success": {
+          "title": "Merci de nous avoir fait part de vos commentaires !",
+          "description": "Vos commentaires nous ont aidés à améliorer notre site web sur les jeux, et nous vous en sommes très reconnaissants."
+        },
+        "error": {
+          "title": "Une erreur est survenue, veuillez réessayer."
+        }
+      },
       "email-input": {
         "label": "Votre email (facultatif)",
         "placeholder": "exemple@exemple.fr"

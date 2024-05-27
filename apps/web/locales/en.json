@@ -70,7 +70,15 @@
     "FeedbackDialog": {
       "title": "Leave a comment",
       "description": "You can write a feedback to help us improve the game.",
-      "error-message": "An error occurred, please try again.",
+      "toast": {
+        "success": {
+          "title": "Thank you for your feedback!",
+          "description": "Your insights have helped us enhance our game website, and we are truly grateful."
+        },
+        "error": {
+          "title": "An error occurred, please try again."
+        }
+      },
       "email-input": {
         "label": "Your email (optional)",
         "placeholder": "example@example.com"

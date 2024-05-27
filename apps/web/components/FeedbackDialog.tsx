@@ -23,10 +23,10 @@ import { z } from "zod"
 
 type FeedbackDialogProps = {
   open: boolean
-  onOpenChange: Dispatch<SetStateAction<boolean>>
+  setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const FeedbackDialog = ({ open, onOpenChange }: FeedbackDialogProps) => {
+const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
   const t = useTranslations("components.FeedbackDialog")
   const { toast } = useToast()
 
@@ -56,9 +56,16 @@ const FeedbackDialog = ({ open, onOpenChange }: FeedbackDialogProps) => {
 
     if (data.success) {
       form.reset()
+
+      setOpen(false)
+      toast({
+        title: t("toast.success.title"),
+        description: t("toast.success.description"),
+        duration: 8000,
+      })
     } else {
       toast({
-        description: t("error-message"),
+        title: t("toast.error.title"),
         variant: "destructive",
         duration: 3000,
       })
@@ -66,7 +73,7 @@ const FeedbackDialog = ({ open, onOpenChange }: FeedbackDialogProps) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
