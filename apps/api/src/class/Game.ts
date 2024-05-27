@@ -1,11 +1,11 @@
-import { GAME_STATUS, GameToJson } from "shared/types/game"
+import { GameStatus, GameToJson } from "shared/types/game"
 import { MIN_PLAYERS } from "../constants"
 import { GameSettings } from "./GameSettings"
 import { Player } from "./Player"
 
 export interface GameInterface<TPlayer extends Player> {
   readonly id: string
-  status: GAME_STATUS
+  status: GameStatus
   players: TPlayer[]
   turn: number
   admin: TPlayer
@@ -31,7 +31,7 @@ export abstract class Game<
 {
   // generate a random game id with 8 characters (a-z, A-Z, 0-9)
   readonly _id: string = Math.random().toString(36).substring(2, 10)
-  status: GAME_STATUS = "lobby"
+  status: GameStatus = "lobby"
   players: TPlayer[] = []
   turn: number = 0
   admin: TPlayer
