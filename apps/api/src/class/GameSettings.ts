@@ -11,7 +11,7 @@ export abstract class GameSettings implements GameSettingsInterface {
   private: boolean
   maxPlayers: number
 
-  constructor(isPrivate: boolean = false, maxPlayers: number = 8) {
+  constructor(isPrivate: boolean, maxPlayers: number) {
     this.private = isPrivate
     this.maxPlayers = maxPlayers
   }

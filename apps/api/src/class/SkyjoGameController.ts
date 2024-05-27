@@ -1,91 +1,12 @@
+import { SkyjoCard } from "@/class/SkyjoCard"
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
-import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
 export abstract class SkyjoGameController {
   private _games: Skyjo[] = []
-
-  private get games() {
-    return this._games
-  }
-  private set games(games: Skyjo[]) {
-    this._games = games
-  }
-
-  //#region protected
-
-  protected checkPlayAuthorization(
-    socket: SkyjoSocket,
-    allowedStates: TurnState[],
-  ) {
-    const game = this.getGame(socket.data.gameId)
-    if (
-      !game ||
-      game.status !== "playing" ||
-      (game.roundState !== "playing" && game.roundState !== "lastLap")
-    )
-      throw new Error(`game-not-found`)
-
-    const player = game.getPlayer(socket.id)
-    if (!player) throw new Error(`player-not-found`)
-
-    if (!game.checkTurn(socket.id)) throw new Error(`not-your-turn`)
-
-    if (allowedStates.length > 0 && !allowedStates.includes(game.turnState))
-      throw new Error(`invalid-turn-state`)
-
-    return { player, game }
-  }
-
-  protected async finishTurn(
-    socket: SkyjoSocket,
-    game: Skyjo,
-    player: SkyjoPlayer,
-  ) {
-    let cardsToDiscard: SkyjoCard[] = []
-
-    if (game.settings.allowSkyjoForColumn) {
-      cardsToDiscard = player.checkColumns()
-    }
-    if (game.settings.allowSkyjoForRow) {
-      cardsToDiscard = cardsToDiscard.concat(player.checkRows())
-    }
-
-    if (cardsToDiscard.length > 0) {
-      cardsToDiscard.forEach((card) => game.discardCard(card))
-    }
-
-    // check if the player has turned all his cards
-    const hasPlayerFinished = player.hasRevealedCardCount(
-      player.cards.flat().length,
-    )
-
-    if (hasPlayerFinished && !game.firstPlayerToFinish) {
-      game.firstPlayerToFinish = player
-      game.roundState = "lastLap"
-    } else if (game.firstPlayerToFinish) {
-      // check if the turn comes to the first player who finished
-      game.checkEndOfRound()
-      // check if the game is finished (player with more than 100 points)
-      game.checkEndGame()
-
-      // if the round is over and the game is not finished, start a new round after 10 seconds
-      if (game.roundState === "over" && game.status !== "finished") {
-        setTimeout(() => {
-          game.startNewRound()
-          this.broadcastGame(socket)
-        }, 10000)
-      }
-    }
-
-    // next turn
-    game.nextTurn()
-  }
-
-  //#endregion
 
   getGameWithFreePlace() {
     return this.games.find((game) => {
@@ -160,14 +81,6 @@ export abstract class SkyjoGameController {
     )
 
     await this.broadcastGame(socket)
-  }
-
-  async onWin(socket: SkyjoSocket, game: Skyjo, winner: SkyjoPlayer) {
-    game.status = "finished"
-    game.getPlayer(winner.socketId)?.addPoint()
-
-    socket.emit("winner", game.toJson(), winner.toJson())
-    socket.to(game.id).emit("winner", game.toJson(), winner.toJson())
   }
 
   async onDraw(socket: SkyjoSocket, game: Skyjo) {
@@ -277,4 +190,79 @@ export abstract class SkyjoGameController {
 
     socket.emit("message", newMessage)
   }
+
+  //#region protected
+  protected checkPlayAuthorization(
+    socket: SkyjoSocket,
+    allowedStates: TurnState[],
+  ) {
+    const game = this.getGame(socket.data.gameId)
+    if (
+      !game ||
+      game.status !== "playing" ||
+      (game.roundState !== "playing" && game.roundState !== "lastLap")
+    )
+      throw new Error(`game-not-found`)
+
+    const player = game.getPlayer(socket.id)
+    if (!player) throw new Error(`player-not-found`)
+
+    if (!game.checkTurn(socket.id)) throw new Error(`not-your-turn`)
+
+    if (allowedStates.length > 0 && !allowedStates.includes(game.turnState))
+      throw new Error(`invalid-turn-state`)
+
+    return { player, game }
+  }
+
+  protected async finishTurn(
+    socket: SkyjoSocket,
+    game: Skyjo,
+    player: SkyjoPlayer,
+  ) {
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (game.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumnsAndDiscard()
+    }
+    if (game.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRowsAndDiscard())
+    }
+
+    if (cardsToDiscard.length > 0) {
+      cardsToDiscard.forEach((card) => game.discardCard(card))
+    }
+
+    const playerFinished = game.checkIfPlayerFinished(player)
+
+    if (game.firstPlayerToFinish && !playerFinished) {
+      // check if the turn comes to the first player who finished
+      game.checkEndOfRound()
+      // check if the game is finished (player with more than 100 points)
+      game.checkEndGame()
+
+      // if the round is over and the game is not finished, start a new round after 10 seconds
+      if (game.roundState === "over" && game.status !== "finished") {
+        setTimeout(() => {
+          game.startNewRound()
+          this.broadcastGame(socket)
+        }, 10000)
+      }
+    }
+
+    // next turn
+    game.nextTurn()
+  }
+
+  //#endregion
+
+  //#region private methods
+  private get games() {
+    return this._games
+  }
+
+  private set games(games: Skyjo[]) {
+    this._games = games
+  }
+  //#endregion
 }
