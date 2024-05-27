@@ -41,7 +41,7 @@ const Lobby = () => {
   return (
     <Dialog open={open}>
       <DialogOverlay>
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col gap-8 items-center">
             <div className="flex flex-row gap-4">
               <div className="bg-off-white border-2 border-black rounded-2xl px-12 py-8 w-[460px]">
