@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SendIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -32,7 +33,12 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
     },
   })
 
-  const isFocusable = chatOpen ? 0 : -1
+  const [tabIndex, setTabIndex] = useState(-1)
+
+  useEffect(() => {
+    if (chatOpen) setTimeout(() => setTabIndex(0), 300)
+    else setTabIndex(-1)
+  }, [chatOpen])
 
   const onSubmit = (values: z.infer<typeof chatFormSchema>) => {
     if (!values.message) return
@@ -70,7 +76,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
                     form.formState.errors.message &&
                       "focus-visible:ring-red-500",
                   )}
-                  tabIndex={isFocusable}
+                  tabIndex={tabIndex}
                   {...field}
                 />
               </FormControl>
@@ -81,7 +87,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
           variant="icon"
           type="submit"
           title={t("button-title")}
-          tabIndex={isFocusable}
+          tabIndex={tabIndex}
         >
           <SendIcon width={16} height={16} />
         </Button>
