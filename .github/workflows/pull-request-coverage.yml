@@ -33,5 +33,6 @@ jobs:
       uses:  davelosert/vitest-coverage-report-action@v2
       with:
         name: 'API'
+        vite-config-path: "./apps/api/vitest.config.ts"
         json-summary-path: './apps/api/test/coverage/coverage-summary.json'
         json-final-path: './apps/api/test/coverage/coverage-final.json'
