@@ -221,6 +221,8 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
+    if (!player) return
+
     player!.connectionStatus = "disconnected"
 
     if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
