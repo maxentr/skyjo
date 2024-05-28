@@ -174,6 +174,15 @@ const skyjoRouter = (
       }
     })
 
+    socket.on("leave", async () => {
+      try {
+        await instance.onLeave(socket)
+        socket.emit("leave:success")
+      } catch (error) {
+        console.error(`Error while leaving a game : ${error}`)
+      }
+    })
+
     socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
         console.log(`Socket ${socket.id} disconnected for reason ${reason}`)

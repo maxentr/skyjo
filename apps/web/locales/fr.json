@@ -106,7 +106,8 @@
       "replay-button": {
         "cancel": "Ne pas rejouer",
         "replay": "Rejouer"
-      }
+      },
+      "leave-button": "Quitter la partie"
     },
     "EndRoundDialog": {
       "title": "Fin de la manche",
