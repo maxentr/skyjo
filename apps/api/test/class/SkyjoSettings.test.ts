@@ -1,6 +1,6 @@
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
-import { beforeEach, describe, expect, test } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
 
 let settings: SkyjoSettings
 
@@ -9,7 +9,7 @@ describe("SkyjoSettings", () => {
     settings = new SkyjoSettings()
   })
 
-  test("should return default settings", () => {
+  it("should return default settings", () => {
     const defaultSettings = new SkyjoSettings()
 
     expect(defaultSettings.private).toBeFalsy()
@@ -31,14 +31,14 @@ describe("SkyjoSettings", () => {
     expect(defaultSettings.maxPlayers).toBe(SKYJO_DEFAULT_SETTINGS.maxPlayers)
   })
 
-  test("should game settings private and with 2 players max", () => {
+  it("should game settings private and with 2 players max", () => {
     const privateSettings = new SkyjoSettings(true, 2)
 
     expect(privateSettings.private).toBeTruthy()
     expect(privateSettings.maxPlayers).toBe(2)
   })
 
-  test("should change settings", () => {
+  it("should change settings", () => {
     const newSettings = {
       private: true,
       allowSkyjoForColumn: true,
@@ -57,7 +57,7 @@ describe("SkyjoSettings", () => {
     expect(settings.cardPerColumn).toBe(8)
   })
 
-  test("should return json", () => {
+  it("should return json", () => {
     const settingsToJson = settings.toJson()
 
     expect(settingsToJson).toStrictEqual({

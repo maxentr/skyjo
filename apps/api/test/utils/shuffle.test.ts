@@ -1,8 +1,8 @@
 import { shuffle } from "@/utils/shuffle"
-import { describe, expect, test } from "vitest"
+import { describe, expect, it } from "vitest"
 
 describe("Shuffle", () => {
-  test("should shuffle an array", () => {
+  it("should shuffle an array", () => {
     const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     const shuffled = shuffle(array)
