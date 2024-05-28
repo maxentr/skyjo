@@ -146,6 +146,12 @@
     "Lobby": {
       "settings": {
         "title": "Settings",
+        "private": {
+          "tooltip": {
+            "on": "This game is private, only people with the link can join",
+            "off": "This game is public, anyone can join"
+          }
+        },
         "allow-skyjo-for-column": "Allow Skyjo for column",
         "allow-skyjo-for-row": "Allow Skyjo for row",
         "nb-columns": {
