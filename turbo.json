@@ -6,10 +6,14 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
-    "test": {},
-    "test:coverage": {},
+    "test": {
+      "dependsOn": ["shared#build"]
+    },
+    "test:coverage": {
+      "dependsOn": ["shared#build"]
+    },
     "test:ui": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["shared#build"]
     },
     "lint": {
       "outputs": []
