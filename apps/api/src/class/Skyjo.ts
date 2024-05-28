@@ -38,7 +38,6 @@ export class Skyjo
   roundState: RoundState = "waitingPlayersToTurnInitialCards"
   roundNumber: number = 1
   firstPlayerToFinish: SkyjoPlayer | null = null
-  settings: SkyjoSettings = new SkyjoSettings()
 
   constructor(player: SkyjoPlayer, settings: SkyjoSettings) {
     super(player, settings)
