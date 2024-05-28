@@ -10,7 +10,6 @@ import {
   playTurnCard,
 } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
-
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import {
   ChangeSettings,
@@ -22,7 +21,6 @@ import {
 } from "shared/validations/chatMessage"
 import { DisconnectReason, Server } from "socket.io"
 import skyjoController from "./class/SkyjoGameController"
-import { SkyjoPlayer } from "./class/SkyjoPlayer"
 import { SkyjoSocket } from "./types/skyjoSocket"
 
 const instance = skyjoController.getInstance()
