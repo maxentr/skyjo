@@ -4,10 +4,15 @@ import ChatForm from "@/components/ChatForm"
 import ChatMessage from "@/components/ChatMessage"
 import ChatMessageList from "@/components/ChatMessageList"
 import { useSkyjo } from "@/contexts/SkyjoContext"
+import { cn } from "@/lib/utils"
+import { ClassValue } from "clsx"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
-const Chat = () => {
+type ChatProps = {
+  className?: ClassValue
+}
+const Chat = ({ className }: ChatProps) => {
   const { chat } = useSkyjo()
   const t = useTranslations("components.Chat")
 
@@ -56,7 +61,12 @@ const Chat = () => {
   }
 
   return (
-    <div className="absolute right-6 top-full z-[60] hidden md:flex items-center justify-end">
+    <div
+      className={cn(
+        "absolute right-6 top-full z-10 hidden md:flex items-center justify-end",
+        className,
+      )}
+    >
       <div
         className={`w-80 h-fit pb-2 bg-white shadow border-2 border-b-0 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
           open ? "-translate-y-full" : "-translate-y-12"

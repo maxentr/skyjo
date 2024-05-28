@@ -1,5 +1,6 @@
 "use client"
 
+import Chat from "@/components/Chat"
 import CopyLink from "@/components/CopyLink"
 import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
@@ -193,6 +194,7 @@ const Lobby = () => {
             <CopyLink />
           </div>
         </div>
+        <Chat className="z-[60]" />
       </DialogOverlay>
     </Dialog>
   )
