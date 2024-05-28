@@ -51,6 +51,8 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   }
 
   checkColumnsAndDiscard() {
+    if (!this.cards[0] || this.cards[0].length <= 1) return []
+
     const cardsToDiscard: SkyjoCard[] = []
     this.cards.forEach((column, index) => {
       const allCardsAreTheSameAndVisible = column.every(
@@ -66,6 +68,8 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   }
 
   checkRowsAndDiscard() {
+    if (this.cards.length <= 1) return []
+
     const cardsToDiscard: SkyjoCard[] = []
 
     for (let rowIndex = 0; rowIndex < this.cards[0].length; rowIndex++) {
