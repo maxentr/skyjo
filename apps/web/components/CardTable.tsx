@@ -1,6 +1,10 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { canTurnInitialCard, hasTurnedCard, isCurrentUserTurn } from "@/lib/skyjo"
+import {
+  canTurnInitialCard,
+  hasTurnedCard,
+  isCurrentUserTurn,
+} from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
@@ -55,7 +59,7 @@ const CardTable = ({
                   ? "animate-small-scale"
                   : ""
               }
-              disabled={cardDisabled}
+              disabled={cardDisabled || !canBeSelected}
             />
           )
         })

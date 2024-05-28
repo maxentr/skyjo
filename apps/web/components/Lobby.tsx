@@ -1,5 +1,6 @@
 "use client"
 
+import Chat from "@/components/Chat"
 import CopyLink from "@/components/CopyLink"
 import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
@@ -8,7 +9,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RadioNumber from "@/components/ui/radio-number"
 import { Switch } from "@/components/ui/switch"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useSkyjo } from "@/contexts/SkyjoContext"
+import { cn } from "@/lib/utils"
+import { LockIcon, UnlockIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
@@ -41,10 +50,40 @@ const Lobby = () => {
   return (
     <Dialog open={open}>
       <DialogOverlay>
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col gap-8 items-center">
             <div className="flex flex-row gap-4">
-              <div className="bg-off-white border-2 border-black rounded-2xl px-12 py-8 w-[460px]">
+              <div className="bg-off-white border-2 border-black rounded-2xl px-12 py-8 w-[460px] relative">
+                <span className="absolute top-4 right-4">
+                  <TooltipProvider delayDuration={200}>
+                    <Tooltip>
+                      <TooltipTrigger className="relative">
+                        {settings.private ? (
+                          <LockIcon
+                            className={cn(
+                              "h-6 w-6 text-slate-700",
+                              !isAdmin && "cursor-default",
+                            )}
+                            onClick={() => changeSettings("private", false)}
+                          />
+                        ) : (
+                          <UnlockIcon
+                            className={cn(
+                              "h-6 w-6 text-slate-500",
+                              !isAdmin && "cursor-default",
+                            )}
+                            onClick={() => changeSettings("private", true)}
+                          />
+                        )}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {settings.private
+                          ? t("settings.private.tooltip.on")
+                          : t("settings.private.tooltip.off")}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </span>
                 <h2 className="text-slate-900 text-center text-2xl mb-5">
                   {t("settings.title")}
                 </h2>
@@ -155,6 +194,7 @@ const Lobby = () => {
             <CopyLink />
           </div>
         </div>
+        <Chat className="z-[60]" />
       </DialogOverlay>
     </Dialog>
   )

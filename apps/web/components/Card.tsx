@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
-  "text-black border-2 border-black flex justify-center items-center select-none",
+  "text-black border-2 border-black flex justify-center items-center select-none focus-visible:outline-black focus-visible:-outline-offset-2",
   {
     variants: {
       size: {

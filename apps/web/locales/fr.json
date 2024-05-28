@@ -70,7 +70,15 @@
     "FeedbackDialog": {
       "title": "Laisser un commentaire",
       "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
-      "error-message": "Une erreur est survenue, veuillez réessayer.",
+      "toast": {
+        "success": {
+          "title": "Merci de nous avoir fait part de vos commentaires !",
+          "description": "Vos commentaires nous ont aidés à améliorer notre site web sur les jeux, et nous vous en sommes très reconnaissants."
+        },
+        "error": {
+          "title": "Une erreur est survenue, veuillez réessayer."
+        }
+      },
       "email-input": {
         "label": "Votre email (facultatif)",
         "placeholder": "exemple@exemple.fr"
@@ -98,7 +106,8 @@
       "replay-button": {
         "cancel": "Ne pas rejouer",
         "replay": "Rejouer"
-      }
+      },
+      "leave-button": "Quitter la partie"
     },
     "EndRoundDialog": {
       "title": "Fin de la manche",
@@ -139,6 +148,12 @@
     "Lobby": {
       "settings": {
         "title": "Paramètres",
+        "private": {
+          "tooltip": {
+            "on": "Cette partie est privée, seuls les personnes ayant le lien peuvent rejoindre",
+            "off": "Cette partie est publique, n'importe qui peut rejoindre"
+          }
+        },
         "allow-skyjo-for-column": "Autoriser les Skyjo pour de colonne",
         "allow-skyjo-for-row": "Autoriser les Skyjo pour de ligne",
         "nb-columns": {

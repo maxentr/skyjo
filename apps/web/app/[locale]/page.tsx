@@ -34,7 +34,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
             <div></div>
             <div></div>
             <div className="flex flex-row justify-end">
-              <div className="w-10 flex flex-col gap-4">
+              <div className="w-10 flex flex-col gap-4 z-10">
                 <LanguageSettings locale={params.locale} />
                 <RulesDialog />
                 <FeedbackButton className="mt-4" />

@@ -135,6 +135,7 @@ export default class SkyjoGameController {
     game.getPlayer(socket.id)?.toggleReplay()
 
     game.restartGameIfAllPlayersWantReplay()
+    
     await this.broadcastGame(socket)
   }
 
@@ -166,7 +167,7 @@ export default class SkyjoGameController {
 
     const player = game.getPlayer(socket.id)
     if (!player) throw new Error("player-not-found")
-
+    
     player.connectionStatus = "disconnected"
 
     if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
@@ -180,6 +181,7 @@ export default class SkyjoGameController {
     ) {
       game.removePlayer(socket.id)
       if (socket.id === game.admin.socketId) game.changeAdmin()
+      
       game.restartGameIfAllPlayersWantReplay()
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()

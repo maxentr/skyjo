@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useSkyjo } from "@/contexts/SkyjoContext"
 import { BookOpenIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
@@ -21,12 +22,17 @@ const RulesDialog = ({
   defaultOpen = false,
   onOpenChange,
 }: RulesDialogProps) => {
+  const { game } = useSkyjo()
   const t = useTranslations("components.RulesDialog")
 
   return (
     <Dialog defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="icon" aria-label={t("trigger.aria-label")}>
+        <Button
+          variant="icon"
+          aria-label={t("trigger.aria-label")}
+          tabIndex={game?.status === "lobby" ? -1 : 0}
+        >
           <BookOpenIcon />
         </Button>
       </DialogTrigger>
