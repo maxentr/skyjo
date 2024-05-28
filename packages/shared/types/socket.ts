@@ -36,7 +36,6 @@ export type ServerToClientEvents = {
   game: (game: SkyjoToJson) => void
   message: (message: ChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
-  draw: (game: SkyjoToJson) => void
   "leave:success": () => void
 }
 
