@@ -1,114 +1,146 @@
-import { SkyjoCard } from "@/class/SkyjoCard"
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
+import { ChangeSettings } from "shared/validations/changeSettings"
+import {
+  PlayPickCard,
+  PlayReplaceCard,
+  PlayRevealCard,
+  PlayTurnCard,
+} from "shared/validations/play"
+import { CreatePlayer } from "shared/validations/player"
 import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
+import { SkyjoSettings } from "./SkyjoSettings"
 
-export abstract class SkyjoGameController {
-  private _games: Skyjo[] = []
+export default class SkyjoGameController {
+  private games: Skyjo[] = []
+  private static instance: SkyjoGameController
 
-  getGameWithFreePlace() {
-    return this.games.find((game) => {
-      return !game.isFull() && game.status === "lobby" && !game.settings.private
-    })
+  static getInstance(): SkyjoGameController {
+    if (!SkyjoGameController.instance) {
+      SkyjoGameController.instance = new SkyjoGameController()
+    }
+
+    return SkyjoGameController.instance
   }
 
-  addGame(game: Skyjo) {
-    this.games.push(game)
-  }
-
-  removeGame(gameId: string) {
-    this.games = this.games.filter((game) => {
-      return game.id !== gameId
-    })
-  }
-
-  getGame(gameId: string) {
-    return this.games.find((game) => {
-      return game.id === gameId
-    })
-  }
-
-  async onCreate(socket: SkyjoSocket, player: SkyjoPlayer, game: Skyjo) {
-    this.games.push(game)
-
-    await this.onJoin(socket, game.id, player)
+  //#region controllers
+  async onCreate(
+    socket: SkyjoSocket,
+    player: CreatePlayer,
+    privateGame = true,
+  ) {
+    const game = this.createGame(socket, player, privateGame)
+    await this.joinGame(socket, game.id, player)
   }
 
   async onGet(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (game) socket.emit("game", game.toJson())
-  }
-
-  async broadcastGame(socket: SkyjoSocket) {
-    const game = this.getGame(socket.data.gameId)
     if (!game) return
 
     socket.emit("game", game.toJson())
-
-    socket.to(game.id).emit("game", game.toJson())
   }
 
-  async emitToRoom(socket: SkyjoSocket) {
+  async onFind(socket: SkyjoSocket, player: CreatePlayer) {
+    let game = this.getPublicGameWithFreePlace()
+
+    if (!game) game = this.createGame(socket, player, false)
+    await this.joinGame(socket, game.id, player)
+  }
+
+  async onJoin(socket: SkyjoSocket, gameId: string, player: CreatePlayer) {
+    await this.joinGame(socket, gameId, player)
+  }
+
+  async onSettingsChange(socket: SkyjoSocket, settings: ChangeSettings) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) return
-
-    socket.to(game.id).emit("game", game.toJson())
-  }
-
-  async onJoin(socket: SkyjoSocket, gameId: string, player: SkyjoPlayer) {
-    const game = this.getGame(gameId)
-
     if (!game) throw new Error("game-not-found")
-    else if (game.status !== "lobby") throw new Error("game-already-started")
 
-    game.addPlayer(player)
-    await socket.join(gameId)
-
-    socket.data = {
-      gameId,
-    }
-
-    socket.emit("join", game.toJson())
-    await this.onMessage(
-      socket,
-      {
-        username: player.name,
-        message: "player-joined",
-      },
-      "player-joined",
-    )
+    game.settings.changeSettings(settings)
 
     await this.broadcastGame(socket)
   }
 
-  async onDraw(socket: SkyjoSocket, game: Skyjo) {
-    game.status = "finished"
-    socket.emit("draw", game.toJson())
-    socket.to(game.id).emit("draw", game.toJson())
+  async onGameStart(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
+    if (!game) throw new Error("game-not-found")
+    if (!game.isAdmin(socket.id)) throw new Error("not-allowed")
+
+    game.start()
+    await this.broadcastGame(socket)
   }
+
+  //#region game actions
+  async onRevealCard(socket: SkyjoSocket, turnData: PlayRevealCard) {
+    const { column, row } = turnData
+    const gameId = socket.data.gameId
+
+    const game = this.getGame(gameId)
+    if (!game) throw new Error("game-not-found")
+
+    const player = game.getPlayer(socket.id)
+    if (!player) throw new Error("player-not-found")
+
+    if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
+
+    player.turnCard(column, row)
+
+    game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+    await this.broadcastGame(socket)
+  }
+
+  async onPickCard(socket: SkyjoSocket, { pile }: PlayPickCard) {
+    const { game } = this.checkPlayAuthorization(socket, ["chooseAPile"])
+
+    if (pile === "draw") game.drawCard()
+    else game.pickFromDiscard()
+
+    await this.broadcastGame(socket)
+  }
+
+  async onReplaceCard(socket: SkyjoSocket, { column, row }: PlayReplaceCard) {
+    const { game } = this.checkPlayAuthorization(socket, [
+      "replaceACard",
+      "throwOrReplace",
+    ])
+
+    game.replaceCard(column, row)
+
+    await this.finishTurn(socket, game)
+  }
+
+  async onDiscardCard(socket: SkyjoSocket) {
+    const { game } = this.checkPlayAuthorization(socket, ["throwOrReplace"])
+
+    game.discardCard(game.selectedCard!)
+
+    await this.broadcastGame(socket)
+  }
+
+  async onTurnCard(socket: SkyjoSocket, { column, row }: PlayTurnCard) {
+    const { game, player } = this.checkPlayAuthorization(socket, ["turnACard"])
+
+    game.turnCard(player, column, row)
+
+    await this.finishTurn(socket, game)
+  }
+  //#endregion
 
   async onReplay(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) return
+    if (!game || game.status !== "finished") return
 
     game.getPlayer(socket.id)?.toggleReplay()
 
-    // restart game if all connected players want replay
-    if (
-      game.getConnectedPlayers().every((player) => player.wantReplay) &&
-      game.status === "finished"
-    ) {
-      game.reset()
-      game.start()
-    }
+    game.restartGameIfAllPlayersWantReplay()
     await this.broadcastGame(socket)
   }
 
   async onConnectionLost(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) return
+    if (!game) throw new Error("game-not-found")
 
     const player = game.getPlayer(socket.id)
     player!.connectionStatus = "connection-lost"
@@ -118,11 +150,10 @@ export abstract class SkyjoGameController {
 
   async onReconnect(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) return
+    if (!game) throw new Error("game-not-found")
 
     const player = game.getPlayer(socket.id)
-
-    if (!player) return
+    if (!player) throw new Error("player-not-found")
 
     player.connectionStatus = "connected"
 
@@ -134,7 +165,9 @@ export abstract class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    player!.connectionStatus = "disconnected"
+    if (!player) throw new Error("player-not-found")
+
+    player.connectionStatus = "disconnected"
 
     if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
       game.status = "stopped"
@@ -147,10 +180,7 @@ export abstract class SkyjoGameController {
     ) {
       game.removePlayer(socket.id)
       if (socket.id === game.admin.socketId) game.changeAdmin()
-      if (game.getConnectedPlayers().every((player) => player.wantReplay)) {
-        game.reset()
-        game.start()
-      }
+      game.restartGameIfAllPlayersWantReplay()
     } else {
       if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
 
@@ -160,7 +190,7 @@ export abstract class SkyjoGameController {
 
     socket.to(game.id).emit("message", {
       id: crypto.randomUUID(),
-      username: player!.name,
+      username: player.name,
       message: "player-left",
       type: "player-left",
     })
@@ -177,7 +207,7 @@ export abstract class SkyjoGameController {
     type: ChatMessageType = "message",
   ) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) return
+    if (!game) throw new Error("game-not-found")
 
     const newMessage = {
       id: crypto.randomUUID(),
@@ -190,9 +220,88 @@ export abstract class SkyjoGameController {
 
     socket.emit("message", newMessage)
   }
+  //#endregion
 
-  //#region protected
-  protected checkPlayAuthorization(
+  //#region private methods
+  private getGame(gameId: string) {
+    return this.games.find((game) => {
+      return game.id === gameId
+    })
+  }
+
+  private removeGame(gameId: string) {
+    this.games = this.games.filter((game) => {
+      return game.id !== gameId
+    })
+  }
+
+  private getPublicGameWithFreePlace() {
+    return this.games.find((game) => {
+      return !game.isFull() && game.status === "lobby" && !game.settings.private
+    })
+  }
+
+  private createGame(
+    socket: SkyjoSocket,
+    player: CreatePlayer,
+    privateGame = true,
+  ) {
+    const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
+    const settings = new SkyjoSettings(privateGame)
+
+    const game = new Skyjo(newPlayer, settings)
+    this.games.push(game)
+
+    return game
+  }
+
+  private async joinGame(
+    socket: SkyjoSocket,
+    gameId: string,
+    player: CreatePlayer,
+  ) {
+    const game = this.getGame(gameId)
+    if (!game) throw new Error("game-not-found")
+    else if (game.status !== "lobby") throw new Error("game-already-started")
+
+    const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
+    game.addPlayer(newPlayer)
+    await socket.join(gameId)
+
+    socket.data = {
+      gameId,
+    }
+
+    socket.emit("join", game.toJson())
+    await this.onMessage(
+      socket,
+      {
+        username: player.username,
+        message: "player-joined",
+      },
+      "player-joined",
+    )
+
+    await this.broadcastGame(socket)
+  }
+
+  private async broadcastGame(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
+    if (!game) throw new Error("game-not-found")
+
+    socket.emit("game", game.toJson())
+
+    socket.to(game.id).emit("game", game.toJson())
+  }
+
+  private async emitToRoom(socket: SkyjoSocket) {
+    const game = this.getGame(socket.data.gameId)
+    if (!game) throw new Error("game-not-found")
+
+    socket.to(game.id).emit("game", game.toJson())
+  }
+
+  private checkPlayAuthorization(
     socket: SkyjoSocket,
     allowedStates: TurnState[],
   ) {
@@ -215,54 +324,16 @@ export abstract class SkyjoGameController {
     return { player, game }
   }
 
-  protected async finishTurn(
-    socket: SkyjoSocket,
-    game: Skyjo,
-    player: SkyjoPlayer,
-  ) {
-    let cardsToDiscard: SkyjoCard[] = []
-
-    if (game.settings.allowSkyjoForColumn) {
-      cardsToDiscard = player.checkColumnsAndDiscard()
-    }
-    if (game.settings.allowSkyjoForRow) {
-      cardsToDiscard = cardsToDiscard.concat(player.checkRowsAndDiscard())
-    }
-
-    if (cardsToDiscard.length > 0) {
-      cardsToDiscard.forEach((card) => game.discardCard(card))
-    }
-
-    const playerFinished = game.checkIfPlayerFinished(player)
-
-    if (game.firstPlayerToFinish && !playerFinished) {
-      // check if the turn comes to the first player who finished
-      game.checkEndOfRound()
-      // check if the game is finished (player with more than 100 points)
-      game.checkEndGame()
-
-      // if the round is over and the game is not finished, start a new round after 10 seconds
-      if (game.roundState === "over" && game.status !== "finished") {
-        setTimeout(() => {
-          game.startNewRound()
-          this.broadcastGame(socket)
-        }, 10000)
-      }
-    }
-
-    // next turn
+  private async finishTurn(socket: SkyjoSocket, game: Skyjo) {
     game.nextTurn()
-  }
 
-  //#endregion
-
-  //#region private methods
-  private get games() {
-    return this._games
-  }
-
-  private set games(games: Skyjo[]) {
-    this._games = games
+    if (game.roundState === "over" && game.status !== "finished") {
+      setTimeout(() => {
+        game.startNewRound()
+        this.broadcastGame(socket)
+      }, 10000)
+    }
+    await this.broadcastGame(socket)
   }
   //#endregion
 }

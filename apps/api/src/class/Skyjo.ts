@@ -14,9 +14,7 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
   turnState: TurnState
   lastMove: Move
 
-  initializeCardPiles(): void
   start(): void
-  givePlayersCards(player: SkyjoPlayer): void
   checkAllPlayersRevealedCards(count: number): void
   drawCard(): void
   pickFromDiscard(): void
@@ -24,8 +22,6 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
   replaceCard(column: number, row: number): void
   turnCard(player: SkyjoPlayer, column: number, row: number): void
   nextTurn(): void
-  checkIfPlayerFinished(player: SkyjoPlayer): boolean
-  checkEndOfRound(): void
   reset(): void
   toJson(): SkyjoToJson
 }
@@ -34,8 +30,8 @@ export class Skyjo
   extends Game<SkyjoPlayer, SkyjoSettings>
   implements SkyjoInterface
 {
-  private _discardPile: number[] = []
-  private _drawPile: number[] = []
+  private discardPile: number[] = []
+  private drawPile: number[] = []
 
   selectedCard: SkyjoCard | null = null
   turnState: TurnState = "chooseAPile"
@@ -49,42 +45,12 @@ export class Skyjo
     super(player, settings)
   }
 
-  initializeCardPiles() {
-    const defaultCards = [
-      ...Array(5).fill(-2),
-      ...Array(10).fill(-1),
-      ...Array(15).fill(0),
-      ...Array(10).fill(1),
-      ...Array(10).fill(2),
-      ...Array(10).fill(3),
-      ...Array(10).fill(4),
-      ...Array(10).fill(5),
-      ...Array(10).fill(6),
-      ...Array(10).fill(7),
-      ...Array(10).fill(8),
-      ...Array(10).fill(9),
-      ...Array(10).fill(10),
-      ...Array(10).fill(11),
-      ...Array(10).fill(12),
-    ]
-
-    this.drawPile = shuffle(defaultCards, SHUFFLE_ITERATIONS)
-    this.discardPile = []
-  }
-
   start() {
     this.reset()
     this.lastMove = "turn"
     if (this.settings.initialTurnedCount === 0) this.roundState = "playing"
 
     super.start()
-  }
-
-  givePlayersCards() {
-    this.getConnectedPlayers().forEach((player) => {
-      const cards = this.drawPile.splice(0, 12)
-      player.setCards(cards, this.settings)
-    })
   }
 
   checkAllPlayersRevealedCards(count: number) {
@@ -144,41 +110,31 @@ export class Skyjo
   }
 
   override nextTurn() {
+    let cardsToDiscard: SkyjoCard[] = []
+    let currentPlayer = this.getCurrentPlayer()
+
+    if (this.settings.allowSkyjoForColumn) {
+      cardsToDiscard = currentPlayer.checkColumnsAndDiscard()
+    }
+    if (this.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(
+        currentPlayer.checkRowsAndDiscard(),
+      )
+    }
+
+    if (cardsToDiscard.length > 0) {
+      cardsToDiscard.forEach((card) => this.discardCard(card))
+    }
+
+    const playerFinished = this.checkIfPlayerFinished(currentPlayer)
+
+    if (this.firstPlayerToFinish && !playerFinished) {
+      this.checkEndOfRound()
+      this.checkEndOfGame()
+    }
+
     this.turnState = "chooseAPile"
     super.nextTurn()
-  }
-
-  checkIfPlayerFinished(player: SkyjoPlayer) {
-    // check if the player has turned all his cards
-    const hasPlayerFinished = player.hasRevealedCardCount(
-      player.cards.flat().length,
-    )
-
-    if (hasPlayerFinished && !this.firstPlayerToFinish) {
-      this.firstPlayerToFinish = player
-      this.roundState = "lastLap"
-
-      return true
-    }
-
-    return false
-  }
-
-  checkEndOfRound() {
-    const connectedPlayers = this.getConnectedPlayers()
-    const nextTurn = this.getNextTurn()
-
-    if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
-      this.players.forEach((player) => {
-        player.turnAllCards()
-        player.checkColumnsAndDiscard()
-        player.finalRoundScore()
-      })
-
-      this.doubleScoreForFirstPlayer()
-
-      this.roundState = "over"
-    }
   }
 
   startNewRound() {
@@ -186,9 +142,10 @@ export class Skyjo
     this.initializeRound()
   }
 
-  checkEndGame() {
-    if (this.getConnectedPlayers().some((player) => player.score >= 100)) {
-      this.endGame()
+  restartGameIfAllPlayersWantReplay() {
+    if (this.getConnectedPlayers().every((player) => player.wantReplay)) {
+      this.reset()
+      this.status = "lobby"
     }
   }
 
@@ -213,18 +170,60 @@ export class Skyjo
   }
 
   //#region private methods
-  private get discardPile() {
-    return this._discardPile
-  }
-  private set discardPile(value: number[]) {
-    this._discardPile = value
+
+  private initializeCardPiles() {
+    const defaultCards = [
+      ...Array(5).fill(-2),
+      ...Array(10).fill(-1),
+      ...Array(15).fill(0),
+      ...Array(10).fill(1),
+      ...Array(10).fill(2),
+      ...Array(10).fill(3),
+      ...Array(10).fill(4),
+      ...Array(10).fill(5),
+      ...Array(10).fill(6),
+      ...Array(10).fill(7),
+      ...Array(10).fill(8),
+      ...Array(10).fill(9),
+      ...Array(10).fill(10),
+      ...Array(10).fill(11),
+      ...Array(10).fill(12),
+    ]
+
+    this.drawPile = shuffle(defaultCards, SHUFFLE_ITERATIONS)
+    this.discardPile = []
   }
 
-  private get drawPile() {
-    return this._drawPile
+  private resetRoundPlayers() {
+    this.getConnectedPlayers().forEach((player) => {
+      player.resetRound()
+    })
   }
-  private set drawPile(value: number[]) {
-    this._drawPile = value
+
+  private givePlayersCards() {
+    this.getConnectedPlayers().forEach((player) => {
+      const cards = this.drawPile.splice(0, 12)
+      player.setCards(cards, this.settings)
+    })
+  }
+
+  private initializeRound() {
+    this.firstPlayerToFinish = null
+    this.selectedCard = null
+    this.lastMove = "turn"
+    this.initializeCardPiles()
+    this.resetRoundPlayers()
+
+    // Give to each player 12 cards
+    this.givePlayersCards()
+
+    // Turn first card from faceoff pile to discard pile
+    this.discardPile.push(this.drawPile.shift()!)
+
+    this.turnState = "chooseAPile"
+
+    if (this.settings.initialTurnedCount === 0) this.roundState = "playing"
+    else this.roundState = "waitingPlayersToTurnInitialCards"
   }
 
   private reloadDrawPile() {
@@ -266,6 +265,40 @@ export class Skyjo
     this.turn = playerToStart!.index
   }
 
+  private checkIfPlayerFinished(player: SkyjoPlayer) {
+    // check if the player has turned all his cards
+    const hasPlayerFinished = player.hasRevealedCardCount(
+      player.cards.flat().length,
+    )
+
+    if (hasPlayerFinished && !this.firstPlayerToFinish) {
+      this.firstPlayerToFinish = player
+      this.roundState = "lastLap"
+
+      return true
+    }
+
+    return false
+  }
+
+  private checkEndOfRound() {
+    const connectedPlayers = this.getConnectedPlayers()
+    const nextTurn = this.getNextTurn()
+
+    if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
+      this.players.forEach((player) => {
+        player.turnAllCards()
+        if (this.settings.allowSkyjoForRow) player.checkRowsAndDiscard()
+        if (this.settings.allowSkyjoForColumn) player.checkColumnsAndDiscard()
+        player.finalRoundScore()
+      })
+
+      this.doubleScoreForFirstPlayer()
+
+      this.roundState = "over"
+    }
+  }
+
   private removeDisconnectedPlayers() {
     this.players = this.getConnectedPlayers()
   }
@@ -274,12 +307,6 @@ export class Skyjo
     this.removeDisconnectedPlayers()
 
     this.getConnectedPlayers().forEach((player) => player.reset())
-  }
-
-  private resetRoundPlayers() {
-    this.getConnectedPlayers().forEach((player) => {
-      player.resetRound()
-    })
   }
 
   private doubleScoreForFirstPlayer() {
@@ -305,28 +332,11 @@ export class Skyjo
     }
   }
 
-  private initializeRound() {
-    this.firstPlayerToFinish = null
-    this.selectedCard = null
-    this.lastMove = "turn"
-    this.initializeCardPiles()
-    this.resetRoundPlayers()
-
-    // Give to each player 12 cards
-    this.givePlayersCards()
-
-    // Turn first card from faceoff pile to discard pile
-    this.discardPile.push(this.drawPile.shift()!)
-
-    this.turnState = "chooseAPile"
-
-    if (this.settings.initialTurnedCount === 0) this.roundState = "playing"
-    else this.roundState = "waitingPlayersToTurnInitialCards"
-  }
-
-  private endGame() {
-    this.roundState = "over"
-    this.status = "finished"
+  private checkEndOfGame() {
+    if (this.getConnectedPlayers().some((player) => player.score >= 100)) {
+      this.roundState = "over"
+      this.status = "finished"
+    }
   }
   //#endregion
 }
