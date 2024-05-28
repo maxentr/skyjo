@@ -24,9 +24,5 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "syncpack": "^12.3.0",
     "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=20.9.0"
-  },
-  "packageManager": "pnpm@9.0.6"
+  }
 }
