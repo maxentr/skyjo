@@ -144,7 +144,7 @@ export class Skyjo
   restartGameIfAllPlayersWantReplay() {
     if (this.getConnectedPlayers().every((player) => player.wantReplay)) {
       this.reset()
-      this.status = "lobby"
+      super.reset()
     }
   }
 
