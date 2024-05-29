@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     coverage: {
-      reporter: ["text", "json-summary", "json"],
+      reporter: ["text", "html", "json-summary", "json"],
       reportOnFailure: true,
       provider: "istanbul",
       reportsDirectory: "test/coverage",
