@@ -56,10 +56,11 @@ export default class SkyjoGameController {
   async onSettingsChange(socket: SkyjoSocket, settings: ChangeSettings) {
     const game = this.getGame(socket.data.gameId)
     if (!game) throw new Error("game-not-found")
+    if (!game.isAdmin(socket.id)) throw new Error("not-allowed")
 
     game.settings.changeSettings(settings)
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onGameStart(socket: SkyjoSocket) {
@@ -68,7 +69,7 @@ export default class SkyjoGameController {
     if (!game.isAdmin(socket.id)) throw new Error("not-allowed")
 
     game.start()
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   //#region game actions
@@ -82,13 +83,15 @@ export default class SkyjoGameController {
     const player = game.getPlayer(socket.id)
     if (!player) throw new Error("player-not-found")
 
+    if (game.status !== "playing" || game.roundState !== "waitingPlayersToTurnInitialCards") throw new Error("not-allowed")
+
     if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
 
     player.turnCard(column, row)
 
     game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onPickCard(socket: SkyjoSocket, { pile }: PlayPickCard) {
@@ -97,7 +100,7 @@ export default class SkyjoGameController {
     if (pile === "draw") game.drawCard()
     else game.pickFromDiscard()
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onReplaceCard(socket: SkyjoSocket, { column, row }: PlayReplaceCard) {
@@ -116,7 +119,7 @@ export default class SkyjoGameController {
 
     game.discardCard(game.selectedCard!)
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onTurnCard(socket: SkyjoSocket, { column, row }: PlayTurnCard) {
@@ -130,23 +133,24 @@ export default class SkyjoGameController {
 
   async onReplay(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game || game.status !== "finished") return
+    if (!game) throw new Error("game-not-found")
+    if (game.status !== "finished") throw new Error("not-allowed")
 
     game.getPlayer(socket.id)?.toggleReplay()
 
     game.restartGameIfAllPlayersWantReplay()
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onConnectionLost(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) return
 
     const player = game.getPlayer(socket.id)
     player!.connectionStatus = "connection-lost"
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onReconnect(socket: SkyjoSocket) {
@@ -158,7 +162,7 @@ export default class SkyjoGameController {
 
     player.connectionStatus = "connected"
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
   async onLeave(socket: SkyjoSocket) {
@@ -174,13 +178,14 @@ export default class SkyjoGameController {
       game.status = "stopped"
     }
 
+    if (socket.id === game.admin.socketId) game.changeAdmin()
+
     if (
       game.status === "lobby" ||
       game.status === "finished" ||
       game.status === "stopped"
     ) {
       game.removePlayer(socket.id)
-      if (socket.id === game.admin.socketId) game.changeAdmin()
 
       game.restartGameIfAllPlayersWantReplay()
     } else {
@@ -190,16 +195,18 @@ export default class SkyjoGameController {
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
     }
 
-    socket.to(game.id).emit("message", {
-      id: crypto.randomUUID(),
-      username: player.name,
-      message: "player-left",
-      type: "player-left",
-    })
-
-    await this.emitToRoom(socket)
-
     if (game.getConnectedPlayers().length === 0) this.removeGame(game.id)
+    else {
+      socket.to(game.id).emit("message", {
+        id: crypto.randomUUID(),
+        username: player.name,
+        message: "player-left",
+        type: "player-left",
+      })
+
+      await this.emitToRoom(socket, game)
+    }
+
     await socket.leave(game.id)
   }
 
@@ -210,6 +217,8 @@ export default class SkyjoGameController {
   ) {
     const game = this.getGame(socket.data.gameId)
     if (!game) throw new Error("game-not-found")
+
+    if (!game.getPlayer(socket.id)) throw new Error("player-not-found")
 
     const newMessage = {
       id: crypto.randomUUID(),
@@ -284,22 +293,16 @@ export default class SkyjoGameController {
       "player-joined",
     )
 
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
 
-  private async broadcastGame(socket: SkyjoSocket) {
-    const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
-
+  private async broadcastGame(socket: SkyjoSocket, game: Skyjo) {
     socket.emit("game", game.toJson())
 
     socket.to(game.id).emit("game", game.toJson())
   }
 
-  private async emitToRoom(socket: SkyjoSocket) {
-    const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
-
+  private async emitToRoom(socket: SkyjoSocket, game: Skyjo) {
     socket.to(game.id).emit("game", game.toJson())
   }
 
@@ -308,12 +311,13 @@ export default class SkyjoGameController {
     allowedStates: TurnState[],
   ) {
     const game = this.getGame(socket.data.gameId)
+    if (!game) throw new Error("game-not-found")
+
     if (
-      !game ||
       game.status !== "playing" ||
       (game.roundState !== "playing" && game.roundState !== "lastLap")
     )
-      throw new Error(`game-not-found`)
+      throw new Error("not-allowed")
 
     const player = game.getPlayer(socket.id)
     if (!player) throw new Error(`player-not-found`)
@@ -332,10 +336,10 @@ export default class SkyjoGameController {
     if (game.roundState === "over" && game.status !== "finished") {
       setTimeout(() => {
         game.startNewRound()
-        this.broadcastGame(socket)
+        this.broadcastGame(socket, game)
       }, 10000)
     }
-    await this.broadcastGame(socket)
+    await this.broadcastGame(socket, game)
   }
   //#endregion
 }
