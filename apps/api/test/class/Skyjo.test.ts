@@ -21,11 +21,76 @@ describe("Skyjo", () => {
     skyjo = new Skyjo(player, settings)
     skyjo.addPlayer(player)
 
-    opponent = new SkyjoPlayer("player2", "socketId123", "elephant")
+    opponent = new SkyjoPlayer("player2", "socketId456", "elephant")
     skyjo.addPlayer(opponent)
   })
 
+  //#region Game class
+  it("should get player", () => {
+    expect(skyjo.getPlayer("socketId123")).toBe(player)
+    expect(skyjo.getPlayer("socketId456")).toBe(opponent)
+  })
+
+  describe("add player", () => {
+    it("should add player", () => {
+      settings.maxPlayers = 3
+      const newPlayer = new SkyjoPlayer("player3", "socketId789", "turtle")
+
+      expect(() => skyjo.addPlayer(newPlayer)).not.toThrowError()
+      expect(skyjo.players).toHaveLength(3)
+    })
+
+    it("should not add player if max players is reached", () => {
+      settings.maxPlayers = 2
+      const newPlayer = new SkyjoPlayer("player3", "socketId789", "turtle")
+
+      expect(() => skyjo.addPlayer(newPlayer)).toThrowError("game-is-full")
+      expect(skyjo.players).toHaveLength(2)
+    })
+  })
+
+  describe("change admin", () => {
+    it("should change the admin of the game", () => {
+      skyjo.removePlayer("socketId123")
+      expect(() => skyjo.changeAdmin()).not.toThrowError()
+      expect(skyjo.admin).toBe(opponent)
+    })
+
+    it("should not change the admin because there are no players", () => {
+      skyjo.removePlayer("socketId123")
+      skyjo.removePlayer("socketId456")
+      expect(() => skyjo.changeAdmin()).toThrowError("no-players")
+    })
+  })
+
+  it("should check if the player is admin", () => {
+    expect(skyjo.isAdmin("socketId123")).toBe(true)
+    expect(skyjo.isAdmin("socketId456")).toBe(false)
+  })
+
+  it("should check if it's player turn", () => {
+    expect(skyjo.checkTurn("socketId123")).toBe(true)
+    expect(skyjo.checkTurn("socketId456")).toBe(false)
+  })
+
+  describe("have at least min players connected", () => {
+    it("should return true if there are at least min players connected", () => {
+      expect(skyjo.haveAtLeastMinPlayersConnected()).toBe(true)
+    })
+
+    it("should return false if there are less than min players connected", () => {
+      skyjo.removePlayer("socketId123")
+      expect(skyjo.haveAtLeastMinPlayersConnected()).toBe(false)
+    })
+  })
+  //#endregion
+
   describe("start", () => {
+    it("should not start the game if min players is not reached", () => {
+      skyjo.removePlayer("socketId456")
+      expect(() => skyjo.start()).toThrowError("too-few-players")
+    })
+
     it("should start the game with default settings", () => {
       skyjo.start()
 
@@ -43,18 +108,6 @@ describe("Skyjo", () => {
       expect(skyjo.roundState).toBe<RoundState>("playing")
     })
   })
-
-  // describe("give players cards", () => {
-  // it("should give players cards", () => {
-  //   skyjo.initializeCardPiles()
-  //   skyjo["givePlayersCards"]()
-
-  //   expect(skyjo["drawPile"]).toHaveLength(TOTAL_CARDS - CARDS_PER_PLAYER * 2)
-  //   skyjo.players.forEach((player) => {
-  //     expect(player.cards.flat()).toHaveLength(CARDS_PER_PLAYER)
-  //   })
-  // })
-  // })
 
   describe("check all players revealed cards", () => {
     it("should check all players revealed cards and not start the game", () => {
