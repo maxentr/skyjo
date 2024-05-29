@@ -25,6 +25,28 @@ describe("SkyjoPlayer", () => {
     nbRows = player.cards[0].length
   })
 
+  //#region Player class
+  describe("add point", () => {
+    it("should add a point", () => {
+      player.addPoint()
+      expect(player.score).toBe(1)
+    })
+
+    it("should add 10 points", () => {
+      player.addPoint(10)
+      expect(player.score).toBe(10)
+    })
+  })
+
+  it("should toggle the replay", () => {
+    expect(player.wantReplay).toBe(false)
+    player.toggleReplay()
+    expect(player.wantReplay).toBe(true)
+    player.toggleReplay()
+    expect(player.wantReplay).toBe(false)
+  })
+  //#endregion
+
   describe("set cards", () => {
     it("should set cards with default settings", () => {
       player.setCards(
