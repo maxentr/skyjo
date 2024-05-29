@@ -5,6 +5,7 @@ import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { GameStatus } from "shared/types/game"
 import { Move, RoundState, TurnState } from "shared/types/skyjo"
 import { beforeEach, describe, expect, it } from "vitest"
+import { TEST_SOCKET_ID } from "../constants"
 
 const TOTAL_CARDS = 150
 const CARDS_PER_PLAYER = 12
@@ -16,7 +17,7 @@ describe("Skyjo", () => {
   let opponent: SkyjoPlayer
 
   beforeEach(() => {
-    player = new SkyjoPlayer("player1", "socketId123", "bee")
+    player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "bee")
     settings = new SkyjoSettings()
     skyjo = new Skyjo(player, settings)
     skyjo.addPlayer(player)
@@ -27,7 +28,7 @@ describe("Skyjo", () => {
 
   //#region Game class
   it("should get player", () => {
-    expect(skyjo.getPlayer("socketId123")).toBe(player)
+    expect(skyjo.getPlayer(TEST_SOCKET_ID)).toBe(player)
     expect(skyjo.getPlayer("socketId456")).toBe(opponent)
   })
 
@@ -51,36 +52,36 @@ describe("Skyjo", () => {
 
   describe("change admin", () => {
     it("should change the admin of the game", () => {
-      skyjo.removePlayer("socketId123")
+      skyjo.removePlayer(TEST_SOCKET_ID)
       expect(() => skyjo.changeAdmin()).not.toThrowError()
       expect(skyjo.admin).toBe(opponent)
     })
 
     it("should not change the admin because there are no players", () => {
-      skyjo.removePlayer("socketId123")
+      skyjo.removePlayer(TEST_SOCKET_ID)
       skyjo.removePlayer("socketId456")
       expect(() => skyjo.changeAdmin()).toThrowError("no-players")
     })
   })
 
   it("should check if the player is admin", () => {
-    expect(skyjo.isAdmin("socketId123")).toBe(true)
-    expect(skyjo.isAdmin("socketId456")).toBe(false)
+    expect(skyjo.isAdmin(TEST_SOCKET_ID)).toBeTruthy()
+    expect(skyjo.isAdmin("socketId456")).toBeFalsy()
   })
 
   it("should check if it's player turn", () => {
-    expect(skyjo.checkTurn("socketId123")).toBe(true)
-    expect(skyjo.checkTurn("socketId456")).toBe(false)
+    expect(skyjo.checkTurn(TEST_SOCKET_ID)).toBeTruthy()
+    expect(skyjo.checkTurn("socketId456")).toBeFalsy()
   })
 
   describe("have at least min players connected", () => {
     it("should return true if there are at least min players connected", () => {
-      expect(skyjo.haveAtLeastMinPlayersConnected()).toBe(true)
+      expect(skyjo.haveAtLeastMinPlayersConnected()).toBeTruthy()
     })
 
     it("should return false if there are less than min players connected", () => {
-      skyjo.removePlayer("socketId123")
-      expect(skyjo.haveAtLeastMinPlayersConnected()).toBe(false)
+      skyjo.removePlayer(TEST_SOCKET_ID)
+      expect(skyjo.haveAtLeastMinPlayersConnected()).toBeFalsy()
     })
   })
   //#endregion
@@ -147,10 +148,10 @@ describe("Skyjo", () => {
     })
 
     it("should check all players revealed cards, start the game and make the player with the highest card start while ignoring players who are not connected", () => {
-      const opponent2 = new SkyjoPlayer("player3", "socketId123", "elephant")
+      const opponent2 = new SkyjoPlayer("player3", TEST_SOCKET_ID, "elephant")
       skyjo.addPlayer(opponent2)
 
-      const opponent3 = new SkyjoPlayer("player4", "socketId123", "elephant")
+      const opponent3 = new SkyjoPlayer("player4", TEST_SOCKET_ID, "elephant")
       skyjo.addPlayer(opponent3)
 
       skyjo.start()
@@ -296,7 +297,7 @@ describe("Skyjo", () => {
     })
 
     it("should set next turn and handle disconnected players", () => {
-      const opponent2 = new SkyjoPlayer("player3", "socketId123", "elephant")
+      const opponent2 = new SkyjoPlayer("player3", TEST_SOCKET_ID, "elephant")
       opponent2.connectionStatus = "disconnected"
       skyjo.addPlayer(opponent2)
       skyjo.turn = 1

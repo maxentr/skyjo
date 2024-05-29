@@ -2,6 +2,7 @@ import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { beforeEach, describe, expect, it } from "vitest"
+import { TEST_SOCKET_ID } from "../constants"
 
 let nbColumns: number
 let nbRows: number
@@ -13,7 +14,7 @@ describe("SkyjoPlayer", () => {
   let player: SkyjoPlayer
 
   beforeEach(() => {
-    player = new SkyjoPlayer("username", "socketID123", "bee")
+    player = new SkyjoPlayer("username", TEST_SOCKET_ID, "bee")
     player.cards = [
       [new SkyjoCard(0), new SkyjoCard(0), new SkyjoCard(0)],
       [new SkyjoCard(0), new SkyjoCard(4), new SkyjoCard(6)],
@@ -39,11 +40,11 @@ describe("SkyjoPlayer", () => {
   })
 
   it("should toggle the replay", () => {
-    expect(player.wantReplay).toBe(false)
+    expect(player.wantReplay).toBeFalsy()
     player.toggleReplay()
-    expect(player.wantReplay).toBe(true)
+    expect(player.wantReplay).toBeTruthy()
     player.toggleReplay()
-    expect(player.wantReplay).toBe(false)
+    expect(player.wantReplay).toBeFalsy()
   })
   //#endregion
 
@@ -118,18 +119,18 @@ describe("SkyjoPlayer", () => {
 
   describe("has revealed card count", () => {
     it("should return false if the count is different", () => {
-      expect(player.hasRevealedCardCount(2)).toBe(false)
+      expect(player.hasRevealedCardCount(2)).toBeFalsy()
 
       player.turnCard(0, 0)
 
-      expect(player.hasRevealedCardCount(2)).toBe(false)
+      expect(player.hasRevealedCardCount(2)).toBeFalsy()
     })
 
     it("should return true if the count is the same", () => {
       player.turnCard(0, 0)
       player.turnCard(0, 1)
 
-      expect(player.hasRevealedCardCount(2)).toBe(true)
+      expect(player.hasRevealedCardCount(2)).toBeTruthy()
     })
   })
 
@@ -347,7 +348,7 @@ describe("SkyjoPlayer", () => {
 
     expect(playerToJson).toStrictEqual({
       name: "username",
-      socketId: "socketID123",
+      socketId: TEST_SOCKET_ID,
       avatar: "bee",
       cards: player.cards.map((column) => column.map((card) => card.toJson())),
       currentScore: 0,

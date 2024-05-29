@@ -10,7 +10,7 @@ export default defineConfig({
       reportOnFailure: true,
       provider: "istanbul",
       reportsDirectory: "test/coverage",
-      exclude: ["src/constants.ts", "src/index.ts", "src/socketRouter.ts"],
+      exclude: ["src/constants.ts", "src/index.ts", "src/socketRouter.ts", "test/constants.ts"],
       thresholds: {
         lines: 90,
         branches: 90,
