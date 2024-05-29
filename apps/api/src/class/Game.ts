@@ -70,7 +70,7 @@ export abstract class Game<
   changeAdmin() {
     if (this.players.length === 0) throw new Error("no-players")
 
-    this.admin = this.players[0]
+    this.admin = this.getConnectedPlayers()[0] ?? null
   }
 
   removePlayer(playerSocketId: string) {
