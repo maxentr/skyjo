@@ -1,0 +1,3 @@
+{
+  "typescript.preferences.autoImportFileExcludePatterns": ["node/test.d.ts", "@radix-ui"]
+}

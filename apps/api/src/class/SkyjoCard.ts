@@ -12,30 +12,33 @@ export class SkyjoCard implements SkyjoCardInterface {
   private _value: number
   private _isVisible: boolean = false
 
-  constructor(value: number) {
+  constructor(value: number, isVisible: boolean = false) {
     this._value = value
+    this._isVisible = isVisible
   }
 
-  public get value() {
+  get value() {
     return this._value
   }
 
-  public get isVisible() {
+  get isVisible() {
     return this._isVisible
   }
 
-  private set isVisible(value: boolean) {
-    this._isVisible = value
-  }
-
-  public turnVisible() {
+  turnVisible() {
     this.isVisible = true
   }
 
-  public toJson() {
+  toJson() {
     return {
       value: this.isVisible ? this.value : undefined,
       isVisible: this.isVisible,
     }
   }
+
+  //#region private methods
+  private set isVisible(value: boolean) {
+    this._isVisible = value
+  }
+  //#endregion
 }

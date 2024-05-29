@@ -1,14 +1,14 @@
 import { GameSettingsToJson } from "types/gameSettings"
 import { PlayerToJson } from "./player"
 
-export type GAME_STATUS = "lobby" | "playing" | "finished" | "stopped"
+export type GameStatus = "lobby" | "playing" | "finished" | "stopped"
 
 export type GameToJson<
   TPlayer = PlayerToJson,
   TSettings = GameSettingsToJson,
 > = {
   id: string
-  status: GAME_STATUS
+  status: GameStatus
   admin: TPlayer
   players: TPlayer[]
   turn: number
