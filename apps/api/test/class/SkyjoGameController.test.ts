@@ -11,6 +11,7 @@ import { ChangeSettings } from "shared/validations/changeSettings"
 import { CreatePlayer } from "shared/validations/player"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "../constants"
+import { ERROR } from "shared/constants"
 
 describe("Skyjo", () => {
   let instance = SkyjoGameController.getInstance()
@@ -168,7 +169,7 @@ describe("Skyjo", () => {
 
       await expect(() =>
         instance.onJoin(socket, TEST_UNKNOWN_GAME_ID, player),
-      ).rejects.toThrowError("game-not-found")
+      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -259,7 +260,7 @@ describe("Skyjo", () => {
 
       await expect(() =>
         instance.onSettingsChange(socket, newSettings),
-      ).rejects.toThrowError("game-not-found")
+      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -283,7 +284,7 @@ describe("Skyjo", () => {
       }
       await expect(() =>
         instance.onSettingsChange(socket, newSettings),
-      ).rejects.toThrowError("not-allowed")
+      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -318,7 +319,7 @@ describe("Skyjo", () => {
       socket.data.gameId = TEST_UNKNOWN_GAME_ID
 
       await expect(() => instance.onGameStart(socket)).rejects.toThrowError(
-        "game-not-found",
+        ERROR.GAME_NOT_FOUND,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -335,7 +336,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
 
       await expect(() => instance.onGameStart(socket)).rejects.toThrowError(
-        "not-allowed",
+        ERROR.NOT_ALLOWED,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -367,7 +368,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("game-not-found")
+        ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -388,7 +389,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("player-not-found")
+        ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -409,7 +410,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("not-allowed")
+        ).rejects.toThrowError(ERROR.NOT_ALLOWED)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -472,7 +473,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
-        ).rejects.toThrowError("game-not-found")
+        ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -503,7 +504,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
-        ).rejects.toThrowError("player-not-found")
+        ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -524,7 +525,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
-        ).rejects.toThrowError("not-allowed")
+        ).rejects.toThrowError(ERROR.NOT_ALLOWED)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -585,7 +586,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
-        ).rejects.toThrowError("invalid-turn-state")
+        ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -658,7 +659,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("game-not-found")
+        ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -689,7 +690,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 2 }),
-        ).rejects.toThrowError("player-not-found")
+        ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -710,7 +711,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("not-allowed")
+        ).rejects.toThrowError(ERROR.NOT_ALLOWED)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -771,7 +772,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 2 }),
-        ).rejects.toThrowError("invalid-turn-state")
+        ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -814,7 +815,7 @@ describe("Skyjo", () => {
         socket.data.gameId = TEST_UNKNOWN_GAME_ID
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
-          "game-not-found",
+          ERROR.GAME_NOT_FOUND,
         )
 
         expect(socket.emit).not.toHaveBeenCalled()
@@ -845,7 +846,7 @@ describe("Skyjo", () => {
         game.turn = 0
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
-          "player-not-found",
+          ERROR.PLAYER_NOT_FOUND,
         )
 
         expect(socket.emit).not.toHaveBeenCalled()
@@ -866,7 +867,7 @@ describe("Skyjo", () => {
         game.addPlayer(opponent)
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
-          "not-allowed",
+          ERROR.NOT_ALLOWED,
         )
 
         expect(socket.emit).not.toHaveBeenCalled()
@@ -928,7 +929,7 @@ describe("Skyjo", () => {
         game.selectedCard = new SkyjoCard(0, true)
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
-          "invalid-turn-state",
+          ERROR.INVALID_TURN_STATE,
         )
 
         expect(socket.emit).not.toHaveBeenCalled()
@@ -972,7 +973,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("game-not-found")
+        ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
       })
 
       it("should throw if player is not in the game", async () => {
@@ -1001,7 +1002,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 2 }),
-        ).rejects.toThrowError("player-not-found")
+        ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -1022,7 +1023,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 0 }),
-        ).rejects.toThrowError("not-allowed")
+        ).rejects.toThrowError(ERROR.NOT_ALLOWED)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -1083,7 +1084,7 @@ describe("Skyjo", () => {
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 2 }),
-        ).rejects.toThrowError("invalid-turn-state")
+        ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
 
         expect(socket.emit).not.toHaveBeenCalled()
       })
@@ -1165,7 +1166,7 @@ describe("Skyjo", () => {
       socket.data.gameId = TEST_UNKNOWN_GAME_ID
 
       await expect(() => instance.onReplay(socket)).rejects.toThrowError(
-        "game-not-found",
+        ERROR.GAME_NOT_FOUND,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -1192,7 +1193,7 @@ describe("Skyjo", () => {
       game.turnState = "chooseAPile"
 
       await expect(() => instance.onReplay(socket)).rejects.toThrowError(
-        "not-allowed",
+        ERROR.NOT_ALLOWED,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -1293,7 +1294,7 @@ describe("Skyjo", () => {
       socket.data.gameId = TEST_UNKNOWN_GAME_ID
 
       await expect(() => instance.onReconnect(socket)).rejects.toThrowError(
-        "game-not-found",
+        ERROR.GAME_NOT_FOUND,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -1311,7 +1312,7 @@ describe("Skyjo", () => {
       game.start()
 
       await expect(() => instance.onReconnect(socket)).rejects.toThrowError(
-        "player-not-found",
+        ERROR.PLAYER_NOT_FOUND,
       )
     })
 
@@ -1363,7 +1364,7 @@ describe("Skyjo", () => {
       game.start()
 
       await expect(() => instance.onLeave(socket)).rejects.toThrowError(
-        "player-not-found",
+        ERROR.PLAYER_NOT_FOUND,
       )
     })
 
@@ -1483,7 +1484,7 @@ describe("Skyjo", () => {
 
       await expect(() =>
         instance.onMessage(socket, { username: "player1", message: "Hello!" }),
-      ).rejects.toThrowError("game-not-found")
+      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -1497,7 +1498,7 @@ describe("Skyjo", () => {
 
       await expect(() =>
         instance.onMessage(socket, { username: "player2", message: "Hello!" }),
-      ).rejects.toThrowError("player-not-found")
+      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })

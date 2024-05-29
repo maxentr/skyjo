@@ -7,6 +7,7 @@ import { useUser } from "@/contexts/UserContext"
 import { useRouter } from "@/navigation"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
+import { ERROR } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { CreatePlayer } from "shared/validations/player"
 
@@ -42,7 +43,7 @@ const GameLobbyButtons = ({
 
     socket.once("error:join", (message: string) => {
       setLoading(false)
-      if (message === "game-not-found") {
+      if (message === ERROR.GAME_NOT_FOUND) {
         router.replace(`/`)
         toast({
           description: t("game-not-found.description"),

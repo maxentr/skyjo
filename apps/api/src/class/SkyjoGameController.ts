@@ -12,6 +12,7 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 import { SkyjoSettings } from "./SkyjoSettings"
+import { ERROR } from "shared/constants"
 
 export default class SkyjoGameController {
   private games: Skyjo[] = []
@@ -55,8 +56,8 @@ export default class SkyjoGameController {
 
   async onSettingsChange(socket: SkyjoSocket, settings: ChangeSettings) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
-    if (!game.isAdmin(socket.id)) throw new Error("not-allowed")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
+    if (!game.isAdmin(socket.id)) throw new Error(ERROR.NOT_ALLOWED)
 
     game.settings.changeSettings(settings)
 
@@ -65,8 +66,8 @@ export default class SkyjoGameController {
 
   async onGameStart(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
-    if (!game.isAdmin(socket.id)) throw new Error("not-allowed")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
+    if (!game.isAdmin(socket.id)) throw new Error(ERROR.NOT_ALLOWED)
 
     game.start()
     await this.broadcastGame(socket, game)
@@ -78,12 +79,12 @@ export default class SkyjoGameController {
     const gameId = socket.data.gameId
 
     const game = this.getGame(gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
 
     const player = game.getPlayer(socket.id)
-    if (!player) throw new Error("player-not-found")
+    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
-    if (game.status !== "playing" || game.roundState !== "waitingPlayersToTurnInitialCards") throw new Error("not-allowed")
+    if (game.status !== "playing" || game.roundState !== "waitingPlayersToTurnInitialCards") throw new Error(ERROR.NOT_ALLOWED)
 
     if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
 
@@ -133,8 +134,8 @@ export default class SkyjoGameController {
 
   async onReplay(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
-    if (game.status !== "finished") throw new Error("not-allowed")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
+    if (game.status !== "finished") throw new Error(ERROR.NOT_ALLOWED)
 
     game.getPlayer(socket.id)?.toggleReplay()
 
@@ -155,10 +156,10 @@ export default class SkyjoGameController {
 
   async onReconnect(socket: SkyjoSocket) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
 
     const player = game.getPlayer(socket.id)
-    if (!player) throw new Error("player-not-found")
+    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     player.connectionStatus = "connected"
 
@@ -170,7 +171,7 @@ export default class SkyjoGameController {
     if (!game) return
 
     const player = game.getPlayer(socket.id)
-    if (!player) throw new Error("player-not-found")
+    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     player.connectionStatus = "disconnected"
 
@@ -216,9 +217,9 @@ export default class SkyjoGameController {
     type: ChatMessageType = "message",
   ) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
 
-    if (!game.getPlayer(socket.id)) throw new Error("player-not-found")
+    if (!game.getPlayer(socket.id)) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     const newMessage = {
       id: crypto.randomUUID(),
@@ -272,7 +273,7 @@ export default class SkyjoGameController {
     player: CreatePlayer,
   ) {
     const game = this.getGame(gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
     else if (game.status !== "lobby") throw new Error("game-already-started")
 
     const newPlayer = new SkyjoPlayer(player.username, socket.id, player.avatar)
@@ -311,13 +312,13 @@ export default class SkyjoGameController {
     allowedStates: TurnState[],
   ) {
     const game = this.getGame(socket.data.gameId)
-    if (!game) throw new Error("game-not-found")
+    if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
 
     if (
       game.status !== "playing" ||
       (game.roundState !== "playing" && game.roundState !== "lastLap")
     )
-      throw new Error("not-allowed")
+      throw new Error(ERROR.NOT_ALLOWED)
 
     const player = game.getPlayer(socket.id)
     if (!player) throw new Error(`player-not-found`)

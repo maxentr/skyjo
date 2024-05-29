@@ -2,6 +2,7 @@ import { Skyjo } from "@/class/Skyjo"
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
+import { ERROR } from "shared/constants"
 import { GameStatus } from "shared/types/game"
 import { Move, RoundState, TurnState } from "shared/types/skyjo"
 import { beforeEach, describe, expect, it } from "vitest"
@@ -89,7 +90,7 @@ describe("Skyjo", () => {
   describe("start", () => {
     it("should not start the game if min players is not reached", () => {
       skyjo.removePlayer("socketId456")
-      expect(() => skyjo.start()).toThrowError("too-few-players")
+      expect(() => skyjo.start()).toThrowError(ERROR.TOO_FEW_PLAYERS)
     })
 
     it("should start the game with default settings", () => {

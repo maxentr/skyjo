@@ -2,6 +2,7 @@ import { GameStatus, GameToJson } from "shared/types/game"
 import { MIN_PLAYERS } from "../constants"
 import { GameSettings } from "./GameSettings"
 import { Player } from "./Player"
+import { ERROR } from "shared/constants"
 
 export interface GameInterface<TPlayer extends Player> {
   readonly id: string
@@ -88,7 +89,7 @@ export abstract class Game<
   }
 
   start() {
-    if (this.getConnectedPlayers().length < MIN_PLAYERS) throw new Error("too-few-players")
+    if (this.getConnectedPlayers().length < MIN_PLAYERS) throw new Error(ERROR.TOO_FEW_PLAYERS)
 
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
