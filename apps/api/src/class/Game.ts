@@ -68,7 +68,7 @@ export abstract class Game<
   }
 
   changeAdmin() {
-    if (this.players.length === 0) return
+    if (this.players.length === 0) throw new Error("no-players")
 
     this.admin = this.players[0]
   }
@@ -88,7 +88,7 @@ export abstract class Game<
   }
 
   start() {
-    if (this.getConnectedPlayers().length < MIN_PLAYERS) return
+    if (this.getConnectedPlayers().length < MIN_PLAYERS) throw new Error("too-few-players")
 
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
@@ -118,8 +118,8 @@ export abstract class Game<
     this.turn = 0
   }
 
-  haveAtLeastTwoConnected() {
-    return this.getConnectedPlayers().length >= 2
+  haveAtLeastMinPlayersConnected() {
+    return this.getConnectedPlayers().length >= MIN_PLAYERS
   }
 
   toJson() {

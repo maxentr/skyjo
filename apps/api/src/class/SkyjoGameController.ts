@@ -170,7 +170,7 @@ export default class SkyjoGameController {
     
     player.connectionStatus = "disconnected"
 
-    if (!game.haveAtLeastTwoConnected() && game.status !== "lobby") {
+    if (!game.haveAtLeastMinPlayersConnected() && game.status !== "lobby") {
       game.status = "stopped"
     }
 
