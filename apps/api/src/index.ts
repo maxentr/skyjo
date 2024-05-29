@@ -56,8 +56,8 @@ app.post("/feedback", zValidator("json", feedbackSchema), (c) => {
   const mailOptions = {
     from: process.env.GMAIL_EMAIL,
     to: process.env.GMAIL_EMAIL,
-    subject: "[SKYJO feedback]",
-    text: `From: ${email ?? "anonymous"} \r\n\r\nMessage: \r\n${message}`,
+    subject: `[SKYJO feedback] - from: ${email ?? "anonymous"}`,
+    text: message,
   }
 
   transporter.sendMail(mailOptions, (error, info) => {
