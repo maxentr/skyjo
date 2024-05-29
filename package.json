@@ -12,7 +12,10 @@
     "start-api-prod": "pnpm run --filter api prod",
     "lint": "turbo run lint",
     "format": "turbo run format",
-    "format:all": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format:all": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "test:ui": "turbo run test:ui"
   },
   "devDependencies": {
     "@pnpm/logger": "^5.0.0",
@@ -21,9 +24,5 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "syncpack": "^12.3.0",
     "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=20.9.0"
-  },
-  "packageManager": "pnpm@9.0.6"
+  }
 }

@@ -12,7 +12,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
   scores: SkyjoPlayerScores = []
 
-  public setCards(cardsValue: number[], cardSettings: SkyjoSettings) {
+  setCards(cardsValue: number[], cardSettings: SkyjoSettings) {
     this.cards = []
 
     for (let columnI = 0; columnI < cardSettings.cardPerColumn; columnI++) {
@@ -24,25 +24,25 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     }
   }
 
-  public turnCard(column: number, row: number) {
+  turnCard(column: number, row: number) {
     this.cards[column][row].turnVisible()
   }
 
-  public replaceCard(column: number, row: number, card: SkyjoCard) {
+  replaceCard(column: number, row: number, card: SkyjoCard) {
     this.cards[column][row] = card
   }
 
-  public removeColumn(column: number) {
+  removeColumn(column: number) {
     const deletedColumn = this.cards.splice(column, 1)
     return deletedColumn[0]
   }
 
-  public removeRow(row: number) {
+  removeRow(row: number) {
     const deletedRow = this.cards.map((column) => column.splice(row, 1))
     return deletedRow.flat()
   }
 
-  public hasRevealedCardCount(count: number) {
+  hasRevealedCardCount(count: number) {
     const currentCount = this.cards
       .flat()
       .filter((card) => card.isVisible).length
@@ -50,7 +50,9 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return currentCount === count
   }
 
-  public checkColumns() {
+  checkColumnsAndDiscard() {
+    if (!this.cards[0] || this.cards[0].length <= 1) return []
+
     const cardsToDiscard: SkyjoCard[] = []
     this.cards.forEach((column, index) => {
       const allCardsAreTheSameAndVisible = column.every(
@@ -65,7 +67,9 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return cardsToDiscard
   }
 
-  public checkRows() {
+  checkRowsAndDiscard() {
+    if (this.cards.length <= 1) return []
+
     const cardsToDiscard: SkyjoCard[] = []
 
     for (let rowIndex = 0; rowIndex < this.cards[0].length; rowIndex++) {
@@ -85,7 +89,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return cardsToDiscard
   }
 
-  public currentScoreArray() {
+  currentScoreArray() {
     const currentScore: number[] = []
 
     this.cards.flat().forEach((card) => {
@@ -95,11 +99,11 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return currentScore
   }
 
-  public currentScore() {
+  currentScore() {
     return this.currentScoreArray().reduce((a, b) => a + b, 0)
   }
 
-  public turnAllCards() {
+  turnAllCards() {
     this.cards.forEach((column) => {
       column.forEach((card) => {
         card.turnVisible()
@@ -107,7 +111,13 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     })
   }
 
-  public finalRoundScore() {
+  recalculateScore() {
+    this.score = (
+      this.scores.filter((score) => Number.isInteger(score)) as number[]
+    ).reduce((a, b) => +a + +b, 0)
+  }
+
+  finalRoundScore() {
     let finalScore = 0
 
     if (this.connectionStatus === "disconnected") {
@@ -126,20 +136,14 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     this.recalculateScore()
   }
 
-  public recalculateScore() {
-    this.score = (
-      this.scores.filter((score) => Number.isInteger(score)) as number[]
-    ).reduce((a, b) => +a + +b, 0)
-  }
-
-  public reset() {
+  reset() {
     this.cards = []
     this.wantReplay = false
     this.scores = []
     this.score = 0
   }
 
-  public resetRound() {
+  resetRound() {
     this.cards = []
   }
 

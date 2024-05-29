@@ -10,7 +10,6 @@ import {
   playTurnCard,
 } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
-
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import {
   ChangeSettings,
@@ -21,8 +20,7 @@ import {
   sendChatMessage,
 } from "shared/validations/chatMessage"
 import { DisconnectReason, Server } from "socket.io"
-import { SkyjoPlayer } from "./class/SkyjoPlayer"
-import skyjoController from "./controller"
+import skyjoController from "./class/SkyjoGameController"
 import { SkyjoSocket } from "./types/skyjoSocket"
 
 const instance = skyjoController.getInstance()
@@ -37,10 +35,9 @@ const skyjoRouter = (
 
     socket.on("create-private", (player: CreatePlayer) => {
       try {
-        // Check if the player is valid
         createPlayer.parse(player)
 
-        instance.create(socket, player)
+        instance.onCreate(socket, player)
       } catch (error) {
         console.error(`Error while creating a game : ${error}`)
       }
@@ -48,18 +45,9 @@ const skyjoRouter = (
 
     socket.on("find", async (player: CreatePlayer) => {
       try {
-        // Check if the player is valid
         createPlayer.parse(player)
 
-        const game = instance.getGameWithFreePlace()
-        const newPlayer = new SkyjoPlayer(
-          player.username,
-          socket.id,
-          player.avatar,
-        )
-
-        if (game) await instance.onJoin(socket, game.id, newPlayer)
-        else await instance.create(socket, player, false)
+        await instance.onFind(socket, player)
       } catch (error) {
         console.error(`Error while finding a game : ${error}`)
       }
@@ -67,16 +55,9 @@ const skyjoRouter = (
 
     socket.on("join", async (data: JoinGame) => {
       try {
-        // Check if the data is valid
         const { gameId, player } = joinGame.parse(data)
 
-        const newPlayer = new SkyjoPlayer(
-          player.username,
-          socket.id,
-          player.avatar,
-        )
-
-        await instance.onJoin(socket, gameId, newPlayer)
+        await instance.onJoin(socket, gameId, player)
       } catch (error: any) {
         socket.emit("error:join", error.message)
         console.error(`Error while joining a game : ${error.message}`)
@@ -95,7 +76,7 @@ const skyjoRouter = (
       try {
         const newSettings = changeSettings.parse(data)
 
-        instance.changeSettings(socket, newSettings)
+        instance.onSettingsChange(socket, newSettings)
       } catch (error) {
         console.error(`Error while changing the game settings : ${error}`)
       }
@@ -103,7 +84,7 @@ const skyjoRouter = (
 
     socket.on("start", async () => {
       try {
-        await instance.startGame(socket)
+        await instance.onGameStart(socket)
       } catch (error) {
         console.error(`Error while getting a game : ${error}`)
       }
@@ -123,7 +104,7 @@ const skyjoRouter = (
       try {
         const turnCardData = playRevealCard.parse(data)
 
-        instance.playRevealCard(socket, turnCardData)
+        instance.onRevealCard(socket, turnCardData)
       } catch (error) {
         console.error(`Error while turning a card : ${error}`)
       }
@@ -133,7 +114,7 @@ const skyjoRouter = (
       try {
         const playData = playPickCard.parse(data)
 
-        await instance.pickCard(socket, playData)
+        await instance.onPickCard(socket, playData)
       } catch (error) {
         console.error(`Error while playing a game : ${error}`)
       }
@@ -143,7 +124,7 @@ const skyjoRouter = (
       try {
         const playData = playReplaceCard.parse(data)
 
-        await instance.replaceCard(socket, playData)
+        await instance.onReplaceCard(socket, playData)
       } catch (error) {
         console.error(`Error while playing a game : ${error}`)
       }
@@ -151,7 +132,7 @@ const skyjoRouter = (
 
     socket.on("play:discard-selected-card", async () => {
       try {
-        await instance.discardCard(socket)
+        await instance.onDiscardCard(socket)
       } catch (error) {
         console.error(`Error while playing a game : ${error}`)
       }
@@ -160,7 +141,7 @@ const skyjoRouter = (
     socket.on("play:turn-card", async (data: PlayTurnCard) => {
       try {
         const playData = playTurnCard.parse(data)
-        await instance.turnCard(socket, playData)
+        await instance.onTurnCard(socket, playData)
       } catch (error) {
         console.error(`Error while playing a game : ${error}`)
       }
@@ -171,6 +152,15 @@ const skyjoRouter = (
         await instance.onReplay(socket)
       } catch (error) {
         console.error(`Error while replaying a game : ${error}`)
+      }
+    })
+
+    socket.on("leave", async () => {
+      try {
+        await instance.onLeave(socket)
+        socket.emit("leave:success")
+      } catch (error) {
+        console.error(`Error while leaving a game : ${error}`)
       }
     })
 

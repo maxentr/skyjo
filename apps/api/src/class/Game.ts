@@ -1,11 +1,12 @@
-import { GAME_STATUS, GameToJson } from "shared/types/game"
+import { GameStatus, GameToJson } from "shared/types/game"
 import { MIN_PLAYERS } from "../constants"
 import { GameSettings } from "./GameSettings"
 import { Player } from "./Player"
+import { ERROR } from "shared/constants"
 
 export interface GameInterface<TPlayer extends Player> {
   readonly id: string
-  status: GAME_STATUS
+  status: GameStatus
   players: TPlayer[]
   turn: number
   admin: TPlayer
@@ -31,7 +32,7 @@ export abstract class Game<
 {
   // generate a random game id with 8 characters (a-z, A-Z, 0-9)
   readonly _id: string = Math.random().toString(36).substring(2, 10)
-  status: GAME_STATUS = "lobby"
+  status: GameStatus = "lobby"
   players: TPlayer[] = []
   turn: number = 0
   admin: TPlayer
@@ -68,9 +69,9 @@ export abstract class Game<
   }
 
   changeAdmin() {
-    if (this.players.length === 0) return
+    if (this.players.length === 0) throw new Error("no-players")
 
-    this.admin = this.players[0]
+    this.admin = this.getConnectedPlayers()[0] ?? null
   }
 
   removePlayer(playerSocketId: string) {
@@ -88,7 +89,7 @@ export abstract class Game<
   }
 
   start() {
-    if (this.getConnectedPlayers().length < MIN_PLAYERS) return
+    if (this.getConnectedPlayers().length < MIN_PLAYERS) throw new Error(ERROR.TOO_FEW_PLAYERS)
 
     this.status = "playing"
     this.turn = Math.floor(Math.random() * this.players.length)
@@ -118,8 +119,8 @@ export abstract class Game<
     this.turn = 0
   }
 
-  haveAtLeastTwoConnected() {
-    return this.getConnectedPlayers().length >= 2
+  haveAtLeastMinPlayersConnected() {
+    return this.getConnectedPlayers().length >= MIN_PLAYERS
   }
 
   toJson() {

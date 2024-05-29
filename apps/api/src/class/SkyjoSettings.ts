@@ -32,6 +32,7 @@ export class SkyjoSettings
   }
 
   changeSettings(settings: ChangeSettings) {
+    this.private = settings.private
     this.allowSkyjoForColumn = settings.allowSkyjoForColumn
     this.allowSkyjoForRow = settings.allowSkyjoForRow
     this.initialTurnedCount = settings.initialTurnedCount

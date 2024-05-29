@@ -70,7 +70,15 @@
     "FeedbackDialog": {
       "title": "Leave a comment",
       "description": "You can write a feedback to help us improve the game.",
-      "error-message": "An error occurred, please try again.",
+      "toast": {
+        "success": {
+          "title": "Thank you for your feedback!",
+          "description": "Your insights have helped us enhance our game website, and we are truly grateful."
+        },
+        "error": {
+          "title": "An error occurred, please try again."
+        }
+      },
       "email-input": {
         "label": "Your email (optional)",
         "placeholder": "example@example.com"
@@ -98,7 +106,8 @@
       "replay-button": {
         "cancel": "Do not replay",
         "replay": "Replay"
-      }
+      },
+      "leave-button": "Leave the game"
     },
     "EndRoundDialog": {
       "title": "End of the round",
@@ -138,6 +147,12 @@
     "Lobby": {
       "settings": {
         "title": "Settings",
+        "private": {
+          "tooltip": {
+            "on": "This game is private, only people with the link can join",
+            "off": "This game is public, anyone can join"
+          }
+        },
         "allow-skyjo-for-column": "Allow Skyjo for column",
         "allow-skyjo-for-row": "Allow Skyjo for row",
         "nb-columns": {

@@ -31,7 +31,7 @@ const FeedbackContextProvider = ({ children }: PropsWithChildren) => {
   return (
     <FeedbackContext.Provider value={value}>
       {children}
-      <FeedbackDialog open={open} onOpenChange={setOpen} />
+      <FeedbackDialog open={open} setOpen={setOpen} />
     </FeedbackContext.Provider>
   )
 }

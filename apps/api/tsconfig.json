@@ -1,12 +1,14 @@
 {
-  "exclude": ["node_modules"],
-  "allowImportingTsExtensions": true,
   "compilerOptions": {
-    "strict": true,
-    "outDir": "./dist",
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "sourceMap": true,
+    "moduleResolution": "Bundler",
+    "strict": true,
     "skipLibCheck": true,
+    "outDir": "./dist",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./src/*"],
+    },
   },
 }

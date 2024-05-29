@@ -2,6 +2,7 @@
 
 import { useSocket } from "@/contexts/SocketContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
+import { useRouter } from "@/navigation"
 import { Opponents } from "@/types/opponents"
 import { useTranslations } from "next-intl"
 import {
@@ -32,6 +33,7 @@ type SkyjoContextInterface = {
     discardSelectedCard: () => void
     turnCard: (column: number, row: number) => void
     replay: () => void
+    leave: () => void
   }
   chat: ChatMessage[]
 }
@@ -47,6 +49,7 @@ const SkyjoContextProvider = ({
   gameId,
 }: SkyjoContextProviderProps) => {
   const { socket } = useSocket()
+  const router = useRouter()
   const t = useTranslations("utils.server.messages")
 
   const [game, setGame] = useState<SkyjoToJson>()
@@ -89,13 +92,21 @@ const SkyjoContextProvider = ({
     }
   }
 
+  const onLeave = () => {
+    setGame(undefined)
+    setChat([])
+    router.push("/")
+  }
+
   const initGameListeners = () => {
     socket.on("game", onGameUpdate)
     socket.on("message", onMessageReceived)
+    socket.on("leave:success", onLeave)
   }
   const destroyGameListeners = () => {
     socket.off("game", onGameUpdate)
     socket.off("message", onMessageReceived)
+    socket.off("leave:success", onLeave)
   }
   //#endregion
 
@@ -103,7 +114,7 @@ const SkyjoContextProvider = ({
   const sendMessage = (message: string) => {
     if (!player) return
 
-    socket.emit("message", {
+    socket.send({
       message,
       username: player.name,
     })
@@ -168,6 +179,10 @@ const SkyjoContextProvider = ({
     socket.emit("replay")
   }
 
+  const leave = () => {
+    socket.emit("leave")
+  }
+
   const actions = {
     sendMessage,
     changeSettings,
@@ -178,6 +193,7 @@ const SkyjoContextProvider = ({
     discardSelectedCard,
     turnCard,
     replay,
+    leave,
   }
   //#endregion
 

@@ -8,13 +8,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { getWinner } from "@/lib/skyjo"
+import { getConnectedPlayers, getWinner } from "@/lib/skyjo"
+import { useRouter } from "@/navigation"
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 type EndGameDialogProps = {}
 
 const EndGameDialog = ({}: EndGameDialogProps) => {
+  const router = useRouter()
   const { player, game, actions } = useSkyjo()
   const t = useTranslations("components.EndGameDialog")
 
@@ -24,6 +26,7 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
   if (!isGameFinished) return null
 
   const winner = getWinner(game)
+
 
   return (
     <Dialog open={isGameFinished}>
@@ -41,7 +44,7 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
         {game.status !== "stopped" && (
           <div className="mt-2 flex flex-col items-center gap-4">
             <div className="flex flex-row gap-1">
-              {game.players.map((player) =>
+              {getConnectedPlayers(game.players).map((player) =>
                 player.wantReplay ? (
                   <CheckCircle2Icon
                     key={player.socketId}
@@ -57,6 +60,10 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
               {player.wantReplay
                 ? t("replay-button.cancel")
                 : t("replay-button.replay")}
+            </Button>
+
+            <Button onClick={actions.leave} className="w-full">
+              {t("leave-button")}
             </Button>
           </div>
         )}
