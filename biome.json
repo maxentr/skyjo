@@ -9,7 +9,6 @@
       "**/.vscode",
       "**/.env",
       "**/*.d.ts",
-      "**/*.test.ts",
       "**/*.config.ts"
     ]
   },
@@ -24,6 +23,9 @@
   },
   "organizeImports": { "enabled": true },
   "linter": {
+    "ignore": [
+      "**/*.test.ts"
+    ],
     "enabled": true,
     "rules": {
       "recommended": false,
