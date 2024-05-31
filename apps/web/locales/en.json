@@ -156,6 +156,7 @@
             "off": "This game is public, anyone can join"
           }
         },
+        "reset-settings": "Reset settings",
         "allow-skyjo-for-column": "Allow Skyjo for column",
         "allow-skyjo-for-row": "Allow Skyjo for row",
         "nb-columns": {

@@ -157,6 +157,7 @@
             "off": "Cette partie est publique, n'importe qui peut rejoindre"
           }
         },
+        "reset-settings": "Réinitialiser les paramètres",
         "allow-skyjo-for-column": "Autoriser les Skyjo pour de colonne",
         "allow-skyjo-for-row": "Autoriser les Skyjo pour de ligne",
         "nb-columns": {

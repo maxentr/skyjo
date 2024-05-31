@@ -20,6 +20,8 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { LockIcon, UnlockIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useEffect } from "react"
+import { useLocalStorage } from "react-use"
 import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
 
@@ -33,6 +35,13 @@ const Lobby = () => {
     game: { players, status, settings, admin },
     actions,
   } = useSkyjo()
+  const [value, setValue] = useLocalStorage<ChangeSettings>("settings")
+
+  useEffect(() => {
+    if (value) {
+      actions.changeSettings(value)
+    }
+  }, [])
 
   const open = status === "lobby"
   const isAdmin = player.socketId == admin.socketId
@@ -42,10 +51,13 @@ const Lobby = () => {
     key: ChangeSettingsKey,
     value: ChangeSettingsValue,
   ) => {
-    actions.changeSettings({
-      ...settings,
-      [key]: value,
-    })
+    actions.changeSettings({ ...settings, [key]: value })
+  }
+
+  const beforeStartGame = () => {
+    setValue(settings)
+
+    actions.startGame()
   }
 
   const nbCards = settings.cardPerColumn * settings.cardPerRow
@@ -91,6 +103,7 @@ const Lobby = () => {
                 <h2 className="text-slate-900 text-center text-2xl mb-5">
                   {t("settings.title")}
                 </h2>
+
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-row items-center gap-2">
                     <Switch
@@ -257,16 +270,19 @@ const Lobby = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row justify-center mt-8">
-                  {isAdmin && (
-                    <Button
-                      onClick={actions.startGame}
-                      disabled={hasMinPlayers}
-                    >
+                {isAdmin && (
+                  <div className="flex flex-row justify-center gap-8 mt-8">
+                    <button onClick={actions.resetSettings}>
+                      <p className="underline">
+                        {t("settings.reset-settings")}
+                      </p>
+                    </button>
+
+                    <Button onClick={beforeStartGame} disabled={hasMinPlayers}>
                       {t("start-game-button")}
                     </Button>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
               <div className="hidden md:block bg-off-white border-2 border-black rounded-2xl w-80 p-8">
                 <h3 className="text-slate-900 text-center text-xl mb-5">
