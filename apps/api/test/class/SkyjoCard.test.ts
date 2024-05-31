@@ -15,7 +15,7 @@ describe("SkyjoCard", () => {
 
   it("should turn a card to visible", () => {
     expect(card.isVisible).toBeFalsy()
-    
+
     card.turnVisible()
 
     expect(card.isVisible).toBeTruthy()

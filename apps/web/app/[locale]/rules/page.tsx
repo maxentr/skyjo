@@ -6,7 +6,9 @@ const RulesPage = () => {
   const t = useTranslations("pages.Rules")
   return (
     <div className="container bg-background my-16">
-      <Link href="/" className="underline">{t("back")}</Link>
+      <Link href="/" className="underline">
+        {t("back")}
+      </Link>
       <h1 className="text-3xl mt-6 mb-4">{t("title")}</h1>
       <Rules />
     </div>

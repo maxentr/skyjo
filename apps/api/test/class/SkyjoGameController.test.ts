@@ -4,6 +4,7 @@ import SkyjoGameController from "@/class/SkyjoGameController"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { SkyjoSocket } from "@/types/skyjoSocket"
+import { ERROR } from "shared/constants"
 import { GameStatus } from "shared/types/game"
 import { ConnectionStatus } from "shared/types/player"
 import { RoundState, TurnState } from "shared/types/skyjo"
@@ -11,10 +12,9 @@ import { ChangeSettings } from "shared/validations/changeSettings"
 import { CreatePlayer } from "shared/validations/player"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "../constants"
-import { ERROR } from "shared/constants"
 
 describe("Skyjo", () => {
-  let instance = SkyjoGameController.getInstance()
+  const instance = SkyjoGameController.getInstance()
   let socket: SkyjoSocket
 
   beforeEach(() => {

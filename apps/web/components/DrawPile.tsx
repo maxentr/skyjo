@@ -35,7 +35,10 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
         card={DRAW_CARD}
         onClick={onClick}
         title={t("title")}
-        className={cn("!shadow-[3px_3px_0px_0px_rgba(0,0,0)] !mdh:md:shadow-[4px_4px_0px_0px_rgba(0,0,0)]", animation)}
+        className={cn(
+          "!shadow-[3px_3px_0px_0px_rgba(0,0,0)] !mdh:md:shadow-[4px_4px_0px_0px_rgba(0,0,0)]",
+          animation,
+        )}
         disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
         flipAnimation={false}
       />

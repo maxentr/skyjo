@@ -110,7 +110,7 @@ export class Skyjo
 
   override nextTurn() {
     let cardsToDiscard: SkyjoCard[] = []
-    let currentPlayer = this.getCurrentPlayer()
+    const currentPlayer = this.getCurrentPlayer()
 
     if (this.settings.allowSkyjoForColumn) {
       cardsToDiscard = currentPlayer.checkColumnsAndDiscard()

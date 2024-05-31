@@ -6,6 +6,7 @@ export const locales = ["en", "fr"] as const
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
+  // biome-ignore lint/suspicious/noExplicitAny: cannot type locale here
   if (!locales.includes(locale as any)) notFound()
 
   return {

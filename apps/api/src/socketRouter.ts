@@ -1,3 +1,12 @@
+import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
+import {
+  ChangeSettings,
+  changeSettings,
+} from "shared/validations/changeSettings"
+import {
+  SendChatMessage,
+  sendChatMessage,
+} from "shared/validations/chatMessage"
 import { JoinGame, joinGame } from "shared/validations/joinGame"
 import {
   PlayPickCard,
@@ -10,15 +19,6 @@ import {
   playTurnCard,
 } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
-import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
-import {
-  ChangeSettings,
-  changeSettings,
-} from "shared/validations/changeSettings"
-import {
-  SendChatMessage,
-  sendChatMessage,
-} from "shared/validations/chatMessage"
 import { DisconnectReason, Server } from "socket.io"
 import skyjoController from "./class/SkyjoGameController"
 import { SkyjoSocket } from "./types/skyjoSocket"
@@ -58,6 +58,7 @@ const skyjoRouter = (
         const { gameId, player } = joinGame.parse(data)
 
         await instance.onJoin(socket, gameId, player)
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       } catch (error: any) {
         socket.emit("error:join", error.message)
         console.error(`Error while joining a game : ${error.message}`)

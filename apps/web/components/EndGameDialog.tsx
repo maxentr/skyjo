@@ -9,14 +9,10 @@ import {
 } from "@/components/ui/dialog"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getConnectedPlayers, getWinner } from "@/lib/skyjo"
-import { useRouter } from "@/navigation"
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-type EndGameDialogProps = {}
-
-const EndGameDialog = ({}: EndGameDialogProps) => {
-  const router = useRouter()
+const EndGameDialog = () => {
   const { player, game, actions } = useSkyjo()
   const t = useTranslations("components.EndGameDialog")
 
@@ -26,7 +22,6 @@ const EndGameDialog = ({}: EndGameDialogProps) => {
   if (!isGameFinished) return null
 
   const winner = getWinner(game)
-
 
   return (
     <Dialog open={isGameFinished}>
