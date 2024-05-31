@@ -41,8 +41,18 @@ const GameLobbyButtons = ({
     if (gameId && type === "join") socket.emit("join", { gameId, player })
     else socket.emit(type, player)
 
+    const timeout = setTimeout(() => {
+      toast({
+        description: t("timeout.description"),
+        variant: "destructive",
+        duration: 5000,
+      })
+    }, 10000)
+
     socket.once("error:join", (message: string) => {
+      clearTimeout(timeout)
       setLoading(false)
+
       if (message === ERROR.GAME_NOT_FOUND) {
         router.replace(`/`)
         toast({
@@ -54,6 +64,7 @@ const GameLobbyButtons = ({
     })
 
     socket.once("join", (game: SkyjoToJson) => {
+      clearTimeout(timeout)
       setLoading(false)
 
       router.push(`/game/${game.id}`)
@@ -77,14 +88,16 @@ const GameLobbyButtons = ({
         onClick={() => handleButtons("find")}
         color="secondary"
         className="w-full"
-        disabled={!username || loading}
+        disabled={!username}
+        loading={loading}
       >
         {t("find-game-button")}
       </Button>
       <Button
         onClick={() => handleButtons("create-private")}
         className="w-full"
-        disabled={!username || loading}
+        disabled={!username}
+        loading={loading}
       >
         {t("create-private-game-button")}
       </Button>
