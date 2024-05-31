@@ -156,6 +156,7 @@
             "off": "This game is public, anyone can join"
           }
         },
+        "reset-settings": "Reset settings",
         "allow-skyjo-for-column": "Allow Skyjo for column",
         "allow-skyjo-for-row": "Allow Skyjo for row",
         "nb-columns": {
@@ -169,6 +170,14 @@
         "initial-turned-count": {
           "label": "Number of card turned at the beginning of a round",
           "title": "{number} cards will be turned at the beginning of the game"
+        },
+        "score-to-end-game": {
+          "label": "Number of points to end the game",
+          "title": "{number} points will be required to end the game"
+        },
+        "multiplier-for-first-player": {
+          "label": "Multiplier for the first player",
+          "title": "The score of the first player will be multiplied by {number} if it is not strictly inferior to the other scores of the game"
         }
       },
       "start-game-button": "Start the game",

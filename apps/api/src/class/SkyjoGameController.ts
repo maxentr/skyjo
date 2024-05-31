@@ -1,3 +1,4 @@
+import { ERROR } from "shared/constants"
 import { ChatMessage, ChatMessageType } from "shared/types/chat"
 import { TurnState } from "shared/types/skyjo"
 import { ChangeSettings } from "shared/validations/changeSettings"
@@ -12,7 +13,6 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 import { SkyjoSettings } from "./SkyjoSettings"
-import { ERROR } from "shared/constants"
 
 export default class SkyjoGameController {
   private games: Skyjo[] = []
@@ -84,7 +84,11 @@ export default class SkyjoGameController {
     const player = game.getPlayer(socket.id)
     if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
-    if (game.status !== "playing" || game.roundState !== "waitingPlayersToTurnInitialCards") throw new Error(ERROR.NOT_ALLOWED)
+    if (
+      game.status !== "playing" ||
+      game.roundState !== "waitingPlayersToTurnInitialCards"
+    )
+      throw new Error(ERROR.NOT_ALLOWED)
 
     if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
 

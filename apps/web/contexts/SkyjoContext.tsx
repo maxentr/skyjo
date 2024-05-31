@@ -26,6 +26,7 @@ type SkyjoContextInterface = {
   actions: {
     sendMessage: (message: string) => void
     changeSettings: (settings: ChangeSettings) => void
+    resetSettings: () => void
     startGame: () => void
     playRevealCard: (column: number, row: number) => void
     pickCardFromPile: (pile: PlayPickCard["pile"]) => void
@@ -138,6 +139,14 @@ const SkyjoContextProvider = ({
     socket.emit("settings", settings)
   }
 
+  const resetSettings = () => {
+    if (socket.id !== game?.admin.socketId) return
+
+    socket.emit("settings", {
+      private: game?.settings.private,
+    })
+  }
+
   const startGame = () => {
     if (socket.id !== game?.admin.socketId) return
 
@@ -186,6 +195,7 @@ const SkyjoContextProvider = ({
   const actions = {
     sendMessage,
     changeSettings,
+    resetSettings,
     startGame,
     playRevealCard,
     pickCardFromPile,

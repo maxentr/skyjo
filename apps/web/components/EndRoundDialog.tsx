@@ -10,9 +10,7 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
-type EndRoundDialogProps = {}
-
-const EndRoundDialog = ({}: EndRoundDialogProps) => {
+const EndRoundDialog = () => {
   const { game } = useSkyjo()
   const t = useTranslations("components.EndRoundDialog")
 

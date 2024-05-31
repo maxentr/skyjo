@@ -3,14 +3,14 @@
 import { useToast } from "@/components/ui/use-toast"
 import { useTranslations } from "next-intl"
 import {
-  createContext,
   PropsWithChildren,
+  createContext,
   useContext,
   useEffect,
   useMemo,
 } from "react"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
-import { io, Socket } from "socket.io-client"
+import { Socket, io } from "socket.io-client"
 
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
   transports: ["websocket"],
@@ -54,7 +54,8 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
     })
   }
 
-  const onConnectionError = (err: any) => {
+  const onConnectionError = (err: unknown) => {
+    console.error("Socket error", err)
   }
 
   const initGameListeners = () => {

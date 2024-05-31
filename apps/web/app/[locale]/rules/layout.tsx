@@ -42,10 +42,7 @@ export async function generateMetadata({
   return metadata
 }
 
-export default async function RulesLayout({
-  children,
-  params: { locale },
-}: RulesLayoutProps) {
+export default async function RulesLayout({ children }: RulesLayoutProps) {
   return (
     <>
       {children}

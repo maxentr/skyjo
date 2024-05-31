@@ -11,9 +11,7 @@ import { useUser } from "@/contexts/UserContext"
 import { useTranslations } from "next-intl"
 import { CreatePlayer } from "shared/validations/player"
 
-type GameStoppedDialogProps = {}
-
-const GameStoppedDialog = ({}: GameStoppedDialogProps) => {
+const GameStoppedDialog = () => {
   const { game } = useSkyjo()
   const { username, getAvatar } = useUser()
   const t = useTranslations("components.GameStoppedDialog")

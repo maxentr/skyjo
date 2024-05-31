@@ -19,7 +19,9 @@ const UserAvatar = ({
 
   return (
     <div
-      className={`flex flex-col ${size === "small" ? "gap-0" : "gap-2"} items-center`}
+      className={`flex flex-col ${
+        size === "small" ? "gap-0" : "gap-2"
+      } items-center`}
     >
       {avatar ? (
         <Image
@@ -38,7 +40,9 @@ const UserAvatar = ({
       )}
       {pseudo && (
         <p
-          className={`text-slate-900 dark:text-primary text-center ${size === "small" ? "text-sm w-[80px]" : "text-lg w-[100px]"} text-ellipsis overflow-hidden whitespace-nowrap`}
+          className={`text-slate-900 dark:text-primary text-center ${
+            size === "small" ? "text-sm w-[80px]" : "text-lg w-[100px]"
+          } text-ellipsis overflow-hidden whitespace-nowrap`}
         >
           {pseudo}
         </p>

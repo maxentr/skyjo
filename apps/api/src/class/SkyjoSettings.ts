@@ -18,15 +18,18 @@ export class SkyjoSettings
   extends GameSettings
   implements SkyjoSettingsInterface
 {
-  allowSkyjoForColumn: boolean = SKYJO_DEFAULT_SETTINGS.allowSkyjoForColumn
-  allowSkyjoForRow: boolean = SKYJO_DEFAULT_SETTINGS.allowSkyjoForRow
-  initialTurnedCount: number = SKYJO_DEFAULT_SETTINGS.cards.INITIAL_TURNED_COUNT
-  cardPerRow: number = SKYJO_DEFAULT_SETTINGS.cards.PER_ROW
-  cardPerColumn: number = SKYJO_DEFAULT_SETTINGS.cards.PER_COLUMN
+  allowSkyjoForColumn: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_COLUMN
+  allowSkyjoForRow: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_ROW
+  initialTurnedCount: number = SKYJO_DEFAULT_SETTINGS.CARDS.INITIAL_TURNED_COUNT
+  cardPerRow: number = SKYJO_DEFAULT_SETTINGS.CARDS.PER_ROW
+  cardPerColumn: number = SKYJO_DEFAULT_SETTINGS.CARDS.PER_COLUMN
+  scoreToEndGame: number = SKYJO_DEFAULT_SETTINGS.SCORE_TO_END_GAME
+  multiplierForFirstPlayer: number =
+    SKYJO_DEFAULT_SETTINGS.MULTIPLIER_FOR_FIRST_PLAYER
 
   constructor(
     isPrivate: boolean = false,
-    maxPlayers: number = SKYJO_DEFAULT_SETTINGS.maxPlayers,
+    maxPlayers: number = SKYJO_DEFAULT_SETTINGS.MAX_PLAYERS,
   ) {
     super(isPrivate, maxPlayers)
   }
@@ -38,6 +41,8 @@ export class SkyjoSettings
     this.initialTurnedCount = settings.initialTurnedCount
     this.cardPerRow = settings.cardPerRow
     this.cardPerColumn = settings.cardPerColumn
+    this.scoreToEndGame = settings.scoreToEndGame
+    this.multiplierForFirstPlayer = settings.multiplierForFirstPlayer
   }
 
   toJson() {
@@ -48,6 +53,8 @@ export class SkyjoSettings
       initialTurnedCount: this.initialTurnedCount,
       cardPerRow: this.cardPerRow,
       cardPerColumn: this.cardPerColumn,
+      scoreToEndGame: this.scoreToEndGame,
+      multiplierForFirstPlayer: this.multiplierForFirstPlayer,
     }
   }
 }

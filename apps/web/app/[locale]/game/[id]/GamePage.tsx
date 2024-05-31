@@ -15,11 +15,7 @@ import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
 
-type GamePageProps = {
-  locale: string
-}
-
-const GamePage = ({ locale }: GamePageProps) => {
+const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)

@@ -10,11 +10,11 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
   "buildOptions": {
     "outDir": "./dist",
     "declaration": true,
-    "declarationDir": "./dist",
-  },
+    "declarationDir": "./dist"
+  }
 }

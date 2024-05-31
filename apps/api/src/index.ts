@@ -1,9 +1,9 @@
+import { Server as HttpServer } from "http"
 import { serve } from "@hono/node-server"
 import { zValidator } from "@hono/zod-validator"
 import { config } from "dotenv"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
-import { Server as HttpServer } from "http"
 import { createTransport } from "nodemailer"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { feedbackSchema } from "shared/validations/feedback"
@@ -60,7 +60,7 @@ app.post("/feedback", zValidator("json", feedbackSchema), (c) => {
     text: message,
   }
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, (error) => {
     if (error) {
       return c.json({ success: false })
     }

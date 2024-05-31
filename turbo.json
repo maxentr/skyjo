@@ -15,14 +15,11 @@
     "test:ui": {
       "dependsOn": ["shared#build"]
     },
-    "lint": {
-      "outputs": []
-    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false
     },
-    "format": {
+    "biome:check": {
       "cache": false
     }
   }

@@ -3,9 +3,7 @@ import { Link } from "@/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 
-type Props = {}
-
-const Footer = ({}: Props) => {
+const Footer = () => {
   const t = useTranslations("components.Footer")
 
   return (

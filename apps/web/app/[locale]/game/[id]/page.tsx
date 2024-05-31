@@ -11,7 +11,7 @@ type GameServerPageProps = {
 const GameServerPage = ({ params }: GameServerPageProps) => {
   return (
     <SkyjoContextProvider gameId={params.id}>
-      <GamePage locale={params.locale} />
+      <GamePage />
       <Lobby />
     </SkyjoContextProvider>
   )
