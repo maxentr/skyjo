@@ -122,7 +122,7 @@ const Lobby = () => {
                     </Label>
                     <RadioNumber
                       name="nb-columns"
-                      max={SKYJO_DEFAULT_SETTINGS.cards.PER_COLUMN}
+                      max={SKYJO_DEFAULT_SETTINGS.CARDS.PER_COLUMN}
                       selected={settings.cardPerColumn}
                       onChange={(value) =>
                         changeSettings("cardPerColumn", value)
@@ -138,7 +138,7 @@ const Lobby = () => {
                     </Label>
                     <RadioNumber
                       name="nb-rows"
-                      max={SKYJO_DEFAULT_SETTINGS.cards.PER_ROW}
+                      max={SKYJO_DEFAULT_SETTINGS.CARDS.PER_ROW}
                       selected={settings.cardPerRow}
                       onChange={(value) => changeSettings("cardPerRow", value)}
                       title={t("settings.nb-rows.title")}

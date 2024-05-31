@@ -1,8 +1,9 @@
 export const SKYJO_DEFAULT_SETTINGS = {
-  maxPlayers: 8,
-  allowSkyjoForColumn: true,
-  allowSkyjoForRow: false,
-  cards: {
+  MAX_PLAYERS: 8,
+  ALLOW_SKYJO_FOR_COLUMN: true,
+  ALLOW_SKYJO_FOR_ROW: false,
+  SCORE_TO_END_GAME: 100,
+  CARDS: {
     PER_ROW: 3,
     PER_COLUMN: 4,
     INITIAL_TURNED_COUNT: 2,

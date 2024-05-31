@@ -11,12 +11,12 @@ export const changeSettings = z
       .number()
       .int()
       .min(1)
-      .max(SKYJO_DEFAULT_SETTINGS.cards.PER_ROW),
+      .max(SKYJO_DEFAULT_SETTINGS.CARDS.PER_ROW),
     cardPerColumn: z
       .number()
       .int()
       .min(1)
-      .max(SKYJO_DEFAULT_SETTINGS.cards.PER_COLUMN),
+      .max(SKYJO_DEFAULT_SETTINGS.CARDS.PER_COLUMN),
   })
   .refine(
     (data) => data.initialTurnedCount < data.cardPerColumn * data.cardPerRow,

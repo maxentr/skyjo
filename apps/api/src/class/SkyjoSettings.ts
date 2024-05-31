@@ -18,15 +18,15 @@ export class SkyjoSettings
   extends GameSettings
   implements SkyjoSettingsInterface
 {
-  allowSkyjoForColumn: boolean = SKYJO_DEFAULT_SETTINGS.allowSkyjoForColumn
-  allowSkyjoForRow: boolean = SKYJO_DEFAULT_SETTINGS.allowSkyjoForRow
-  initialTurnedCount: number = SKYJO_DEFAULT_SETTINGS.cards.INITIAL_TURNED_COUNT
-  cardPerRow: number = SKYJO_DEFAULT_SETTINGS.cards.PER_ROW
-  cardPerColumn: number = SKYJO_DEFAULT_SETTINGS.cards.PER_COLUMN
+  allowSkyjoForColumn: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_COLUMN
+  allowSkyjoForRow: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_ROW
+  initialTurnedCount: number = SKYJO_DEFAULT_SETTINGS.CARDS.INITIAL_TURNED_COUNT
+  cardPerRow: number = SKYJO_DEFAULT_SETTINGS.CARDS.PER_ROW
+  cardPerColumn: number = SKYJO_DEFAULT_SETTINGS.CARDS.PER_COLUMN
 
   constructor(
     isPrivate: boolean = false,
-    maxPlayers: number = SKYJO_DEFAULT_SETTINGS.maxPlayers,
+    maxPlayers: number = SKYJO_DEFAULT_SETTINGS.MAX_PLAYERS,
   ) {
     super(isPrivate, maxPlayers)
   }
