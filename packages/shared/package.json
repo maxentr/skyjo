@@ -9,14 +9,12 @@
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/*"
-      ]
+      "*": ["./dist/*"]
     }
   },
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write ."
+    "biome:check": "pnpm biome check --apply ."
   },
   "dependencies": {
     "zod": "^3.22.4"

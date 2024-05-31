@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write ."
+    "biome:check": "pnpm biome check --apply ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -43,8 +42,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.3.3"

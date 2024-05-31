@@ -6,7 +6,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "prod": "pnpm dlx tsx dist/index.js",
-    "format": "prettier --write .",
+    "biome:check": "pnpm biome check --apply .",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui --coverage.enabled=true"
