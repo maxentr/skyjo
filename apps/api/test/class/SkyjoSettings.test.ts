@@ -46,6 +46,8 @@ describe("SkyjoSettings", () => {
       initialTurnedCount: 2,
       cardPerRow: 6,
       cardPerColumn: 8,
+      scoreToEndGame: 100,
+      multiplierForFirstPlayer: 2,
     }
 
     settings.changeSettings(newSettings)
@@ -55,6 +57,8 @@ describe("SkyjoSettings", () => {
     expect(settings.initialTurnedCount).toBe(2)
     expect(settings.cardPerRow).toBe(6)
     expect(settings.cardPerColumn).toBe(8)
+    expect(settings.scoreToEndGame).toBe(100)
+    expect(settings.multiplierForFirstPlayer).toBe(2)
   })
 
   it("should return json", () => {
@@ -68,6 +72,8 @@ describe("SkyjoSettings", () => {
       cardPerRow: 3,
       cardPerColumn: 4,
       maxPlayers: 8,
+      scoreToEndGame: 100,
+      multiplierForFirstPlayer: 2,
     })
   })
 })

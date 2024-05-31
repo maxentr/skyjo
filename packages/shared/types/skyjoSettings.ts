@@ -10,4 +10,6 @@ export interface SkyjoSettingsToJson extends GameSettingsToJson {
   initialTurnedCount: number
   cardPerRow: number
   cardPerColumn: number
+  scoreToEndGame: number
+  multiplierForFirstPlayer: number
 }

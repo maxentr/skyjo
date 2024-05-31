@@ -292,7 +292,7 @@ export class Skyjo
         player.finalRoundScore()
       })
 
-      this.doubleScoreForFirstPlayer()
+      this.multiplyScoreForFirstPlayer()
 
       this.roundState = "over"
     }
@@ -308,7 +308,7 @@ export class Skyjo
     this.getConnectedPlayers().forEach((player) => player.reset())
   }
 
-  private doubleScoreForFirstPlayer() {
+  private multiplyScoreForFirstPlayer() {
     const lastScoreIndex = this.roundNumber - 1
     const firstToFinishPlayerScore =
       this.firstPlayerToFinish!.scores[lastScoreIndex]
@@ -326,13 +326,18 @@ export class Skyjo
 
     if (opponentWithALowerOrEqualScore) {
       this.firstPlayerToFinish!.scores[lastScoreIndex] =
-        +this.firstPlayerToFinish!.scores[lastScoreIndex] * 2
+        +this.firstPlayerToFinish!.scores[lastScoreIndex] *
+        this.settings.multiplierForFirstPlayer
       this.firstPlayerToFinish!.recalculateScore()
     }
   }
 
   private checkEndOfGame() {
-    if (this.getConnectedPlayers().some((player) => player.score >= 100)) {
+    if (
+      this.getConnectedPlayers().some(
+        (player) => player.score >= this.settings.scoreToEndGame,
+      )
+    ) {
       this.roundState = "over"
       this.status = "finished"
     }

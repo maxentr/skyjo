@@ -170,6 +170,14 @@
         "initial-turned-count": {
           "label": "Nombre de cartes retournées au début de la partie",
           "title": "{number} cartes seront retournées au début de la partie"
+        },
+        "score-to-end-game": {
+          "label": "Nombre de points pour finir la partie",
+          "title": "{number} points seront nécessaires pour finir la partie"
+        },
+        "multiplier-for-first-player": {
+          "label": "Multiplicateur pour le premier joueur",
+          "title": "Le score du premier joueur sera multiplié par {number} si il n'est pas strictement inférieur aux autres scores de la partie"
         }
       },
       "start-game-button": "Commencer la partie",

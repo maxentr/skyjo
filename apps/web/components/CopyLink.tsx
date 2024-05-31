@@ -28,13 +28,13 @@ const CopyLink = () => {
 
   if (game.status === "lobby")
     return (
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row items-center gap-2 w-full sm:w-fit">
         <Input
           type="text"
           value={inviteLink}
           onClick={onCopyFromInput}
           readOnly
-          className="w-[300px] select-text"
+          className="sm:w-[300px] select-text"
         />
         <Button variant="icon" onClick={copyLink}>
           {copied ? <CheckIcon /> : <ClipboardCopyIcon />}

@@ -256,6 +256,8 @@ describe("Skyjo", () => {
         initialTurnedCount: 2,
         cardPerRow: 6,
         cardPerColumn: 8,
+        scoreToEndGame: 100,
+        multiplierForFirstPlayer: 2,
       }
 
       await expect(() =>
@@ -281,6 +283,8 @@ describe("Skyjo", () => {
         initialTurnedCount: 2,
         cardPerRow: 6,
         cardPerColumn: 8,
+        scoreToEndGame: 100,
+        multiplierForFirstPlayer: 2,
       }
       await expect(() =>
         instance.onSettingsChange(socket, newSettings),
@@ -303,6 +307,8 @@ describe("Skyjo", () => {
         initialTurnedCount: 2,
         cardPerRow: 6,
         cardPerColumn: 8,
+        scoreToEndGame: 100,
+        multiplierForFirstPlayer: 2,
       }
       await instance.onSettingsChange(socket, newSettings)
 

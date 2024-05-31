@@ -17,6 +17,8 @@ export const changeSettings = z
       .int()
       .min(1)
       .max(SKYJO_DEFAULT_SETTINGS.CARDS.PER_COLUMN),
+    scoreToEndGame: z.number().int().min(1).max(10000000),
+    multiplierForFirstPlayer: z.number().int().min(1).max(10000000),
   })
   .refine(
     (data) => data.initialTurnedCount < data.cardPerColumn * data.cardPerRow,
