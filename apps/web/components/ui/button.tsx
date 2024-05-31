@@ -3,9 +3,10 @@ import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { Loader2Icon } from "lucide-react"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md bg-dutch-white border-2 border-black text font-normal transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4 disabled:pointer-events-none disabled:opacity-50",
+  "relative inline-flex items-center justify-center whitespace-nowrap rounded-md bg-dutch-white border-2 border-black text font-normal transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -24,17 +25,38 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  children?: React.ReactNode
+  loading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      asChild = false,
+      loading = false,
+      children,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(buttonVariants({ variant, className }))}
         ref={ref}
+        disabled={loading || disabled}
         {...props}
-      />
+      >
+        {loading && (
+          <span className="absolute inset-0 flex items-center justify-center bg-dutch-white rounded-md">
+            <Loader2Icon className="h-5 w-5 animate-spin" />
+          </span>
+        )}
+        {children}
+      </Comp>
     )
   },
 )

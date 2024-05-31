@@ -77,14 +77,16 @@ const GameLobbyButtons = ({
         onClick={() => handleButtons("find")}
         color="secondary"
         className="w-full"
-        disabled={!username || loading}
+        disabled={!username}
+        loading={loading}
       >
         {t("find-game-button")}
       </Button>
       <Button
         onClick={() => handleButtons("create-private")}
         className="w-full"
-        disabled={!username || loading}
+        disabled={!username}
+        loading={loading}
       >
         {t("create-private-game-button")}
       </Button>
