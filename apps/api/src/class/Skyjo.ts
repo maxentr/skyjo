@@ -313,6 +313,13 @@ export class Skyjo
     const firstToFinishPlayerScore =
       this.firstPlayerToFinish!.scores[lastScoreIndex]
 
+    if (
+      typeof firstToFinishPlayerScore === "number" &&
+      firstToFinishPlayerScore <= 0
+    ) {
+      return
+    }
+
     const playersWithoutFirstPlayerToFinish = this.getConnectedPlayers().filter(
       (player) => player !== this.firstPlayerToFinish,
     )

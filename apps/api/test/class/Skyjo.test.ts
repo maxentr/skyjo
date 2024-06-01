@@ -436,7 +436,7 @@ describe("Skyjo", () => {
       expect(skyjo.roundState).toBe<RoundState>("lastLap")
     })
 
-    it("should set next turn, check end round not end it, check end of game and not end it", () => {
+    it("should set next turn, end the round and not end the game", () => {
       skyjo.start()
       skyjo.roundState = "playing"
       skyjo.firstPlayerToFinish = player
@@ -448,7 +448,7 @@ describe("Skyjo", () => {
       expect(skyjo.status).toBe<GameStatus>("playing")
     })
 
-    it("should set next turn, check end round, end it and not double score of the first player", () => {
+    it("should set next turn, end the round and not double score of the first player", () => {
       skyjo.start()
       skyjo.firstPlayerToFinish = player
       skyjo.turn = 1
@@ -475,7 +475,7 @@ describe("Skyjo", () => {
       expect(player.score).toBe(1 + 1 + 3)
     })
 
-    it("should set next turn, check end round, end it and double score of the first player", () => {
+    it("should set next turn, end the round and double score of the first player", () => {
       skyjo.start()
       skyjo.firstPlayerToFinish = player
       skyjo.turn = 1
@@ -502,7 +502,61 @@ describe("Skyjo", () => {
       expect(player.score).toBe((1 + 1 + 3) * 2)
     })
 
-    it("should set next turn, check end round, end it and double score of the first player", () => {
+    it("should set next turn, end the round and not double score of the first player because it's 0", () => {
+      skyjo.start()
+      skyjo.firstPlayerToFinish = player
+      skyjo.turn = 1
+
+      player.cards = [
+        [
+          new SkyjoCard(0, true),
+          new SkyjoCard(-2, true),
+          new SkyjoCard(2, true),
+        ],
+      ]
+      opponent.cards = [
+        [
+          new SkyjoCard(-2, true),
+          new SkyjoCard(-2, true),
+          new SkyjoCard(-1, true),
+        ],
+      ]
+
+      skyjo.nextTurn()
+
+      expect(skyjo.roundState).toBe<RoundState>("over")
+      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(player.score).toBe(0 + -2 + 2)
+    })
+
+    it("should set next turn, end the round and not double score of the first player because it's negative", () => {
+      skyjo.start()
+      skyjo.firstPlayerToFinish = player
+      skyjo.turn = 1
+
+      player.cards = [
+        [
+          new SkyjoCard(0, true),
+          new SkyjoCard(0, true),
+          new SkyjoCard(-2, true),
+        ],
+      ]
+      opponent.cards = [
+        [
+          new SkyjoCard(-2, true),
+          new SkyjoCard(-2, true),
+          new SkyjoCard(-1, true),
+        ],
+      ]
+
+      skyjo.nextTurn()
+
+      expect(skyjo.roundState).toBe<RoundState>("over")
+      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(player.score).toBe(0 + 0 + -2)
+    })
+
+    it("should set next turn, end the round, double score of the first player and end the game", () => {
       skyjo.start()
       skyjo.roundNumber = 2
       skyjo.firstPlayerToFinish = player
