@@ -33,6 +33,7 @@ const IndexPage = ({ gameId }: Props) => {
         placeholder={t("name-input-placeholder")}
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+        data-testid="username-input"
       />
       <GameLobbyButtons
         beforeButtonAction={beforeButtonAction}

@@ -78,6 +78,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
                   )}
                   tabIndex={tabIndex}
                   {...field}
+                  data-testid="chat-input"
                 />
               </FormControl>
             </FormItem>
@@ -88,6 +89,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
           type="submit"
           title={t("button-title")}
           tabIndex={tabIndex}
+          data-testid="chat-form-submit-button"
         >
           <SendIcon width={16} height={16} />
         </Button>

@@ -64,7 +64,7 @@ const Lobby = () => {
   const maxInitialTurnedCount = nbCards === 1 ? 1 : nbCards - 1
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} data-testid="lobby-dialog">
       <DialogOverlay>
         <div className="fixed inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col gap-8 items-center w-full max-w-4xl mx-6 lg:mx-0">
@@ -74,23 +74,30 @@ const Lobby = () => {
                   <TooltipProvider delayDuration={200}>
                     <Tooltip>
                       <TooltipTrigger className="relative">
-                        {settings.private ? (
-                          <LockIcon
-                            className={cn(
-                              "h-6 w-6 text-slate-700",
-                              !isAdmin && "cursor-default",
-                            )}
-                            onClick={() => changeSettings("private", false)}
-                          />
-                        ) : (
-                          <UnlockIcon
-                            className={cn(
-                              "h-6 w-6 text-slate-500",
-                              !isAdmin && "cursor-default",
-                            )}
-                            onClick={() => changeSettings("private", true)}
-                          />
-                        )}
+                        <button
+                          onClick={() =>
+                            changeSettings("private", !settings.private)
+                          }
+                          data-testid="lobby-private-button"
+                        >
+                          {settings.private ? (
+                            <LockIcon
+                              className={cn(
+                                "h-6 w-6 text-slate-700",
+                                !isAdmin && "cursor-default",
+                              )}
+                              data-testid="lobby-private-icon"
+                            />
+                          ) : (
+                            <UnlockIcon
+                              className={cn(
+                                "h-6 w-6 text-slate-500",
+                                !isAdmin && "cursor-default",
+                              )}
+                              data-testid="lobby-public-icon"
+                            />
+                          )}
+                        </button>
                       </TooltipTrigger>
                       <TooltipContent>
                         {settings.private
@@ -114,8 +121,12 @@ const Lobby = () => {
                       }
                       disabled={!isAdmin}
                       title={t("settings.allow-skyjo-for-column")}
+                      data-testid="lobby-allow-skyjo-for-column-switch"
                     />
-                    <Label htmlFor="skyjo-for-column">
+                    <Label
+                      htmlFor="skyjo-for-column"
+                      data-testid="lobby-allow-skyjo-for-column-label"
+                    >
                       {t("settings.allow-skyjo-for-column")}
                     </Label>
                   </div>
@@ -128,13 +139,20 @@ const Lobby = () => {
                       }
                       disabled={!isAdmin}
                       title={t("settings.allow-skyjo-for-row")}
+                      data-testid="lobby-allow-skyjo-for-row-switch"
                     />
-                    <Label htmlFor="skyjo-for-row">
+                    <Label
+                      htmlFor="skyjo-for-row"
+                      data-testid="lobby-allow-skyjo-for-row-label"
+                    >
                       {t("settings.allow-skyjo-for-row")}
                     </Label>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Label htmlFor="nb-columns">
+                    <Label
+                      htmlFor="nb-columns"
+                      data-testid="lobby-nb-columns-label"
+                    >
                       {t("settings.nb-columns.label")}
                     </Label>
                     <RadioNumber
@@ -150,7 +168,7 @@ const Lobby = () => {
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Label htmlFor="nb-rows">
+                    <Label htmlFor="nb-rows" data-testid="lobby-nb-rows-label">
                       {t("settings.nb-rows.label")}
                     </Label>
                     <RadioNumber
@@ -163,7 +181,10 @@ const Lobby = () => {
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Label htmlFor="initial-turned-count">
+                    <Label
+                      htmlFor="initial-turned-count"
+                      data-testid="lobby-initial-turned-count-label"
+                    >
                       {t("settings.initial-turned-count.label")}
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
@@ -180,6 +201,7 @@ const Lobby = () => {
                           number: settings.initialTurnedCount,
                         })}
                         disabled={!isAdmin}
+                        data-testid="lobby-initial-turned-count-slider"
                       />
                       <Input
                         name={"initial-turned-count"}
@@ -194,11 +216,15 @@ const Lobby = () => {
                         })}
                         disabled={!isAdmin}
                         className="w-16 text-center"
+                        data-testid="lobby-initial-turned-count-input"
                       />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Label htmlFor="multiplier-for-first-player">
+                    <Label
+                      htmlFor="multiplier-for-first-player"
+                      data-testid="lobby-multiplier-for-first-player-label"
+                    >
                       {t("settings.multiplier-for-first-player.label")}
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
@@ -215,6 +241,7 @@ const Lobby = () => {
                           number: settings.multiplierForFirstPlayer,
                         })}
                         disabled={!isAdmin}
+                        data-testid="lobby-multiplier-for-first-player-slider"
                       />
                       <Input
                         name={"multiplier-for-first-player"}
@@ -232,11 +259,15 @@ const Lobby = () => {
                         })}
                         disabled={!isAdmin}
                         className="w-16 text-center"
+                        data-testid="lobby-multiplier-for-first-player-input"
                       />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <Label htmlFor="score-to-end-game">
+                    <Label
+                      htmlFor="score-to-end-game"
+                      data-testid="lobby-score-to-end-game-label"
+                    >
                       {t("settings.score-to-end-game.label")}
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
@@ -252,6 +283,7 @@ const Lobby = () => {
                           number: settings.scoreToEndGame,
                         })}
                         disabled={!isAdmin}
+                        data-testid="lobby-score-to-end-game-slider"
                       />
                       <Input
                         name={"score-to-end-game"}
@@ -266,19 +298,27 @@ const Lobby = () => {
                         })}
                         disabled={!isAdmin}
                         className="w-20 text-center"
+                        data-testid="lobby-score-to-end-game-input"
                       />
                     </div>
                   </div>
                 </div>
                 {isAdmin && (
                   <div className="flex flex-row justify-center gap-8 mt-8">
-                    <button onClick={actions.resetSettings}>
+                    <button
+                      onClick={actions.resetSettings}
+                      data-testid="lobby-reset-settings-button"
+                    >
                       <p className="underline">
                         {t("settings.reset-settings")}
                       </p>
                     </button>
 
-                    <Button onClick={beforeStartGame} disabled={hasMinPlayers}>
+                    <Button
+                      onClick={beforeStartGame}
+                      disabled={hasMinPlayers}
+                      data-testid="lobby-start-game-button"
+                    >
                       {t("start-game-button")}
                     </Button>
                   </div>

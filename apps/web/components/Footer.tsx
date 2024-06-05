@@ -11,21 +11,34 @@ const Footer = () => {
       <div className="container grid grid-cols-3 grid-flow-row py-8">
         <div className="flex flex-col justify-center items-start gap-2">
           <FeedbackLink text={t("feedback")} />
-          <Link href="/#explanation" className="text-slate-900 underline">
+          <Link
+            href="/#explanation"
+            className="text-slate-900 underline"
+            data-testid="footer-explanation-link"
+          >
             {t("explanation")}
           </Link>
-          <Link href="/rules" className="text-slate-900 underline">
+          <Link
+            href="/rules"
+            className="text-slate-900 underline"
+            data-testid="footer-rules-link"
+          >
             {t("rules")}
           </Link>
         </div>
         <div className="flex flex-col justify-center items-center gap-2">
-          <Link href="/" className="text-slate-900 underline">
+          <Link
+            href="/"
+            className="text-slate-900 underline"
+            data-testid="footer-home-link"
+          >
             {t("home")}
           </Link>
           <Link
             href="https://github.com/Maxentr/Skyjo/releases"
             target="_blank"
             className="text-slate-900 underline"
+            data-testid="footer-release-notes-link"
           >
             {t("release-notes")}
           </Link>
@@ -35,6 +48,7 @@ const Footer = () => {
             href="https://www.magilano.com/produkt/skyjo/?lang=en&v=1d2a83b3af1f"
             target="_blank"
             className="text-slate-900 underline"
+            data-testid="footer-buy-game-link"
           >
             {t("buy-game")}
           </Link>
@@ -44,6 +58,7 @@ const Footer = () => {
               width={24}
               height={24}
               alt="github.com/Maxentr"
+              data-testid="footer-github-link"
             />
           </Link>
         </div>

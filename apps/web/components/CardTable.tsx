@@ -9,11 +9,13 @@ import { cn } from "@/lib/utils"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
+  testId?: string
   cards: SkyjoCardToJson[][]
   cardDisabled?: boolean
   showSelectionAnimation?: boolean
 }
 const CardTable = ({
+  testId,
   cards,
   cardDisabled = false,
   showSelectionAnimation = false,
@@ -43,6 +45,7 @@ const CardTable = ({
         "inline-grid grid-flow-col transition-all duration-300 gap-2 w-fit",
         `grid-rows-${cards?.[0]?.length}`,
       )}
+      data-testid={`${testId}-card-table`}
     >
       {cards.map((column, columnIndex) => {
         return column.map((card, rowIndex) => {
@@ -52,6 +55,7 @@ const CardTable = ({
           return (
             <Card
               key={`${columnIndex}-${rowIndex}`}
+              data-testid={`${testId}-card-${columnIndex}-${rowIndex}`}
               card={card}
               onClick={() => onClick(columnIndex, rowIndex)}
               className={

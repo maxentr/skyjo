@@ -23,7 +23,7 @@ const EndRoundDialog = () => {
   }, [isRoundOver])
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} data-testid="end-round-dialog">
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>

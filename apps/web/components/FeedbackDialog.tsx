@@ -73,7 +73,7 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} data-testid="feedback-dialog">
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
@@ -86,7 +86,9 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col w-full gap-2"
           >
-            <Label htmlFor="email">{t("email-input.label")}</Label>
+            <Label htmlFor="email" data-testid="feedback-email-label">
+              {t("email-input.label")}
+            </Label>
             <FormField
               control={form.control}
               name="email"
@@ -101,13 +103,16 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
                         form.formState.errors.email &&
                           "focus-visible:ring-red-500",
                       )}
+                      data-testid="feedback-email-input"
                       {...field}
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <Label htmlFor="message">{t("message-input.label")}</Label>
+            <Label htmlFor="message" data-testid="feedback-message-label">
+              {t("message-input.label")}
+            </Label>
             <FormField
               control={form.control}
               name="message"
@@ -124,6 +129,7 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
                           "focus-visible:ring-red-500",
                       )}
                       rows={4}
+                      data-testid="feedback-message-input"
                       {...field}
                     />
                   </FormControl>
@@ -134,6 +140,7 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
               type="submit"
               title={t("button-title")}
               className="w-fit self-end"
+              data-testid="feedback-submit-button"
             >
               {t("button-title")}
             </Button>

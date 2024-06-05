@@ -20,6 +20,7 @@ const Scoreboard = () => {
         onClick={() => setOpen(!open)}
         title={t("button-title")}
         tabIndex={game?.status === "lobby" ? -1 : 0}
+        data-testid="scoreboard-button"
       >
         <ListIcon />
       </Button>

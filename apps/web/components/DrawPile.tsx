@@ -41,6 +41,7 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
         )}
         disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
         flipAnimation={false}
+        data-testid="draw-pile"
       />
     </div>
   )

@@ -22,6 +22,7 @@ const FeedbackButton = ({ className }: FeedbackButtonProps) => {
       aria-label={t("aria-label")}
       className={className}
       tabIndex={game?.status === "lobby" ? -1 : 0}
+      data-testid="feedback-button"
     >
       <MessageSquareWarningIcon />
     </Button>

@@ -30,7 +30,7 @@ const GameStoppedDialog = () => {
   }
 
   return (
-    <Dialog open={isGameStopped}>
+    <Dialog open={isGameStopped} data-testid="game-stopped-dialog">
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>

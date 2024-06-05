@@ -54,7 +54,7 @@ const GameInfo = () => {
         {game.roundState === "lastLap" && (
           <p className="font-bold">{t("last-turn")}</p>
         )}
-        <p>{getGameInfo()}</p>
+        <p data-testid="game-info">{getGameInfo()}</p>
       </div>
     </div>
   )

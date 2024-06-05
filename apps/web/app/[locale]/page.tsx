@@ -74,7 +74,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
           <p className="text-justify text-slate-800">
             {t("explanation.content")}
           </p>
-          <Link href="/rules" className="mt-8">
+          <Link href="/rules" className="mt-8" data-testid="explanation-button">
             <Button>{t("explanation.button")}</Button>
           </Link>
         </section>
@@ -97,7 +97,11 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
               <AccordionContent>
                 {t.rich("faq.how-to-play.content", {
                   rules: (chunks) => (
-                    <Link href="/rules" className="underline">
+                    <Link
+                      href="/rules"
+                      className="underline"
+                      data-testid="faq-rules-link"
+                    >
                       {chunks}
                     </Link>
                   ),

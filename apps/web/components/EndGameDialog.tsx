@@ -24,7 +24,7 @@ const EndGameDialog = () => {
   const winner = getWinner(game)
 
   return (
-    <Dialog open={isGameFinished}>
+    <Dialog open={isGameFinished} data-testid="end-game-dialog">
       <DialogContent allowClose={false}>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>

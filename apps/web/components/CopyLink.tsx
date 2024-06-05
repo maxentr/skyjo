@@ -35,8 +35,13 @@ const CopyLink = () => {
           onClick={onCopyFromInput}
           readOnly
           className="sm:w-[300px] select-text"
+          data-testid="copy-link-input"
         />
-        <Button variant="icon" onClick={copyLink}>
+        <Button
+          variant="icon"
+          onClick={copyLink}
+          data-testid="copy-link-button"
+        >
           {copied ? <CheckIcon /> : <ClipboardCopyIcon />}
         </Button>
       </div>

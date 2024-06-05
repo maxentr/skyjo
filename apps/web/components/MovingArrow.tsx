@@ -10,7 +10,7 @@ type Props = {
 
 const MovingArrow = ({ href }: Props) => {
   return (
-    <Link href={href}>
+    <Link href={href} data-testid="moving-arrow">
       <motion.div
         initial={{ translateY: 0 }}
         animate={{ translateY: "12px" }}

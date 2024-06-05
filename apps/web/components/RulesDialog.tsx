@@ -32,6 +32,7 @@ const RulesDialog = ({
           variant="icon"
           aria-label={t("trigger.aria-label")}
           tabIndex={game?.status === "lobby" ? -1 : 0}
+          data-testid="rules-button"
         >
           <BookOpenIcon />
         </Button>

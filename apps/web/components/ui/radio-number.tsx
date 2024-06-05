@@ -39,13 +39,14 @@ const RadioNumber = ({
     <div className="flex flex-row gap-1 items-center">
       {Array.from({ length: max }, (_, index) => index + 1).map((index) => (
         <label
+          key={index}
           htmlFor={`${name}-${index}`}
           className={classValue({
             selected: selected === index,
             disabled: disabled || disabledRadioNumber.includes(index),
           })}
           title={title?.replace("$number", index.toString())}
-          key={index}
+          data-testid={`${name}-radio-number-${index}`}
         >
           {index}
           <input

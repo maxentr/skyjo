@@ -30,7 +30,7 @@ const ScoreDialog = ({ open, onOpenChange }: ScoreDialogProps) => {
   if (isGameFinished) winner = getWinner(game)
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} data-testid="score-dialog">
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">{t("title")}</DialogTitle>

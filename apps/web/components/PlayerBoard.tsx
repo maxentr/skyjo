@@ -29,6 +29,7 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
       )}
     >
       <CardTable
+        testId={player.name}
         cards={player.cards}
         showSelectionAnimation={showSelectionAnimation}
       />

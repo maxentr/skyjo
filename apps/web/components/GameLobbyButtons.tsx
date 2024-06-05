@@ -79,6 +79,7 @@ const GameLobbyButtons = ({
           color="secondary"
           className="w-full mb-4"
           disabled={!username || loading}
+          data-testid="join-button"
         >
           {t("join-game-button")}
         </Button>
@@ -90,6 +91,7 @@ const GameLobbyButtons = ({
         className="w-full"
         disabled={!username}
         loading={loading}
+        data-testid="find-button"
       >
         {t("find-game-button")}
       </Button>
@@ -98,6 +100,7 @@ const GameLobbyButtons = ({
         className="w-full"
         disabled={!username}
         loading={loading}
+        data-testid="create-private-button"
       >
         {t("create-private-game-button")}
       </Button>

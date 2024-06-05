@@ -71,6 +71,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
               size="normal"
               disabled
               flipAnimation={false}
+              data-testid="selected-card"
             />
           </motion.div>
         </motion.div>

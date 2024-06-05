@@ -10,7 +10,11 @@ const FeedbackLink = ({ text }: FeedbackLinkProps) => {
   const { openFeedback } = useFeedback()
 
   return (
-    <button onClick={openFeedback} className="text-slate-900 underline">
+    <button
+      onClick={openFeedback}
+      className="text-slate-900 underline"
+      data-testid="feedback-link"
+    >
       {text}
     </button>
   )

@@ -66,6 +66,7 @@ const Chat = ({ className }: ChatProps) => {
         "absolute right-6 top-full z-10 hidden md:flex items-center justify-end",
         className,
       )}
+      data-testid="chat"
     >
       <div
         className={`w-80 h-fit pb-2 bg-white shadow border-2 border-b-0 rounded-t-lg border-black flex flex-col items-center duration-300 transition-transform ease-in-out ${
@@ -75,6 +76,7 @@ const Chat = ({ className }: ChatProps) => {
         <button
           className="text-center text-black w-full px-4 py-2 transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4"
           onClick={toggleOpening}
+          data-testid="chat-toggle-button"
         >
           {t("title")}
         </button>

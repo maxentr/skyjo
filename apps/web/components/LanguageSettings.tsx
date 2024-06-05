@@ -38,7 +38,11 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="icon" aria-label={t("button.aria-label")}>
+        <Button
+          variant="icon"
+          aria-label={t("button.aria-label")}
+          data-testid="language-settings-button"
+        >
           <LanguagesIcon />
         </Button>
       </DropdownMenuTrigger>
@@ -48,7 +52,11 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
           onValueChange={handleLanguageChange}
         >
           {locales.map((locale) => (
-            <DropdownMenuRadioItem key={locale} value={locale}>
+            <DropdownMenuRadioItem
+              key={locale}
+              value={locale}
+              data-testid={`language-settings-${locale}`}
+            >
               {t(locale)}
             </DropdownMenuRadioItem>
           ))}

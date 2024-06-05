@@ -39,6 +39,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
         className="translate-y-1 animate-scale"
         disabled={false}
         flipAnimation={false}
+        data-testid="discard-pile"
       />
     )
   }
