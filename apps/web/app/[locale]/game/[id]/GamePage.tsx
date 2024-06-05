@@ -28,7 +28,7 @@ const GamePage = () => {
   }
 
   return (
-    <div className="h-full w-full bg-background flex flex-col gap-6">
+    <div className="h-full w-full bg-body flex flex-col gap-6">
       <div className="w-full flex flex-row items-start h-full">
         <div className="w-10"></div>
         <div className="flex flex-1 flex-row justify-evenly w-full h-full">

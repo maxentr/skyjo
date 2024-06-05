@@ -32,15 +32,15 @@ const config = {
       },
       colors: {
         card: {
-          "dark-blue": "#5992E7",
-          "light-blue": "#A0C4FF",
-          green: "#7ACE7A",
-          yellow: "#F3E948",
-          red: "#F56E6E",
+          negative: "#5992E7",
+          neutral: "#A0C4FF",
+          low: "#7ACE7A",
+          medium: "#F3E948",
+          high: "#F56E6E",
         },
-        background: "#F8F7EB",
-        "dutch-white": "#F6E9C9",
-        "off-white": "#fefdf7",
+        body: "#F8F7EB",
+        button: "#F6E9C9",
+        container: "#fefdf7",
       },
       keyframes: {
         "accordion-down": {
@@ -78,6 +78,7 @@ const config = {
   },
   plugins: [
     require("tailwindcss-animate"),
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     function ({ addVariant }: any) {
       addVariant("notfirefox", ":not(:-moz-any(&))")
     },

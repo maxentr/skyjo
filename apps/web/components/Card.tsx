@@ -21,12 +21,12 @@ const cardClass = cva(
       value: {
         discard: "bg-transparent border-dashed border-red-600 !shadow-none",
         "no-card": "bg-transparent border-dashed !shadow-none",
-        "not-visible": " bg-off-white text-off-white",
-        negative: " bg-card-dark-blue",
-        neutral: " bg-card-light-blue",
-        low: " bg-card-green",
-        medium: "bg-card-yellow",
-        high: " bg-card-red",
+        "not-visible": " bg-container text-container",
+        negative: " bg-card-negative",
+        neutral: " bg-card-neutral",
+        low: " bg-card-low",
+        medium: "bg-card-medium",
+        high: " bg-card-high",
       },
       disabled: {
         true: "",

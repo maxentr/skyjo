@@ -5,7 +5,7 @@ import Link from "next/link"
 const RulesPage = () => {
   const t = useTranslations("pages.Rules")
   return (
-    <div className="container bg-background my-16">
+    <div className="container bg-body my-16">
       <Link href="/" className="underline">
         {t("back")}
       </Link>

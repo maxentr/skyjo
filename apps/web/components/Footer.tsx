@@ -7,7 +7,7 @@ const Footer = () => {
   const t = useTranslations("components.Footer")
 
   return (
-    <footer className="w-full border-t-2 border-black bg-off-white">
+    <footer className="w-full border-t-2 border-black bg-container">
       <div className="container grid grid-cols-3 grid-flow-row py-8">
         <div className="flex flex-col justify-center items-start gap-2">
           <FeedbackLink text={t("feedback")} />
