@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
   "files": {
     "ignore": [
       "**/node_modules",
@@ -21,11 +21,11 @@
     "lineWidth": 80,
     "attributePosition": "auto"
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
-    "ignore": [
-      "**/*.test.ts"
-    ],
+    "ignore": ["**/*.test.ts", "**/*.spec.ts", "playwright-report/**"],
     "enabled": true,
     "rules": {
       "recommended": false,
@@ -38,7 +38,10 @@
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
       },
-      "style": { "noNamespace": "error", "useAsConstAssertion": "error" },
+      "style": {
+        "noNamespace": "error",
+        "useAsConstAssertion": "error"
+      },
       "suspicious": {
         "noExplicitAny": "warn",
         "noExtraNonNullAssertion": "error",
@@ -51,7 +54,7 @@
     "formatter": {
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
-      "trailingComma": "all",
+      "trailingCommas": "all",
       "semicolons": "asNeeded",
       "arrowParentheses": "always",
       "bracketSpacing": true,
