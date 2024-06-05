@@ -15,6 +15,9 @@
     "test:ui": {
       "dependsOn": ["shared#build"]
     },
+    "test:e2e": {
+      "dependsOn": ["^build"]
+    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false

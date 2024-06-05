@@ -13,7 +13,8 @@
     "biome:check": "turbo run biome:check",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
-    "test:ui": "turbo run test:ui"
+    "test:ui": "turbo run test:ui",
+    "test:e2e": "turbo run test:e2e"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.0",
