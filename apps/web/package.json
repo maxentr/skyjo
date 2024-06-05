@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "biome:check": "pnpm biome check --apply .",
+    "biome:check": "pnpm biome check --write .",
     "test:e2e": "playwright test"
   },
   "dependencies": {

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "biome:check": "pnpm biome check --apply ."
+    "biome:check": "pnpm biome check --write ."
   },
   "dependencies": {
     "zod": "^3.22.4"
