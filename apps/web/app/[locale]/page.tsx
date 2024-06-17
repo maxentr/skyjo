@@ -50,6 +50,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
                     width={0}
                     height={0}
                     style={{ width: "auto", height: "2.5rem" }}
+                    className="select-none"
                     priority
                     loading="eager"
                     title="Skyjo"
