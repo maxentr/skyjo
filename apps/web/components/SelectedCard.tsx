@@ -1,7 +1,7 @@
 import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 
 type SelectedCardProps = {
   show: boolean
@@ -27,7 +27,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
   return (
     <AnimatePresence>
       {game.selectedCard && show && (
-        <motion.div
+        <m.div
           className={cn(
             "absolute top-0 z-10",
             pickFromDrawPile ? "left-0" : "right-0",
@@ -53,7 +53,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
             disabled
             flipAnimation={false}
           />
-          <motion.div
+          <m.div
             initial={{
               opacity: 0,
             }}
@@ -72,8 +72,8 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
               disabled
               flipAnimation={false}
             />
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

@@ -4,7 +4,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
-import { motion, useAnimate, useAnimationControls } from "framer-motion"
+import { m, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
@@ -139,7 +139,7 @@ const Card = ({
   }
 
   return (
-    <motion.button
+    <m.button
       ref={scope}
       animate={controls}
       className={cn(
@@ -157,7 +157,7 @@ const Card = ({
       disabled={disabled}
     >
       {cardContent}
-    </motion.button>
+    </m.button>
   )
 }
 
