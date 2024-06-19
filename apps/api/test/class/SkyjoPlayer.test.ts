@@ -110,12 +110,9 @@ describe("SkyjoPlayer", () => {
   it("should remove a row", () => {
     const rowIndex = 1
 
-    const cards = deepCloneArray(player.cards)
+    deepCloneArray(player.cards)
 
-    console.log(player.cards)
     const row = player.removeRow(rowIndex)
-    console.log(rowIndex)
-    console.log(row)
 
     expect(removeIdFromCards(row)).toMatchObject(
       removeIdFromCards([
