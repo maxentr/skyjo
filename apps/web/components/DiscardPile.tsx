@@ -50,8 +50,8 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     isVisible: game.lastDiscardCardValue !== undefined,
   }
 
-  const isPlayerTurnAndChooseAPile =
-    isPlayerTurn && game.turnState === "chooseAPile"
+  const canDiscard = isPlayerTurn && game.turnState === "chooseAPile"
+  isPlayerTurn && game.turnState === "chooseAPile"
 
   return (
     <div className="relative">
@@ -62,9 +62,9 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
         title={t("title")}
         className={cn(
           card.value === -99 ? "translate-y-1" : "translate-y-[2.5px]",
-          isPlayerTurnAndChooseAPile ? "animate-scale" : "",
+          canDiscard ? "animate-scale" : "",
         )}
-        disabled={!isPlayerTurnAndChooseAPile}
+        disabled={!canDiscard}
         flipAnimation={false}
       />
     </div>
