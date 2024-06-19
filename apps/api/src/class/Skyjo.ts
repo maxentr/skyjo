@@ -103,21 +103,9 @@ export class Skyjo
   }
 
   override nextTurn() {
-    let cardsToDiscard: SkyjoCard[] = []
     const currentPlayer = this.getCurrentPlayer()
 
-    if (this.settings.allowSkyjoForColumn) {
-      cardsToDiscard = currentPlayer.checkColumnsAndDiscard()
-    }
-    if (this.settings.allowSkyjoForRow) {
-      cardsToDiscard = cardsToDiscard.concat(
-        currentPlayer.checkRowsAndDiscard(),
-      )
-    }
-
-    if (cardsToDiscard.length > 0) {
-      cardsToDiscard.forEach((card) => this.discardCard(card.value))
-    }
+    this.checkCardsToDiscard(currentPlayer)
 
     const playerFinished = this.checkIfPlayerFinished(currentPlayer)
 
@@ -256,6 +244,24 @@ export class Skyjo
     }, playersScore[0])
 
     this.turn = playerToStart!.index
+  }
+
+  private checkCardsToDiscard(player: SkyjoPlayer) {
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (this.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumnsAndDiscard()
+    }
+    if (this.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRowsAndDiscard())
+    }
+
+    if (cardsToDiscard.length > 0) {
+      cardsToDiscard.forEach((card) => this.discardCard(card.value))
+
+      if (this.settings.allowSkyjoForColumn && this.settings.allowSkyjoForRow)
+        this.checkCardsToDiscard(player)
+    }
   }
 
   private checkIfPlayerFinished(player: SkyjoPlayer) {

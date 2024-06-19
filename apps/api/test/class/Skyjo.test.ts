@@ -393,7 +393,7 @@ describe("Skyjo", () => {
         [
           new SkyjoCard(1, true),
           new SkyjoCard(2, true),
-          new SkyjoCard(2, true),
+          new SkyjoCard(3, true),
         ],
         [
           new SkyjoCard(1, true),
@@ -412,6 +412,45 @@ describe("Skyjo", () => {
       expect(player.cards.length).toBe(3)
       player.cards.forEach((column) => {
         expect(column.length).toBe(2)
+      })
+    })
+
+    it("should set next turn and discard 2 column and 2 row", () => {
+      skyjo.settings.allowSkyjoForRow = true
+      skyjo.settings.allowSkyjoForColumn = true
+      skyjo.start()
+      skyjo.turn = 0
+      player.cards = [
+        [
+          new SkyjoCard(1, true),
+          new SkyjoCard(1, true),
+          new SkyjoCard(1, true),
+        ],
+        [
+          new SkyjoCard(1, true),
+          new SkyjoCard(2, true),
+          new SkyjoCard(2, true),
+        ],
+        [
+          new SkyjoCard(1, true),
+          new SkyjoCard(6, true),
+          new SkyjoCard(5, true),
+        ],
+        [
+          new SkyjoCard(1, true),
+          new SkyjoCard(6, true),
+          new SkyjoCard(10, true),
+        ],
+      ]
+
+      skyjo.nextTurn()
+
+      const remaningColumns = 2
+      expect(player.cards.length).toBe(remaningColumns)
+
+      const remaningCardsPerColumn = 1
+      player.cards.forEach((column) => {
+        expect(column.length).toBe(remaningCardsPerColumn)
       })
     })
 
