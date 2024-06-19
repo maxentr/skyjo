@@ -15,6 +15,7 @@ const Rules = () => {
             <p className="w-8 text-end">5x</p>
             <Card
               card={{
+                id: "tutorial-2",
                 value: -2,
                 isVisible: true,
               }}
@@ -28,6 +29,7 @@ const Rules = () => {
             <p className="w-8 text-end">15x</p>
             <Card
               card={{
+                id: "tutorial-0",
                 value: 0,
                 isVisible: true,
               }}
@@ -44,6 +46,7 @@ const Rules = () => {
                 <Card
                   key={value}
                   card={{
+                    id: `tutorial-${value}}`,
                     value: value,
                     isVisible: true,
                   }}
