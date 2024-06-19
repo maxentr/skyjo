@@ -6,6 +6,8 @@ import {
   isCurrentUserTurn,
 } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
+import { AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
@@ -19,6 +21,10 @@ const CardTable = ({
   showSelectionAnimation = false,
 }: CardTableProps) => {
   const { game, player, actions } = useSkyjo()
+  const numberOfRows = cards?.[0]?.length
+  const [numberOfRowsForClass, setNumberOfRowsForClass] = useState<number>(
+    game.settings.cardPerRow,
+  )
 
   const canTurnCardsAtBeginning =
     canTurnInitialCard(game) &&
@@ -37,33 +43,45 @@ const CardTable = ({
     }
   }
 
+  // wait 2 seconds to set the number of rows (it's the time it takes for the animation to finish)
+  useEffect(() => {
+    if (numberOfRows === game.settings.cardPerRow)
+      setNumberOfRowsForClass(game.settings.cardPerRow)
+    setTimeout(() => {
+      setNumberOfRowsForClass(numberOfRows)
+    }, 2000)
+  }, [numberOfRows, game.settings.cardPerRow])
+
   return (
     <div
       className={cn(
-        "inline-grid grid-flow-col transition-all duration-300 gap-2 w-fit",
-        `grid-rows-${cards?.[0]?.length}`,
+        "inline-grid grid-flow-col duration-100 gap-2 w-fit",
+        `grid-rows-${numberOfRowsForClass}`,
       )}
     >
-      {cards.map((column, columnIndex) => {
-        return column.map((card, rowIndex) => {
-          const canBeSelected =
-            ((canTurnCardsAtBeginning || canTurnCard) && !card.isVisible) ||
-            canReplaceCard
-          return (
-            <Card
-              key={`${columnIndex}-${rowIndex}`}
-              card={card}
-              onClick={() => onClick(columnIndex, rowIndex)}
-              className={
-                showSelectionAnimation && canBeSelected
-                  ? "animate-small-scale"
-                  : ""
-              }
-              disabled={cardDisabled || !canBeSelected}
-            />
-          )
-        })
-      })}
+      <AnimatePresence>
+        {cards.map((column, columnIndex) => {
+          return column.map((card, rowIndex) => {
+            const canBeSelected =
+              ((canTurnCardsAtBeginning || canTurnCard) && !card.isVisible) ||
+              canReplaceCard
+            return (
+              <Card
+                key={card.id}
+                card={card}
+                onClick={() => onClick(columnIndex, rowIndex)}
+                className={
+                  showSelectionAnimation && canBeSelected
+                    ? "animate-small-scale"
+                    : ""
+                }
+                disabled={cardDisabled || !canBeSelected}
+                exitAnimation={game.roundState === "playing"}
+              />
+            )
+          })
+        })}
+      </AnimatePresence>
     </div>
   )
 }

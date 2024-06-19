@@ -86,6 +86,7 @@ type CardProps = {
   title?: string
   disabled?: boolean
   flipAnimation?: boolean
+  exitAnimation?: boolean
 }
 const Card = ({
   card,
@@ -95,6 +96,7 @@ const Card = ({
   title,
   disabled = false,
   flipAnimation = true,
+  exitAnimation = false,
 }: CardProps) => {
   const { game } = useSkyjo()
   const [scope, animate] = useAnimate()
@@ -142,6 +144,18 @@ const Card = ({
     <m.button
       ref={scope}
       animate={controls}
+      exit={
+        exitAnimation
+          ? {
+              opacity: 0,
+              scale: 0,
+              transition: {
+                duration: 2,
+                ease: "easeInOut",
+              },
+            }
+          : undefined
+      }
       className={cn(
         cardClass({
           size,
