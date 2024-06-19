@@ -287,8 +287,7 @@ export class Skyjo
     if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
       this.players.forEach((player) => {
         player.turnAllCards()
-        if (this.settings.allowSkyjoForRow) player.checkRowsAndDiscard()
-        if (this.settings.allowSkyjoForColumn) player.checkColumnsAndDiscard()
+        this.checkCardsToDiscard(player)
         player.finalRoundScore()
       })
 
