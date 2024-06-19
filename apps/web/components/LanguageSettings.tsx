@@ -8,7 +8,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { locales } from "@/i18n"
+import { Locales, locales } from "@/i18n"
 import { usePathname, useRouter } from "@/navigation"
 import { LanguagesIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -32,7 +32,7 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
       route = `${route}?gameId=${gameId}`
     }
 
-    router.push(route, { locale })
+    router.push(route, { locale: locale as Locales })
   }
 
   return (

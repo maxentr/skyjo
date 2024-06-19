@@ -36,7 +36,9 @@
         }
       }
     },
-    "GamePage": {},
+    "GamePage": {
+      "your-turn": "It's your turn!"
+    },
     "Rules": {
       "head": {
         "title": "Skyjo game rules",

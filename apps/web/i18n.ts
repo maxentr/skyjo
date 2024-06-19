@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 // Can be imported from a shared config
 export const locales = ["en", "fr"] as const
+export type Locales = (typeof locales)[number]
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid

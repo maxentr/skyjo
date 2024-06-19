@@ -5,7 +5,7 @@ const classValue = cva(
   {
     variants: {
       selected: {
-        true: " bg-dutch-white",
+        true: " bg-button",
         false: "bg-white",
       },
       disabled: {

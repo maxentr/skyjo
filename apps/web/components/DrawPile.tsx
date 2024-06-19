@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 
 const DRAW_CARD = {
+  id: "draw",
   value: undefined,
   isVisible: false,
 }
@@ -25,7 +26,7 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
     }
   }
 
-  const animation =
+  const canDrawCard =
     isPlayerTurn && game.turnState === "chooseAPile" ? "animate-scale" : ""
 
   return (
@@ -37,7 +38,7 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
         title={t("title")}
         className={cn(
           "!shadow-[3px_3px_0px_0px_rgba(0,0,0)] !mdh:md:shadow-[4px_4px_0px_0px_rgba(0,0,0)]",
-          animation,
+          canDrawCard,
         )}
         disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
         flipAnimation={false}

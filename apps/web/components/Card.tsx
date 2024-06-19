@@ -4,7 +4,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
-import { motion, useAnimate, useAnimationControls } from "framer-motion"
+import { m, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
@@ -21,12 +21,12 @@ const cardClass = cva(
       value: {
         discard: "bg-transparent border-dashed border-red-600 !shadow-none",
         "no-card": "bg-transparent border-dashed !shadow-none",
-        "not-visible": " bg-off-white text-off-white",
-        negative: " bg-card-dark-blue",
-        neutral: " bg-card-light-blue",
-        low: " bg-card-green",
-        medium: "bg-card-yellow",
-        high: " bg-card-red",
+        "not-visible": " bg-container text-container",
+        negative: " bg-card-negative",
+        neutral: " bg-card-neutral",
+        low: " bg-card-low",
+        medium: "bg-card-medium",
+        high: " bg-card-high",
       },
       disabled: {
         true: "",
@@ -86,6 +86,7 @@ type CardProps = {
   title?: string
   disabled?: boolean
   flipAnimation?: boolean
+  exitAnimation?: boolean
 }
 const Card = ({
   card,
@@ -95,6 +96,7 @@ const Card = ({
   title,
   disabled = false,
   flipAnimation = true,
+  exitAnimation = false,
 }: CardProps) => {
   const { game } = useSkyjo()
   const [scope, animate] = useAnimate()
@@ -139,9 +141,21 @@ const Card = ({
   }
 
   return (
-    <motion.button
+    <m.button
       ref={scope}
       animate={controls}
+      exit={
+        exitAnimation
+          ? {
+              opacity: 0,
+              scale: 0,
+              transition: {
+                duration: 2,
+                ease: "easeInOut",
+              },
+            }
+          : undefined
+      }
       className={cn(
         cardClass({
           size,
@@ -157,7 +171,7 @@ const Card = ({
       disabled={disabled}
     >
       {cardContent}
-    </motion.button>
+    </m.button>
   )
 }
 

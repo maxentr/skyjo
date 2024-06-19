@@ -623,7 +623,7 @@ describe("Skyjo", () => {
 
         await instance.onPickCard(socket, { pile: "draw" })
 
-        expect(game.selectedCard).toBeInstanceOf(SkyjoCard)
+        expect(game.selectedCardValue).not.toBeNull()
         expect(game.turnState).toBe<TurnState>("throwOrReplace")
       })
 
@@ -654,7 +654,7 @@ describe("Skyjo", () => {
         await instance.onPickCard(socket, { pile: "discard" })
 
         expect(socket.emit).toHaveBeenCalledOnce()
-        expect(game.selectedCard).toBeInstanceOf(SkyjoCard)
+        expect(game.selectedCardValue).not.toBeNull()
         expect(game.turnState).toBe<TurnState>("replaceACard")
       })
     })
@@ -804,13 +804,13 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.selectedCard = new SkyjoCard(0, true)
+        game.selectedCardValue = 0
         game.turnState = "replaceACard"
 
         await instance.onReplaceCard(socket, { column: 0, row: 2 })
 
-        expect(socket.emit).toHaveBeenCalledOnce()
-        expect(game.selectedCard).toBeNull()
+        expect(socket.emit).toHaveBeenCalledTimes(2)
+        expect(game.selectedCardValue).toBeNull()
         expect(game.turn).toBe(1)
         expect(game.turnState).toBe<TurnState>("chooseAPile")
       })
@@ -932,7 +932,7 @@ describe("Skyjo", () => {
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
         game.turnState = "chooseAPile"
-        game.selectedCard = new SkyjoCard(0, true)
+        game.selectedCardValue = 0
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
           ERROR.INVALID_TURN_STATE,
@@ -963,11 +963,11 @@ describe("Skyjo", () => {
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
         game.turnState = "throwOrReplace"
-        game.selectedCard = new SkyjoCard(0, true)
+        game.selectedCardValue = 0
 
         await instance.onDiscardCard(socket)
 
-        expect(game.selectedCard).toBeNull()
+        expect(game.selectedCardValue).toBeNull()
         expect(game.turn).toBe(0)
         expect(game.turnState).toBe<TurnState>("turnACard")
       })

@@ -1,7 +1,7 @@
 "use client"
 
 import { Link } from "@/navigation"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ArrowDown } from "lucide-react"
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 const MovingArrow = ({ href }: Props) => {
   return (
     <Link href={href}>
-      <motion.div
+      <m.div
         initial={{ translateY: 0 }}
         animate={{ translateY: "12px" }}
         transition={{
@@ -21,7 +21,7 @@ const MovingArrow = ({ href }: Props) => {
         }}
       >
         <ArrowDown />
-      </motion.div>
+      </m.div>
     </Link>
   )
 }

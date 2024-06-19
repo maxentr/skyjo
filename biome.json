@@ -7,9 +7,7 @@
       "**/.next",
       "**/.turbo",
       "**/.vscode",
-      "**/.env",
-      "**/*.d.ts",
-      "**/*.config.ts"
+      "**/*.d.ts"
     ]
   },
   "formatter": {
@@ -23,9 +21,7 @@
   },
   "organizeImports": { "enabled": true },
   "linter": {
-    "ignore": [
-      "**/*.test.ts"
-    ],
+    "ignore": ["**/*.test.ts", "**/.env"],
     "enabled": true,
     "rules": {
       "recommended": false,
@@ -68,7 +64,7 @@
   },
   "overrides": [
     {
-      "include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "include": ["*.ts", "*.tsx", "*.mts", "*.cts", "*.mjs"],
       "linter": {
         "rules": {
           "correctness": {

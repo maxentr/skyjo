@@ -116,13 +116,15 @@ export default class SkyjoGameController {
 
     game.replaceCard(column, row)
 
+    await this.broadcastGame(socket, game)
+
     await this.finishTurn(socket, game)
   }
 
   async onDiscardCard(socket: SkyjoSocket) {
     const { game } = this.checkPlayAuthorization(socket, ["throwOrReplace"])
 
-    game.discardCard(game.selectedCard!)
+    game.discardCard(game.selectedCardValue!)
 
     await this.broadcastGame(socket, game)
   }
@@ -131,6 +133,8 @@ export default class SkyjoGameController {
     const { game, player } = this.checkPlayAuthorization(socket, ["turnACard"])
 
     game.turnCard(player, column, row)
+
+    await this.broadcastGame(socket, game)
 
     await this.finishTurn(socket, game)
   }

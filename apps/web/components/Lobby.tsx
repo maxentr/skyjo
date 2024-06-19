@@ -69,7 +69,7 @@ const Lobby = () => {
         <div className="fixed inset-0 z-20 flex items-center justify-center">
           <div className="flex flex-col gap-8 items-center w-full max-w-4xl mx-6 lg:mx-0">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <div className="bg-off-white border-2 border-black rounded-2xl w-full px-12 py-8 relative">
+              <div className="bg-container border-2 border-black rounded-2xl w-full px-12 py-8 relative">
                 <span className="absolute top-4 right-4">
                   <TooltipProvider delayDuration={200}>
                     <Tooltip>
@@ -284,7 +284,7 @@ const Lobby = () => {
                   </div>
                 )}
               </div>
-              <div className="hidden md:block bg-off-white border-2 border-black rounded-2xl w-80 p-8">
+              <div className="hidden md:block bg-container border-2 border-black rounded-2xl w-80 p-8">
                 <h3 className="text-slate-900 text-center text-xl mb-5">
                   {t("player-section.title")}
                 </h3>

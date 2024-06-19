@@ -36,11 +36,11 @@ const RulesDialog = ({
           <BookOpenIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-2/3 px-0 bg-off-white">
+      <DialogContent className="h-2/3 px-0 bg-container">
         <DialogHeader className="px-6">
           <DialogTitle className="text-2xl">{t("title")}</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-6 text-slate-900 bg-off-white overflow-y-auto">
+        <div className="flex flex-col gap-6 text-slate-900 bg-container overflow-y-auto">
           <Rules />
         </div>
       </DialogContent>

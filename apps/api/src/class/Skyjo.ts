@@ -1,5 +1,4 @@
 import { Move, RoundState, SkyjoToJson, TurnState } from "shared/types/skyjo"
-import { SkyjoCardToJson } from "shared/types/skyjoCard"
 import { shuffle } from "../utils/shuffle"
 import { Game, GameInterface } from "./Game"
 import { SkyjoCard } from "./SkyjoCard"
@@ -9,7 +8,7 @@ import { SkyjoSettings } from "./SkyjoSettings"
 const SHUFFLE_ITERATIONS = 3
 
 interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
-  selectedCard: SkyjoCardToJson | null
+  selectedCardValue: number | null
   firstPlayerToFinish: SkyjoPlayer | null
   turnState: TurnState
   lastMove: Move
@@ -18,7 +17,7 @@ interface SkyjoInterface extends GameInterface<SkyjoPlayer> {
   checkAllPlayersRevealedCards(count: number): void
   drawCard(): void
   pickFromDiscard(): void
-  discardCard(card: SkyjoCardToJson): void
+  discardCard(value: number): void
   replaceCard(column: number, row: number): void
   turnCard(player: SkyjoPlayer, column: number, row: number): void
   nextTurn(): void
@@ -33,7 +32,7 @@ export class Skyjo
   private discardPile: number[] = []
   private drawPile: number[] = []
 
-  selectedCard: SkyjoCard | null = null
+  selectedCardValue: number | null = null
   turnState: TurnState = "chooseAPile"
   lastMove: Move = "turn"
   roundState: RoundState = "waitingPlayersToTurnInitialCards"
@@ -67,9 +66,7 @@ export class Skyjo
     if (this.drawPile.length === 0) this.reloadDrawPile()
 
     const cardValue = this.drawPile.shift()!
-    const card = new SkyjoCard(cardValue)
-    card.turnVisible()
-    this.selectedCard = card
+    this.selectedCardValue = cardValue
 
     this.turnState = "throwOrReplace"
     this.lastMove = "pickFromDrawPile"
@@ -78,17 +75,15 @@ export class Skyjo
   pickFromDiscard() {
     if (this.discardPile.length === 0) return
     const cardValue = this.discardPile.pop()!
-    const card = new SkyjoCard(cardValue)
-    card.turnVisible()
-    this.selectedCard = card
+    this.selectedCardValue = cardValue
 
     this.turnState = "replaceACard"
     this.lastMove = "pickFromDiscardPile"
   }
 
-  discardCard(card: SkyjoCard) {
-    this.discardPile.push(card.value)
-    this.selectedCard = null
+  discardCard(value: number) {
+    this.discardPile.push(value)
+    this.selectedCardValue = null
 
     this.turnState = "turnACard"
     this.lastMove = "throw"
@@ -96,10 +91,9 @@ export class Skyjo
 
   replaceCard(column: number, row: number) {
     const player = this.getCurrentPlayer()
-    const oldCard = player.cards[column][row]
-    const selectedCard = this.selectedCard
-    this.discardCard(oldCard)
-    player.replaceCard(column, row, selectedCard!)
+    const oldCardValue = player.cards[column][row].value
+    player.replaceCard(column, row, this.selectedCardValue!)
+    this.discardCard(oldCardValue)
     this.lastMove = "replace"
   }
 
@@ -109,21 +103,9 @@ export class Skyjo
   }
 
   override nextTurn() {
-    let cardsToDiscard: SkyjoCard[] = []
     const currentPlayer = this.getCurrentPlayer()
 
-    if (this.settings.allowSkyjoForColumn) {
-      cardsToDiscard = currentPlayer.checkColumnsAndDiscard()
-    }
-    if (this.settings.allowSkyjoForRow) {
-      cardsToDiscard = cardsToDiscard.concat(
-        currentPlayer.checkRowsAndDiscard(),
-      )
-    }
-
-    if (cardsToDiscard.length > 0) {
-      cardsToDiscard.forEach((card) => this.discardCard(card))
-    }
+    this.checkCardsToDiscard(currentPlayer)
 
     const playerFinished = this.checkIfPlayerFinished(currentPlayer)
 
@@ -159,7 +141,7 @@ export class Skyjo
       ...super.toJson(),
       admin: this.admin.toJson(),
       players: this.players.map((player) => player.toJson()),
-      selectedCard: this.selectedCard?.toJson(),
+      selectedCardValue: this.selectedCardValue,
       lastDiscardCardValue: this.discardPile[this.discardPile.length - 1],
       roundState: this.roundState,
       turnState: this.turnState,
@@ -208,7 +190,7 @@ export class Skyjo
 
   private initializeRound() {
     this.firstPlayerToFinish = null
-    this.selectedCard = null
+    this.selectedCardValue = null
     this.lastMove = "turn"
     this.initializeCardPiles()
     this.resetRoundPlayers()
@@ -264,6 +246,24 @@ export class Skyjo
     this.turn = playerToStart!.index
   }
 
+  private checkCardsToDiscard(player: SkyjoPlayer) {
+    let cardsToDiscard: SkyjoCard[] = []
+
+    if (this.settings.allowSkyjoForColumn) {
+      cardsToDiscard = player.checkColumnsAndDiscard()
+    }
+    if (this.settings.allowSkyjoForRow) {
+      cardsToDiscard = cardsToDiscard.concat(player.checkRowsAndDiscard())
+    }
+
+    if (cardsToDiscard.length > 0) {
+      cardsToDiscard.forEach((card) => this.discardCard(card.value))
+
+      if (this.settings.allowSkyjoForColumn && this.settings.allowSkyjoForRow)
+        this.checkCardsToDiscard(player)
+    }
+  }
+
   private checkIfPlayerFinished(player: SkyjoPlayer) {
     // check if the player has turned all his cards
     const hasPlayerFinished = player.hasRevealedCardCount(
@@ -287,8 +287,7 @@ export class Skyjo
     if (connectedPlayers[nextTurn] === this.firstPlayerToFinish) {
       this.players.forEach((player) => {
         player.turnAllCards()
-        if (this.settings.allowSkyjoForRow) player.checkRowsAndDiscard()
-        if (this.settings.allowSkyjoForColumn) player.checkColumnsAndDiscard()
+        this.checkCardsToDiscard(player)
         player.finalRoundScore()
       })
 
@@ -312,6 +311,13 @@ export class Skyjo
     const lastScoreIndex = this.roundNumber - 1
     const firstToFinishPlayerScore =
       this.firstPlayerToFinish!.scores[lastScoreIndex]
+
+    if (
+      typeof firstToFinishPlayerScore === "number" &&
+      firstToFinishPlayerScore <= 0
+    ) {
+      return
+    }
 
     const playersWithoutFirstPlayerToFinish = this.getConnectedPlayers().filter(
       (player) => player !== this.firstPlayerToFinish,

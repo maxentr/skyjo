@@ -28,8 +28,8 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
 
   return (
     <>
-      <div className="bg-background flex flex-col">
-        <div className="h-dvh !p-6 bg-background flex flex-col">
+      <div className="bg-body flex flex-col">
+        <div className="h-dvh !p-6 bg-body flex flex-col">
           <div className="w-full grid grid-cols-3 grid-flow-row h-1/6">
             <div></div>
             <div></div>
@@ -43,13 +43,14 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
           </div>
           <div className="w-full grid grid-cols-1 grid-flow-row h-4/6">
             <div className="h-full flex items-center justify-center">
-              <div className="bg-off-white border-2 border-black px-16 py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
+              <div className="bg-container border-2 border-black px-16 py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
                 <h1 className="mb-5">
                   <Image
                     src="/svg/logo.svg"
                     width={0}
                     height={0}
                     style={{ width: "auto", height: "2.5rem" }}
+                    className="select-none"
                     priority
                     loading="eager"
                     title="Skyjo"
@@ -64,7 +65,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
             <MovingArrow href="#explanation" />
           </div>
         </div>
-        <section className="container bg-background my-8 max-w-4xl flex flex-col items-center">
+        <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">
           <h2
             id="explanation"
             className="text-center text-3xl text-slate-800 mb-4"
@@ -79,7 +80,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
           </Link>
         </section>
 
-        <section className="container bg-background mt-16 mb-32 max-w-4xl flex flex-col items-center">
+        <section className="container bg-body mt-16 mb-32 max-w-4xl flex flex-col items-center">
           <h2 className="text-center text-3xl text-slate-800 mb-4">
             {t("faq.title")}
           </h2>

@@ -121,7 +121,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning style={fredoka.style}>
-      <body className="bg-background antialiased">
+      <body className="bg-body antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

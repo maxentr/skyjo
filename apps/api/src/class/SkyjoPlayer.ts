@@ -28,8 +28,11 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     this.cards[column][row].turnVisible()
   }
 
-  replaceCard(column: number, row: number, card: SkyjoCard) {
-    this.cards[column][row] = card
+  replaceCard(column: number, row: number, value: number) {
+    const card = this.cards[column][row]
+
+    card.turnVisible()
+    card.value = value
   }
 
   removeColumn(column: number) {
