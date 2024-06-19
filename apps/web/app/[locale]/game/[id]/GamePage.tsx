@@ -14,9 +14,12 @@ import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
+import { AnimatePresence, m } from "framer-motion"
+import { useTranslations } from "next-intl"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
+  const t = useTranslations("pages.GamePage")
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
   const roundInProgress =
@@ -63,6 +66,32 @@ const GamePage = () => {
         </div>
         <div className="relative flex flex-col justify-center items-center gap-4">
           <div className="relative flex flex-row items-center justify-center gap-10 h-full max-h-20 w-fit">
+            <AnimatePresence>
+              {isPlayerTurn && game.roundState === "playing" && (
+                <m.p
+                  initial={{
+                    scale: 0,
+                  }}
+                  animate={{
+                    scale: 1,
+                    transition: {
+                      duration: 0.3,
+                      ease: "easeInOut",
+                    },
+                  }}
+                  exit={{
+                    scale: 0,
+                    transition: {
+                      duration: 0.5,
+                      ease: "easeInOut",
+                    },
+                  }}
+                  className="absolute -top-8 text-center text-sm animate-scale"
+                >
+                  {t("your-turn")}
+                </m.p>
+              )}
+            </AnimatePresence>
             <DrawPile isPlayerTurn={isPlayerTurn && roundInProgress} />
             <DiscardPile isPlayerTurn={isPlayerTurn && roundInProgress} />
           </div>
