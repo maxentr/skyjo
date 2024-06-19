@@ -26,7 +26,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
 
   return (
     <AnimatePresence>
-      {game.selectedCard && show && (
+      {game.selectedCardValue !== null && show && (
         <m.div
           className={cn(
             "absolute top-0 z-10",
@@ -46,6 +46,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
         >
           <Card
             card={{
+              id: "selected-animation",
               value: undefined,
               isVisible: false,
             }}
@@ -66,7 +67,11 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
             }}
           >
             <Card
-              card={game.selectedCard}
+              card={{
+                id: "selectedCard",
+                value: game.selectedCardValue,
+                isVisible: true,
+              }}
               className="absolute top-0 left-0 w-full h-full"
               size="normal"
               disabled

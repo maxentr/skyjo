@@ -31,6 +31,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     return (
       <Card
         card={{
+          id: "discard",
           value: -98,
           isVisible: false,
         }}
@@ -44,6 +45,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
   }
 
   const card = {
+    id: "discard",
     value: game.lastDiscardCardValue ?? -99,
     isVisible: game.lastDiscardCardValue !== undefined,
   }

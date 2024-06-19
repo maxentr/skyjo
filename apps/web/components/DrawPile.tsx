@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 
 const DRAW_CARD = {
+  id: "draw",
   value: undefined,
   isVisible: false,
 }
