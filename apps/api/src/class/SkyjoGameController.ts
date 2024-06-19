@@ -116,6 +116,8 @@ export default class SkyjoGameController {
 
     game.replaceCard(column, row)
 
+    await this.broadcastGame(socket, game)
+
     await this.finishTurn(socket, game)
   }
 
@@ -131,6 +133,8 @@ export default class SkyjoGameController {
     const { game, player } = this.checkPlayAuthorization(socket, ["turnACard"])
 
     game.turnCard(player, column, row)
+
+    await this.broadcastGame(socket, game)
 
     await this.finishTurn(socket, game)
   }
