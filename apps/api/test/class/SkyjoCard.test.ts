@@ -30,7 +30,7 @@ describe("SkyjoCard", () => {
   it("should return json with value as undefined if the card is not visible", () => {
     const card = new SkyjoCard(0)
 
-    expect(card.toJson()).toEqual({
+    expect(card.toJson()).toMatchObject({
       value: undefined,
       isVisible: false,
     })
@@ -39,7 +39,7 @@ describe("SkyjoCard", () => {
   it("should return json with value if card is visible", () => {
     const card = new SkyjoCard(0, true)
 
-    expect(card.toJson()).toEqual({
+    expect(card.toJson()).toMatchObject({
       value: 0,
       isVisible: true,
     })

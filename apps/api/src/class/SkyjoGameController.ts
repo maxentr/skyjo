@@ -122,7 +122,7 @@ export default class SkyjoGameController {
   async onDiscardCard(socket: SkyjoSocket) {
     const { game } = this.checkPlayAuthorization(socket, ["throwOrReplace"])
 
-    game.discardCard(game.selectedCard!)
+    game.discardCard(game.selectedCardValue!)
 
     await this.broadcastGame(socket, game)
   }

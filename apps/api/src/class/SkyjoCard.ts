@@ -1,6 +1,7 @@
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 interface SkyjoCardInterface {
+  readonly id: string
   readonly value: number
   readonly isVisible: boolean
 
@@ -9,6 +10,7 @@ interface SkyjoCardInterface {
 }
 
 export class SkyjoCard implements SkyjoCardInterface {
+  id = crypto.randomUUID()
   private _value: number
   private _isVisible: boolean = false
 
@@ -21,6 +23,10 @@ export class SkyjoCard implements SkyjoCardInterface {
     return this._value
   }
 
+  set value(value: number) {
+    this._value = value
+  }
+
   get isVisible() {
     return this._isVisible
   }
@@ -31,6 +37,7 @@ export class SkyjoCard implements SkyjoCardInterface {
 
   toJson() {
     return {
+      id: this.id,
       value: this.isVisible ? this.value : undefined,
       isVisible: this.isVisible,
     }

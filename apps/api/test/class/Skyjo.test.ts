@@ -182,12 +182,12 @@ describe("Skyjo", () => {
     it("should draw card", () => {
       skyjo.start()
 
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
 
       skyjo.drawCard()
 
-      expect(skyjo.selectedCard).toBeInstanceOf(SkyjoCard)
+      expect(skyjo.selectedCardValue).not.toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("throwOrReplace")
       expect(skyjo.lastMove).toBe<Move>("pickFromDrawPile")
     })
@@ -200,7 +200,7 @@ describe("Skyjo", () => {
 
       const nbCardsUsedByPlayers = skyjo.players.length * CARDS_PER_PLAYER
 
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
       expect(skyjo["drawPile"]).toHaveLength(0)
       expect(skyjo["discardPile"]).toHaveLength(
@@ -209,7 +209,7 @@ describe("Skyjo", () => {
 
       skyjo.drawCard()
 
-      expect(skyjo.selectedCard).toBeInstanceOf(SkyjoCard)
+      expect(skyjo.selectedCardValue).not.toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("throwOrReplace")
       expect(skyjo.lastMove).toBe<Move>("pickFromDrawPile")
       // 150(total cards) - 2(nb player) * 12(cards per player) - 1(draw pile) - 1(discard pile)
@@ -225,12 +225,12 @@ describe("Skyjo", () => {
       skyjo.start()
       skyjo["discardPile"].push(skyjo["drawPile"].splice(0, 1)[0])
 
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
 
       skyjo.pickFromDiscard()
 
-      expect(skyjo.selectedCard).toBeInstanceOf(SkyjoCard)
+      expect(skyjo.selectedCardValue).not.toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("replaceACard")
       expect(skyjo.lastMove).toBe<Move>("pickFromDiscardPile")
     })
@@ -239,20 +239,20 @@ describe("Skyjo", () => {
       skyjo.start()
       skyjo["discardPile"] = []
 
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
 
       skyjo.pickFromDiscard()
 
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
     })
   })
 
   it("should discard card", () => {
-    skyjo.discardCard(new SkyjoCard(10))
+    skyjo.discardCard(10)
 
-    expect(skyjo.selectedCard).toBeNull()
+    expect(skyjo.selectedCardValue).toBeNull()
     expect(skyjo["discardPile"]).toHaveLength(1)
     expect(skyjo.turnState).toBe<TurnState>("turnACard")
     expect(skyjo.lastMove).toBe<Move>("throw")
@@ -261,18 +261,16 @@ describe("Skyjo", () => {
   it("should replace a card", () => {
     skyjo.start()
 
-    const oldCard = player.cards[0][0]
-    const selectedCard = new SkyjoCard(10, true)
+    const oldCardValue = player.cards[0][0].value
     skyjo.turn = 0
-    skyjo.selectedCard = selectedCard
-
-    expect(player.cards[0][0]).toBe(oldCard)
+    skyjo.selectedCardValue = 10
 
     skyjo.replaceCard(0, 0)
 
-    expect(player.cards[0][0]).toBe(selectedCard)
-    expect(skyjo["discardPile"]).include(oldCard.value)
-    expect(skyjo.selectedCard).toBeNull()
+    expect(player.cards[0][0].isVisible).toBeTruthy()
+    expect(player.cards[0][0].value).toBe(10)
+    expect(skyjo["discardPile"]).include(oldCardValue)
+    expect(skyjo.selectedCardValue).toBeNull()
     expect(player.cards[0][0].isVisible).toBeTruthy()
     expect(skyjo.lastMove).toBe<Move>("replace")
   })
@@ -592,7 +590,7 @@ describe("Skyjo", () => {
     it("should start a new round and wait for players to turn initial cards if there is a card to turn at the beginning of the game", () => {
       skyjo.roundNumber = 1
       skyjo.firstPlayerToFinish = player
-      skyjo.selectedCard = new SkyjoCard(1, true)
+      skyjo.selectedCardValue = 1
       skyjo.lastMove = "pickFromDrawPile"
       player.cards = [
         [
@@ -606,7 +604,7 @@ describe("Skyjo", () => {
 
       expect(skyjo.roundNumber).toBe(2)
       expect(skyjo.firstPlayerToFinish).toBeNull()
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.lastMove).toBe<Move>("turn")
       skyjo.players.forEach((player) => {
         expect(player.cards.flat()).toHaveLength(CARDS_PER_PLAYER)
@@ -622,7 +620,7 @@ describe("Skyjo", () => {
       skyjo.settings.initialTurnedCount = 0
       skyjo.roundNumber = 1
       skyjo.firstPlayerToFinish = player
-      skyjo.selectedCard = new SkyjoCard(1, true)
+      skyjo.selectedCardValue = 1
       skyjo.lastMove = "pickFromDrawPile"
       player.cards = [
         [
@@ -636,7 +634,7 @@ describe("Skyjo", () => {
 
       expect(skyjo.roundNumber).toBe(2)
       expect(skyjo.firstPlayerToFinish).toBeNull()
-      expect(skyjo.selectedCard).toBeNull()
+      expect(skyjo.selectedCardValue).toBeNull()
       expect(skyjo.lastMove).toBe<Move>("turn")
       skyjo.players.forEach((player) => {
         expect(player.cards.flat()).toHaveLength(CARDS_PER_PLAYER)
@@ -697,7 +695,7 @@ describe("Skyjo", () => {
       roundState: "waitingPlayersToTurnInitialCards",
       admin: player.toJson(),
       players: skyjo.players.map((player) => player.toJson()),
-      selectedCard: undefined,
+      selectedCardValue: null,
       lastDiscardCardValue: skyjo["discardPile"][["_discardPile"].length - 1],
       lastMove: "turn",
       turn: 0,

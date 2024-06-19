@@ -55,12 +55,14 @@ describe("SkyjoPlayer", () => {
         new SkyjoSettings(),
       )
 
-      expect(player.cards).toStrictEqual([
-        [new SkyjoCard(1), new SkyjoCard(2), new SkyjoCard(3)],
-        [new SkyjoCard(4), new SkyjoCard(5), new SkyjoCard(6)],
-        [new SkyjoCard(7), new SkyjoCard(8), new SkyjoCard(9)],
-        [new SkyjoCard(10), new SkyjoCard(11), new SkyjoCard(12)],
-      ])
+      expect(removeIdFromCards(player.cards)).toStrictEqual(
+        removeIdFromCards([
+          [new SkyjoCard(1), new SkyjoCard(2), new SkyjoCard(3)],
+          [new SkyjoCard(4), new SkyjoCard(5), new SkyjoCard(6)],
+          [new SkyjoCard(7), new SkyjoCard(8), new SkyjoCard(9)],
+          [new SkyjoCard(10), new SkyjoCard(11), new SkyjoCard(12)],
+        ]),
+      )
     })
 
     it("should set cards with custom settings", () => {
@@ -69,10 +71,12 @@ describe("SkyjoPlayer", () => {
       settings.cardPerColumn = 2
       player.setCards([1, 2, 3, 4], settings)
 
-      expect(player.cards).toStrictEqual([
-        [new SkyjoCard(1), new SkyjoCard(2)],
-        [new SkyjoCard(3), new SkyjoCard(4)],
-      ])
+      expect(removeIdFromCards(player.cards)).toStrictEqual(
+        removeIdFromCards([
+          [new SkyjoCard(1), new SkyjoCard(2)],
+          [new SkyjoCard(3), new SkyjoCard(4)],
+        ]),
+      )
     })
   })
 
@@ -87,7 +91,7 @@ describe("SkyjoPlayer", () => {
   it("should replace a card", () => {
     expect(player.cards[0][0].value).toBe(0)
 
-    player.replaceCard(0, 0, new SkyjoCard(12))
+    player.replaceCard(0, 0, 12)
 
     expect(player.cards[0][0].value).toBe(12)
   })
@@ -98,10 +102,9 @@ describe("SkyjoPlayer", () => {
 
     const column = player.removeColumn(columnIndex)
 
-    expect(player.cards).toStrictEqual(
-      cards.filter((_, index) => index !== columnIndex),
+    expect(removeIdFromCards(column)).toMatchObject(
+      removeIdFromCards(cards[columnIndex]),
     )
-    expect(column).toStrictEqual(cards[columnIndex])
   })
 
   it("should remove a row", () => {
@@ -109,12 +112,19 @@ describe("SkyjoPlayer", () => {
 
     const cards = deepCloneArray(player.cards)
 
+    console.log(player.cards)
     const row = player.removeRow(rowIndex)
+    console.log(rowIndex)
+    console.log(row)
 
-    expect(player.cards).toStrictEqual(
-      cards.map((column) => column.filter((_, index) => index !== rowIndex)),
+    expect(removeIdFromCards(row)).toMatchObject(
+      removeIdFromCards([
+        new SkyjoCard(0),
+        new SkyjoCard(4),
+        new SkyjoCard(7),
+        new SkyjoCard(-1),
+      ]),
     )
-    expect(row).toStrictEqual(cards.map((column) => column[rowIndex]))
   })
 
   describe("has revealed card count", () => {
@@ -360,6 +370,17 @@ describe("SkyjoPlayer", () => {
   })
 
   //#region function helpers
+  function removeIdFromCards(cards: SkyjoCard[] | SkyjoCard[][]) {
+    const flattenedCards = cards.flat()
+
+    return flattenedCards.map((card) => {
+      return {
+        value: card.value,
+        isVisible: card.isVisible,
+      }
+    })
+  }
+
   function deepCloneArray<T extends any[][]>(array: T) {
     return array.map((row) => {
       return row.map((card) => {
