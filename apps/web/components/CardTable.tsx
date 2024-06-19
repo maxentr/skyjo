@@ -6,7 +6,7 @@ import {
   isCurrentUserTurn,
 } from "@/lib/skyjo"
 import { cn } from "@/lib/utils"
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
@@ -49,11 +49,16 @@ const CardTable = ({
       setNumberOfRowsForClass(game.settings.cardPerRow)
     setTimeout(() => {
       setNumberOfRowsForClass(numberOfRows)
-    }, 2000)
+    }, 1900)
   }, [numberOfRows, game.settings.cardPerRow])
 
   return (
-    <div
+    <m.div
+      key={numberOfRowsForClass}
+      initial={{ opacity: 0.9 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0.9 }}
+      transition={{ duration: 0.3 }}
       className={cn(
         "inline-grid grid-flow-col duration-100 gap-2 w-fit",
         `grid-rows-${numberOfRowsForClass}`,
@@ -82,7 +87,7 @@ const CardTable = ({
           })
         })}
       </AnimatePresence>
-    </div>
+    </m.div>
   )
 }
 
