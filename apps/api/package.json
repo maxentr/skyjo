@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "prod": "pnpm dlx tsx dist/index.js",
+    "prod": "pnpm dlx tsx dist/src/index.js",
     "biome:check": "pnpm biome check --apply .",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
