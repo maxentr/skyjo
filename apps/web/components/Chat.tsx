@@ -11,8 +11,9 @@ import { useEffect, useState } from "react"
 
 type ChatProps = {
   className?: ClassValue
+  disabled?: boolean
 }
-const Chat = ({ className }: ChatProps) => {
+const Chat = ({ className, disabled = false }: ChatProps) => {
   const { chat } = useSkyjo()
   const t = useTranslations("components.Chat")
 
@@ -75,6 +76,7 @@ const Chat = ({ className }: ChatProps) => {
         <button
           className="text-center text-black w-full px-4 py-2 transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4"
           onClick={toggleOpening}
+          disabled={disabled}
         >
           {t("title")}
         </button>

@@ -117,7 +117,7 @@ const GamePage = () => {
       <EndRoundDialog />
       <EndGameDialog />
       <GameStoppedDialog />
-      <Chat />
+      <Chat disabled={game.status === "lobby"} />
     </div>
   )
 }
