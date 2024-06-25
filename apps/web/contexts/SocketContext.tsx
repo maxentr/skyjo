@@ -13,10 +13,6 @@ import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { Socket, io } from "socket.io-client"
 
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
-  transports: ["websocket"],
-  reconnectionDelay: 1000,
-  reconnectionDelayMax: 20000,
-  reconnectionAttempts: 3,
   autoConnect: true,
 })
 
