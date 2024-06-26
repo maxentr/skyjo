@@ -35,6 +35,7 @@
     "react-use": "^17.5.0",
     "shared": "workspace:*",
     "socket.io-client": "^4.7.4",
+    "socket.io-msgpack-parser": "^3.0.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

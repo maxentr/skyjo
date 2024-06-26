@@ -19,6 +19,7 @@
     "nodemailer": "^6.9.13",
     "shared": "workspace:*",
     "socket.io": "^4.7.4",
+    "socket.io-msgpack-parser": "^3.0.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
