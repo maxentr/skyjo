@@ -40,6 +40,9 @@ const server = serve({
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(
   server as HttpServer,
   {
+    cors: {
+      origin: process.env.ORIGINS as string,
+    },
     connectionStateRecovery: {},
   },
 )
