@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority"
 
 const classValue = cva(
-  "h-8 w-8 flex items-center justify-center rounded-md border-2 border-black cursor-pointer",
+  "h-8 w-8 flex items-center justify-center rounded-md border-2 border-black cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
   {
     variants: {
       selected: {
@@ -46,6 +46,12 @@ const RadioNumber = ({
           })}
           title={title?.replace("$number", index.toString())}
           key={index}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onChange(index)
+            }
+          }}
         >
           {index}
           <input

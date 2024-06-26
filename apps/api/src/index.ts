@@ -8,6 +8,7 @@ import { createTransport } from "nodemailer"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { feedbackSchema } from "shared/validations/feedback"
 import { Server } from "socket.io"
+import customParser from "socket.io-msgpack-parser"
 import skyjoRouter from "./socketRouter"
 
 config()
@@ -37,9 +38,14 @@ const server = serve({
   fetch: app.fetch,
   port,
 })
+
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(
   server as HttpServer,
   {
+    parser: customParser,
+    cors: {
+      origin: process.env.ORIGINS as string,
+    },
     connectionStateRecovery: {},
   },
 )

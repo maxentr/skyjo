@@ -172,8 +172,8 @@ const Lobby = () => {
                         step={1}
                         min={1}
                         max={maxInitialTurnedCount}
-                        value={[settings.initialTurnedCount]}
-                        onValueChange={(value) =>
+                        defaultValue={[settings.initialTurnedCount]}
+                        onValueCommit={(value) =>
                           changeSettings("initialTurnedCount", +value)
                         }
                         title={t("settings.initial-turned-count.title", {
@@ -207,8 +207,8 @@ const Lobby = () => {
                         step={1}
                         min={1}
                         max={10}
-                        value={[settings.multiplierForFirstPlayer]}
-                        onValueChange={(value) =>
+                        defaultValue={[settings.multiplierForFirstPlayer]}
+                        onValueCommit={(value) =>
                           changeSettings("multiplierForFirstPlayer", +value)
                         }
                         title={t("settings.multiplier-for-first-player.title", {
@@ -244,8 +244,8 @@ const Lobby = () => {
                         name={"score-to-end-game"}
                         step={10}
                         max={1000}
-                        value={[settings.scoreToEndGame]}
-                        onValueChange={(value) =>
+                        defaultValue={[settings.scoreToEndGame]}
+                        onValueCommit={(value) =>
                           changeSettings("scoreToEndGame", +value)
                         }
                         title={t("settings.score-to-end-game.title", {

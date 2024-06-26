@@ -19,6 +19,7 @@
     "nodemailer": "^6.9.13",
     "shared": "workspace:*",
     "socket.io": "^4.7.4",
+    "socket.io-msgpack-parser": "^3.0.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -31,5 +32,9 @@
     "typescript": "^5.3.3",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4"
   }
 }

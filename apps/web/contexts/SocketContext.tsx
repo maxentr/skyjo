@@ -11,13 +11,11 @@ import {
 } from "react"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { Socket, io } from "socket.io-client"
+import customParser from "socket.io-msgpack-parser"
 
 const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
-  transports: ["websocket"],
-  reconnectionDelay: 1000,
-  reconnectionDelayMax: 20000,
-  reconnectionAttempts: 3,
   autoConnect: true,
+  parser: customParser,
 })
 
 export type SkyjoSocket = Socket<ServerToClientEvents, ClientToServerEvents>
