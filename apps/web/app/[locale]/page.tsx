@@ -3,6 +3,7 @@ import FeedbackButton from "@/components/FeedbackButton"
 import Footer from "@/components/Footer"
 import LanguageSettings from "@/components/LanguageSettings"
 import MovingArrow from "@/components/MovingArrow"
+import RegionsSelect from "@/components/RegionsSelect"
 import RulesDialog from "@/components/RulesDialog"
 import {
   Accordion,
@@ -14,10 +15,12 @@ import { Button } from "@/components/ui/button"
 import { Link } from "@/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
+import { ApiRegionsTag } from "shared/constants"
 
 type IndexServerPageProps = {
   searchParams: {
     gameId?: string
+    region?: ApiRegionsTag
   }
   params: {
     locale: string
@@ -29,7 +32,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
   return (
     <>
       <div className="bg-body flex flex-col">
-        <div className="h-dvh !p-6 bg-body flex flex-col">
+        <div className="relative h-dvh !p-6 bg-body flex flex-col">
           <div className="w-full grid grid-cols-3 grid-flow-row h-1/6">
             <div></div>
             <div></div>
@@ -57,12 +60,15 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
                     alt="Skyjo"
                   />
                 </h1>
-                <IndexPage gameId={searchParams.gameId} />
+                <IndexPage searchParams={searchParams} />
               </div>
             </div>
           </div>
           <div className="w-full flex flex-row items-end justify-center h-1/6">
             <MovingArrow href="#explanation" />
+          </div>
+          <div className="absolute bottom-6 left-6 z-10 flex items-center justify-end">
+            <RegionsSelect />
           </div>
         </div>
         <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">

@@ -18,3 +18,25 @@ export const ERROR = {
   INVALID_TURN_STATE: "invalid-turn-state",
   TOO_FEW_PLAYERS: "too-few-players",
 } as const
+
+export const API_REGIONS = [
+  {
+    name: "Europe",
+    tag: "FR",
+    url: "https://skyjo-online-eu.fly.dev",
+  },
+  {
+    name: "America",
+    tag: "US",
+    url: "https://skyjo-online-us.fly.dev",
+  },
+] as const
+
+export type ApiRegions = {
+  name: string
+  tag: string
+  url: string
+  ms?: number
+}
+
+export type ApiRegionsTag = (typeof API_REGIONS)[number]["tag"]

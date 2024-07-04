@@ -1,10 +1,9 @@
-# fly.toml app configuration file generated for skyjo-online-api on 2024-04-08T14:06:50+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'skyjo-online-api'
-primary_region = 'cdg'
+app = 'skyjo-online-us'
+primary_region = 'den'
 
 [build]
 
