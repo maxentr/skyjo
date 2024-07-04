@@ -56,11 +56,11 @@ const SkyjoContextProvider = ({
   const [game, setGame] = useState<SkyjoToJson>()
   const [chat, setChat] = useState<ChatMessage[]>([])
 
-  const player = getCurrentUser(game?.players, socket.id ?? "")
-  const opponents = getOpponents(game?.players, socket.id ?? "")
+  const player = getCurrentUser(game?.players, socket?.id ?? "")
+  const opponents = getOpponents(game?.players, socket?.id ?? "")
 
   useEffect(() => {
-    if (!gameId) return
+    if (!gameId || !socket) return
 
     initGameListeners()
 
@@ -100,14 +100,14 @@ const SkyjoContextProvider = ({
   }
 
   const initGameListeners = () => {
-    socket.on("game", onGameUpdate)
-    socket.on("message", onMessageReceived)
-    socket.on("leave:success", onLeave)
+    socket!.on("game", onGameUpdate)
+    socket!.on("message", onMessageReceived)
+    socket!.on("leave:success", onLeave)
   }
   const destroyGameListeners = () => {
-    socket.off("game", onGameUpdate)
-    socket.off("message", onMessageReceived)
-    socket.off("leave:success", onLeave)
+    socket!.off("game", onGameUpdate)
+    socket!.off("message", onMessageReceived)
+    socket!.off("leave:success", onLeave)
   }
   //#endregion
 
@@ -115,14 +115,14 @@ const SkyjoContextProvider = ({
   const sendMessage = (message: string) => {
     if (!player) return
 
-    socket.send({
+    socket!.send({
       message,
       username: player.name,
     })
   }
 
   const changeSettings = (settings: ChangeSettings) => {
-    if (socket.id !== game?.admin.socketId) return
+    if (socket?.id !== game?.admin.socketId) return
 
     if (
       settings.cardPerColumn * settings.cardPerRow <=
@@ -136,60 +136,60 @@ const SkyjoContextProvider = ({
       settings.cardPerColumn = 2
     }
 
-    socket.emit("settings", settings)
+    socket!.emit("settings", settings)
   }
 
   const resetSettings = () => {
-    if (socket.id !== game?.admin.socketId) return
+    if (socket?.id !== game?.admin.socketId) return
 
-    socket.emit("settings", {
+    socket!.emit("settings", {
       private: game?.settings.private,
     })
   }
 
   const startGame = () => {
-    if (socket.id !== game?.admin.socketId) return
+    if (socket?.id !== game?.admin.socketId) return
 
-    socket.emit("start")
+    socket!.emit("start")
   }
 
   const playRevealCard = (column: number, row: number) => {
-    socket.emit("play:reveal-card", {
+    socket!.emit("play:reveal-card", {
       column: column,
       row: row,
     })
   }
 
   const pickCardFromPile = (pile: PlayPickCard["pile"]) => {
-    socket.emit("play:pick-card", {
+    socket!.emit("play:pick-card", {
       pile,
     })
   }
 
   const replaceCard = (column: number, row: number) => {
-    socket.emit("play:replace-card", {
+    socket!.emit("play:replace-card", {
       column: column,
       row: row,
     })
   }
 
   const discardSelectedCard = () => {
-    socket.emit("play:discard-selected-card")
+    socket!.emit("play:discard-selected-card")
   }
 
   const turnCard = (column: number, row: number) => {
-    socket.emit("play:turn-card", {
+    socket!.emit("play:turn-card", {
       column: column,
       row: row,
     })
   }
 
   const replay = () => {
-    socket.emit("replay")
+    socket!.emit("replay")
   }
 
   const leave = () => {
-    socket.emit("leave")
+    socket!.emit("leave")
   }
 
   const actions = {

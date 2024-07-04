@@ -34,6 +34,8 @@ const GameLobbyButtons = ({
   const [loading, setLoading] = useState(false)
 
   const handleButtons = async (type: GameLobbyButtonAction) => {
+    if (socket === null) return
+
     setLoading(true)
     const player = await beforeButtonAction(type)
     if (!player) return
@@ -78,7 +80,8 @@ const GameLobbyButtons = ({
           onClick={() => handleButtons("join")}
           color="secondary"
           className="w-full mb-4"
-          disabled={!username || loading}
+          disabled={!username || socket === null}
+          loading={loading}
         >
           {t("join-game-button")}
         </Button>
@@ -88,7 +91,7 @@ const GameLobbyButtons = ({
         onClick={() => handleButtons("find")}
         color="secondary"
         className="w-full"
-        disabled={!username}
+        disabled={!username || socket === null}
         loading={loading}
       >
         {t("find-game-button")}
@@ -96,7 +99,7 @@ const GameLobbyButtons = ({
       <Button
         onClick={() => handleButtons("create-private")}
         className="w-full"
-        disabled={!username}
+        disabled={!username || socket === null}
         loading={loading}
       >
         {t("create-private-game-button")}

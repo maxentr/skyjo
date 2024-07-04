@@ -8,7 +8,7 @@ import { Fredoka } from "next/font/google"
 const fredoka = Fredoka({
   subsets: ["latin"],
   weight: "variable",
-  display: "swap",
+  // display: "swap",
 })
 
 export type LocaleLayoutProps = Readonly<{
