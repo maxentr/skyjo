@@ -5,13 +5,23 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: Deploy app
+  deploy-eu:
+    name: Deploy EU region 
     runs-on: ubuntu-latest
-    concurrency: deploy-group
+    concurrency: deploy-eu-group
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only --config ./apps/api/fly.toml --dockerfile ./apps/api/Dockerfile
+      - run: flyctl deploy --remote-only --config ./apps/api/fly/fly.eu.toml --dockerfile ./apps/api/Dockerfile
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_EU_API_TOKEN }}
+  deploy-us:
+    name: Deploy US region 
+    runs-on: ubuntu-latest
+    concurrency: deploy-us-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only --config ./apps/api/fly/fly.us.toml --dockerfile ./apps/api/Dockerfile
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_US_API_TOKEN }}
