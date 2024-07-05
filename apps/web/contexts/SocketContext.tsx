@@ -1,7 +1,7 @@
 "use client"
 
 import { useToast } from "@/components/ui/use-toast"
-import { getRegionWithLessPing } from "@/lib/utils"
+import { getCurrentRegion, getRegionWithLessPing } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -11,7 +11,7 @@ import {
   useMemo,
   useState,
 } from "react"
-import { API_REGIONS, ApiRegionsTag } from "shared/constants"
+import { ApiRegionsTag } from "shared/constants"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { Socket, io } from "socket.io-client"
 import customParser from "socket.io-msgpack-parser"
@@ -54,7 +54,7 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   }, [socket])
 
   const changeRegion = (regionTag: ApiRegionsTag, manual = false) => {
-    const newUrl = API_REGIONS.find((server) => server.tag === regionTag)?.url
+    const newUrl = getCurrentRegion(regionTag)?.url
     if (newUrl) {
       setSocket(initSocket(newUrl))
       setRegion(regionTag)

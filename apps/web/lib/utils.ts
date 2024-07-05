@@ -50,7 +50,9 @@ export const getServerResponseTime = async (url: string) => {
 }
 
 export const getRegionsResponseTime = async () => {
-  const regions = API_REGIONS.map(async (region) => {
+  const regions = API_REGIONS[
+    process.env.NEXT_PUBLIC_ENVIRONMENT as keyof typeof API_REGIONS
+  ].map(async (region) => {
     const ms = await getServerResponseTime(region.url)
     return {
       ...region,
@@ -68,4 +70,12 @@ export const getRegionWithLessPing = async () => {
     if (a.ms < b.ms) return a
     return b
   }, servers[0])
+}
+
+export const getCurrentRegion = (region: ApiRegionsTag | null) => {
+  const currentRegion = API_REGIONS[
+    process.env.NEXT_PUBLIC_ENVIRONMENT as keyof typeof API_REGIONS
+  ].find((server) => server.tag === region)
+
+  return currentRegion
 }
