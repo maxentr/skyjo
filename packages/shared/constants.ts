@@ -19,7 +19,15 @@ export const ERROR = {
   TOO_FEW_PLAYERS: "too-few-players",
 } as const
 
-export const API_REGIONS = [
+export const LOCAL_REGIONS = [
+  {
+    name: "Local",
+    tag: "LOCAL",
+    url: "http://localhost:3001",
+  },
+] as const
+
+const PROD_REGIONS = [
   {
     name: "Europe",
     tag: "FR",
@@ -32,6 +40,11 @@ export const API_REGIONS = [
   },
 ] as const
 
+export const API_REGIONS = {
+  LOCAL: LOCAL_REGIONS,
+  PROD: PROD_REGIONS,
+}
+
 export type ApiRegions = {
   name: string
   tag: string
@@ -39,4 +52,5 @@ export type ApiRegions = {
   ms?: number
 }
 
-export type ApiRegionsTag = (typeof API_REGIONS)[number]["tag"]
+export type ApiRegionsTag =
+  (typeof API_REGIONS)[keyof typeof API_REGIONS][number]["tag"]
