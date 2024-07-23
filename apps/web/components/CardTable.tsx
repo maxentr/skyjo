@@ -81,7 +81,9 @@ const CardTable = ({
                     : ""
                 }
                 disabled={cardDisabled || !canBeSelected}
-                exitAnimation={game.roundState === "playing"}
+                exitAnimation={
+                  game.roundState === "playing" || game.roundState === "lastLap"
+                }
               />
             )
           })
