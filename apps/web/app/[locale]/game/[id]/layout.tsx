@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react"
 
 const GameLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div className="relative h-dvh !p-6 bg-body overflow-hidden">
+    <div className="relative h-dvh !p-4 !md:p-6 bg-body overflow-hidden">
       {children}
     </div>
   )

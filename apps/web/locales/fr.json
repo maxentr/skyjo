@@ -191,6 +191,11 @@
     "OpponentBoard": {
       "connection-lost": "Connexion perdue"
     },
+    "OpponentsMobileView": {
+      "opponents-list": {
+        "title": "Adversaires :"
+      }
+    },
     "PlayerBoard": {
       "you": "Vous"
     },
