@@ -32,21 +32,21 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
   return (
     <>
       <div className="bg-body flex flex-col">
-        <div className="relative h-dvh !p-6 bg-body flex flex-col">
-          <div className="w-full grid grid-cols-3 grid-flow-row h-1/6">
+        <div className="relative h-dvh !p-6 bg-body flex flex-col gap-4 md:gap-0">
+          <div className="w-full grid grid-cols-3 grid-flow-row min-h-1/6 h-fit">
             <div></div>
             <div></div>
             <div className="flex flex-row justify-end">
               <div className="w-10 flex flex-col gap-4 z-10">
                 <LanguageSettings locale={params.locale} />
                 <RulesDialog />
-                <FeedbackButton className="mt-4" />
+                <FeedbackButton className="md:mt-4" />
               </div>
             </div>
           </div>
           <div className="w-full grid grid-cols-1 grid-flow-row h-4/6">
             <div className="h-full flex items-center justify-center">
-              <div className="bg-container border-2 border-black px-16 py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
+              <div className="bg-container border-2 border-black px-12 md:px-16 py-8 md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
                 <h1 className="mb-5">
                   <Image
                     src="/svg/logo.svg"
@@ -116,7 +116,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
               <AccordionContent>{t("faq.how-to-win.content")}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-start">
                 {t("faq.play-classic-with-action.title")}
               </AccordionTrigger>
               <AccordionContent>

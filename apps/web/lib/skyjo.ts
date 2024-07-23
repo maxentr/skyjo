@@ -91,3 +91,23 @@ export const getWinner = (game: SkyjoToJson) => {
     prev.score < current.score ? prev : current,
   )
 }
+
+export const getCurrentWhoHasToPlay = (game: SkyjoToJson) => {
+  const players = getConnectedPlayers(game.players)
+
+  return players.find(
+    (player) => player.socketId === game.players[game.turn].socketId,
+  )
+}
+
+export const getNextPlayer = (game: SkyjoToJson) => {
+  const players = getConnectedPlayers(game.players)
+
+  let nextTurn = (game.turn + 1) % players.length
+
+  while (players[nextTurn].connectionStatus !== "connected") {
+    nextTurn = (nextTurn + 1) % players.length
+  }
+
+  return players[nextTurn]
+}
