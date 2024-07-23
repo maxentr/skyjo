@@ -8,7 +8,7 @@ jobs:
   deploy-eu:
     name: Deploy EU region 
     runs-on: ubuntu-latest
-    concurrency: deploy-eu-group
+    concurrency: deploy-group
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
@@ -18,7 +18,7 @@ jobs:
   deploy-us:
     name: Deploy US region 
     runs-on: ubuntu-latest
-    concurrency: deploy-us-group
+    concurrency: deploy-group
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
