@@ -31,7 +31,7 @@ const EndRoundDialog = () => {
             {t("description")}
           </DialogDescription>
         </DialogHeader>
-        <ScoreTable players={game.players} />
+        <ScoreTable players={game.players} scrollToEnd />
       </DialogContent>
     </Dialog>
   )
