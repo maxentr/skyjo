@@ -190,6 +190,11 @@
     "OpponentBoard": {
       "connection-lost": "Connection lost"
     },
+    "OpponentsMobileView": {
+      "opponents-list": {
+        "title": "Opponents:"
+      }
+    },
     "PlayerBoard": {
       "you": "You"
     },

@@ -6,6 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { ClassValue } from "clsx"
 import { AlertTriangleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
@@ -14,9 +15,14 @@ import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 type OpponentBoardProps = {
   opponent: SkyjoPlayerToJson
   isPlayerTurn: boolean
+  className?: ClassValue
 }
 
-const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
+const OpponentBoard = ({
+  opponent,
+  isPlayerTurn,
+  className,
+}: OpponentBoardProps) => {
   const ta = useTranslations("components.Avatar")
   const to = useTranslations("components.OpponentBoard")
 
@@ -24,6 +30,7 @@ const OpponentBoard = ({ opponent, isPlayerTurn }: OpponentBoardProps) => {
     <div
       className={cn(
         "flex flex-col items-center justify-start duration-300 ease-in-out w-full h-full",
+        className,
       )}
     >
       <Image
