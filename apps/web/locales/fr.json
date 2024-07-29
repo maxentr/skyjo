@@ -124,7 +124,7 @@
       "release-notes": "Notes de version"
     },
     "GameInfo": {
-      "last-turn": "Last turn!"
+      "last-turn": "Dernier tour !"
     },
     "GameLobbyButtons": {
       "name-input-placeholder": "Nom",

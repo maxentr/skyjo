@@ -124,7 +124,7 @@
       "release-notes": "Release notes"
     },
     "GameInfo": {
-      "last-turn": "Dernier tour !"
+      "last-turn": "Last turn!"
     },
     "GameLobbyButtons": {
       "join-game-button": "Join the game",
