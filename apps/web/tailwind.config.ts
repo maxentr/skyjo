@@ -27,6 +27,7 @@ const config = {
     },
     extend: {
       screens: {
+        sdh: { raw: "(min-height: 480px)" },
         mdh: { raw: "(min-height: 690px)" },
         lgh: { raw: "(min-height: 800px)" },
       },

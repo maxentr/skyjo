@@ -16,11 +16,12 @@ const containerVariants = cva("flex flex-col items-center", {
   },
 })
 
+// Ajouter une sdh pour le mobile pour que la taille soit plus adaptée
 const imageVariants = cva("select-none", {
   variants: {
     size: {
       small: " size-8 sm:size-10",
-      normal: " size-16 sm:size-[6.25rem]",
+      normal: " size-12 sdh:sm:size-16 mdh:md:size-[6.25rem]",
     },
   },
   defaultVariants: {
