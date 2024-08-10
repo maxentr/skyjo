@@ -170,8 +170,8 @@
           "title": "$number colonnes"
         },
         "nb-rows": {
-          "label": "Number of rows",
-          "title": "$number rows"
+          "label": "Nombre de lignes",
+          "title": "$number lignes"
         },
         "initial-turned-count": {
           "label": "Nombre de cartes retournées au début de la partie",
