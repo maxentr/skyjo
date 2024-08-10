@@ -4,6 +4,7 @@ import SkyjoGameController from "@/class/SkyjoGameController"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { GameService } from "@/service/game.service"
+import { PlayerService } from "@/service/player.service"
 import { SkyjoSocket } from "@/types/skyjoSocket"
 import {
   AVATARS,
@@ -24,37 +25,22 @@ import { LastGame } from "shared/validations/reconnect"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "../constants"
 
-describe("Skyjo", () => {
-  const instance = SkyjoGameController.getInstance()
-  let socket: SkyjoSocket
+vi.mock("database/provider", async (importActual) => {
+  return {
+    db: vi.fn(),
+  }
+})
 
+describe("Skyjo", () => {
+  let instance: SkyjoGameController
+  let socket: SkyjoSocket
   beforeEach(() => {
+    // mock SkyjoGameController constructor
+    instance = SkyjoGameController.getInstance(true)
+    instance["playerService"] = mockPlayerService()
+    instance["gameService"] = mockGameService()
     instance["games"] = []
-    instance["playerService"] = {
-      createPlayer: vi.fn(),
-      updatePlayer: vi.fn(),
-      updateSocketId: vi.fn(),
-      removePlayer: vi.fn(),
-      canReconnect: vi.fn(),
-      updateDisconnectionDate: vi.fn(),
-      reconnectPlayer: vi.fn(),
-      getPlayerBySocketIdsByGameId: vi.fn(),
-    }
-    instance["gameService"] = {
-      playerService: instance["playerService"],
-      createGame: vi.fn(),
-      updateGame: vi.fn(),
-      updateSettings: vi.fn(),
-      updateAdmin: vi.fn(),
-      getGamesByRegion: vi.fn(),
-      getGameById: vi.fn(),
-      getGameByCode: vi.fn(),
-      getPublicGameWithFreePlace: vi.fn(),
-      retrieveGameByCode: vi.fn(),
-      removeGame: vi.fn(),
-      isPlayerInGame: vi.fn(),
-      formatSkyjo: vi.fn(),
-    } as any as GameService
+
     socket = {
       emit: vi.fn(),
       on: vi.fn(),
@@ -2116,3 +2102,34 @@ describe("Skyjo", () => {
     })
   })
 })
+
+const mockPlayerService = () => {
+  return {
+    createPlayer: vi.fn(),
+    updatePlayer: vi.fn(),
+    updateSocketId: vi.fn(),
+    removePlayer: vi.fn(),
+    canReconnect: vi.fn(),
+    updateDisconnectionDate: vi.fn(),
+    reconnectPlayer: vi.fn(),
+    getPlayerBySocketIdsByGameId: vi.fn(),
+  } satisfies PlayerService
+}
+
+const mockGameService = () => {
+  return {
+    playerService: mockPlayerService(),
+    createGame: vi.fn(),
+    updateGame: vi.fn(),
+    updateSettings: vi.fn(),
+    updateAdmin: vi.fn(),
+    getGamesByRegion: vi.fn(),
+    getGameById: vi.fn(),
+    getGameByCode: vi.fn(),
+    getPublicGameWithFreePlace: vi.fn(),
+    isPlayerInGame: vi.fn(),
+    retrieveGameByCode: vi.fn(),
+    removeGame: vi.fn(),
+    removeInactiveGames: vi.fn(),
+  } satisfies Omit<GameService, "formatSkyjo"> as any as GameService
+}

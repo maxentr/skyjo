@@ -34,16 +34,11 @@ export default class SkyjoGameController {
 
   private games: Skyjo[] = []
 
-  constructor() {
-    this.gameService.removeInactiveGames().then(() => {
-      console.log("Inactive games removed")
-      this.retrieveGames()
-    })
-  }
-
-  static getInstance(): SkyjoGameController {
+  static getInstance(test: boolean = false): SkyjoGameController {
     if (!SkyjoGameController.instance) {
       SkyjoGameController.instance = new SkyjoGameController()
+
+      if (!test) SkyjoGameController.instance.beforeStart()
     }
 
     return SkyjoGameController.instance
@@ -326,11 +321,14 @@ export default class SkyjoGameController {
   //#endregion
 
   //#region private methods
+  async beforeStart() {
+    console.log("Remove inactive games")
+    await this.gameService.removeInactiveGames()
 
-  private async retrieveGames() {
-    console.log("retrieve game from database")
+    console.log("Retrieve games from database")
     this.games = await this.gameService.getGamesByRegion()
   }
+
   private async createGame(
     socket: SkyjoSocket,
     playerToCreate: CreatePlayer,
@@ -534,5 +532,6 @@ export default class SkyjoGameController {
 
     game.adminId = player.id
   }
+
   //#endregion
 }
