@@ -173,6 +173,7 @@ const Lobby = () => {
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
                       <Slider
+                        key={settings.initialTurnedCount}
                         name={"initial-turned-count"}
                         step={1}
                         min={1}
@@ -208,6 +209,7 @@ const Lobby = () => {
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
                       <Slider
+                        key={settings.multiplierForFirstPlayer}
                         name={"multiplier-for-first-player"}
                         step={1}
                         min={1}
@@ -246,6 +248,7 @@ const Lobby = () => {
                     </Label>
                     <div className="flex flex-row gap-2 items-center">
                       <Slider
+                        key={settings.scoreToEndGame}
                         name={"score-to-end-game"}
                         step={10}
                         max={1000}
