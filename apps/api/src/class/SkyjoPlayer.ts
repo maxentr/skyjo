@@ -1,16 +1,83 @@
+import { DbPlayer } from "database/schema"
+import {
+  AVATARS,
+  Avatar,
+  CONNECTION_STATUS,
+  ConnectionStatus,
+} from "shared/constants"
 import { SkyjoPlayerScores, SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
-import { Player, PlayerInterface } from "./Player"
+import { CreatePlayer } from "shared/validations/player"
 import { SkyjoCard } from "./SkyjoCard"
 import { SkyjoSettings } from "./SkyjoSettings"
 
-interface SkyjoPlayerInterface extends PlayerInterface {
+interface SkyjoPlayerInterface {
   cards: SkyjoCard[][]
   scores: SkyjoPlayerScores
+  readonly name: string
+  readonly socketId: string
+  readonly avatar: Avatar
+  connectionStatus: ConnectionStatus
+  score: number
+  wantsReplay: boolean
+
+  toggleReplay(): void
+  setCards(cardsValue: number[], cardSettings: SkyjoSettings): void
+  turnCard(column: number, row: number): void
+  replaceCard(column: number, row: number, value: number): void
+  hasRevealedCardCount(count: number): boolean
+  checkColumnsAndDiscard(): SkyjoCard[]
+  checkRowsAndDiscard(): SkyjoCard[]
+  currentScoreArray(): number[]
+  turnAllCards(): void
+  recalculateScore(): void
+  finalRoundScore(): void
   toJson(): SkyjoPlayerToJson
 }
-export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
+export class SkyjoPlayer implements SkyjoPlayerInterface {
+  id: string = crypto.randomUUID()
+  name: string
+  socketId: string
+  avatar: Avatar = AVATARS.BEE
+  connectionStatus: ConnectionStatus = CONNECTION_STATUS.CONNECTED
   cards: SkyjoCard[][] = []
+  score: number = 0
   scores: SkyjoPlayerScores = []
+  wantsReplay: boolean = false
+  disconnectionTimeout: NodeJS.Timeout | null = null
+
+  constructor(
+    playerToCreate: CreatePlayer = { username: "", avatar: AVATARS.BEE },
+    socketId: string = "",
+  ) {
+    this.name = playerToCreate.username
+    this.socketId = socketId
+    this.avatar = playerToCreate.avatar
+  }
+
+  populate(player: DbPlayer) {
+    this.id = player.id
+    this.name = player.name
+    this.avatar = player.avatar
+    this.socketId = player.socketId
+    this.connectionStatus = player.connectionStatus
+    this.score = player.score
+    this.scores = player.scores
+    this.wantsReplay = player.wantsReplay
+
+    if (player.cards.length > 0) {
+      this.cards = player.cards.map((column) =>
+        column.map(
+          (card) => new SkyjoCard(card.value!, card.isVisible, card.id),
+        ),
+      )
+    }
+
+    return this
+  }
+
+  toggleReplay() {
+    this.wantsReplay = !this.wantsReplay
+  }
 
   setCards(cardsValue: number[], cardSettings: SkyjoSettings) {
     this.cards = []
@@ -33,16 +100,6 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
 
     card.turnVisible()
     card.value = value
-  }
-
-  removeColumn(column: number) {
-    const deletedColumn = this.cards.splice(column, 1)
-    return deletedColumn[0]
-  }
-
-  removeRow(row: number) {
-    const deletedRow = this.cards.map((column) => column.splice(row, 1))
-    return deletedRow.flat()
   }
 
   hasRevealedCardCount(count: number) {
@@ -102,10 +159,6 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     return currentScore
   }
 
-  currentScore() {
-    return this.currentScoreArray().reduce((a, b) => a + b, 0)
-  }
-
   turnAllCards() {
     this.cards.forEach((column) => {
       column.forEach((card) => {
@@ -123,7 +176,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
   finalRoundScore() {
     let finalScore = 0
 
-    if (this.connectionStatus === "disconnected") {
+    if (this.connectionStatus === CONNECTION_STATUS.DISCONNECTED) {
       this.scores.push("-")
       return
     }
@@ -141,7 +194,7 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
 
   reset() {
     this.cards = []
-    this.wantReplay = false
+    this.wantsReplay = false
     this.scores = []
     this.score = 0
   }
@@ -150,14 +203,35 @@ export class SkyjoPlayer extends Player implements SkyjoPlayerInterface {
     this.cards = []
   }
 
-  override toJson() {
-    const player = {
-      ...super.toJson(),
+  toJson(adminId?: string) {
+    return {
+      name: this.name,
+      socketId: this.socketId,
+      avatar: this.avatar,
+      score: this.score,
+      wantsReplay: this.wantsReplay,
+      connectionStatus: this.connectionStatus,
       scores: this.scores,
       currentScore: this.currentScore(),
+      isAdmin: this.id === adminId,
       cards: this.cards.map((column) => column.map((card) => card.toJson())),
-    }
-
-    return player
+    } satisfies SkyjoPlayerToJson
   }
+
+  //#region private methods
+  private removeColumn(column: number) {
+    const deletedColumn = this.cards.splice(column, 1)
+    return deletedColumn[0]
+  }
+
+  private removeRow(row: number) {
+    const deletedRow = this.cards.map((column) => column.splice(row, 1))
+    return deletedRow.flat()
+  }
+
+  currentScore() {
+    return this.currentScoreArray().reduce((a, b) => a + b, 0)
+  }
+
+  //#endregion
 }

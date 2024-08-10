@@ -2,6 +2,7 @@ import { Card } from "@/components/Card"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, m } from "framer-motion"
+import { LAST_TURN_STATUS } from "shared/constants"
 
 type SelectedCardProps = {
   show: boolean
@@ -10,7 +11,8 @@ type SelectedCardProps = {
 const SelectedCard = ({ show }: SelectedCardProps) => {
   const { game } = useSkyjo()
 
-  const pickFromDrawPile = game.lastMove === "pickFromDrawPile"
+  const pickFromDrawPile =
+    game.lastTurnStatus === LAST_TURN_STATUS.PICK_FROM_DRAW_PILE
 
   // let exit: TargetAndTransition = pickFromDrawPile
   //   ? {

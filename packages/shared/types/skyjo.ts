@@ -1,32 +1,22 @@
-import { SkyjoSettingsToJson } from "types/skyjoSettings"
-import { GameToJson } from "./game"
+import {
+  GameStatus,
+  LastTurnStatus,
+  RoundStatus,
+  TurnStatus,
+} from "../constants"
 import { SkyjoPlayerToJson } from "./skyjoPlayer"
+import { SkyjoSettingsToJson } from "./skyjoSettings"
 
-export type RoundState =
-  | "waitingPlayersToTurnInitialCards"
-  | "playing"
-  | "lastLap"
-  | "over"
-
-export type TurnState =
-  | "chooseAPile"
-  | "throwOrReplace"
-  | "turnACard"
-  | "replaceACard"
-
-export type Move =
-  | "pickFromDrawPile"
-  | "pickFromDiscardPile"
-  | "throw"
-  | "replace"
-  | "turn"
-
-export interface SkyjoToJson
-  extends GameToJson<SkyjoPlayerToJson, SkyjoSettingsToJson> {
-  selectedCardValue: number | null
-  roundState: RoundState
-  turnState: TurnState
-  lastDiscardCardValue?: number
-  lastMove: Move
+export interface SkyjoToJson {
+  code: string
+  status: GameStatus
+  adminId: string
+  players: SkyjoPlayerToJson[]
+  turn: number
   settings: SkyjoSettingsToJson
+  selectedCardValue: number | null
+  roundStatus: RoundStatus
+  turnStatus: TurnStatus
+  lastDiscardCardValue?: number
+  lastTurnStatus: LastTurnStatus
 }

@@ -12,6 +12,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getWinner } from "@/lib/skyjo"
 import { useTranslations } from "next-intl"
 import { Dispatch, SetStateAction } from "react"
+import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type ScoreDialogProps = {
@@ -25,7 +26,8 @@ const ScoreDialog = ({ open, onOpenChange }: ScoreDialogProps) => {
 
   let winner: SkyjoPlayerToJson | undefined
   const isGameFinished =
-    game.roundState === "over" && game.status === "finished"
+    game.roundStatus === ROUND_STATUS.OVER &&
+    game.status === GAME_STATUS.FINISHED
 
   if (isGameFinished) winner = getWinner(game)
 

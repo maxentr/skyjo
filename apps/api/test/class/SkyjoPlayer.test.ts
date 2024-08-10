@@ -1,6 +1,8 @@
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
+import { DbPlayer } from "database/schema"
+import { AVATARS, CONNECTION_STATUS } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
 import { TEST_SOCKET_ID } from "../constants"
 
@@ -14,7 +16,10 @@ describe("SkyjoPlayer", () => {
   let player: SkyjoPlayer
 
   beforeEach(() => {
-    player = new SkyjoPlayer("username", TEST_SOCKET_ID, "bee")
+    player = new SkyjoPlayer(
+      { username: "username", avatar: AVATARS.BEE },
+      TEST_SOCKET_ID,
+    )
     player.cards = [
       [new SkyjoCard(0), new SkyjoCard(0), new SkyjoCard(0)],
       [new SkyjoCard(0), new SkyjoCard(4), new SkyjoCard(6)],
@@ -27,24 +32,68 @@ describe("SkyjoPlayer", () => {
   })
 
   //#region Player class
-  describe("add point", () => {
-    it("should add a point", () => {
-      player.addPoint()
-      expect(player.score).toBe(1)
-    })
+  it("should populate the class without cards", () => {
+    const dbPlayer: DbPlayer = {
+      id: crypto.randomUUID(),
+      name: "name",
+      avatar: AVATARS.BEE,
+      socketId: TEST_SOCKET_ID,
+      connectionStatus: CONNECTION_STATUS.CONNECTED,
+      score: 10,
+      scores: [5, 5],
+      wantsReplay: true,
+      cards: [],
 
-    it("should add 10 points", () => {
-      player.addPoint(10)
-      expect(player.score).toBe(10)
-    })
+      disconnectionDate: null,
+      gameId: crypto.randomUUID(),
+    }
+
+    const player = new SkyjoPlayer().populate(dbPlayer)
+
+    expect(player.name).toBe(dbPlayer.name)
+    expect(player.socketId).toBe(dbPlayer.socketId)
+    expect(player.avatar).toBe(dbPlayer.avatar)
+    expect(player.score).toBe(dbPlayer.score)
+    expect(player.wantsReplay).toBe(dbPlayer.wantsReplay)
+    expect(player.cards).toStrictEqual(dbPlayer.cards)
+  })
+
+  it("should populate the class with cards", () => {
+    const dbPlayer: DbPlayer = {
+      id: crypto.randomUUID(),
+      name: "name",
+      avatar: AVATARS.BEE,
+      socketId: TEST_SOCKET_ID,
+      connectionStatus: CONNECTION_STATUS.CONNECTED,
+      score: 10,
+      scores: [5, 5],
+      wantsReplay: true,
+      cards: [
+        [new SkyjoCard(0), new SkyjoCard(1), new SkyjoCard(2)],
+        [new SkyjoCard(3), new SkyjoCard(4), new SkyjoCard(5)],
+        [new SkyjoCard(6), new SkyjoCard(7), new SkyjoCard(8)],
+      ],
+
+      disconnectionDate: null,
+      gameId: crypto.randomUUID(),
+    }
+
+    const player = new SkyjoPlayer().populate(dbPlayer)
+
+    expect(player.name).toBe(dbPlayer.name)
+    expect(player.socketId).toBe(dbPlayer.socketId)
+    expect(player.avatar).toBe(dbPlayer.avatar)
+    expect(player.score).toBe(dbPlayer.score)
+    expect(player.wantsReplay).toBe(dbPlayer.wantsReplay)
+    expect(player.cards).toStrictEqual(dbPlayer.cards)
   })
 
   it("should toggle the replay", () => {
-    expect(player.wantReplay).toBeFalsy()
+    expect(player.wantsReplay).toBeFalsy()
     player.toggleReplay()
-    expect(player.wantReplay).toBeTruthy()
+    expect(player.wantsReplay).toBeTruthy()
     player.toggleReplay()
-    expect(player.wantReplay).toBeFalsy()
+    expect(player.wantsReplay).toBeFalsy()
   })
   //#endregion
 
@@ -100,7 +149,7 @@ describe("SkyjoPlayer", () => {
     const columnIndex = 1
     const cards = deepCloneArray(player.cards)
 
-    const column = player.removeColumn(columnIndex)
+    const column = player["removeColumn"](columnIndex)
 
     expect(removeIdFromCards(column)).toMatchObject(
       removeIdFromCards(cards[columnIndex]),
@@ -112,7 +161,7 @@ describe("SkyjoPlayer", () => {
 
     deepCloneArray(player.cards)
 
-    const row = player.removeRow(rowIndex)
+    const row = player["removeRow"](rowIndex)
 
     expect(removeIdFromCards(row)).toMatchObject(
       removeIdFromCards([
@@ -261,7 +310,7 @@ describe("SkyjoPlayer", () => {
         return row.slice()
       })
 
-      const row = player.removeRow(rowIndex)
+      const row = player["removeRow"](rowIndex)
 
       expect(player.cards).toStrictEqual(cards)
       expect(row).toStrictEqual([])
@@ -317,7 +366,7 @@ describe("SkyjoPlayer", () => {
     })
 
     it("should calculate the final round score when disconnected", () => {
-      player.connectionStatus = "disconnected"
+      player.connectionStatus = CONNECTION_STATUS.DISCONNECTED
 
       player.finalRoundScore()
 
@@ -329,11 +378,11 @@ describe("SkyjoPlayer", () => {
   it("should reset the player", () => {
     player.scores = [10, 20]
     player.score = 30
-    player.wantReplay = true
+    player.wantsReplay = true
     player.reset()
 
     expect(player.cards).toStrictEqual([])
-    expect(player.wantReplay).toBeFalsy()
+    expect(player.wantsReplay).toBeFalsy()
     expect(player.scores).toStrictEqual([])
     expect(player.score).toBe(0)
   })
@@ -350,19 +399,44 @@ describe("SkyjoPlayer", () => {
     expect(player.cards).toStrictEqual([])
   })
 
-  it("should return json", () => {
-    const playerToJson = player.toJson()
+  describe("toJson", () => {
+    it("should return json with isAdmin as false", () => {
+      const playerToJson = player.toJson()
 
-    expect(playerToJson).toStrictEqual({
-      name: "username",
-      socketId: TEST_SOCKET_ID,
-      avatar: "bee",
-      cards: player.cards.map((column) => column.map((card) => card.toJson())),
-      currentScore: 0,
-      score: 0,
-      scores: [],
-      wantReplay: false,
-      connectionStatus: "connected",
+      expect(playerToJson).toStrictEqual({
+        name: "username",
+        socketId: TEST_SOCKET_ID,
+        avatar: AVATARS.BEE,
+        cards: player.cards.map((column) =>
+          column.map((card) => card.toJson()),
+        ),
+        currentScore: 0,
+        score: 0,
+        scores: [],
+        wantsReplay: false,
+        isAdmin: false,
+        connectionStatus: CONNECTION_STATUS.CONNECTED,
+      })
+    })
+
+    it("should return json with isAdmin as true", () => {
+      const adminId = player.id
+      const playerToJson = player.toJson(adminId)
+
+      expect(playerToJson).toStrictEqual({
+        name: "username",
+        socketId: TEST_SOCKET_ID,
+        avatar: AVATARS.BEE,
+        cards: player.cards.map((column) =>
+          column.map((card) => card.toJson()),
+        ),
+        currentScore: 0,
+        score: 0,
+        scores: [],
+        wantsReplay: false,
+        isAdmin: true,
+        connectionStatus: CONNECTION_STATUS.CONNECTED,
+      })
     })
   })
 

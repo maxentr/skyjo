@@ -11,10 +11,12 @@ export default defineConfig({
       provider: "istanbul",
       reportsDirectory: "test/coverage",
       exclude: [
+        "env.schema.ts",
         "src/constants.ts",
         "src/index.ts",
         "src/socketRouter.ts",
         "test/constants.ts",
+        "src/service/*.ts",
       ],
       thresholds: {
         lines: 90,

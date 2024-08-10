@@ -2,9 +2,22 @@ import { Skyjo } from "@/class/Skyjo"
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { ERROR } from "shared/constants"
-import { GameStatus } from "shared/types/game"
-import { Move, RoundState, TurnState } from "shared/types/skyjo"
+import { DbGame, DbPlayer } from "database/schema"
+import {
+  API_REGIONS,
+  API_REGIONS_TAGS,
+  AVATARS,
+  CONNECTION_STATUS,
+  ERROR,
+  GAME_STATUS,
+  GameStatus,
+  LAST_TURN_STATUS,
+  LastTurnStatus,
+  ROUND_STATUS,
+  RoundStatus,
+  TURN_STATUS,
+  TurnStatus,
+} from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
 import { TEST_SOCKET_ID } from "../constants"
 
@@ -18,25 +31,172 @@ describe("Skyjo", () => {
   let opponent: SkyjoPlayer
 
   beforeEach(() => {
-    player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "bee")
+    player = new SkyjoPlayer(
+      { username: "player1", avatar: AVATARS.BEE },
+      TEST_SOCKET_ID,
+    )
     settings = new SkyjoSettings()
-    skyjo = new Skyjo(player, settings)
+    skyjo = new Skyjo(player.id, settings)
     skyjo.addPlayer(player)
 
-    opponent = new SkyjoPlayer("player2", "socketId456", "elephant")
+    opponent = new SkyjoPlayer(
+      { username: "opponent2", avatar: AVATARS.ELEPHANT },
+      "socketId456",
+    )
     skyjo.addPlayer(opponent)
   })
 
   //#region Game class
+  describe("populate", () => {
+    it("should populate the class without players", () => {
+      const dbGame: DbGame = {
+        id: crypto.randomUUID(),
+        code: "code",
+        status: GAME_STATUS.LOBBY,
+        turn: 0,
+        turnStatus: TURN_STATUS.CHOOSE_A_PILE,
+        lastTurnStatus: LAST_TURN_STATUS.TURN,
+        roundStatus: ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+        roundNumber: 1,
+        discardPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        drawPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        selectedCardValue: null,
+        lastDiscardCardValue: null,
+        adminId: player.id,
+        firstToFinishPlayerId: null,
+
+        maxPlayers: 8,
+        isPrivate: false,
+        allowSkyjoForColumn: true,
+        allowSkyjoForRow: false,
+        initialTurnedCount: 2,
+        cardPerRow: 3,
+        cardPerColumn: 4,
+        scoreToEndGame: 100,
+        multiplierForFirstPlayer: 2,
+
+        isFull: false,
+
+        region: API_REGIONS_TAGS["0"],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+      skyjo = new Skyjo(dbGame.adminId!)
+      skyjo.populate(dbGame, { players: [] })
+
+      expect(skyjo.id).toBe(dbGame.id)
+      expect(skyjo.code).toBe(dbGame.code)
+      expect(skyjo.status).toBe(dbGame.status)
+      expect(skyjo.turn).toBe(dbGame.turn)
+      expect(skyjo.adminId).toBe(dbGame.adminId)
+      expect(structuredClone(skyjo.settings)).toStrictEqual({
+        maxPlayers: dbGame.maxPlayers,
+        private: dbGame.isPrivate,
+        allowSkyjoForColumn: dbGame.allowSkyjoForColumn,
+        allowSkyjoForRow: dbGame.allowSkyjoForRow,
+        initialTurnedCount: dbGame.initialTurnedCount,
+        cardPerRow: dbGame.cardPerRow,
+        cardPerColumn: dbGame.cardPerColumn,
+        scoreToEndGame: dbGame.scoreToEndGame,
+        multiplierForFirstPlayer: dbGame.multiplierForFirstPlayer,
+      })
+    })
+
+    it("should populate the class with players", () => {
+      const dbGame: DbGame = {
+        id: crypto.randomUUID(),
+        code: "code",
+        status: GAME_STATUS.LOBBY,
+        turn: 0,
+        turnStatus: TURN_STATUS.CHOOSE_A_PILE,
+        lastTurnStatus: LAST_TURN_STATUS.TURN,
+        roundStatus: ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+        roundNumber: 1,
+        discardPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        drawPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        selectedCardValue: null,
+        lastDiscardCardValue: null,
+        adminId: player.id,
+        firstToFinishPlayerId: null,
+
+        maxPlayers: 8,
+        isPrivate: false,
+        allowSkyjoForColumn: true,
+        allowSkyjoForRow: false,
+        initialTurnedCount: 2,
+        cardPerRow: 3,
+        cardPerColumn: 4,
+        scoreToEndGame: 100,
+        multiplierForFirstPlayer: 2,
+
+        isFull: false,
+
+        region: API_REGIONS_TAGS["0"],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+
+      const players: DbPlayer[] = [
+        {
+          id: crypto.randomUUID(),
+          name: "player1",
+          avatar: AVATARS.BEE,
+          socketId: TEST_SOCKET_ID,
+          connectionStatus: CONNECTION_STATUS.CONNECTED,
+          score: 10,
+          scores: [5, 5],
+          wantsReplay: true,
+          cards: [
+            [new SkyjoCard(0), new SkyjoCard(1), new SkyjoCard(2)],
+            [new SkyjoCard(3), new SkyjoCard(4), new SkyjoCard(5)],
+            [new SkyjoCard(6), new SkyjoCard(7), new SkyjoCard(8)],
+          ],
+
+          disconnectionDate: null,
+          gameId: dbGame.id,
+        },
+      ]
+
+      skyjo.populate(dbGame, { players })
+
+      expect(skyjo.id).toBe(dbGame.id)
+      expect(skyjo.code).toBe(dbGame.code)
+      expect(skyjo.status).toBe(dbGame.status)
+      expect(skyjo.turn).toBe(dbGame.turn)
+      expect(skyjo.adminId).toBe(dbGame.adminId)
+      expect(structuredClone(skyjo.settings)).toStrictEqual({
+        maxPlayers: dbGame.maxPlayers,
+        private: dbGame.isPrivate,
+        allowSkyjoForColumn: dbGame.allowSkyjoForColumn,
+        allowSkyjoForRow: dbGame.allowSkyjoForRow,
+        initialTurnedCount: dbGame.initialTurnedCount,
+        cardPerRow: dbGame.cardPerRow,
+        cardPerColumn: dbGame.cardPerColumn,
+        scoreToEndGame: dbGame.scoreToEndGame,
+        multiplierForFirstPlayer: dbGame.multiplierForFirstPlayer,
+      })
+      expect(skyjo.players.length).toBe(1)
+      expect(skyjo.players[0].name).toBe(players[0].name)
+      expect(skyjo.players[0].socketId).toBe(players[0].socketId)
+      expect(skyjo.players[0].avatar).toBe(players[0].avatar)
+      expect(skyjo.players[0].score).toBe(players[0].score)
+      expect(skyjo.players[0].wantsReplay).toBe(players[0].wantsReplay)
+      expect(skyjo.players[0].cards).toStrictEqual(players[0].cards)
+    })
+  })
+
   it("should get player", () => {
-    expect(skyjo.getPlayer(TEST_SOCKET_ID)).toBe(player)
-    expect(skyjo.getPlayer("socketId456")).toBe(opponent)
+    expect(skyjo.getPlayerBySocketId(TEST_SOCKET_ID)).toBe(player)
+    expect(skyjo.getPlayerBySocketId("socketId456")).toBe(opponent)
   })
 
   describe("add player", () => {
     it("should add player", () => {
       settings.maxPlayers = 3
-      const newPlayer = new SkyjoPlayer("player3", "socketId789", "turtle")
+      const newPlayer = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.TURTLE },
+        "socketId789",
+      )
 
       expect(() => skyjo.addPlayer(newPlayer)).not.toThrowError()
       expect(skyjo.players).toHaveLength(3)
@@ -44,24 +204,13 @@ describe("Skyjo", () => {
 
     it("should not add player if max players is reached", () => {
       settings.maxPlayers = 2
-      const newPlayer = new SkyjoPlayer("player3", "socketId789", "turtle")
+      const newPlayer = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.TURTLE },
+        "socketId789",
+      )
 
-      expect(() => skyjo.addPlayer(newPlayer)).toThrowError("game-is-full")
+      expect(() => skyjo.addPlayer(newPlayer)).toThrowError(ERROR.GAME_IS_FULL)
       expect(skyjo.players).toHaveLength(2)
-    })
-  })
-
-  describe("change admin", () => {
-    it("should change the admin of the game", () => {
-      skyjo.removePlayer(TEST_SOCKET_ID)
-      expect(() => skyjo.changeAdmin()).not.toThrowError()
-      expect(skyjo.admin).toBe(opponent)
-    })
-
-    it("should not change the admin because there are no players", () => {
-      skyjo.removePlayer(TEST_SOCKET_ID)
-      skyjo.removePlayer("socketId456")
-      expect(() => skyjo.changeAdmin()).toThrowError("no-players")
     })
   })
 
@@ -96,9 +245,9 @@ describe("Skyjo", () => {
     it("should start the game with default settings", () => {
       skyjo.start()
 
-      expect(skyjo.status).toBe<GameStatus>("playing")
-      expect(skyjo.roundState).toBe<RoundState>(
-        "waitingPlayersToTurnInitialCards",
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(skyjo.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
       )
     })
 
@@ -106,16 +255,16 @@ describe("Skyjo", () => {
       skyjo.settings.initialTurnedCount = 0
       skyjo.start()
 
-      expect(skyjo.status).toBe<GameStatus>("playing")
-      expect(skyjo.roundState).toBe<RoundState>("playing")
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
     })
   })
 
   describe("check all players revealed cards", () => {
     it("should check all players revealed cards and not start the game", () => {
       skyjo.checkAllPlayersRevealedCards(skyjo.settings.initialTurnedCount)
-      expect(skyjo.roundState).toBe<RoundState>(
-        "waitingPlayersToTurnInitialCards",
+      expect(skyjo.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
       )
     })
 
@@ -129,7 +278,7 @@ describe("Skyjo", () => {
 
       skyjo.checkAllPlayersRevealedCards(skyjo.settings.initialTurnedCount)
 
-      expect(skyjo.roundState).toBe<RoundState>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
       expect(skyjo.turn).toBe(0)
     })
 
@@ -144,27 +293,33 @@ describe("Skyjo", () => {
 
       skyjo.checkAllPlayersRevealedCards(skyjo.settings.initialTurnedCount)
 
-      expect(skyjo.roundState).toBe<RoundState>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
       expect(skyjo.turn).toBe(1)
     })
 
     it("should check all players revealed cards, start the game and make the player with the highest card start while ignoring players who are not connected", () => {
-      const opponent2 = new SkyjoPlayer("player3", TEST_SOCKET_ID, "elephant")
+      const opponent2 = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.TURTLE },
+        "socketId789",
+      )
       skyjo.addPlayer(opponent2)
 
-      const opponent3 = new SkyjoPlayer("player4", TEST_SOCKET_ID, "elephant")
+      const opponent3 = new SkyjoPlayer(
+        { username: "player4", avatar: AVATARS.WHALE },
+        "socketId789124",
+      )
       skyjo.addPlayer(opponent3)
 
       skyjo.start()
 
-      skyjo.players[0].connectionStatus = "disconnected"
+      skyjo.players[0].connectionStatus = CONNECTION_STATUS.DISCONNECTED
       skyjo.players[0].cards[0][0] = new SkyjoCard(10, true)
       skyjo.players[0].cards[0][1] = new SkyjoCard(10, true)
 
       skyjo.players[1].cards[0][0] = new SkyjoCard(12, true)
       skyjo.players[1].cards[0][1] = new SkyjoCard(12, true)
 
-      skyjo.players[2].connectionStatus = "disconnected"
+      skyjo.players[2].connectionStatus = CONNECTION_STATUS.DISCONNECTED
       skyjo.players[2].cards[0][0] = new SkyjoCard(9, true)
       skyjo.players[2].cards[0][1] = new SkyjoCard(11, true)
 
@@ -173,7 +328,7 @@ describe("Skyjo", () => {
 
       skyjo.checkAllPlayersRevealedCards(skyjo.settings.initialTurnedCount)
 
-      expect(skyjo.roundState).toBe<RoundState>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
       expect(skyjo.turn).toBe(1)
     })
   })
@@ -183,13 +338,15 @@ describe("Skyjo", () => {
       skyjo.start()
 
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
 
       skyjo.drawCard()
 
       expect(skyjo.selectedCardValue).not.toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("throwOrReplace")
-      expect(skyjo.lastMove).toBe<Move>("pickFromDrawPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.THROW_OR_REPLACE)
+      expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(
+        LAST_TURN_STATUS.PICK_FROM_DRAW_PILE,
+      )
     })
 
     it("should draw card and reload the draw pile", () => {
@@ -201,7 +358,7 @@ describe("Skyjo", () => {
       const nbCardsUsedByPlayers = skyjo.players.length * CARDS_PER_PLAYER
 
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
       expect(skyjo["drawPile"]).toHaveLength(0)
       expect(skyjo["discardPile"]).toHaveLength(
         TOTAL_CARDS - nbCardsUsedByPlayers,
@@ -210,8 +367,10 @@ describe("Skyjo", () => {
       skyjo.drawCard()
 
       expect(skyjo.selectedCardValue).not.toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("throwOrReplace")
-      expect(skyjo.lastMove).toBe<Move>("pickFromDrawPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.THROW_OR_REPLACE)
+      expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(
+        LAST_TURN_STATUS.PICK_FROM_DRAW_PILE,
+      )
       // 150(total cards) - 2(nb player) * 12(cards per player) - 1(draw pile) - 1(discard pile)
       expect(skyjo["drawPile"]).toHaveLength(
         TOTAL_CARDS - nbCardsUsedByPlayers - 1 - 1,
@@ -226,13 +385,15 @@ describe("Skyjo", () => {
       skyjo["discardPile"].push(skyjo["drawPile"].splice(0, 1)[0])
 
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
 
       skyjo.pickFromDiscard()
 
       expect(skyjo.selectedCardValue).not.toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("replaceACard")
-      expect(skyjo.lastMove).toBe<Move>("pickFromDiscardPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.REPLACE_A_CARD)
+      expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(
+        LAST_TURN_STATUS.PICK_FROM_DISCARD_PILE,
+      )
     })
 
     it("should not pick a card from the discard pile if it's empty", () => {
@@ -240,12 +401,12 @@ describe("Skyjo", () => {
       skyjo["discardPile"] = []
 
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
 
       skyjo.pickFromDiscard()
 
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
     })
   })
 
@@ -254,8 +415,8 @@ describe("Skyjo", () => {
 
     expect(skyjo.selectedCardValue).toBeNull()
     expect(skyjo["discardPile"]).toHaveLength(1)
-    expect(skyjo.turnState).toBe<TurnState>("turnACard")
-    expect(skyjo.lastMove).toBe<Move>("throw")
+    expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.TURN_A_CARD)
+    expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(LAST_TURN_STATUS.THROW)
   })
 
   it("should replace a card", () => {
@@ -272,7 +433,7 @@ describe("Skyjo", () => {
     expect(skyjo["discardPile"]).include(oldCardValue)
     expect(skyjo.selectedCardValue).toBeNull()
     expect(player.cards[0][0].isVisible).toBeTruthy()
-    expect(skyjo.lastMove).toBe<Move>("replace")
+    expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(LAST_TURN_STATUS.REPLACE)
   })
 
   it("should turn card", () => {
@@ -283,7 +444,7 @@ describe("Skyjo", () => {
     skyjo.turnCard(player, 0, 0)
 
     expect(card.isVisible).toBeTruthy()
-    expect(skyjo.lastMove).toBe<Move>("turn")
+    expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(LAST_TURN_STATUS.TURN)
   })
 
   describe("next turn", () => {
@@ -292,19 +453,22 @@ describe("Skyjo", () => {
       skyjo.nextTurn()
 
       expect(skyjo.turn).not.toBe(currentTurn)
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
     })
 
     it("should set next turn and handle disconnected players", () => {
-      const opponent2 = new SkyjoPlayer("player3", TEST_SOCKET_ID, "elephant")
-      opponent2.connectionStatus = "disconnected"
+      const opponent2 = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.TURTLE },
+        "socketId789",
+      )
+      opponent2.connectionStatus = CONNECTION_STATUS.DISCONNECTED
       skyjo.addPlayer(opponent2)
       skyjo.turn = 1
 
       skyjo.nextTurn()
 
       expect(skyjo.turn).toBe(0)
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
     })
 
     it("should set next turn and discard a column and not discard a row", () => {
@@ -468,26 +632,26 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.firstPlayerToFinish).toBe(player)
-      expect(skyjo.status).toBe<GameStatus>("playing")
-      expect(skyjo.roundState).toBe<RoundState>("lastLap")
+      expect(skyjo.firstToFinishPlayerId).toBe(player.id)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.LAST_LAP)
     })
 
     it("should set next turn, end the round and not end the game", () => {
       skyjo.start()
-      skyjo.roundState = "playing"
-      skyjo.firstPlayerToFinish = player
+      skyjo.roundStatus = ROUND_STATUS.PLAYING
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 0
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("playing")
-      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
     })
 
     it("should set next turn, end the round and not double score of the first player", () => {
       skyjo.start()
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 1
 
       player.cards = [
@@ -507,14 +671,14 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("over")
-      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
       expect(player.score).toBe(1 + 1 + 3)
     })
 
     it("should set next turn, end the round and double score of the first player", () => {
       skyjo.start()
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 1
 
       player.cards = [
@@ -534,14 +698,14 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("over")
-      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
       expect(player.score).toBe((1 + 1 + 3) * 2)
     })
 
     it("should set next turn, end the round and not double score of the first player because it's 0", () => {
       skyjo.start()
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 1
 
       player.cards = [
@@ -561,14 +725,14 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("over")
-      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
       expect(player.score).toBe(0 + -2 + 2)
     })
 
     it("should set next turn, end the round and not double score of the first player because it's negative", () => {
       skyjo.start()
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 1
 
       player.cards = [
@@ -588,15 +752,15 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("over")
-      expect(skyjo.status).toBe<GameStatus>("playing")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
       expect(player.score).toBe(0 + 0 + -2)
     })
 
     it("should set next turn, end the round, double score of the first player and end the game", () => {
       skyjo.start()
       skyjo.roundNumber = 2
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.turn = 1
 
       player.scores = [90]
@@ -619,8 +783,8 @@ describe("Skyjo", () => {
 
       skyjo.nextTurn()
 
-      expect(skyjo.roundState).toBe<RoundState>("over")
-      expect(skyjo.status).toBe<GameStatus>("finished")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.FINISHED)
       expect(player.score).toBe(90 + (1 + 1 + 3) * 2)
     })
   })
@@ -628,9 +792,9 @@ describe("Skyjo", () => {
   describe("start new round", () => {
     it("should start a new round and wait for players to turn initial cards if there is a card to turn at the beginning of the game", () => {
       skyjo.roundNumber = 1
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.selectedCardValue = 1
-      skyjo.lastMove = "pickFromDrawPile"
+      skyjo.lastTurnStatus = LAST_TURN_STATUS.PICK_FROM_DRAW_PILE
       player.cards = [
         [
           new SkyjoCard(1, true),
@@ -642,25 +806,25 @@ describe("Skyjo", () => {
       skyjo.startNewRound()
 
       expect(skyjo.roundNumber).toBe(2)
-      expect(skyjo.firstPlayerToFinish).toBeNull()
+      expect(skyjo.firstToFinishPlayerId).toBeNull()
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.lastMove).toBe<Move>("turn")
+      expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(LAST_TURN_STATUS.TURN)
       skyjo.players.forEach((player) => {
         expect(player.cards.flat()).toHaveLength(CARDS_PER_PLAYER)
         expect(player.hasRevealedCardCount(0)).toBeTruthy()
       })
-      expect(skyjo.roundState).toBe<RoundState>(
-        "waitingPlayersToTurnInitialCards",
+      expect(skyjo.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
       )
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
     })
 
     it("should start a new round and not wait for players to turn initial cards if there is no card to turn at the beginning of the game", () => {
       skyjo.settings.initialTurnedCount = 0
       skyjo.roundNumber = 1
-      skyjo.firstPlayerToFinish = player
+      skyjo.firstToFinishPlayerId = player.id
       skyjo.selectedCardValue = 1
-      skyjo.lastMove = "pickFromDrawPile"
+      skyjo.lastTurnStatus = LAST_TURN_STATUS.PICK_FROM_DRAW_PILE
       player.cards = [
         [
           new SkyjoCard(1, true),
@@ -672,38 +836,38 @@ describe("Skyjo", () => {
       skyjo.startNewRound()
 
       expect(skyjo.roundNumber).toBe(2)
-      expect(skyjo.firstPlayerToFinish).toBeNull()
+      expect(skyjo.firstToFinishPlayerId).toBeNull()
       expect(skyjo.selectedCardValue).toBeNull()
-      expect(skyjo.lastMove).toBe<Move>("turn")
+      expect(skyjo.lastTurnStatus).toBe<LastTurnStatus>(LAST_TURN_STATUS.TURN)
       skyjo.players.forEach((player) => {
         expect(player.cards.flat()).toHaveLength(CARDS_PER_PLAYER)
         expect(player.hasRevealedCardCount(0)).toBeTruthy()
       })
-      expect(skyjo.roundState).toBe<RoundState>("playing")
-      expect(skyjo.turnState).toBe<TurnState>("chooseAPile")
+      expect(skyjo.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(skyjo.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
     })
   })
 
   describe("Restart the game if all players want to replay", () => {
     it("shouldn't restart the game", () => {
-      skyjo.status = "finished"
-      player.wantReplay = false
-      opponent.wantReplay = true
+      skyjo.status = GAME_STATUS.FINISHED
+      player.wantsReplay = false
+      opponent.wantsReplay = true
 
       skyjo.restartGameIfAllPlayersWantReplay()
 
-      expect(skyjo.status).toBe<GameStatus>("finished")
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.FINISHED)
     })
 
     it("should restart the game", () => {
-      skyjo.status = "finished"
+      skyjo.status = GAME_STATUS.FINISHED
       skyjo.players.forEach((player) => {
-        player.wantReplay = true
+        player.wantsReplay = true
       })
 
       skyjo.restartGameIfAllPlayersWantReplay()
 
-      expect(skyjo.status).toBe<GameStatus>("lobby")
+      expect(skyjo.status).toBe<GameStatus>(GAME_STATUS.LOBBY)
     })
   })
 
@@ -712,16 +876,16 @@ describe("Skyjo", () => {
     skyjo.players.forEach((player) => {
       player.scores = [10, 20]
       player.score = 30
-      player.wantReplay = true
+      player.wantsReplay = true
     })
 
-    skyjo.reset()
+    skyjo.resetRound()
 
     expect(skyjo.roundNumber).toBe(1)
     skyjo.players.forEach((player) => {
       expect(player.scores).toStrictEqual([])
       expect(player.score).toBe(0)
-      expect(player.wantReplay).toBeFalsy()
+      expect(player.wantsReplay).toBeFalsy()
     })
   })
 
@@ -729,16 +893,16 @@ describe("Skyjo", () => {
     const gameToJson = skyjo.toJson()
 
     expect(gameToJson).toStrictEqual({
-      id: skyjo.id,
-      status: "lobby",
-      roundState: "waitingPlayersToTurnInitialCards",
-      admin: player.toJson(),
-      players: skyjo.players.map((player) => player.toJson()),
+      code: skyjo.code,
+      status: GAME_STATUS.LOBBY,
+      roundStatus: ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+      adminId: player.id,
+      players: skyjo.players.map((player) => player.toJson(skyjo.adminId)),
       selectedCardValue: null,
       lastDiscardCardValue: skyjo["discardPile"][["_discardPile"].length - 1],
-      lastMove: "turn",
+      lastTurnStatus: LAST_TURN_STATUS.TURN,
       turn: 0,
-      turnState: "chooseAPile",
+      turnStatus: TURN_STATUS.CHOOSE_A_PILE,
       settings: skyjo.settings.toJson(),
     })
   })

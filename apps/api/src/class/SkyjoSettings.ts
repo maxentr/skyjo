@@ -1,10 +1,12 @@
 import { SkyjoSettingsToJson } from "shared/types/skyjoSettings"
 
+import { DbGame } from "database/schema"
 import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
-import { GameSettings, GameSettingsInterface } from "./GameSettings"
 
-export interface SkyjoSettingsInterface extends GameSettingsInterface {
+export interface SkyjoSettingsInterface {
+  private: boolean
+  maxPlayers: number
   allowSkyjoForColumn: boolean
   allowSkyjoForRow: boolean
   initialTurnedCount: number
@@ -14,10 +16,9 @@ export interface SkyjoSettingsInterface extends GameSettingsInterface {
   toJson(): SkyjoSettingsToJson
 }
 
-export class SkyjoSettings
-  extends GameSettings
-  implements SkyjoSettingsInterface
-{
+export class SkyjoSettings implements SkyjoSettingsInterface {
+  private: boolean = false
+  maxPlayers: number = SKYJO_DEFAULT_SETTINGS.MAX_PLAYERS
   allowSkyjoForColumn: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_COLUMN
   allowSkyjoForRow: boolean = SKYJO_DEFAULT_SETTINGS.ALLOW_SKYJO_FOR_ROW
   initialTurnedCount: number = SKYJO_DEFAULT_SETTINGS.CARDS.INITIAL_TURNED_COUNT
@@ -27,11 +28,22 @@ export class SkyjoSettings
   multiplierForFirstPlayer: number =
     SKYJO_DEFAULT_SETTINGS.MULTIPLIER_FOR_FIRST_PLAYER
 
-  constructor(
-    isPrivate: boolean = false,
-    maxPlayers: number = SKYJO_DEFAULT_SETTINGS.MAX_PLAYERS,
-  ) {
-    super(isPrivate, maxPlayers)
+  constructor(isPrivate: boolean = false) {
+    this.private = isPrivate
+  }
+
+  populate(game: DbGame) {
+    this.private = game.isPrivate
+    this.maxPlayers = game.maxPlayers
+    this.allowSkyjoForColumn = game.allowSkyjoForColumn
+    this.allowSkyjoForRow = game.allowSkyjoForRow
+    this.initialTurnedCount = game.initialTurnedCount
+    this.cardPerRow = game.cardPerRow
+    this.cardPerColumn = game.cardPerColumn
+    this.scoreToEndGame = game.scoreToEndGame
+    this.multiplierForFirstPlayer = game.multiplierForFirstPlayer
+
+    return this
   }
 
   changeSettings(settings: ChangeSettings) {
@@ -47,7 +59,8 @@ export class SkyjoSettings
 
   toJson() {
     return {
-      ...super.toJson(),
+      private: this.private,
+      maxPlayers: this.maxPlayers,
       allowSkyjoForColumn: this.allowSkyjoForColumn,
       allowSkyjoForRow: this.allowSkyjoForRow,
       initialTurnedCount: this.initialTurnedCount,
@@ -55,6 +68,6 @@ export class SkyjoSettings
       cardPerColumn: this.cardPerColumn,
       scoreToEndGame: this.scoreToEndGame,
       multiplierForFirstPlayer: this.multiplierForFirstPlayer,
-    }
+    } satisfies SkyjoSettingsToJson
   }
 }

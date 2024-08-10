@@ -10,12 +10,14 @@ import {
   PlayTurnCard,
 } from "../validations/play"
 import { CreatePlayer } from "../validations/player"
+import { LastGame } from "../validations/reconnect"
 import { SkyjoToJson } from "./skyjo"
 
 export type ClientToServerEvents = {
   "create-private": (player: CreatePlayer) => void
   find: (player: CreatePlayer) => void
   join: (data: JoinGame) => void
+  reconnect: (data: LastGame) => void
   get: () => void
   start: () => void
   settings: (data: ChangeSettings) => void
@@ -32,7 +34,8 @@ export type ClientToServerEvents = {
 
 export type ServerToClientEvents = {
   "error:join": (message: string) => void
-  join: (game: SkyjoToJson) => void
+  "error:reconnect": (message: string) => void
+  join: (game: SkyjoToJson, playerId: string) => void
   game: (game: SkyjoToJson) => void
   message: (message: ChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
@@ -40,5 +43,6 @@ export type ServerToClientEvents = {
 }
 
 export type SocketData = {
-  gameId: string
+  gameCode: string
+  playerId: string
 }

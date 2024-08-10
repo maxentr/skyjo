@@ -19,7 +19,7 @@ import { ApiRegionsTag } from "shared/constants"
 
 type IndexServerPageProps = {
   searchParams: {
-    gameId?: string
+    gameCode?: string
     region?: ApiRegionsTag
   }
   params: {

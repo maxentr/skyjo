@@ -7,6 +7,7 @@ import { ClassValue } from "clsx"
 import { m, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
+import { LAST_TURN_STATUS } from "shared/constants"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
@@ -128,7 +129,11 @@ const Card = ({
       controls.set({ rotateY: 0 })
     }
 
-    if (flipAnimation && card.isVisible && game?.lastMove === "turn")
+    if (
+      flipAnimation &&
+      card.isVisible &&
+      game?.lastTurnStatus === LAST_TURN_STATUS.TURN
+    )
       animation()
   }, [flipAnimation, card.isVisible])
 
@@ -136,7 +141,11 @@ const Card = ({
 
   if (card.value === -98) {
     cardContent = <Trash2Icon className={throwIconClass({ size })} />
-  } else if (card.isVisible && card.value !== undefined) {
+  } else if (
+    card.isVisible &&
+    card.value !== null &&
+    card.value !== undefined
+  ) {
     cardContent = card.value.toString()
   }
 

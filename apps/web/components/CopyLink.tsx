@@ -7,6 +7,7 @@ import { useSocket } from "@/contexts/SocketContext"
 import { getGameInviteLink } from "@/lib/utils"
 import { CheckIcon, ClipboardCopyIcon } from "lucide-react"
 import { MouseEvent, useState } from "react"
+import { GAME_STATUS } from "shared/constants"
 
 const CopyLink = () => {
   const { game } = useSkyjo()
@@ -28,7 +29,7 @@ const CopyLink = () => {
     copyLink()
   }
 
-  if (game.status === "lobby")
+  if (game.status === GAME_STATUS.LOBBY)
     return (
       <div className="flex flex-row items-center gap-2 w-full sm:w-fit">
         <Input

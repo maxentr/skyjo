@@ -3,13 +3,24 @@ import { SkyjoCard } from "@/class/SkyjoCard"
 import SkyjoGameController from "@/class/SkyjoGameController"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
+import { GameService } from "@/service/game.service"
 import { SkyjoSocket } from "@/types/skyjoSocket"
-import { ERROR } from "shared/constants"
-import { GameStatus } from "shared/types/game"
-import { ConnectionStatus } from "shared/types/player"
-import { RoundState, TurnState } from "shared/types/skyjo"
+import {
+  AVATARS,
+  CONNECTION_STATUS,
+  ConnectionStatus,
+  ERROR,
+  GAME_STATUS,
+  GameStatus,
+  MESSAGE_TYPE,
+  ROUND_STATUS,
+  RoundStatus,
+  TURN_STATUS,
+  TurnStatus,
+} from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
 import { CreatePlayer } from "shared/validations/player"
+import { LastGame } from "shared/validations/reconnect"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "../constants"
 
@@ -19,6 +30,31 @@ describe("Skyjo", () => {
 
   beforeEach(() => {
     instance["games"] = []
+    instance["playerService"] = {
+      createPlayer: vi.fn(),
+      updatePlayer: vi.fn(),
+      updateSocketId: vi.fn(),
+      removePlayer: vi.fn(),
+      canReconnect: vi.fn(),
+      updateDisconnectionDate: vi.fn(),
+      reconnectPlayer: vi.fn(),
+      getPlayerBySocketIdsByGameId: vi.fn(),
+    }
+    instance["gameService"] = {
+      playerService: instance["playerService"],
+      createGame: vi.fn(),
+      updateGame: vi.fn(),
+      updateSettings: vi.fn(),
+      updateAdmin: vi.fn(),
+      getGamesByRegion: vi.fn(),
+      getGameById: vi.fn(),
+      getGameByCode: vi.fn(),
+      getPublicGameWithFreePlace: vi.fn(),
+      retrieveGameByCode: vi.fn(),
+      removeGame: vi.fn(),
+      isPlayerInGame: vi.fn(),
+      formatSkyjo: vi.fn(),
+    } as any as GameService
     socket = {
       emit: vi.fn(),
       on: vi.fn(),
@@ -47,33 +83,43 @@ describe("Skyjo", () => {
   it("should create a new game", async () => {
     const player: CreatePlayer = {
       username: "player1",
-      avatar: "bee",
+      avatar: AVATARS.BEE,
     }
 
     await instance.onCreate(socket, player)
 
-    const gameId = socket.data.gameId
-    const game = instance["getGame"](gameId)
+    const gameCode = socket.data.gameCode
+    const game = await instance["getGame"](gameCode)
 
-    expect(gameId).toBeDefined()
-    expect(socket.emit).toHaveBeenNthCalledWith(1, "join", game?.toJson())
+    expect(gameCode).toBeDefined()
+    expect(socket.emit).toHaveBeenNthCalledWith(
+      1,
+      "join",
+      game?.toJson(),
+      game.players[0].id,
+    )
     expect(socket.emit).toHaveBeenNthCalledWith(
       2,
       "message",
-      expect.objectContaining({ type: "player-joined", username: "player1" }),
+      expect.objectContaining({
+        type: MESSAGE_TYPE.PLAYER_JOINED,
+        username: "player1",
+      }),
     )
     expect(socket.emit).toHaveBeenNthCalledWith(
       3,
       "game",
-      expect.objectContaining({ id: gameId }),
+      expect.objectContaining({ code: gameCode }),
     )
   })
 
   describe("on get", () => {
     it("should not get a game if it does not exist", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      expect(await instance.onGet(socket)).toBeUndefined()
+      await expect(() => instance.onGet(socket)).rejects.toThrowError(
+        ERROR.GAME_NOT_FOUND,
+      )
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -81,26 +127,34 @@ describe("Skyjo", () => {
     it("should return the game", async () => {
       const player: CreatePlayer = {
         username: "player1",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await instance.onCreate(socket, player)
 
-      const gameId = socket.data.gameId
+      const gameCode = socket.data.gameCode
       await instance.onGet(socket)
-      const game = instance["getGame"](gameId)
+      const game = await instance["getGame"](gameCode)
 
-      expect(gameId).toBeDefined()
-      expect(socket.emit).toHaveBeenNthCalledWith(1, "join", game?.toJson())
+      expect(gameCode).toBeDefined()
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        1,
+        "join",
+        game?.toJson(),
+        game.players[0].id,
+      )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
         "message",
-        expect.objectContaining({ type: "player-joined", username: "player1" }),
+        expect.objectContaining({
+          type: MESSAGE_TYPE.PLAYER_JOINED,
+          username: "player1",
+        }),
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         3,
         "game",
-        expect.objectContaining({ id: gameId }),
+        expect.objectContaining({ code: gameCode }),
       )
     })
   })
@@ -109,62 +163,81 @@ describe("Skyjo", () => {
     it("should not find a game so it should create a new public game", async () => {
       const player: CreatePlayer = {
         username: "player1",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await instance.onFind(socket, player)
 
-      const gameId = socket.data.gameId
-      const game = instance["getGame"](gameId)
+      const gameCode = socket.data.gameCode
+      const game = await instance["getGame"](gameCode)
 
-      expect(gameId).toBeDefined()
-      expect(socket.emit).toHaveBeenNthCalledWith(1, "join", game?.toJson())
+      expect(gameCode).toBeDefined()
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        1,
+        "join",
+        game?.toJson(),
+        game.players[0].id,
+      )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
         "message",
-        expect.objectContaining({ type: "player-joined", username: "player1" }),
+        expect.objectContaining({
+          type: MESSAGE_TYPE.PLAYER_JOINED,
+          username: "player1",
+        }),
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         3,
         "game",
-        expect.objectContaining({ id: gameId }),
+        expect.objectContaining({ code: gameCode }),
       )
     })
 
     it("should find a game and join it", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
       instance["games"].push(game)
 
       const player: CreatePlayer = {
         username: "player2",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await instance.onFind(socket, player)
 
       expect(game.players.length).toBe(2)
-      expect(socket.emit).toHaveBeenNthCalledWith(1, "join", game?.toJson())
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        1,
+        "join",
+        game?.toJson(),
+        game.players[1].id,
+      )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
         "message",
-        expect.objectContaining({ type: "player-joined", username: "player2" }),
+        expect.objectContaining({
+          type: MESSAGE_TYPE.PLAYER_JOINED,
+          username: "player2",
+        }),
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         3,
         "game",
-        expect.objectContaining({ id: game.id }),
+        expect.objectContaining({ code: game.code }),
       )
     })
   })
 
   describe("on join", () => {
     it("should throw if it does not exist", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
       const player: CreatePlayer = {
         username: "player1",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await expect(() =>
@@ -175,79 +248,108 @@ describe("Skyjo", () => {
     })
 
     it("should throw if it's full", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false, 2))
-      game.addPlayer(opponent)
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const opponent2 = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.settings.maxPlayers = 2
       instance["games"].push(game)
-      const opponent2 = new SkyjoPlayer("player2", "socket456", "elephant")
+
+      game.addPlayer(opponent)
       game.addPlayer(opponent2)
 
       const player: CreatePlayer = {
         username: "player2",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await expect(() =>
-        instance.onJoin(socket, game.id, player),
-      ).rejects.toThrowError("game-is-full")
+        instance.onJoin(socket, game.code, player),
+      ).rejects.toThrowError(ERROR.GAME_IS_FULL)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
 
     it("sould throw if game already started", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      instance["games"].push(game)
-      game.addPlayer(opponent)
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const opponent2 = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
 
-      const opponent2 = new SkyjoPlayer("player2", "socket456", "elephant")
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      instance["games"].push(game)
+
+      game.addPlayer(opponent)
       game.addPlayer(opponent2)
 
       game.start()
 
       const player: CreatePlayer = {
         username: "player2",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
       await expect(() =>
-        instance.onJoin(socket, game.id, player),
+        instance.onJoin(socket, game.code, player),
       ).rejects.toThrowError("game-already-started")
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
 
     it("should join the game", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      game.addPlayer(opponent)
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       instance["games"].push(game)
+
+      game.addPlayer(opponent)
 
       const player: CreatePlayer = {
         username: "player2",
-        avatar: "bee",
+        avatar: AVATARS.BEE,
       }
 
-      await instance.onJoin(socket, game.id, player)
+      await instance.onJoin(socket, game.code, player)
 
       expect(game.players.length).toBe(2)
-      expect(socket.emit).toHaveBeenNthCalledWith(1, "join", game?.toJson())
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        1,
+        "join",
+        game?.toJson(),
+        game.players[1].id,
+      )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
         "message",
-        expect.objectContaining({ type: "player-joined", username: "player2" }),
+        expect.objectContaining({
+          type: MESSAGE_TYPE.PLAYER_JOINED,
+          username: "player2",
+        }),
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         3,
         "game",
-        expect.objectContaining({ id: game.id }),
+        expect.objectContaining({ code: game.code }),
       )
     })
   })
 
   describe("on settings change", () => {
     it("should throw if no game is found", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
       const newSettings: ChangeSettings = {
         private: false,
@@ -267,14 +369,22 @@ describe("Skyjo", () => {
       expect(socket.emit).not.toHaveBeenCalled()
     })
     it("should throw if user is not admin", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      game.addPlayer(opponent)
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       instance["games"].push(game)
 
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
+      game.addPlayer(opponent)
+
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
       game.addPlayer(player)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
       const newSettings: ChangeSettings = {
         private: false,
@@ -294,11 +404,14 @@ describe("Skyjo", () => {
     })
 
     it("should change the game settings", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
       const newSettings: ChangeSettings = {
         private: true,
@@ -322,7 +435,7 @@ describe("Skyjo", () => {
 
   describe("on game start", () => {
     it("should throw if the game does not exist", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
       await expect(() => instance.onGameStart(socket)).rejects.toThrowError(
         ERROR.GAME_NOT_FOUND,
@@ -332,13 +445,19 @@ describe("Skyjo", () => {
     })
 
     it("should throw if player is not admin", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
       game.addPlayer(player)
 
       await expect(() => instance.onGameStart(socket)).rejects.toThrowError(
@@ -349,20 +468,26 @@ describe("Skyjo", () => {
     })
 
     it("should start the game", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player2", "socket456", "elephant")
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
       game.addPlayer(opponent)
 
       await instance.onGameStart(socket)
 
-      expect(game.status).toBe<GameStatus>("playing")
-      expect(game.roundState).toBe<RoundState>(
-        "waitingPlayersToTurnInitialCards",
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
       )
     })
   })
@@ -370,7 +495,7 @@ describe("Skyjo", () => {
   describe("game actions", () => {
     describe("on reveal card", () => {
       it("should throw if game does not exist", async () => {
-        socket.data.gameId = TEST_UNKNOWN_GAME_ID
+        socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
@@ -380,18 +505,20 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const player1 = new SkyjoPlayer("player1", "socket2131123", "elephant")
-        const game = new Skyjo(player1, new SkyjoSettings(false))
+        const player1 = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          "socket2131123",
+        )
+        const game = new Skyjo(player1.id, new SkyjoSettings(false))
         game.addPlayer(player1)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.TURTLE },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
@@ -401,16 +528,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if game is not started", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -422,60 +551,66 @@ describe("Skyjo", () => {
       })
 
       it("should not reveal the card if player already revealed the right card amount", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
         player.turnCard(0, 0)
         player.turnCard(0, 1)
 
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         instance.onRevealCard(socket, { column: 0, row: 2 })
 
         expect(player.hasRevealedCardCount(2)).toBeTruthy()
-        expect(game.status).toBe<GameStatus>("playing")
-        expect(game.roundState).toBe<RoundState>(
-          "waitingPlayersToTurnInitialCards",
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+        expect(game.roundStatus).toBe<RoundStatus>(
+          ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
         )
       })
 
       it("should reveal the card", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        game.addPlayer(player)
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
+
         game.addPlayer(opponent)
+
+        game.addPlayer(player)
+        socket.data.gameCode = game.code
+
         game.start()
         player.turnCard(0, 0)
 
-        socket.data.gameId = game.id
-
-        instance.onRevealCard(socket, { column: 0, row: 1 })
+        await instance.onRevealCard(socket, { column: 0, row: 2 })
 
         expect(player.hasRevealedCardCount(2)).toBeTruthy()
-        expect(game.status).toBe<GameStatus>("playing")
-        expect(game.roundState).toBe<RoundState>(
-          "waitingPlayersToTurnInitialCards",
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+        expect(game.roundStatus).toBe<RoundStatus>(
+          ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
         )
       })
     })
 
     describe("on pick card", () => {
       it("should throw if game does not exist", async () => {
-        socket.data.gameId = TEST_UNKNOWN_GAME_ID
+        socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
@@ -485,16 +620,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-        const game = new Skyjo(opponent, new SkyjoSettings(false))
+        const opponent = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.ELEPHANT },
+          "socket456",
+        )
+        const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent2 = new SkyjoPlayer(
-          "opponent2",
+          { username: "opponent2", avatar: AVATARS.ELEPHANT },
           "socketId9887",
-          "elephant",
         )
         game.addPlayer(opponent2)
 
@@ -516,16 +653,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if game is not started", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -537,16 +676,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the player turn", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -568,15 +709,17 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the waited move", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -588,7 +731,7 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "replaceACard"
+        game.turnStatus = TURN_STATUS.REPLACE_A_CARD
 
         await expect(() =>
           instance.onPickCard(socket, { pile: "draw" }),
@@ -598,16 +741,18 @@ describe("Skyjo", () => {
       })
 
       it("should pick a card from the draw pile", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -624,20 +769,22 @@ describe("Skyjo", () => {
         await instance.onPickCard(socket, { pile: "draw" })
 
         expect(game.selectedCardValue).not.toBeNull()
-        expect(game.turnState).toBe<TurnState>("throwOrReplace")
+        expect(game.turnStatus).toBe<TurnStatus>(TURN_STATUS.THROW_OR_REPLACE)
       })
 
       it("should pick a card from the discard pile", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -655,13 +802,13 @@ describe("Skyjo", () => {
 
         expect(socket.emit).toHaveBeenCalledOnce()
         expect(game.selectedCardValue).not.toBeNull()
-        expect(game.turnState).toBe<TurnState>("replaceACard")
+        expect(game.turnStatus).toBe<TurnStatus>(TURN_STATUS.REPLACE_A_CARD)
       })
     })
 
     describe("on replace card", () => {
       it("should throw if the game does not exist", async () => {
-        socket.data.gameId = TEST_UNKNOWN_GAME_ID
+        socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 0 }),
@@ -671,16 +818,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-        const game = new Skyjo(opponent, new SkyjoSettings(false))
+        const opponent = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.ELEPHANT },
+          "socket456",
+        )
+        const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent2 = new SkyjoPlayer(
-          "opponent2",
+          { username: "opponent2", avatar: AVATARS.ELEPHANT },
           "socketId9887",
-          "elephant",
         )
         game.addPlayer(opponent2)
 
@@ -702,16 +851,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if game is not started", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -723,16 +874,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the player turn", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -754,15 +907,17 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the waited move", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -774,7 +929,7 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "chooseAPile"
+        game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
 
         await expect(() =>
           instance.onReplaceCard(socket, { column: 0, row: 2 }),
@@ -784,15 +939,17 @@ describe("Skyjo", () => {
       })
 
       it("should replace a card and finish the turn", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -805,20 +962,20 @@ describe("Skyjo", () => {
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
         game.selectedCardValue = 0
-        game.turnState = "replaceACard"
+        game.turnStatus = TURN_STATUS.REPLACE_A_CARD
 
         await instance.onReplaceCard(socket, { column: 0, row: 2 })
 
         expect(socket.emit).toHaveBeenCalledTimes(2)
         expect(game.selectedCardValue).toBeNull()
         expect(game.turn).toBe(1)
-        expect(game.turnState).toBe<TurnState>("chooseAPile")
+        expect(game.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
       })
     })
 
     describe("on discard card", () => {
       it("should throw if the game does not exist", async () => {
-        socket.data.gameId = TEST_UNKNOWN_GAME_ID
+        socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
           ERROR.GAME_NOT_FOUND,
@@ -828,16 +985,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-        const game = new Skyjo(opponent, new SkyjoSettings(false))
+        const opponent = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.ELEPHANT },
+          "socket456",
+        )
+        const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent2 = new SkyjoPlayer(
-          "opponent2",
+          { username: "opponent2", avatar: AVATARS.ELEPHANT },
           "socketId9887",
-          "elephant",
         )
         game.addPlayer(opponent2)
 
@@ -859,16 +1018,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if game is not started", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -880,16 +1041,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the player turn", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -911,15 +1074,17 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the waited move", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -931,7 +1096,7 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "chooseAPile"
+        game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
         game.selectedCardValue = 0
 
         await expect(() => instance.onDiscardCard(socket)).rejects.toThrowError(
@@ -942,15 +1107,17 @@ describe("Skyjo", () => {
       })
 
       it("should discard a card", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -962,20 +1129,20 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "throwOrReplace"
+        game.turnStatus = TURN_STATUS.THROW_OR_REPLACE
         game.selectedCardValue = 0
 
         await instance.onDiscardCard(socket)
 
         expect(game.selectedCardValue).toBeNull()
         expect(game.turn).toBe(0)
-        expect(game.turnState).toBe<TurnState>("turnACard")
+        expect(game.turnStatus).toBe<TurnStatus>(TURN_STATUS.TURN_A_CARD)
       })
     })
 
     describe("on turn card", () => {
       it("should throw if the game does not exist", async () => {
-        socket.data.gameId = TEST_UNKNOWN_GAME_ID
+        socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 0 }),
@@ -983,16 +1150,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-        const game = new Skyjo(opponent, new SkyjoSettings(false))
+        const opponent = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.ELEPHANT },
+          "socket456",
+        )
+        const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent2 = new SkyjoPlayer(
-          "opponent2",
+          { username: "opponent2", avatar: AVATARS.ELEPHANT },
           "socketId9887",
-          "elephant",
         )
         game.addPlayer(opponent2)
 
@@ -1014,16 +1183,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if game is not started", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -1035,16 +1206,18 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not player turn", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
         game.addPlayer(player)
         instance["games"].push(game)
-        socket.data.gameId = game.id
+        socket.data.gameCode = game.code
 
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
 
@@ -1066,15 +1239,17 @@ describe("Skyjo", () => {
       })
 
       it("should throw if it's not the waited move", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -1086,7 +1261,7 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "replaceACard"
+        game.turnStatus = TURN_STATUS.REPLACE_A_CARD
 
         await expect(() =>
           instance.onTurnCard(socket, { column: 0, row: 2 }),
@@ -1096,15 +1271,17 @@ describe("Skyjo", () => {
       })
 
       it("should turn a card and finish the turn ", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -1116,25 +1293,28 @@ describe("Skyjo", () => {
 
         game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
         game.turn = 0
-        game.turnState = "turnACard"
+        game.turnStatus = TURN_STATUS.TURN_A_CARD
 
         await instance.onTurnCard(socket, { column: 0, row: 2 })
 
         expect(player.cards[0][2].isVisible).toBeTruthy()
         expect(game.turn).toBe(1)
-        expect(game.turnState).toBe<TurnState>("chooseAPile")
+        expect(game.turnStatus).toBe<TurnStatus>(TURN_STATUS.CHOOSE_A_PILE)
       })
 
       it("should turn a card, finish the turn and start a new round", async () => {
-        const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-        const game = new Skyjo(player, new SkyjoSettings(false))
-        socket.data.gameId = game.id
+        vi.useFakeTimers()
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        socket.data.gameCode = game.code
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
-          "player2",
+          { username: "player2", avatar: AVATARS.ELEPHANT },
           "socketId132312",
-          "elephant",
         )
         game.addPlayer(opponent)
         game.start()
@@ -1155,21 +1335,30 @@ describe("Skyjo", () => {
 
         game.turn = 0
         game.roundNumber = 1
-        game.firstPlayerToFinish = opponent
-        game.turnState = "turnACard"
-        game.roundState = "lastLap"
+        game.firstToFinishPlayerId = opponent.id
+        game.turnStatus = TURN_STATUS.TURN_A_CARD
+        game.roundStatus = ROUND_STATUS.LAST_LAP
 
         await instance.onTurnCard(socket, { column: 0, row: 2 })
 
-        expect(game.roundState).toBe<RoundState>("over")
-        expect(game.status).toBe<GameStatus>("playing")
+        expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+
+        vi.runAllTimers()
+
+        expect(game.roundStatus).toBe<RoundStatus>(
+          ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+        )
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+
+        vi.useRealTimers()
       })
     })
   })
 
   describe("on replay", () => {
     it("should throw if it does not exist", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
       await expect(() => instance.onReplay(socket)).rejects.toThrowError(
         ERROR.GAME_NOT_FOUND,
@@ -1179,13 +1368,19 @@ describe("Skyjo", () => {
     })
 
     it("should throw if the game is not finished", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
       game.addPlayer(opponent)
       game.start()
 
@@ -1196,7 +1391,7 @@ describe("Skyjo", () => {
 
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
       game.turn = 0
-      game.turnState = "chooseAPile"
+      game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
 
       await expect(() => instance.onReplay(socket)).rejects.toThrowError(
         ERROR.NOT_ALLOWED,
@@ -1206,13 +1401,19 @@ describe("Skyjo", () => {
     })
 
     it("should ask to replay the game but not restart it", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
       game.addPlayer(opponent)
       game.start()
 
@@ -1222,23 +1423,29 @@ describe("Skyjo", () => {
       opponent.turnCard(0, 1)
 
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-      game.status = "finished"
+      game.status = GAME_STATUS.FINISHED
 
       await instance.onReplay(socket)
 
       expect(socket.emit).toHaveBeenCalledOnce()
-      expect(player.wantReplay).toBeTruthy()
-      expect(game.status).toBe<GameStatus>("finished")
+      expect(player.wantsReplay).toBeTruthy()
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.FINISHED)
     })
 
     it("should ask to replay the game and restart it", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
       game.addPlayer(opponent)
       game.start()
 
@@ -1248,124 +1455,43 @@ describe("Skyjo", () => {
       opponent.turnCard(0, 1)
 
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-      game.status = "finished"
+      game.status = GAME_STATUS.FINISHED
 
-      opponent.wantReplay = true
+      opponent.wantsReplay = true
 
       await instance.onReplay(socket)
 
       expect(socket.emit).toHaveBeenCalledOnce()
       game.players.forEach((player) => {
-        expect(player.wantReplay).toBeFalsy()
+        expect(player.wantsReplay).toBeFalsy()
       })
-      expect(game.status).toBe<GameStatus>("lobby")
-    })
-  })
-
-  describe("on connection lost", () => {
-    it("should do nothing if player is not in a game", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
-
-      await instance.onConnectionLost(socket)
-
-      expect(socket.emit).not.toHaveBeenCalled()
-    })
-
-    it("should set the player to connection lost", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
-      game.addPlayer(player)
-      instance["games"].push(game)
-      socket.data.gameId = game.id
-
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
-      game.addPlayer(opponent)
-      game.start()
-
-      player.turnCard(0, 0)
-      player.turnCard(0, 1)
-      opponent.turnCard(0, 0)
-      opponent.turnCard(0, 1)
-
-      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-
-      await instance.onConnectionLost(socket)
-
-      expect(player.connectionStatus).toBe<ConnectionStatus>("connection-lost")
-    })
-  })
-
-  describe("on reconnect", () => {
-    it("should throw if player is not in a game", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
-
-      await expect(() => instance.onReconnect(socket)).rejects.toThrowError(
-        ERROR.GAME_NOT_FOUND,
-      )
-
-      expect(socket.emit).not.toHaveBeenCalled()
-    })
-
-    it("should throw if player is not in the game", async () => {
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      game.addPlayer(opponent)
-      instance["games"].push(game)
-      socket.data.gameId = game.id
-
-      const opponent2 = new SkyjoPlayer("opponent2", "socketId9887", "elephant")
-      game.addPlayer(opponent2)
-      game.start()
-
-      await expect(() => instance.onReconnect(socket)).rejects.toThrowError(
-        ERROR.PLAYER_NOT_FOUND,
-      )
-    })
-
-    it("should reconnect the player", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
-      game.addPlayer(player)
-      instance["games"].push(game)
-      socket.data.gameId = game.id
-
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
-      game.addPlayer(opponent)
-      game.start()
-
-      player.turnCard(0, 0)
-      player.turnCard(0, 1)
-      opponent.turnCard(0, 0)
-      opponent.turnCard(0, 1)
-
-      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-
-      player.connectionStatus = "disconnected"
-
-      await instance.onReconnect(socket)
-
-      expect(player.connectionStatus).toBe<ConnectionStatus>("connected")
-      expect(socket.emit).toHaveBeenCalledOnce()
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.LOBBY)
     })
   })
 
   describe("on leave", () => {
     it("should do nothing if player is not in a game", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await instance.onLeave(socket)
-
-      expect(socket.emit).not.toHaveBeenCalled()
+      await expect(() => instance.onLeave(socket)).rejects.toThrowError(
+        ERROR.GAME_NOT_FOUND,
+      )
     })
 
     it("should throw if player is not in the game", async () => {
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent2 = new SkyjoPlayer("opponent2", "socketId9887", "elephant")
+      const opponent2 = new SkyjoPlayer(
+        { username: "opponent2", avatar: AVATARS.TURTLE },
+        "socketId9887",
+      )
       game.addPlayer(opponent2)
       game.start()
 
@@ -1374,15 +1500,21 @@ describe("Skyjo", () => {
       )
     })
 
-    it("should remove the player from the game and stop the game", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      game.addPlayer(opponent)
-      instance["games"].push(game)
-      socket.data.gameId = game.id
-
-      const player = new SkyjoPlayer("player2", TEST_SOCKET_ID, "elephant")
+    it("should set the player to connection lost", async () => {
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
+      game.addPlayer(opponent)
       game.start()
 
       player.turnCard(0, 0)
@@ -1392,65 +1524,107 @@ describe("Skyjo", () => {
 
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
 
+      await instance.onLeave(socket, true)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTION_LOST,
+      )
+    })
+
+    it("should remove the player from the game if the game is in lobby", async () => {
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+
       await instance.onLeave(socket)
 
-      expect(player.connectionStatus).toBe<ConnectionStatus>("disconnected")
-      expect(game.status).toBe<GameStatus>("stopped")
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.LOBBY)
       expect(game.players.length).toBe(1)
     })
 
-    it("should disconnect the player, not stop the game, change turn and change the admin", async () => {
-      const player = new SkyjoPlayer("player2", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
-      game.addPlayer(player)
-      instance["games"].push(game)
-      socket.data.gameId = game.id
+    // it("should disconnect the player, not stop the game, change turn and change the admin", async () => {
+    //   const player = new SkyjoPlayer(
+    //     { username: "player2", avatar: AVATARS.PENGUIN },
+    //     TEST_SOCKET_ID,
+    //   )
+    //   const game = new Skyjo(player.id, new SkyjoSettings(false))
+    //   game.addPlayer(player)
+    //   instance["games"].push(game)
+    //   socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
+    //   const opponent = new SkyjoPlayer(
+    //     { username: "player1", avatar: AVATARS.ELEPHANT },
+    //     "socket456",
+    //   )
+    //   game.addPlayer(opponent)
+
+    //   const opponent2 = new SkyjoPlayer(
+    //     { username: "opponent2", avatar: AVATARS.TURTLE },
+    //     "socketId9887",
+    //   )
+    //   game.addPlayer(opponent2)
+
+    //   game.start()
+
+    //   player.turnCard(0, 0)
+    //   player.turnCard(0, 1)
+    //   opponent.turnCard(0, 0)
+    //   opponent.turnCard(0, 1)
+    //   opponent2.turnCard(0, 0)
+    //   opponent2.turnCard(0, 1)
+
+    //   game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+    //   game.turn = 0
+
+    //   await instance.onLeave(socket)
+
+    //   expect(player.connectionStatus).toBe<ConnectionStatus>(
+    //     CONNECTION_STATUS.DISCONNECTED,
+    //   )
+    //   expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+    //   expect(game.players.length).toBe(3)
+    //   expect(game.turn).toBe(1)
+    // })
+
+    it("should set the player to leave state and let the game goes", async () => {
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
 
-      const opponent2 = new SkyjoPlayer("opponent2", "socketId9887", "elephant")
-      game.addPlayer(opponent2)
-
-      game.start()
-
-      player.turnCard(0, 0)
-      player.turnCard(0, 1)
-      opponent.turnCard(0, 0)
-      opponent.turnCard(0, 1)
-      opponent2.turnCard(0, 0)
-      opponent2.turnCard(0, 1)
-
-      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-
-      game.turn = 0
-
-      await instance.onLeave(socket)
-
-      expect(player.connectionStatus).toBe<ConnectionStatus>("disconnected")
-      expect(game.status).toBe<GameStatus>("playing")
-      expect(game.players.length).toBe(3)
-      expect(game.turn).toBe(1)
-    })
-
-    it("should disconnect the player, change status of the game to playing", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
-      game.addPlayer(opponent)
-
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const player = new SkyjoPlayer("player2", TEST_SOCKET_ID, "elephant")
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
       game.addPlayer(player)
 
-      const opponent2 = new SkyjoPlayer("opponent2", "socketId9887", "elephant")
+      const opponent2 = new SkyjoPlayer(
+        { username: "opponent2", avatar: AVATARS.TURTLE },
+        "socketId9887",
+      )
       game.addPlayer(opponent2)
 
       game.start()
 
       player.cards[0][0] = new SkyjoCard(11)
-      player.cards[0][0] = new SkyjoCard(11)
+      player.cards[0][1] = new SkyjoCard(11)
 
       opponent.cards[0][0] = new SkyjoCard(12)
       opponent.cards[0][1] = new SkyjoCard(12)
@@ -1465,28 +1639,433 @@ describe("Skyjo", () => {
 
       await instance.onLeave(socket)
 
-      expect(player.connectionStatus).toBe<ConnectionStatus>("disconnected")
-      expect(game.status).toBe<GameStatus>("playing")
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.LEAVE,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
       expect(game.players.length).toBe(3)
     })
 
     it("should disconnect the player and remove the game if there is no more player", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
       instance["games"].push(game)
 
       await instance.onLeave(socket)
 
-      expect(game.status).toBe<GameStatus>("lobby")
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.LOBBY)
       expect(game.players.length).toBe(0)
+    })
+
+    it("should disconnect the player after timeout expired and start the game because everyone turned the number of cards to start", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+
+      const opponent2 = new SkyjoPlayer(
+        { username: "opponent2", avatar: AVATARS.TURTLE },
+        "socketId9887",
+      )
+      game.addPlayer(opponent2)
+
+      game.start()
+
+      player.cards[0][0] = new SkyjoCard(11)
+      player.cards[0][1] = new SkyjoCard(11)
+
+      opponent.cards[0][0] = new SkyjoCard(12)
+      opponent.cards[0][1] = new SkyjoCard(12)
+
+      opponent2.cards[0][0] = new SkyjoCard(11)
+      opponent2.cards[0][1] = new SkyjoCard(11)
+
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+      opponent2.turnCard(0, 0)
+      opponent2.turnCard(0, 1)
+
+      await instance.onLeave(socket)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.LEAVE,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+      )
+      expect(game.players.length).toBe(3)
+
+      vi.runAllTimers()
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.DISCONNECTED,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(game.players.length).toBe(3)
+
+      vi.useRealTimers()
+    })
+
+    it("should disconnect the player after timeout expired and broadcast the game", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+
+      const opponent2 = new SkyjoPlayer(
+        { username: "opponent2", avatar: AVATARS.TURTLE },
+        "socketId9887",
+      )
+      game.addPlayer(opponent2)
+
+      game.start()
+
+      player.cards[0][0] = new SkyjoCard(11)
+      player.cards[0][1] = new SkyjoCard(11)
+
+      opponent.cards[0][0] = new SkyjoCard(12)
+      opponent.cards[0][1] = new SkyjoCard(12)
+
+      opponent2.cards[0][0] = new SkyjoCard(11)
+      opponent2.cards[0][1] = new SkyjoCard(11)
+
+      player.turnCard(0, 0)
+      player.turnCard(0, 1)
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+      opponent2.turnCard(0, 0)
+      opponent2.turnCard(0, 1)
+
+      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+      await instance.onLeave(socket)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.LEAVE,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(game.players.length).toBe(3)
+
+      vi.runAllTimers()
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.DISCONNECTED,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(game.players.length).toBe(3)
+
+      vi.useRealTimers()
+    })
+
+    it("should disconnect the player after timeout expired and change who has to play", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+
+      const opponent2 = new SkyjoPlayer(
+        { username: "opponent2", avatar: AVATARS.TURTLE },
+        "socketId9887",
+      )
+      game.addPlayer(opponent2)
+
+      game.start()
+
+      player.cards[0][0] = new SkyjoCard(12)
+      player.cards[0][1] = new SkyjoCard(12)
+
+      opponent.cards[0][0] = new SkyjoCard(10)
+      opponent.cards[0][1] = new SkyjoCard(10)
+
+      opponent2.cards[0][0] = new SkyjoCard(11)
+      opponent2.cards[0][1] = new SkyjoCard(11)
+
+      player.turnCard(0, 0)
+      player.turnCard(0, 1)
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+      opponent2.turnCard(0, 0)
+      opponent2.turnCard(0, 1)
+
+      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+      await instance.onLeave(socket)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.LEAVE,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(game.players.length).toBe(3)
+      expect(game.turn).toBe(1)
+
+      vi.runAllTimers()
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.DISCONNECTED,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.PLAYING)
+      expect(game.players.length).toBe(3)
+      expect(game.turn).toBe(2)
+
+      vi.useRealTimers()
+    })
+
+    it("should disconnect the player after timeout expired and stop the game", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const player = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+
+      game.start()
+
+      player.cards[0][0] = new SkyjoCard(11)
+      player.cards[0][1] = new SkyjoCard(11)
+
+      opponent.cards[0][0] = new SkyjoCard(12)
+      opponent.cards[0][1] = new SkyjoCard(12)
+
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+
+      await instance.onLeave(socket)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.LEAVE,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+      expect(game.players.length).toBe(2)
+
+      vi.runAllTimers()
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.DISCONNECTED,
+      )
+      expect(game.status).toBe<GameStatus>(GAME_STATUS.STOPPED)
+      expect(game.players.length).toBe(2)
+      expect(instance["games"].length).toBe(0)
+
+      vi.useRealTimers()
+    })
+  })
+
+  describe("on reconnect", () => {
+    it("should throw if player is not in a game", async () => {
+      const lastGame: LastGame = {
+        gameCode: TEST_UNKNOWN_GAME_ID,
+        playerId: TEST_SOCKET_ID,
+      }
+
+      await expect(() =>
+        instance.onReconnect(socket, lastGame),
+      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+
+      expect(socket.emit).not.toHaveBeenCalled()
+    })
+
+    it("should throw if player is in the game but cannot reconnect", async () => {
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
+      game.addPlayer(player)
+      instance["games"].push(game)
+      socket.data.gameCode = game.code
+
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
+      game.addPlayer(opponent)
+      game.start()
+
+      player.turnCard(0, 0)
+      player.turnCard(0, 1)
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+
+      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+      await instance.onLeave(socket, true)
+      const lastGame: LastGame = {
+        gameCode: game.code,
+        playerId: player.id,
+      }
+      vi.spyOn(instance["gameService"], "isPlayerInGame").mockReturnValue(
+        Promise.resolve(true),
+      )
+      vi.spyOn(instance["playerService"], "canReconnect").mockReturnValue(
+        Promise.resolve(false),
+      )
+
+      await expect(() =>
+        instance.onReconnect(socket, lastGame),
+      ).rejects.toThrowError(ERROR.CANNOT_RECONNECT)
+    })
+
+    it("should reconnect the player if in the time limit", async () => {
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
+      game.addPlayer(player)
+      instance["games"].push(game)
+
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
+      game.addPlayer(opponent)
+      game.start()
+
+      player.turnCard(0, 0)
+      player.turnCard(0, 1)
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+
+      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+      socket.data = {
+        gameCode: game.code,
+        playerId: player.id,
+      }
+      await instance.onLeave(socket, true)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTION_LOST,
+      )
+
+      const lastGame: LastGame = {
+        gameCode: game.code,
+        playerId: player.id,
+      }
+      vi.spyOn(instance["gameService"], "isPlayerInGame").mockReturnValue(
+        Promise.resolve(true),
+      )
+      vi.spyOn(instance["playerService"], "canReconnect").mockReturnValue(
+        Promise.resolve(true),
+      )
+
+      await instance.onReconnect(socket, lastGame)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTED,
+      )
+    })
+
+    it("should reconnect the player if no time limit", async () => {
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
+      game.addPlayer(player)
+      instance["games"].push(game)
+
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
+      game.addPlayer(opponent)
+      game.start()
+
+      player.turnCard(0, 0)
+      player.turnCard(0, 1)
+      opponent.turnCard(0, 0)
+      opponent.turnCard(0, 1)
+
+      game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+      socket.data = {
+        gameCode: game.code,
+        playerId: player.id,
+      }
+      const lastGame: LastGame = {
+        gameCode: game.code,
+        playerId: player.id,
+      }
+      vi.spyOn(instance["gameService"], "isPlayerInGame").mockReturnValue(
+        Promise.resolve(true),
+      )
+      vi.spyOn(instance["playerService"], "canReconnect").mockReturnValue(
+        Promise.resolve(true),
+      )
+
+      await instance.onReconnect(socket, lastGame)
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTED,
+      )
     })
   })
 
   describe("on message", () => {
     it("should throw if game does not exist", async () => {
-      socket.data.gameId = TEST_UNKNOWN_GAME_ID
+      socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
       await expect(() =>
         instance.onMessage(socket, { username: "player1", message: "Hello!" }),
@@ -1496,11 +2075,14 @@ describe("Skyjo", () => {
     })
 
     it("should throw if player is not in the game", async () => {
-      const opponent = new SkyjoPlayer("player1", "socket456", "elephant")
-      const game = new Skyjo(opponent, new SkyjoSettings(false))
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
       await expect(() =>
         instance.onMessage(socket, { username: "player2", message: "Hello!" }),
@@ -1510,13 +2092,19 @@ describe("Skyjo", () => {
     })
 
     it("should send a message", async () => {
-      const player = new SkyjoPlayer("player1", TEST_SOCKET_ID, "elephant")
-      const game = new Skyjo(player, new SkyjoSettings(false))
+      const player = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       instance["games"].push(game)
-      socket.data.gameId = game.id
+      socket.data.gameCode = game.code
 
-      const opponent = new SkyjoPlayer("player2", "socketId132312", "elephant")
+      const opponent = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.ELEPHANT },
+        "socketId132312",
+      )
       game.addPlayer(opponent)
 
       await instance.onMessage(socket, {

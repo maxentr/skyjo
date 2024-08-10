@@ -2,6 +2,8 @@
 
 import { useToast } from "@/components/ui/use-toast"
 import { getCurrentRegion, getRegionWithLessPing } from "@/lib/utils"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -11,10 +13,17 @@ import {
   useMemo,
   useState,
 } from "react"
-import { ApiRegionsTag } from "shared/constants"
+import {
+  ApiRegionsTag,
+  CONNECTION_LOST_TIMEOUT_IN_MS,
+  CONNECTION_STATUS,
+} from "shared/constants"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
+import { LastGame } from "shared/validations/reconnect"
 import { Socket, io } from "socket.io-client"
 import customParser from "socket.io-msgpack-parser"
+
+dayjs.extend(utc)
 
 const initSocket = (url: string) => {
   console.log("Connecting to", url)
@@ -33,6 +42,8 @@ type SocketContextInterface = {
   region: ApiRegionsTag | null
   changeRegion: (region: ApiRegionsTag, manual?: boolean) => void
   createSocket: (region?: ApiRegionsTag) => void
+  getLastGameIfPossible: () => LastGame | null
+  createLastGame: () => void
 }
 const SocketContext = createContext({} as SocketContextInterface)
 
@@ -52,6 +63,50 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
       destroyGameListeners()
     }
   }, [socket])
+
+  //#region reconnection
+  const createLastGame = () => {
+    const lastGameString = localStorage.getItem("lastGame")
+    if (!lastGameString) return
+    const lastGame = JSON.parse(lastGameString) as LastGame
+
+    const maxDateToReconnect = dayjs()
+      .add(CONNECTION_LOST_TIMEOUT_IN_MS, "milliseconds")
+      .format()
+
+    localStorage.setItem(
+      "lastGame",
+      JSON.stringify({
+        ...lastGame,
+        maxDateToReconnect: maxDateToReconnect,
+      } satisfies LastGame),
+    )
+  }
+
+  const getlastGame = () => {
+    const lastGameString = localStorage.getItem("lastGame")
+
+    if (!lastGameString) return null
+
+    return JSON.parse(lastGameString) as LastGame
+  }
+
+  const getLastGameIfPossible = () => {
+    const lastGame = getlastGame()
+
+    if (!lastGame?.maxDateToReconnect) return null
+
+    const nowUTC = dayjs().utc()
+    const maxDateUTC = dayjs(lastGame.maxDateToReconnect).utc()
+
+    const diff = maxDateUTC.diff(nowUTC, "seconds")
+    const canReconnect = diff >= 0
+
+    if (!canReconnect) localStorage.removeItem("lastGame")
+
+    return canReconnect ? lastGame : null
+  }
+  //#endregion reconnection
 
   const changeRegion = (regionTag: ApiRegionsTag, manual = false) => {
     const newUrl = getCurrentRegion(regionTag)?.url
@@ -95,10 +150,12 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   const onConnectionLost = (reason: string) => {
     console.log("Socket disconnected", reason)
     toast({
-      description: t("connection-lost"),
+      description: t(CONNECTION_STATUS.CONNECTION_LOST),
       variant: "destructive",
       duration: 5000,
     })
+
+    if (reason === "ping timeout") createLastGame()
   }
 
   const onConnectionError = (err: unknown) => {
@@ -123,6 +180,8 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
       region,
       changeRegion,
       createSocket,
+      createLastGame,
+      getLastGameIfPossible,
     }),
     [socket, region, changeRegion],
   )

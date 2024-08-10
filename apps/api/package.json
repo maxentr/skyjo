@@ -14,7 +14,10 @@
   "dependencies": {
     "@hono/node-server": "^1.7.0",
     "@hono/zod-validator": "^0.2.1",
+    "database": "workspace:*",
+    "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.32.1",
     "hono": "^3.12.8",
     "nodemailer": "^6.9.13",
     "shared": "workspace:*",

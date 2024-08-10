@@ -6,6 +6,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { ListIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
+import { GAME_STATUS } from "shared/constants"
 
 const Scoreboard = () => {
   const { game } = useSkyjo()
@@ -19,7 +20,7 @@ const Scoreboard = () => {
         variant="icon"
         onClick={() => setOpen(!open)}
         title={t("button-title")}
-        tabIndex={game?.status === "lobby" ? -1 : 0}
+        tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
       >
         <ListIcon />
       </Button>

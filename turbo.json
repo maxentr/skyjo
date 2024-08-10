@@ -27,6 +27,8 @@
     },
     "biome:check": {
       "cache": false
-    }
+    },
+    "db:generate": {},
+    "db:migrate": {}
   }
 }

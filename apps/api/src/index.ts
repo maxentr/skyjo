@@ -9,8 +9,10 @@ import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import { feedbackSchema } from "shared/validations/feedback"
 import { Server } from "socket.io"
 import customParser from "socket.io-msgpack-parser"
+import { checkEnv } from "../env.schema"
 import skyjoRouter from "./socketRouter"
 
+checkEnv()
 config()
 
 const transporter = createTransport({

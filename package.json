@@ -9,7 +9,9 @@
     "biome:check": "turbo run biome:check",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
-    "test:ui": "turbo run test:ui"
+    "test:ui": "turbo run test:ui",
+    "db:generate": "turbo run db:generate",
+    "db:migrate": "turbo run db:migrate"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",

@@ -11,13 +11,15 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getConnectedPlayers, getWinner } from "@/lib/skyjo"
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const EndGameDialog = () => {
   const { player, game, actions } = useSkyjo()
   const t = useTranslations("components.EndGameDialog")
 
   const isGameFinished =
-    game.roundState === "over" && game.status === "finished"
+    game.roundStatus === ROUND_STATUS.OVER &&
+    game.status === GAME_STATUS.FINISHED
 
   if (!isGameFinished) return null
 
@@ -36,11 +38,11 @@ const EndGameDialog = () => {
           </DialogDescription>
         </DialogHeader>
         <ScoreTable players={game.players} winner={winner} />
-        {game.status !== "stopped" && (
+        {game.status !== GAME_STATUS.STOPPED && (
           <div className="mt-2 flex flex-col items-center gap-4">
             <div className="flex flex-row gap-1">
               {getConnectedPlayers(game.players).map((player) =>
-                player.wantReplay ? (
+                player.wantsReplay ? (
                   <CheckCircle2Icon
                     key={player.socketId}
                     size={24}
@@ -52,7 +54,7 @@ const EndGameDialog = () => {
               )}
             </div>
             <Button onClick={actions.replay} className="w-full">
-              {player.wantReplay
+              {player.wantsReplay
                 ? t("replay-button.cancel")
                 : t("replay-button.replay")}
             </Button>

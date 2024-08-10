@@ -9,6 +9,7 @@ import {
 import { AnimatePresence, m } from "framer-motion"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { GAME_STATUS } from "shared/constants"
 
 const OpponentsMobileView = () => {
   const { opponents, game, player } = useSkyjo()
@@ -33,7 +34,8 @@ const OpponentsMobileView = () => {
   }, [game.turn])
 
   useEffect(() => {
-    if (game.status === "playing") setSelectedOpponents(getNextPlayer(game))
+    if (game.status === GAME_STATUS.PLAYING)
+      setSelectedOpponents(getNextPlayer(game))
   }, [game.status])
 
   if (flattenOpponents.length === 0) return null

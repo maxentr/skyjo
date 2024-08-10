@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { Avatar } from "shared/types/player"
+import { Avatar } from "shared/constants"
 
 const containerVariants = cva("flex flex-col items-center", {
   variants: {

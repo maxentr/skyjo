@@ -1,4 +1,5 @@
 import { Opponents } from "@/types/opponents"
+import { CONNECTION_STATUS, GAME_STATUS, ROUND_STATUS } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
@@ -20,7 +21,9 @@ export const getConnectedPlayers = (
     return []
   }
 
-  return players.filter((player) => player.connectionStatus !== "disconnected")
+  return players.filter(
+    (player) => player.connectionStatus !== CONNECTION_STATUS.DISCONNECTED,
+  )
 }
 
 export const getOpponents = (
@@ -62,20 +65,24 @@ export const getOpponents = (
 export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   if (!socketId || !game) return false
   if (
-    game.roundState === "waitingPlayersToTurnInitialCards" &&
-    game.status === "playing"
+    game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS &&
+    game.status === GAME_STATUS.PLAYING
   )
     return true
 
-  if (game.status !== "playing" || game.roundState === "over") return false
+  if (
+    game.status !== GAME_STATUS.PLAYING ||
+    game.roundStatus === ROUND_STATUS.OVER
+  )
+    return false
 
   return game.players[game.turn].socketId === socketId
 }
 
 export const canTurnInitialCard = (game: SkyjoToJson) => {
   return (
-    game.status === "playing" &&
-    game.roundState === "waitingPlayersToTurnInitialCards"
+    game.status === GAME_STATUS.PLAYING &&
+    game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS
   )
 }
 
@@ -105,7 +112,7 @@ export const getNextPlayer = (game: SkyjoToJson) => {
 
   let nextTurn = (game.turn + 1) % players.length
 
-  while (players[nextTurn].connectionStatus !== "connected") {
+  while (players[nextTurn].connectionStatus !== CONNECTION_STATUS.CONNECTED) {
     nextTurn = (nextTurn + 1) % players.length
   }
 

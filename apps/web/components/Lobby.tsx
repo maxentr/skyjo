@@ -22,7 +22,7 @@ import { LockIcon, UnlockIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
 import { useLocalStorage } from "react-use"
-import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
+import { GAME_STATUS, SKYJO_DEFAULT_SETTINGS } from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
 
 type ChangeSettingsKey = keyof ChangeSettings
@@ -32,19 +32,24 @@ const Lobby = () => {
   const t = useTranslations("components.Lobby")
   const {
     player,
-    game: { players, status, settings, admin },
+    game: { players, status, settings },
     actions,
   } = useSkyjo()
-  const [value, setValue] = useLocalStorage<ChangeSettings>("settings")
+  const [settingsLocalStorage, setSettingsLocalStorage] =
+    useLocalStorage<ChangeSettings>("settings")
 
   useEffect(() => {
-    if (value) {
-      actions.changeSettings(value)
+    if (settingsLocalStorage) {
+      const newSettings = settingsLocalStorage
+      if (settingsLocalStorage.private !== settings.private)
+        newSettings.private = settings.private
+
+      actions.changeSettings(newSettings)
     }
   }, [])
 
-  const open = status === "lobby"
-  const isAdmin = player.socketId == admin.socketId
+  const isInLobby = status === GAME_STATUS.LOBBY
+  const isAdmin = player?.isAdmin ?? false
   const hasMinPlayers = players.length < 2
 
   const changeSettings = (
@@ -55,7 +60,7 @@ const Lobby = () => {
   }
 
   const beforeStartGame = () => {
-    setValue(settings)
+    setSettingsLocalStorage(settings)
 
     actions.startGame()
   }
@@ -64,7 +69,7 @@ const Lobby = () => {
   const maxInitialTurnedCount = nbCards === 1 ? 1 : nbCards - 1
 
   return (
-    <Dialog open={open}>
+    <Dialog open={isInLobby}>
       <DialogOverlay>
         <div className="fixed inset-0 z-20 flex mdh:md:items-center justify-center overflow-auto">
           <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-4xl p-4">
