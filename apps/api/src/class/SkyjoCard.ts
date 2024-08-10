@@ -10,25 +10,14 @@ interface SkyjoCardInterface {
 }
 
 export class SkyjoCard implements SkyjoCardInterface {
-  id = crypto.randomUUID()
-  private _value: number
-  private _isVisible: boolean = false
+  id: string = crypto.randomUUID()
+  value: number
+  isVisible: boolean = false
 
-  constructor(value: number, isVisible: boolean = false) {
-    this._value = value
-    this._isVisible = isVisible
-  }
-
-  get value() {
-    return this._value
-  }
-
-  set value(value: number) {
-    this._value = value
-  }
-
-  get isVisible() {
-    return this._isVisible
+  constructor(value: number, isVisible?: boolean, id?: string) {
+    this.value = value
+    if (isVisible) this.isVisible = isVisible
+    if (id) this.id = id
   }
 
   turnVisible() {
@@ -42,10 +31,4 @@ export class SkyjoCard implements SkyjoCardInterface {
       isVisible: this.isVisible,
     }
   }
-
-  //#region private methods
-  private set isVisible(value: boolean) {
-    this._isVisible = value
-  }
-  //#endregion
 }

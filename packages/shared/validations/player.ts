@@ -1,19 +1,9 @@
 import { z } from "zod"
-import { Avatar } from "../types/player"
+import { AVATARS, Avatar } from "../constants"
 
-const avatar: z.ZodType<Avatar> = z.enum([
-  "bee",
-  "crab",
-  "dog",
-  "elephant",
-  "fox",
-  "frog",
-  "koala",
-  "octopus",
-  "penguin",
-  "turtle",
-  "whale",
-])
+const avatar: z.ZodType<Avatar> = z.enum(
+  Object.values<Avatar>(AVATARS) as [Avatar],
+)
 
 export const createPlayer = z.object({
   username: z.string().min(1).max(100),

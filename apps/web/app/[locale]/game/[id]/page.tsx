@@ -10,7 +10,7 @@ type GameServerPageProps = {
 }
 const GameServerPage = ({ params }: GameServerPageProps) => {
   return (
-    <SkyjoContextProvider gameId={params.id}>
+    <SkyjoContextProvider gameCode={params.id}>
       <Lobby />
       <GamePage />
     </SkyjoContextProvider>

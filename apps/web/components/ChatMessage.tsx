@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 import { useTranslations } from "next-intl"
+import { MessageType } from "shared/constants"
 import type { ChatMessage } from "shared/types/chat"
 
 type ChatMessageProps = {
@@ -11,9 +12,8 @@ const chatMessageClasses = cva("", {
   variants: {
     type: {
       message: "text-slate-800",
-      info: "text-blue-600",
-      warn: "text-yellow-600",
       "player-joined": "text-green-600",
+      "player-reconnect": "text-green-600",
       "player-left": "text-red-600",
     },
   },
@@ -24,7 +24,7 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
     <p
       className={cn(
         "font-inter text-sm text-wrap break-words w-full",
-        chatMessageClasses({ type: message.type }),
+        chatMessageClasses({ type: message.type as MessageType }),
       )}
     >
       {message?.username && (

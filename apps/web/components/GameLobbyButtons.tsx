@@ -11,36 +11,56 @@ import { ERROR } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { CreatePlayer } from "shared/validations/player"
 
-export type GameLobbyButtonAction = "join" | "find" | "create-private"
+export type GameLobbyButtonAction =
+  | "join"
+  | "find"
+  | "create-private"
+  | "reconnect"
 type GameLobbyButtonsProps = {
-  gameId?: string
+  gameCode?: string
   beforeButtonAction: (
     type: GameLobbyButtonAction,
   ) => Promise<CreatePlayer | undefined> | CreatePlayer | undefined
 }
 
 const GameLobbyButtons = ({
-  gameId,
+  gameCode,
   beforeButtonAction,
 }: GameLobbyButtonsProps) => {
-  const hasGameId = !!gameId
+  const hasGameId = !!gameCode
 
   const t = useTranslations("components.GameLobbyButtons")
   const { username } = useUser()
-  const { socket } = useSocket()
+  const { socket, getLastGameIfPossible } = useSocket()
   const { toast } = useToast()
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
 
+  const lastGame = getLastGameIfPossible()
+
   const handleButtons = async (type: GameLobbyButtonAction) => {
     if (socket === null) return
-
     setLoading(true)
+
     const player = await beforeButtonAction(type)
     if (!player) return
 
-    if (gameId && type === "join") socket.emit("join", { gameId, player })
+    if (type === "reconnect") {
+      delete lastGame?.maxDateToReconnect
+      socket.emit("reconnect", lastGame!)
+
+      socket.once("error:reconnect", (message: string) => {
+        if (message === ERROR.CANNOT_RECONNECT) {
+          toast({
+            description: t("cannot-reconnect.description"),
+            variant: "destructive",
+            duration: 5000,
+          })
+        }
+      })
+    } else if (type === "join")
+      socket.emit("join", { gameCode: gameCode!, player })
     else socket.emit(type, player)
 
     const timeout = setTimeout(() => {
@@ -65,17 +85,37 @@ const GameLobbyButtons = ({
       }
     })
 
-    socket.once("join", (game: SkyjoToJson) => {
+    socket.once("join", (game: SkyjoToJson, playerId: string) => {
       clearTimeout(timeout)
+
+      localStorage.setItem(
+        "lastGame",
+        JSON.stringify({
+          gameCode: game.code,
+          playerId,
+        }),
+      )
+
       setLoading(false)
 
-      router.push(`/game/${game.id}`)
+      router.push(`/game/${game.code}`)
     })
   }
 
   return (
     <div className="flex flex-col gap-2 mt-6">
-      {hasGameId && (
+      {lastGame && (
+        <Button
+          onClick={() => handleButtons("reconnect")}
+          color="secondary"
+          className="w-full mb-4"
+          disabled={!username || socket === null}
+          loading={loading}
+        >
+          {t("reconnect-game-button")}
+        </Button>
+      )}
+      {hasGameId && !lastGame && (
         <Button
           onClick={() => handleButtons("join")}
           color="secondary"

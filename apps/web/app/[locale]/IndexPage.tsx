@@ -12,7 +12,7 @@ import { CreatePlayer } from "shared/validations/player"
 
 type Props = {
   searchParams: {
-    gameId?: string
+    gameCode?: string
     region?: ApiRegionsTag
   }
 }
@@ -49,7 +49,7 @@ const IndexPage = ({ searchParams }: Props) => {
       />
       <GameLobbyButtons
         beforeButtonAction={beforeButtonAction}
-        gameId={searchParams.gameId}
+        gameCode={searchParams.gameCode}
       />
     </>
   )

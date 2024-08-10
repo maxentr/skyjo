@@ -124,10 +124,10 @@
       "release-notes": "Notes de version"
     },
     "GameInfo": {
-      "last-turn": "Last turn!"
+      "last-turn": "Dernier tour !"
     },
     "GameLobbyButtons": {
-      "name-input-placeholder": "Nom",
+      "reconnect-game-button": "Se reconnecter à la partie",
       "join-game-button": "Rejoindre la partie",
       "find-game-button": "Trouver une partie",
       "create-private-game-button": "Créer une partie privée",
@@ -136,6 +136,9 @@
       },
       "game-not-found": {
         "description": "La partie que vous cherchez n'existe pas"
+      },
+      "cannot-reconnect": {
+        "description": "Ce n'est plus possible de se reconnecter à la partie, le temps imparti pour se reconnecter a expiré"
       }
     },
     "GameStoppedDialog": {
@@ -167,8 +170,8 @@
           "title": "$number colonnes"
         },
         "nb-rows": {
-          "label": "Number of rows",
-          "title": "$number rows"
+          "label": "Nombre de lignes",
+          "title": "$number lignes"
         },
         "initial-turned-count": {
           "label": "Nombre de cartes retournées au début de la partie",
@@ -324,13 +327,13 @@
       "messages": {
         "player-joined": "{username} a rejoint la partie",
         "player-left": "{username} a quitté la partie",
-        "game-stopped": "La partie a été arrêtée car il n'y a plus assez de joueurs"
+        "player-reconnect": "{username} s'est reconnecté"
       }
     }
   },
   "contexts": {
     "SocketContext": {
-      "connection-lost": "Connexion au serveur perdue"
+      "connection-lost": "Connexion au serveur perdue. Essayez de recharger la page pour se reconnecter"
     }
   }
 }

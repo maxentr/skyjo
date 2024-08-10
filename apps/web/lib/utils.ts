@@ -14,9 +14,9 @@ export const getGameInviteLink = (
   const thirdSlashIndex = currentUrl.indexOf("/", 10)
   const lastSlashIndex = currentUrl.lastIndexOf("/")
   const baseUrl = currentUrl.slice(0, thirdSlashIndex)
-  const gameId = currentUrl.slice(lastSlashIndex + 1)
+  const gameCode = currentUrl.slice(lastSlashIndex + 1)
 
-  let link = `${baseUrl}/?gameId=${gameId}`
+  let link = `${baseUrl}/?gameCode=${gameCode}`
 
   if (region) link = `${link}&region=${region}`
 

@@ -7,17 +7,17 @@
       "outputs": ["dist/**", ".next/**"]
     },
     "test": {
-      "dependsOn": ["shared#build"],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
     "test:coverage": {
-      "dependsOn": ["shared#build"],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
     "test:ui": {
-      "dependsOn": ["shared#build"],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
@@ -27,6 +27,8 @@
     },
     "biome:check": {
       "cache": false
-    }
+    },
+    "db:generate": {},
+    "db:migrate": {}
   }
 }

@@ -25,10 +25,10 @@ const RegionsSelect = () => {
   const { region, changeRegion } = useSocket()
   const router = useRouter()
 
-  // biome-ignore lint/suspicious/noExplicitAny: API_REGIONS is typed as const so it doesn't fit with ApiRegions[]
   const [regions, setRegions] = useState<Array<ApiRegions>>(
     API_REGIONS[
       process.env.NEXT_PUBLIC_ENVIRONMENT as keyof typeof API_REGIONS
+      // biome-ignore lint/suspicious/noExplicitAny: API_REGIONS is typed as const so it doesn't fit with ApiRegions[]
     ] as any,
   )
   const [open, setOpen] = useState(false)

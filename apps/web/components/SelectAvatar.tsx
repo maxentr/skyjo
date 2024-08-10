@@ -1,6 +1,6 @@
 "use client"
 
-import { AVATARS, useUser } from "@/contexts/UserContext"
+import { AVATARS_ARRAY, useUser } from "@/contexts/UserContext"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import UserAvatar from "./UserAvatar"
 
@@ -12,13 +12,15 @@ const SelectAvatar = ({ containerClassName }: Props) => {
   const { avatarIndex, setAvatarIndex, getAvatar } = useUser()
 
   const handlePrevious = () => {
-    const newIndex = avatarIndex === 0 ? AVATARS.length - 1 : avatarIndex - 1
+    const newIndex =
+      avatarIndex === 0 ? AVATARS_ARRAY.length - 1 : avatarIndex - 1
 
     setAvatarIndex(newIndex)
   }
 
   const handleNext = () => {
-    const newIndex = avatarIndex === AVATARS.length - 1 ? 0 : avatarIndex + 1
+    const newIndex =
+      avatarIndex === AVATARS_ARRAY.length - 1 ? 0 : avatarIndex + 1
     setAvatarIndex(newIndex)
   }
 

@@ -9,6 +9,7 @@ import {
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useUser } from "@/contexts/UserContext"
 import { useTranslations } from "next-intl"
+import { GAME_STATUS } from "shared/constants"
 import { CreatePlayer } from "shared/validations/player"
 
 const GameStoppedDialog = () => {
@@ -16,7 +17,7 @@ const GameStoppedDialog = () => {
   const { username, getAvatar } = useUser()
   const t = useTranslations("components.GameStoppedDialog")
 
-  const isGameStopped = game.status === "stopped"
+  const isGameStopped = game.status === GAME_STATUS.STOPPED
 
   if (!isGameStopped) return null
 

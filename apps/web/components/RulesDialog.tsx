@@ -12,6 +12,7 @@ import {
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { BookOpenIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { GAME_STATUS } from "shared/constants"
 
 type RulesDialogProps = {
   defaultOpen?: boolean
@@ -31,7 +32,7 @@ const RulesDialog = ({
         <Button
           variant="icon"
           aria-label={t("trigger.aria-label")}
-          tabIndex={game?.status === "lobby" ? -1 : 0}
+          tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
         >
           <BookOpenIcon />
         </Button>

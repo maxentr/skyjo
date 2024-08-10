@@ -1,25 +1,17 @@
-export type SystemChatMessageType =
-  | "info"
-  | "warn"
-  | "player-joined"
-  | "player-left"
-
-export type PlayerChatMessageType = "message"
-
-export type ChatMessageType = SystemChatMessageType | PlayerChatMessageType
+import { MESSAGE_TYPE, SystemMessageType } from "../constants"
 
 export type PlayerChatMessage = {
   id: string
   username?: string
   message: string
-  type: PlayerChatMessageType
+  type: typeof MESSAGE_TYPE.USER_MESSAGE
 }
 
 export type SystemChatMessage = {
   id: string
   username?: string
-  message: "game-stopped" | "player-joined" | "player-left"
-  type: SystemChatMessageType
+  message: SystemMessageType
+  type: SystemMessageType
 }
 
 export type ChatMessage = PlayerChatMessage | SystemChatMessage

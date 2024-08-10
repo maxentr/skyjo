@@ -9,6 +9,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const EndRoundDialog = () => {
   const { game } = useSkyjo()
@@ -16,7 +17,9 @@ const EndRoundDialog = () => {
 
   const [open, setOpen] = useState(false)
 
-  const isRoundOver = game.roundState === "over" && game.status === "playing"
+  const isRoundOver =
+    game.roundStatus === ROUND_STATUS.OVER &&
+    game.status === GAME_STATUS.PLAYING
 
   useEffect(() => {
     setOpen(isRoundOver)
@@ -31,7 +34,7 @@ const EndRoundDialog = () => {
             {t("description")}
           </DialogDescription>
         </DialogHeader>
-        <ScoreTable players={game.players} />
+        <ScoreTable players={game.players} scrollToEnd />
       </DialogContent>
     </Dialog>
   )

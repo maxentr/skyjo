@@ -3,6 +3,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
+import { ROUND_STATUS, TURN_STATUS } from "shared/constants"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type PlayerBoardProps = {
@@ -16,11 +17,11 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
   const tp = useTranslations("components.PlayerBoard")
 
   const showSelectionAnimation =
-    game.roundState === "waitingPlayersToTurnInitialCards" ||
+    game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS ||
     (isPlayerTurn &&
-      (game.turnState === "turnACard" ||
-        game.turnState === "replaceACard" ||
-        game.turnState === "throwOrReplace"))
+      (game.turnStatus === TURN_STATUS.TURN_A_CARD ||
+        game.turnStatus === TURN_STATUS.REPLACE_A_CARD ||
+        game.turnStatus === TURN_STATUS.THROW_OR_REPLACE))
 
   return (
     <div

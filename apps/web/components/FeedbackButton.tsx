@@ -5,6 +5,7 @@ import { useFeedback } from "@/contexts/FeedbackContext"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { MessageSquareWarningIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { GAME_STATUS } from "shared/constants"
 
 type FeedbackButtonProps = {
   className?: string
@@ -21,7 +22,7 @@ const FeedbackButton = ({ className }: FeedbackButtonProps) => {
       variant="icon"
       aria-label={t("aria-label")}
       className={className}
-      tabIndex={game?.status === "lobby" ? -1 : 0}
+      tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
     >
       <MessageSquareWarningIcon />
     </Button>

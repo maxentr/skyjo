@@ -26,10 +26,10 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
 
   const handleLanguageChange = (locale: string) => {
     let route = pathname
-    const gameId = query.get("gameId")
+    const gameCode = query.get("gameCode")
 
-    if (gameId) {
-      route = `${route}?gameId=${gameId}`
+    if (gameCode) {
+      route = `${route}?gameCode=${gameCode}`
     }
 
     router.push(route, { locale: locale as Locales })

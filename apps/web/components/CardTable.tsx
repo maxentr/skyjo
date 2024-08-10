@@ -8,6 +8,7 @@ import {
 import { cn } from "@/lib/utils"
 import { AnimatePresence, m } from "framer-motion"
 import { useEffect, useState } from "react"
+import { ROUND_STATUS, TURN_STATUS } from "shared/constants"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
@@ -30,15 +31,19 @@ const CardTable = ({
     canTurnInitialCard(game) &&
     !hasTurnedCard(player, game.settings.initialTurnedCount)
   const canReplaceCard =
-    game.turnState === "throwOrReplace" || game.turnState === "replaceACard"
-  const canTurnCard = game.turnState === "turnACard"
+    game.turnStatus === TURN_STATUS.THROW_OR_REPLACE ||
+    game.turnStatus === TURN_STATUS.REPLACE_A_CARD
+  const canTurnCard = game.turnStatus === TURN_STATUS.TURN_A_CARD
 
   const onClick = (column: number, row: number) => {
     if (canTurnCardsAtBeginning) {
       actions.playRevealCard(column, row)
     } else if (isCurrentUserTurn(game, player.socketId)) {
       if (canReplaceCard) actions.replaceCard(column, row)
-      else if (game.turnState === "turnACard" && !cards[column][row].isVisible)
+      else if (
+        game.turnStatus === TURN_STATUS.TURN_A_CARD &&
+        !cards[column][row].isVisible
+      )
         actions.turnCard(column, row)
     }
   }
@@ -81,7 +86,10 @@ const CardTable = ({
                     : ""
                 }
                 disabled={cardDisabled || !canBeSelected}
-                exitAnimation={game.roundState === "playing"}
+                exitAnimation={
+                  game.roundStatus === ROUND_STATUS.PLAYING ||
+                  game.roundStatus === ROUND_STATUS.LAST_LAP
+                }
               />
             )
           })

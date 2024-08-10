@@ -19,6 +19,7 @@ import {
   playTurnCard,
 } from "shared/validations/play"
 import { CreatePlayer, createPlayer } from "shared/validations/player"
+import { LastGame, reconnect } from "shared/validations/reconnect"
 import { DisconnectReason, Server } from "socket.io"
 import skyjoController from "./class/SkyjoGameController"
 import { SkyjoSocket } from "./types/skyjoSocket"
@@ -30,7 +31,7 @@ const skyjoRouter = (
 ) => {
   io.on("connection", (socket: SkyjoSocket) => {
     if (socket.recovered) {
-      instance.onReconnect(socket)
+      instance.onReconnect(socket, socket.data)
     }
 
     socket.on("create-private", (player: CreatePlayer) => {
@@ -55,13 +56,14 @@ const skyjoRouter = (
 
     socket.on("join", async (data: JoinGame) => {
       try {
-        const { gameId, player } = joinGame.parse(data)
+        const { gameCode, player } = joinGame.parse(data)
 
-        await instance.onJoin(socket, gameId, player)
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      } catch (error: any) {
-        socket.emit("error:join", error.message)
-        console.error(`Error while joining a game : ${error.message}`)
+        await instance.onJoin(socket, gameCode, player)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          socket.emit("error:join", error.message)
+          console.error(`Error while joining a game : ${error.message}`)
+        }
       }
     })
 
@@ -168,10 +170,23 @@ const skyjoRouter = (
     socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
         console.log(`Socket ${socket.id} disconnected for reason ${reason}`)
-        if (reason === "ping timeout") await instance.onConnectionLost(socket)
+        if (reason === "ping timeout") await instance.onLeave(socket, true)
         else await instance.onLeave(socket)
       } catch (error) {
         console.error(`Error while disconnecting a game : ${error}`)
+      }
+    })
+
+    socket.on("reconnect", async (reconnectData: LastGame) => {
+      try {
+        reconnect.parse(reconnectData)
+
+        await instance.onReconnect(socket, reconnectData)
+      } catch (error) {
+        if (error instanceof Error) {
+          socket.emit("error:reconnect", error.message)
+          console.error(`Error while reconnecting a game : ${error.message}`)
+        }
       }
     })
   })

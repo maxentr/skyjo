@@ -19,7 +19,7 @@ import { ApiRegionsTag } from "shared/constants"
 
 type IndexServerPageProps = {
   searchParams: {
-    gameId?: string
+    gameCode?: string
     region?: ApiRegionsTag
   }
   params: {
@@ -32,49 +32,39 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
   return (
     <>
       <div className="bg-body flex flex-col">
-        <div className="relative h-dvh !p-6 bg-body flex flex-col gap-4 md:gap-0">
-          <div className="w-full grid grid-cols-3 grid-flow-row min-h-1/6 h-fit">
-            <div></div>
-            <div></div>
-            <div className="flex flex-row justify-end">
-              <div className="w-10 flex flex-col gap-4 z-10">
-                <LanguageSettings locale={params.locale} />
-                <RulesDialog />
-                <FeedbackButton className="md:mt-4" />
-              </div>
-            </div>
+        <div className="relative h-dvh !p-6 bg-body flex items-center justify-center">
+          <div className="absolute top-6 right-6 w-10 flex flex-col gap-4 z-10">
+            <LanguageSettings locale={params.locale} />
+            <RulesDialog />
+            <FeedbackButton className="md:mt-4" />
           </div>
-          <div className="w-full grid grid-cols-1 grid-flow-row h-4/6">
-            <div className="h-full flex items-center justify-center">
-              <div className="bg-container border-2 border-black px-12 md:px-16 py-8 md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
-                <h1 className="mb-5">
-                  <Image
-                    src="/svg/logo.svg"
-                    width={0}
-                    height={0}
-                    style={{ width: "auto", height: "2.5rem" }}
-                    className="select-none"
-                    priority
-                    loading="eager"
-                    title="Skyjo"
-                    alt="Skyjo"
-                  />
-                </h1>
-                <IndexPage searchParams={searchParams} />
-              </div>
-            </div>
+          <div className="bg-container border-2 border-black px-10 md:px-16 py-6 mdh:md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
+            <h1 className="mb-5">
+              <Image
+                src="/svg/logo.svg"
+                width={0}
+                height={0}
+                style={{ width: "auto", height: "2.5rem" }}
+                className="select-none"
+                priority
+                loading="eager"
+                title="Skyjo"
+                alt="Skyjo"
+              />
+            </h1>
+            <IndexPage searchParams={searchParams} />
           </div>
-          <div className="w-full flex flex-row items-end justify-center h-1/6">
+          <div className="hidden mdh:sm:flex absolute bottom-6 left-6 right-6 z-10 items-center justify-center">
             <MovingArrow href="#explanation" />
           </div>
-          <div className="absolute bottom-6 left-6 z-10 flex items-center justify-end">
+          <div className="absolute bottom-6 left-6 z-20 flex items-center justify-end">
             <RegionsSelect />
           </div>
         </div>
         <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">
           <h2
             id="explanation"
-            className="text-center text-3xl text-slate-800 mb-4"
+            className="text-center text-3xl text-slate-800 pt-2 mb-4"
           >
             {t("explanation.title")}
           </h2>

@@ -124,9 +124,10 @@
       "release-notes": "Release notes"
     },
     "GameInfo": {
-      "last-turn": "Dernier tour !"
+      "last-turn": "Last turn!"
     },
     "GameLobbyButtons": {
+      "reconnect-game-button": "Reconnect to the game",
       "join-game-button": "Join the game",
       "find-game-button": "Find a game",
       "create-private-game-button": "Create a private game",
@@ -135,6 +136,9 @@
       },
       "game-not-found": {
         "description": "The game you are looking for does not exist"
+      },
+      "cannot-reconnect": {
+        "description": "It is no longer possible to reconnect to the game, the time to reconnect has expired"
       }
     },
     "GameStoppedDialog": {
@@ -323,13 +327,13 @@
       "messages": {
         "player-joined": "{username} joined the game",
         "player-left": "{username} left the game",
-        "game-stopped": "The game has been stopped because there are not enough players"
+        "player-reconnect": "{username} reconnected to the game"
       }
     }
   },
   "contexts": {
     "SocketContext": {
-      "connection-lost": "Connection to the server has been lost"
+      "connection-lost": "Connection to the server has been lost. Try to reload the page to reconnect"
     }
   }
 }

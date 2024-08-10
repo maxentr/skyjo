@@ -4,6 +4,8 @@ import { useSocket } from "@/contexts/SocketContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
 import { useRouter } from "@/navigation"
 import { Opponents } from "@/types/opponents"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -11,13 +13,17 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react"
+import { GAME_STATUS, MESSAGE_TYPE } from "shared/constants"
 import { ChatMessage } from "shared/types/chat"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 import { ChangeSettings } from "shared/validations/changeSettings"
 import { PlayPickCard } from "shared/validations/play"
+
+dayjs.extend(utc)
 
 type SkyjoContextInterface = {
   game: SkyjoToJson
@@ -42,14 +48,14 @@ type SkyjoContextInterface = {
 const SkyjoContext = createContext({} as SkyjoContextInterface)
 
 interface SkyjoContextProviderProps extends PropsWithChildren {
-  gameId: string
+  gameCode: string
 }
 
 const SkyjoContextProvider = ({
   children,
-  gameId,
+  gameCode,
 }: SkyjoContextProviderProps) => {
-  const { socket } = useSocket()
+  const { socket, createLastGame } = useSocket()
   const router = useRouter()
   const t = useTranslations("utils.server.messages")
 
@@ -60,7 +66,7 @@ const SkyjoContextProvider = ({
   const opponents = getOpponents(game?.players, socket?.id ?? "")
 
   useEffect(() => {
-    if (!gameId || !socket) return
+    if (!gameCode || !socket) return
 
     initGameListeners()
 
@@ -68,7 +74,26 @@ const SkyjoContextProvider = ({
     socket.emit("get")
 
     return destroyGameListeners
-  }, [socket, gameId])
+  }, [socket, gameCode])
+
+  //#region reconnection
+  const gameStatusRef = useRef(game?.status)
+
+  useEffect(() => {
+    gameStatusRef.current = game?.status
+  }, [game?.status])
+
+  useEffect(() => {
+    const onUnload = () => {
+      if (gameStatusRef.current === GAME_STATUS.PLAYING) createLastGame()
+    }
+
+    window.addEventListener("beforeunload", onUnload)
+
+    return () => {
+      window.removeEventListener("beforeunload", onUnload)
+    }
+  }, [])
 
   //#region listeners
   const onGameUpdate = async (game: SkyjoToJson) => {
@@ -77,9 +102,12 @@ const SkyjoContextProvider = ({
   }
 
   const onMessageReceived = (message: ChatMessage) => {
-    if (message.type === "message") setChat((prev) => [message, ...prev])
+    if (message.type === MESSAGE_TYPE.USER_MESSAGE)
+      setChat((prev) => [message, ...prev])
     else {
-      const messageContent = t(message.message, { username: message.username })
+      const messageContent = t(message.message, {
+        username: message.username,
+      })
 
       setChat((prev) => [
         {
@@ -122,7 +150,7 @@ const SkyjoContextProvider = ({
   }
 
   const changeSettings = (settings: ChangeSettings) => {
-    if (socket?.id !== game?.admin.socketId) return
+    if (!player?.isAdmin) return
 
     if (
       settings.cardPerColumn * settings.cardPerRow <=
@@ -140,7 +168,7 @@ const SkyjoContextProvider = ({
   }
 
   const resetSettings = () => {
-    if (socket?.id !== game?.admin.socketId) return
+    if (!player?.isAdmin) return
 
     socket!.emit("settings", {
       private: game?.settings.private,
@@ -148,7 +176,7 @@ const SkyjoContextProvider = ({
   }
 
   const startGame = () => {
-    if (socket?.id !== game?.admin.socketId) return
+    if (!player?.isAdmin) return
 
     socket!.emit("start")
   }

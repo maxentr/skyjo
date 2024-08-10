@@ -1,5 +1,7 @@
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { beforeEach, describe, expect, it } from "vitest"
+import { i } from "vitest/dist/reporters-yx5ZTtEV.js"
+import { any } from "zod"
 
 let card: SkyjoCard
 
@@ -11,6 +13,14 @@ describe("SkyjoCard", () => {
   it("should create a new card", () => {
     expect(card.value).toBe(0)
     expect(card.isVisible).toBeFalsy()
+  })
+
+  it("should create a new card with value, visibility and id defined in the constructor", () => {
+    const id = crypto.randomUUID()
+    const card = new SkyjoCard(12, true, id)
+    expect(card.value).toBe(12)
+    expect(card.isVisible).toBeTruthy()
+    expect(card.id).toBe(id)
   })
 
   it("should turn a card to visible", () => {
@@ -28,9 +38,11 @@ describe("SkyjoCard", () => {
   })
 
   it("should return json with value as undefined if the card is not visible", () => {
-    const card = new SkyjoCard(0)
+    const id = crypto.randomUUID()
+    const card = new SkyjoCard(0, false, id)
 
     expect(card.toJson()).toMatchObject({
+      id,
       value: undefined,
       isVisible: false,
     })
@@ -43,5 +55,6 @@ describe("SkyjoCard", () => {
       value: 0,
       isVisible: true,
     })
+    expect(card.toJson().id).toBeDefined()
   })
 })

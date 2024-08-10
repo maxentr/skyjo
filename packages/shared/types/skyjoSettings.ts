@@ -1,7 +1,4 @@
-import { GameSettingsToJson } from "types/gameSettings"
-
-export interface SkyjoSettingsToJson extends GameSettingsToJson {
-  // typescript extends bug
+export interface SkyjoSettingsToJson {
   private: boolean
   maxPlayers: number
 

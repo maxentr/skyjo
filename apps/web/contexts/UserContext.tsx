@@ -9,24 +9,12 @@ import React, {
   useMemo,
   useState,
 } from "react"
-import { Avatar } from "shared/types/player"
+import { AVATARS, Avatar } from "shared/constants"
 
 const USERNAME_KEY = "username"
 const AVATAR_KEY = "Avatar-index"
 
-export const AVATARS: Avatar[] = [
-  "bee",
-  "crab",
-  "dog",
-  "elephant",
-  "fox",
-  "frog",
-  "koala",
-  "octopus",
-  "penguin",
-  "turtle",
-  "whale",
-]
+export const AVATARS_ARRAY = Object.values(AVATARS)
 
 type UserContextInterface = {
   username: string
@@ -54,7 +42,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const getAvatar = () => {
-    return AVATARS[avatarIndex] ?? AVATARS[0]
+    return AVATARS_ARRAY[avatarIndex] ?? AVATARS_ARRAY[0]
   }
 
   const saveUserInLocalStorage = () => {

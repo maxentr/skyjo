@@ -27,6 +27,7 @@ const config = {
     },
     extend: {
       screens: {
+        sdh: { raw: "(min-height: 480px)" },
         mdh: { raw: "(min-height: 690px)" },
         lgh: { raw: "(min-height: 800px)" },
       },
@@ -76,16 +77,11 @@ const config = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    function ({ addVariant }: any) {
-      addVariant("notfirefox", ":not(:-moz-any(&))")
-    },
-  ],
+  plugins: [require("tailwindcss-animate")],
   variants: {
     height: ["responsive"],
   },
+  ...(process.env.NEXT_PUBLIC_ENVIRONMENT === "PROD" ? { cssnano: {} } : {}),
 } satisfies Config
 
 export default config

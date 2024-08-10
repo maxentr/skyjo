@@ -5,6 +5,7 @@ import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
+import { TURN_STATUS } from "shared/constants"
 
 const DRAW_CARD = {
   id: "draw",
@@ -21,17 +22,19 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
   const t = useTranslations("components.DrawPile")
 
   const onClick = () => {
-    if (isPlayerTurn && game.turnState === "chooseAPile") {
+    if (isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE) {
       actions.pickCardFromPile("draw")
     }
   }
 
   const canDrawCard =
-    isPlayerTurn && game.turnState === "chooseAPile" ? "animate-scale" : ""
+    isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
+      ? "animate-scale"
+      : ""
 
   return (
     <div className="relative">
-      <SelectedCard show={game.turnState === "throwOrReplace"} />
+      <SelectedCard show={game.turnStatus === TURN_STATUS.THROW_OR_REPLACE} />
       <Card
         card={DRAW_CARD}
         onClick={onClick}
@@ -40,7 +43,9 @@ const DrawPile = ({ isPlayerTurn }: DrawPileProps) => {
           "!shadow-[3px_3px_0px_0px_rgba(0,0,0)] !mdh:md:shadow-[4px_4px_0px_0px_rgba(0,0,0)]",
           canDrawCard,
         )}
-        disabled={!(isPlayerTurn && game.turnState === "chooseAPile")}
+        disabled={
+          !(isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE)
+        }
         flipAnimation={false}
       />
     </div>

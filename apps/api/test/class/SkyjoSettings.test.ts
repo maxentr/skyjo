@@ -1,5 +1,13 @@
 import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
+import { DbGame } from "database/schema"
+import {
+  API_REGIONS_TAGS,
+  GAME_STATUS,
+  LAST_TURN_STATUS,
+  ROUND_STATUS,
+  SKYJO_DEFAULT_SETTINGS,
+  TURN_STATUS,
+} from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
 
 let settings: SkyjoSettings
@@ -31,13 +39,54 @@ describe("SkyjoSettings", () => {
     expect(defaultSettings.maxPlayers).toBe(SKYJO_DEFAULT_SETTINGS.MAX_PLAYERS)
   })
 
-  it("should game settings private and with 2 players max", () => {
-    const privateSettings = new SkyjoSettings(true, 2)
+  it("should populate the class", () => {
+    const dbGame: DbGame = {
+      id: crypto.randomUUID(),
+      code: "code",
+      status: GAME_STATUS.LOBBY,
+      turn: 0,
+      turnStatus: TURN_STATUS.CHOOSE_A_PILE,
+      lastTurnStatus: LAST_TURN_STATUS.TURN,
+      roundStatus: ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+      roundNumber: 1,
+      discardPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      drawPile: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      selectedCardValue: null,
+      lastDiscardCardValue: null,
+      adminId: "adminId",
+      firstToFinishPlayerId: null,
 
-    expect(privateSettings.private).toBeTruthy()
-    expect(privateSettings.maxPlayers).toBe(2)
+      allowSkyjoForColumn: false,
+      allowSkyjoForRow: false,
+      initialTurnedCount: 4,
+      cardPerRow: 3,
+      cardPerColumn: 4,
+      scoreToEndGame: 101,
+      multiplierForFirstPlayer: 1,
+      maxPlayers: 2,
+      isPrivate: true,
+
+      isFull: false,
+
+      region: API_REGIONS_TAGS["0"],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+
+    const settings = new SkyjoSettings(false).populate(dbGame)
+
+    expect(structuredClone(settings)).toStrictEqual({
+      maxPlayers: dbGame.maxPlayers,
+      private: dbGame.isPrivate,
+      allowSkyjoForColumn: dbGame.allowSkyjoForColumn,
+      allowSkyjoForRow: dbGame.allowSkyjoForRow,
+      initialTurnedCount: dbGame.initialTurnedCount,
+      cardPerRow: dbGame.cardPerRow,
+      cardPerColumn: dbGame.cardPerColumn,
+      scoreToEndGame: dbGame.scoreToEndGame,
+      multiplierForFirstPlayer: dbGame.multiplierForFirstPlayer,
+    })
   })
-
   it("should change settings", () => {
     const newSettings = {
       private: true,

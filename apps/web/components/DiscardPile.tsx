@@ -5,6 +5,7 @@ import SelectedCard from "@/components/SelectedCard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
+import { LAST_TURN_STATUS, TURN_STATUS } from "shared/constants"
 
 type DiscardPileProps = {
   isPlayerTurn: boolean
@@ -18,7 +19,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     if (
       isPlayerTurn &&
       game.lastDiscardCardValue !== undefined &&
-      game.turnState === "chooseAPile"
+      game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
     )
       actions.pickCardFromPile("discard")
   }
@@ -27,7 +28,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     if (isPlayerTurn) actions.discardSelectedCard()
   }
 
-  if (isPlayerTurn && game.turnState === "throwOrReplace") {
+  if (isPlayerTurn && game.turnStatus === TURN_STATUS.THROW_OR_REPLACE) {
     return (
       <Card
         card={{
@@ -36,7 +37,7 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
           isVisible: false,
         }}
         onClick={onDiscard}
-        title={t("throw")}
+        title={t(LAST_TURN_STATUS.THROW)}
         className="translate-y-1 animate-scale"
         disabled={false}
         flipAnimation={false}
@@ -50,12 +51,13 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
     isVisible: game.lastDiscardCardValue !== undefined,
   }
 
-  const canDiscard = isPlayerTurn && game.turnState === "chooseAPile"
-  isPlayerTurn && game.turnState === "chooseAPile"
+  const canDiscard =
+    isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
+  isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
 
   return (
     <div className="relative">
-      <SelectedCard show={game.turnState === "replaceACard"} />
+      <SelectedCard show={game.turnStatus === TURN_STATUS.REPLACE_A_CARD} />
       <Card
         card={card}
         onClick={onClick}
