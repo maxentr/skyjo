@@ -22,12 +22,8 @@ const withAuth = <P extends object>(
 
     const checkAuth = async () => {
       if (username && avatarIndex >= 0 && socket) setVerified(true)
-      else {
-        const gameId = params?.id
-
-        if (gameId) router.push(`/?gameId=${gameId}`)
-        else router.push("/")
-      }
+      else if (params?.code) router.push(`/?gameCode=${params?.code}`)
+      else router.push("/")
     }
 
     if (verified) {

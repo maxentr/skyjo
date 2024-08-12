@@ -27,7 +27,7 @@ const GameLobbyButtons = ({
   gameCode,
   beforeButtonAction,
 }: GameLobbyButtonsProps) => {
-  const hasGameId = !!gameCode
+  const hasGameCode = !!gameCode
 
   const t = useTranslations("components.GameLobbyButtons")
   const { username } = useUser()
@@ -115,7 +115,7 @@ const GameLobbyButtons = ({
           {t("reconnect-game-button")}
         </Button>
       )}
-      {hasGameId && !lastGame && (
+      {hasGameCode && !lastGame && (
         <Button
           onClick={() => handleButtons("join")}
           color="secondary"
