@@ -1,25 +1,19 @@
+"use client"
+
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
-import { InfoIcon } from "lucide-react"
+import { AnimatePresence, m } from "framer-motion"
 import { useTranslations } from "next-intl"
 import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const GameInfo = () => {
   const { game, player } = useSkyjo()
-  const t = useTranslations("components.GameInfo")
+
+  const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
 
   const getGameInfo = () => {
     const t = useTranslations("utils.skyjo")
     if (!player || !game) return t("waiting")
-
-    const playerWhoHasToPlay = game.players[game.turn]
-    const roundInProgress =
-      game.roundStatus === ROUND_STATUS.PLAYING ||
-      game.roundStatus === ROUND_STATUS.LAST_LAP
-
-    if (game.status === GAME_STATUS.LOBBY) {
-      return t("waiting")
-    }
 
     if (
       game.status === GAME_STATUS.PLAYING &&
@@ -28,39 +22,40 @@ const GameInfo = () => {
       return t("turn-cards", { number: game.settings.initialTurnedCount })
     }
 
-    if (game.status === GAME_STATUS.PLAYING && roundInProgress) {
-      return isCurrentUserTurn(game, player.socketId)
-        ? t(`turn.${game.turnStatus}`)
-        : t("player-turn", {
-            playerName: playerWhoHasToPlay.name,
-          })
-    }
-
-    if (game.status === GAME_STATUS.STOPPED) {
-      return t("game-stopped")
-    }
-
-    if (
-      game.roundStatus === ROUND_STATUS.OVER &&
-      game.status !== GAME_STATUS.FINISHED
-    ) {
-      return t("round-over")
-    }
-
-    if (game.status === GAME_STATUS.FINISHED) {
-      return t("game-ended")
-    }
+    return t(`turn.${game.turnStatus}`)
   }
 
   return (
-    <div className="hidden md:flex flex-row items-center gap-2 p-2 bg-container border-2 border-black rounded max-w-[300px] select-none">
-      <InfoIcon size={20} />
-      <div className="flex flex-col justify-start">
-        {game.roundStatus === ROUND_STATUS.LAST_LAP && (
-          <p className="font-bold">{t("last-turn")}</p>
-        )}
-        <p>{getGameInfo()}</p>
-      </div>
+    <div className="absolute -top-8 text-center text-sm animate-scale">
+      <AnimatePresence>
+        {isPlayerTurn &&
+          (game.roundStatus ===
+            ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS ||
+            game.roundStatus === ROUND_STATUS.PLAYING ||
+            game.roundStatus === ROUND_STATUS.LAST_LAP) && (
+            <m.p
+              initial={{
+                scale: 0,
+              }}
+              animate={{
+                scale: 1,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeInOut",
+                },
+              }}
+              exit={{
+                scale: 0,
+                transition: {
+                  duration: 0.5,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              {getGameInfo()}
+            </m.p>
+          )}
+      </AnimatePresence>
     </div>
   )
 }

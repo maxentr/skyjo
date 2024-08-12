@@ -311,12 +311,12 @@
   "utils": {
     "skyjo": {
       "waiting": "En attente de joueurs",
-      "turn-cards": "Retourner {number} cartes",
+      "turn-cards": "Tourner {number} cartes",
       "turn": {
         "chooseAPile": "Choisissez une pile",
-        "throwOrReplace": "Remplacez une carte ou défaussez la carte piochée",
-        "replaceACard": "Sélectionnez une carte à remplacer",
-        "turnACard": "Sélectionnez une carte à retourner"
+        "throwOrReplace": "Remplacez ou défaussez",
+        "replaceACard": "Remplacez une carte",
+        "turnACard": "Tournez une carte"
       },
       "player-turn": "C'est au tour de {playerName}",
       "game-stopped": "Partie arrêtée",

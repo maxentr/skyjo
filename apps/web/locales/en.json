@@ -314,9 +314,9 @@
       "turn-cards": "Turn {number} cards",
       "turn": {
         "chooseAPile": "Choose a pile",
-        "throwOrReplace": "Replace a card or discard the drawn card",
-        "replaceACard": "Select a card to replace",
-        "turnACard": "Select a card to return"
+        "throwOrReplace": "Replace or discard",
+        "replaceACard": "Replace a card",
+        "turnACard": "Turn a card"
       },
       "player-turn": "It's {playerName}'s turn",
       "game-stopped": "Game stopped",
