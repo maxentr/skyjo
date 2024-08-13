@@ -21,11 +21,13 @@ type GameLobbyButtonsProps = {
   beforeButtonAction: (
     type: GameLobbyButtonAction,
   ) => Promise<CreatePlayer | undefined> | CreatePlayer | undefined
+  hideReconnectButton?: boolean
 }
 
 const GameLobbyButtons = ({
   gameCode,
   beforeButtonAction,
+  hideReconnectButton = false,
 }: GameLobbyButtonsProps) => {
   const hasGameCode = !!gameCode
 
@@ -104,7 +106,7 @@ const GameLobbyButtons = ({
 
   return (
     <div className="flex flex-col gap-2 mt-6">
-      {lastGame && (
+      {lastGame && !hideReconnectButton && (
         <Button
           onClick={() => handleButtons("reconnect")}
           color="secondary"

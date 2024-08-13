@@ -39,7 +39,10 @@ const GameStoppedDialog = () => {
             {t("description")}
           </DialogDescription>
         </DialogHeader>
-        <GameLobbyButtons beforeButtonAction={beforeButtonAction} />
+        <GameLobbyButtons
+          beforeButtonAction={beforeButtonAction}
+          hideReconnectButton
+        />
       </DialogContent>
     </Dialog>
   )
