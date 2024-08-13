@@ -15,19 +15,21 @@ import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
+import { useLocalStorage } from "react-use"
 import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
+  const [firstGame, setFirstGame] = useLocalStorage<boolean>("firstGame")
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
   const roundInProgress =
     game.roundStatus === ROUND_STATUS.PLAYING ||
     game.roundStatus === ROUND_STATUS.LAST_LAP
 
-  const isFirstPlayerGame = localStorage.getItem("firstGame") ?? "true"
+  const isFirstPlayerGame = firstGame ?? true
   const onRulesDialogOpenChange = () => {
-    if (isFirstPlayerGame) localStorage.setItem("firstGame", "false")
+    if (isFirstPlayerGame) setFirstGame(false)
   }
 
   return (
@@ -50,7 +52,7 @@ const GamePage = () => {
           <div className="flex flex-col gap-4 items-center justify-start">
             <Scoreboard />
             <RulesDialog
-              defaultOpen={isFirstPlayerGame === "true"}
+              defaultOpen={isFirstPlayerGame}
               onOpenChange={onRulesDialogOpenChange}
             />
             <FeedbackButton className="mt-4" />

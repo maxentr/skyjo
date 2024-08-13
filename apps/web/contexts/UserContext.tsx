@@ -9,6 +9,7 @@ import React, {
   useMemo,
   useState,
 } from "react"
+import { useLocalStorage } from "react-use"
 import { AVATARS, Avatar } from "shared/constants"
 
 const USERNAME_KEY = "username"
@@ -28,26 +29,31 @@ type UserContextInterface = {
 const UserContext = createContext({} as UserContextInterface)
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [preferredUsername, setPreferredUsername] = useLocalStorage<string>(
+    USERNAME_KEY,
+    "",
+    { raw: true },
+  )
+  const [preferredAvatarIndex, setPreferredAvatarIndex] =
+    useLocalStorage<number>(AVATAR_KEY)
+
   const [username, setUsername] = useState<string>("")
   const [avatarIndex, setAvatarIndex] = useState<number>(0)
 
   useEffect(() => {
     if (localStorage) {
-      const username = localStorage.getItem(USERNAME_KEY)
-      const localAvatarIndex = localStorage.getItem(AVATAR_KEY)
-
-      if (username) setUsername(username)
-      if (localAvatarIndex) setAvatarIndex(+localAvatarIndex)
+      if (preferredUsername) setUsername(preferredUsername)
+      if (preferredAvatarIndex) setAvatarIndex(preferredAvatarIndex)
     }
-  }, [])
+  }, [preferredUsername, preferredAvatarIndex])
 
   const getAvatar = () => {
     return AVATARS_ARRAY[avatarIndex] ?? AVATARS_ARRAY[0]
   }
 
   const saveUserInLocalStorage = () => {
-    localStorage.setItem(USERNAME_KEY, username)
-    localStorage.setItem(AVATAR_KEY, avatarIndex.toString())
+    setPreferredUsername(username)
+    setPreferredAvatarIndex(avatarIndex)
   }
 
   const value = useMemo(
