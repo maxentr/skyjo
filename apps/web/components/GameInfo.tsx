@@ -8,11 +8,11 @@ import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const GameInfo = () => {
   const { game, player } = useSkyjo()
+  const t = useTranslations("utils.skyjo")
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
 
   const getGameInfo = () => {
-    const t = useTranslations("utils.skyjo")
     if (!player || !game) return t("waiting")
 
     if (
