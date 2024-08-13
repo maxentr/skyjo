@@ -66,7 +66,9 @@ const CardTable = ({
       transition={{ duration: 0.3 }}
       className={cn(
         "inline-grid grid-flow-col duration-100 gap-2 w-fit",
-        `grid-rows-${numberOfRowsForClass}`,
+        numberOfRowsForClass
+          ? `grid-rows-${numberOfRowsForClass}`
+          : "grid-rows-3",
       )}
     >
       <AnimatePresence>
