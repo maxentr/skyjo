@@ -23,7 +23,9 @@ const IndexPage = ({ searchParams }: Props) => {
   const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
 
   useEffect(() => {
-    createSocket(searchParams.region as ApiRegionsTag)
+    createSocket(
+      // searchParams.region as ApiRegionsTag
+    )
   }, [])
 
   const beforeButtonAction = () => {

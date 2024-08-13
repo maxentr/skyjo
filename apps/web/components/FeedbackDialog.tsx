@@ -13,8 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import { useSocket } from "@/contexts/SocketContext"
-import { cn, getCurrentRegion } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
 import { Dispatch, SetStateAction } from "react"
@@ -30,7 +29,7 @@ type FeedbackDialogProps = {
 const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
   const t = useTranslations("components.FeedbackDialog")
   const { toast } = useToast()
-  const { region } = useSocket()
+  // const { region } = useSocket()
 
   const form = useForm<z.infer<typeof feedbackSchema>>({
     resolver: zodResolver(feedbackSchema),
@@ -43,16 +42,19 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
   const onSubmit = async (values: z.infer<typeof feedbackSchema>) => {
     if (!values.message) return
 
-    const currentRegion = getCurrentRegion(region)
-    if (!currentRegion) return
+    // const currentRegion = getCurrentRegion(region)
+    // if (!currentRegion) return
 
-    const response = await fetch(`${currentRegion.url}/feedback`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/feedback`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
       },
-      body: JSON.stringify(values),
-    })
+    )
 
     const data = await response.json()
 

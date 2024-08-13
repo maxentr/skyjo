@@ -3,7 +3,6 @@ import FeedbackButton from "@/components/FeedbackButton"
 import Footer from "@/components/Footer"
 import LanguageSettings from "@/components/LanguageSettings"
 import MovingArrow from "@/components/MovingArrow"
-import RegionsSelect from "@/components/RegionsSelect"
 import RulesDialog from "@/components/RulesDialog"
 import {
   Accordion,
@@ -58,7 +57,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
             <MovingArrow href="#explanation" />
           </div>
           <div className="absolute bottom-6 left-6 z-20 flex items-center justify-end">
-            <RegionsSelect />
+            {/* <RegionsSelect /> */}
           </div>
         </div>
         <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">

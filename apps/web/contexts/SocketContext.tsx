@@ -1,7 +1,6 @@
 "use client"
 
 import { useToast } from "@/components/ui/use-toast"
-import { getCurrentRegion, getRegionWithLessPing } from "@/lib/utils"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import { useTranslations } from "next-intl"
@@ -14,7 +13,6 @@ import {
   useState,
 } from "react"
 import {
-  ApiRegionsTag,
   CONNECTION_LOST_TIMEOUT_IN_MS,
   CONNECTION_STATUS,
 } from "shared/constants"
@@ -39,9 +37,7 @@ export type SkyjoSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 type SocketContextInterface = {
   socket: SkyjoSocket | null
-  region: ApiRegionsTag | null
-  changeRegion: (region: ApiRegionsTag, manual?: boolean) => void
-  createSocket: (region?: ApiRegionsTag) => void
+  createSocket: () => void
   getLastGameIfPossible: () => LastGame | null
   createLastGame: () => void
 }
@@ -52,7 +48,6 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   const t = useTranslations("contexts.SocketContext")
 
   const [socket, setSocket] = useState<SkyjoSocket | null>(null)
-  const [region, setRegion] = useState<ApiRegionsTag | null>(null)
 
   useEffect(() => {
     if (socket === null) return
@@ -108,37 +103,31 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   }
   //#endregion reconnection
 
-  const changeRegion = (regionTag: ApiRegionsTag, manual = false) => {
-    const newUrl = getCurrentRegion(regionTag)?.url
-    if (newUrl) {
-      setSocket(initSocket(newUrl))
-      setRegion(regionTag)
+  // const changeRegion = (regionTag: ApiRegionsTag, manual = false) => {
+  //   const newUrl = getCurrentRegion(regionTag)?.url
+  //   if (newUrl) {
+  //     setSocket(initSocket(newUrl))
+  //     setRegion(regionTag)
 
-      if (manual) {
-        localStorage.setItem("preferredRegion", regionTag)
-      }
-    }
-  }
+  //     if (manual) setPreferredRegion(regionTag)
+  //   }
+  // }
 
-  const createSocket = async (regionTag?: ApiRegionsTag) => {
+  const createSocket = async () => {
+    setSocket(initSocket(process.env.NEXT_PUBLIC_API_URL!))
     // if region is specified in the url
-    if (regionTag) {
-      changeRegion(regionTag)
-      return
-    }
+    // if (regionTag) {
+    //   changeRegion(regionTag)
+    //   return
+    // }
 
-    // if region is not specified in the url, use the preferred region
-    const preferredRegion = localStorage.getItem(
-      "preferredRegion",
-    ) as ApiRegionsTag | null
-
-    if (preferredRegion) {
-      changeRegion(preferredRegion)
-    } else {
-      // if no region is specified in the url and no preferred region is set, use the server with the lowest ping
-      const serverWithLessPing = await getRegionWithLessPing()
-      changeRegion(serverWithLessPing.tag)
-    }
+    // // if region is not specified in the url, use the preferred region
+    // if (preferredRegion) changeRegion(preferredRegion)
+    // else {
+    //   // if no region is specified in the url and no preferred region is set, use the server with the lowest ping
+    //   const serverWithLessPing = await getRegionWithLessPing()
+    //   changeRegion(serverWithLessPing.tag)
+    // }
   }
 
   //#region listeners
@@ -177,13 +166,11 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo(
     () => ({
       socket,
-      region,
-      changeRegion,
       createSocket,
       createLastGame,
       getLastGameIfPossible,
     }),
-    [socket, region, changeRegion],
+    [socket],
   )
 
   return (
