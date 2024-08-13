@@ -61,6 +61,8 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
 
   //#region reconnection
   const createLastGame = () => {
+    if (typeof window === "undefined") return
+
     const lastGameString = localStorage.getItem("lastGame")
     if (!lastGameString) return
     const lastGame = JSON.parse(lastGameString) as LastGame
@@ -78,7 +80,8 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
     )
   }
 
-  const getlastGame = () => {
+  const getLastGame = () => {
+    if (typeof window === "undefined") return
     const lastGameString = localStorage.getItem("lastGame")
 
     if (!lastGameString) return null
@@ -87,7 +90,7 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   }
 
   const getLastGameIfPossible = () => {
-    const lastGame = getlastGame()
+    const lastGame = getLastGame()
 
     if (!lastGame?.maxDateToReconnect) return null
 
