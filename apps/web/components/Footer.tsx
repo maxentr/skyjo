@@ -29,6 +29,9 @@ const Footer = () => {
           >
             {t("release-notes")}
           </Link>
+          <Link href="/privacy-policy" className="text-slate-900 underline">
+            {t("privacy-policy")}
+          </Link>
         </div>
         <div className="flex flex-col justify-center items-center md:items-end gap-3 md:gap-4">
           <Link

@@ -39,6 +39,80 @@
     "GamePage": {
       "your-turn": "C'est votre tour !"
     },
+    "PrivacyPolicy": {
+      "head": {
+        "title": "Politique de Confidentialité | Skyjo Online",
+        "description": "Découvrez comment Skyjo Online protège votre vie privée et vos données lors de vos parties en ligne gratuites. Apprenez nos pratiques de collecte, d'utilisation et de protection des données.",
+        "keywords": "Skyjo Online,politique de confidentialité,protection des données,confidentialité jeu en ligne,jeu sécurisé,données utilisateurs,conformité RGPD"
+      },
+      "content": {
+        "back": "Retour à l'accueil",
+        "title": "Politique de Confidentialité",
+        "last-updated": "Dernière mise à jour : {date}",
+        "last-update": {
+          "text": "Dernière mise à jour : {date}",
+          "date-format": "DD MMMM YYYY à HH:mm"
+        },
+        "information-we-collect": {
+          "title": "Informations que nous collectons",
+          "anonymous-usage-data": {
+            "title": "Données d'utilisation anonymes",
+            "description": "Nous utilisons PostHog, un outil d'analyse, pour collecter des données anonymes sur votre utilisation de notre site web. Cela inclut :",
+            "items": "Vues de pages;;Vitales web (métriques de performance);;Réponses aux sondages (si vous choisissez d'y participer)"
+          },
+          "game-data": {
+            "title": "Données de jeu",
+            "description": "Nous stockons temporairement :",
+            "items": "Noms d'utilisateur et choix d'avatar;;Éléments et progression du jeu"
+          },
+          "user-provided-information": {
+            "title": "Informations fournies par l'utilisateur",
+            "description": "Nous collectons :",
+            "items": "Soumissions du formulaire de feedback (y compris les adresses e-mail optionnelles)"
+          },
+          "local-storage-data": {
+            "title": "Données de stockage local",
+            "description": "Nous stockons dans le stockage local de votre navigateur :",
+            "items": "Préférences de langue;;Préférences de paramètres de jeu"
+          }
+        },
+        "how-we-use-your-information": {
+          "title": "Comment nous utilisons vos informations",
+          "description": "",
+          "items": "Améliorer notre site web et l'expérience utilisateur;;Analyser les modèles d'utilisation et les performances;;Répondre aux feedbacks et aux demandes de support;;Faciliter le déroulement du jeu"
+        },
+        "data-storage-and-retention": {
+          "title": "Stockage et conservation des données",
+          "description": "",
+          "items": "Les données d'utilisation anonymes sont stockées sur des serveurs au sein de l'Union européenne et conservées pendant un maximum d'un an;;Les données de jeu sont stockées dans notre base de données situées à Francfort, Allemagne. Ces données sont conservées pendant la durée des parties actives. Une fois que tous les joueurs quittent une partie, les données associées sont supprimées;;Les informations stockées dans le stockage local de votre navigateur y restent jusqu'à ce que vous effaciez les données de votre navigateur;;Les soumissions du formulaire de feedback ne sont conservées que dans le but de répondre et d'examiner les suggestions de développement"
+        },
+        "data-sharing": {
+          "title": "Partage des données",
+          "description": "Nous ne partageons pas vos informations personnelles avec des tiers. Les données d'utilisation anonymes sont traitées par PostHog, notre fournisseur d'analyses.",
+          "items": ""
+        },
+        "your-rights-and-choices": {
+          "title": "Vos droits et choix",
+          "description": "Étant donné que nous collectons principalement des données anonymes, nous ne pouvons pas identifier ou accéder à des informations personnelles spécifiques à un utilisateur individuel. Cependant, vous disposez des droits et choix suivants :",
+          "items": "Local storage : Vous pouvez effacer le stockage local de votre navigateur à tout moment pour supprimer les préférences enregistrées;;Feedback : Si vous avez soumis un feedback avec une adresse e-mail, vous pouvez nous contacter pour demander sa suppression;;Désactivation des analyses : Vous pouvez désactiver la collecte de données d'analyse en activant le paramètre \"Ne pas suivre\" de votre navigateur ou en utilisant des navigateurs axés sur la confidentialité qui bloquent les scripts d'analyse;;Données de jeu : Les données relatives au jeu sont automatiquement supprimées lorsque tous les joueurs quittent une partie"
+        },
+        "childrens-privacy": {
+          "title": "Confidentialité des enfants",
+          "description": "Skyjo Online n'a pas de restrictions d'âge. Nous ne collectons pas sciemment d'informations personnelles auprès des enfants.",
+          "items": ""
+        },
+        "changes-to-this-policy": {
+          "title": "Modifications de cette politique",
+          "description": "Nous pouvons mettre à jour cette politique de temps en temps. Nous vous informerons de tout changement en publiant la nouvelle politique sur cette page.",
+          "items": ""
+        },
+        "contact-us": {
+          "title": "Nous contacter",
+          "description": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter via le formulaire de feedback sur le site web.",
+          "items": ""
+        }
+      }
+    },
     "Rules": {
       "head": {
         "title": "Règles du jeu Skyjo",
@@ -121,7 +195,8 @@
       "explanation": "Qu'est-ce que Skyjo ?",
       "rules": "Règles du jeu",
       "home": "Accueil",
-      "release-notes": "Notes de version"
+      "release-notes": "Notes de version",
+      "privacy-policy": "Politique de confidentialité"
     },
     "GameInfo": {
       "last-turn": "Dernier tour !"

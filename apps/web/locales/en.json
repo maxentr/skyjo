@@ -39,6 +39,79 @@
     "GamePage": {
       "your-turn": "It's your turn!"
     },
+    "PrivacyPolicy": {
+      "head": {
+        "title": "Privacy Policy | Skyjo Online",
+        "description": "Learn how Skyjo Online protects your privacy and data while playing our free online card game. Discover our data collection, usage, and protection practices.",
+        "keywords": "Skyjo Online,privacy policy,data protection,online game privacy,secure gaming,user data,GDPR compliance"
+      },
+      "content": {
+        "back": "Back to the home page",
+        "title": "Privacy Policy",
+        "last-update": {
+          "text": "Last updated: {date}",
+          "date-format": "DD MMMM YYYY at HH:mm"
+        },
+        "information-we-collect": {
+          "title": "Information We Collect",
+          "anonymous-usage-data": {
+            "title": "Anonymous Usage Data",
+            "description": "We use PostHog, an analytics tool, to collect anonymous data about how you use our website. This includes:",
+            "items": "Page views;;Web vitals (performance metrics);;Survey responses (if you choose to participate)"
+          },
+          "game-data": {
+            "title": "Game Data",
+            "description": "We temporarily store:",
+            "items": "Usernames and avatar choices;;Game elements and progress"
+          },
+          "user-provided-information": {
+            "title": "User-Provided Information",
+            "description": "We collect:",
+            "items": "Feedback form submissions (including optional email addresses)"
+          },
+          "local-storage-data": {
+            "title": "Local Storage Data",
+            "description": "We store in your browser's local storage:",
+            "items": "Language preferences;;Game settings preferences"
+          }
+        },
+        "how-we-use-your-information": {
+          "title": "How We Use Your Information",
+          "description": "",
+          "items": "Improve our website and user experience;;Analyze usage patterns and performance;;Respond to feedback and support requests;;Facilitate gameplay"
+        },
+        "data-storage-and-retention": {
+          "title": "Data Storage and Retention",
+          "description": "",
+          "items": "Anonymous usage data is stored on servers within the European Union and retained for up to 1 year;;Game data is stored in our database located in Frankfurt, Germany. This data is kept for the duration of active games. Once all players leave a game, the associated data is deleted;;Information stored in your browser's local storage remains there until you clear your browser data;;Feedback form submissions are retained only for the purpose of responding and considering suggestions for development"
+        },
+        "data-sharing": {
+          "title": "Data Sharing",
+          "description": "We do not share your personal information with any third parties. Anonymous usage data is processed by PostHog, our analytics provider.",
+          "items": ""
+        },
+        "your-rights-and-choices": {
+          "title": "Your Rights and Choices",
+          "description": "Given that we collect primarily anonymous data, we cannot identify or access personal information specific to any individual user. However, you have the following rights and choices:",
+          "items": "Local Storage: You can clear your browser's local storage at any time to remove saved preferences;;Feedback: If you've submitted feedback with an email address, you can contact us to request its deletion;;Analytics Opt-Out: You can opt-out of analytics data collection by enabling your browser's \"Do Not Track\" setting or using privacy-focused browsers that block analytics scripts;;Game Data: Game-related data is automatically deleted when all players leave a game"
+        },
+        "childrens-privacy": {
+          "title": "Children's Privacy",
+          "description": "Skyjo Online does not have any age restrictions. We do not knowingly collect personal information from children.",
+          "items": ""
+        },
+        "changes-to-this-policy": {
+          "title": "Changes to This Policy",
+          "description": "We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page.",
+          "items": ""
+        },
+        "contact-us": {
+          "title": "Contact Us",
+          "description": "If you have any questions about this Privacy Policy, please contact us through our feedback form on the website.",
+          "items": ""
+        }
+      }
+    },
     "Rules": {
       "head": {
         "title": "Skyjo game rules",
@@ -121,7 +194,8 @@
       "explanation": "What is Skyjo?",
       "rules": "Game rules",
       "home": "Home",
-      "release-notes": "Release notes"
+      "release-notes": "Release notes",
+      "privacy-policy": "Privacy policy"
     },
     "GameInfo": {
       "last-turn": "Last turn!"
