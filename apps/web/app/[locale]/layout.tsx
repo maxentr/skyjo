@@ -24,13 +24,12 @@ export async function generateMetadata({
 }) {
   const t = await getTranslations({ locale, namespace: "head" })
 
-  const title = `Skyjo - ${t("title")}`
   const baseUrl = process.env.SITE_URL ?? ""
   const currentUrl = getCurrentUrl("", locale)
   const githubUrl = new URL("https://github.com/Maxentr")
 
   const metadata: Metadata = {
-    title: title,
+    title: t("title"),
     description: t("description"),
     keywords: t("keywords").split(","),
     category: "game",
@@ -69,7 +68,7 @@ export async function generateMetadata({
     },
     authors: { url: githubUrl, name: "Maxent" },
     openGraph: {
-      title: title,
+      title: t("title"),
       description: t("description"),
       url: currentUrl,
       type: "website",
@@ -78,19 +77,19 @@ export async function generateMetadata({
           url: "/og-image.png",
           width: 1200,
           height: 630,
-          alt: title,
+          alt: t("title"),
         },
       ],
     },
     twitter: {
-      title,
+      title: t("title"),
       card: "summary_large_image",
       images: [
         {
           url: "/twitter-image.png",
           width: 1200,
           height: 675,
-          alt: title,
+          alt: t("title"),
         },
       ],
     },
