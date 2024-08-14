@@ -2112,7 +2112,7 @@ const mockPlayerService = () => {
     canReconnect: vi.fn(),
     updateDisconnectionDate: vi.fn(),
     reconnectPlayer: vi.fn(),
-    getPlayerBySocketIdsByGameId: vi.fn(),
+    getPlayersByGameId: vi.fn(),
   } satisfies PlayerService
 }
 

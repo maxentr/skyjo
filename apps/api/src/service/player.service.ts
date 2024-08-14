@@ -54,7 +54,7 @@ export class PlayerService {
       .execute()
   }
 
-  async getPlayerBySocketIdsByGameId(gameId: string) {
+  async getPlayersByGameId(gameId: string) {
     const players = await db.query.playerTable.findMany({
       where: eq(playerTable.gameId, gameId),
     })

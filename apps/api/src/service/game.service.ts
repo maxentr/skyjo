@@ -119,9 +119,7 @@ export class GameService {
       where: eq(gameTable.region, process.env.REGION),
     })
 
-    const formattedGames = await games.map((game) => this.formatSkyjo(game))
-
-    return await Promise.all(formattedGames)
+    return await this.formatArraySkyjo(games)
   }
 
   async getGameById(gameId: string) {
@@ -203,7 +201,9 @@ export class GameService {
 
   async removeInactiveGames() {
     await db
-      .delete(gameTable)
+      .select()
+      .from(gameTable)
+      .innerJoin(playerTable, eq(gameTable.id, playerTable.gameId))
       .where(
         and(
           eq(gameTable.region, process.env.REGION),
@@ -213,12 +213,34 @@ export class GameService {
       .execute()
   }
 
-  private async formatSkyjo(game: DbGame) {
-    const players = await this.playerService.getPlayerBySocketIdsByGameId(
-      game.id,
-    )
+  private async formatArraySkyjo(games: DbGame[]): Promise<Skyjo[]> {
+    const formattedGames: Skyjo[] = []
+    for await (const game of games) {
+      try {
+        const skyjo = await this.formatSkyjo(game)
 
-    const admin = players.find((player) => player.id === game.adminId)! ?? null
+        formattedGames.push(skyjo)
+      } catch (error) {
+        console.log(`Error while formatting game ${game.code} : ${error}`, game)
+
+        continue
+      }
+    }
+
+    return formattedGames
+  }
+
+  private async formatSkyjo(game: DbGame) {
+    const players = await this.playerService.getPlayersByGameId(game.id)
+
+    const admin =
+      players.find((player) => player.id === game.adminId)! ?? players[0]?.id
+
+    if (!admin)
+      throw new Error(
+        "Impossible error while formatting game: no admin and no player",
+      )
+
     const skyjo = new Skyjo(admin.id).populate(game, { players })
     return skyjo
   }
