@@ -77,6 +77,19 @@
         "title": "Joueurs"
       }
     },
+    "ResultsPage": {
+      "title": "Résultat de la partie",
+      "rank": "Rang",
+      "player": "Joueur",
+      "score-per-round": "Score par manche",
+      "total": "Total",
+      "player-want-to-replay": "Joueurs qui veulent rejouer :",
+      "replay-button": {
+        "cancel": "Ne pas rejouer",
+        "replay": "Rejouer"
+      },
+      "leave-button": "Quitter la partie"
+    },
     "PrivacyPolicy": {
       "head": {
         "title": "Politique de Confidentialité | Skyjo Online",
@@ -213,15 +226,6 @@
     },
     "DrawPile": {
       "title": "Paquet de pioche"
-    },
-    "EndGameDialog": {
-      "title": "Partie terminée !",
-      "description": "{name} a gagné avec {score} points !",
-      "replay-button": {
-        "cancel": "Ne pas rejouer",
-        "replay": "Rejouer"
-      },
-      "leave-button": "Quitter la partie"
     },
     "EndRoundDialog": {
       "title": "Fin de la manche",

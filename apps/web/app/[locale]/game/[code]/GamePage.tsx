@@ -3,7 +3,6 @@
 import Chat from "@/components/Chat"
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
-import EndGameDialog from "@/components/EndGameDialog"
 import EndRoundDialog from "@/components/EndRoundDialog"
 import FeedbackButton from "@/components/FeedbackButton"
 import GameInfo from "@/components/GameInfo"
@@ -100,7 +99,6 @@ const GamePage = () => {
         {player && <PlayerBoard player={player} isPlayerTurn={isPlayerTurn} />}
       </div>
       <EndRoundDialog />
-      <EndGameDialog />
       <GameStoppedDialog />
       <Chat disabled={game.status === GAME_STATUS.LOBBY} />
     </div>

@@ -1,4 +1,4 @@
-import Lobby from "@/app/[locale]/game/[code]/lobby/Lobby"
+import Lobby from "./Lobby"
 
 const LobbyServerPage = () => {
   return <Lobby />

@@ -1,7 +1,7 @@
 import ResultsPage from "./ResultsPage"
 
-const LobbyServerPage = () => {
+const ResultsServerPage = () => {
   return <ResultsPage />
 }
 
-export default LobbyServerPage
+export default ResultsServerPage

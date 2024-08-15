@@ -77,6 +77,19 @@
         "title": "Players"
       }
     },
+    "ResultsPage": {
+      "title": "Game results",
+      "rank": "Rank",
+      "player": "Player",
+      "score-per-round": "Score per round",
+      "total": "Total",
+      "player-want-to-replay": "Players who want to replay:",
+      "replay-button": {
+        "cancel": "Do not replay",
+        "replay": "Replay"
+      },
+      "leave-button": "Leave the game"
+    },
     "PrivacyPolicy": {
       "head": {
         "title": "Privacy Policy | Skyjo Online",
@@ -212,15 +225,6 @@
     },
     "DrawPile": {
       "title": "Draw pile"
-    },
-    "EndGameDialog": {
-      "title": "Game over !",
-      "description": "{name} has won with {score} points !",
-      "replay-button": {
-        "cancel": "Do not replay",
-        "replay": "Replay"
-      },
-      "leave-button": "Leave the game"
     },
     "EndRoundDialog": {
       "title": "End of the round",

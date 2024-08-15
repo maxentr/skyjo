@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { m } from "framer-motion"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -23,6 +24,7 @@ const TableHeader = React.forwardRef<
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
+const MotionTableHeader = m(TableHeader)
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -65,6 +67,7 @@ const TableRow = React.forwardRef<
   />
 ))
 TableRow.displayName = "TableRow"
+const MotionTableRow = m(TableRow)
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
@@ -116,5 +119,7 @@ export {
   TableFooter,
   TableHead,
   TableHeader,
+  MotionTableHeader,
   TableRow,
+  MotionTableRow,
 }
