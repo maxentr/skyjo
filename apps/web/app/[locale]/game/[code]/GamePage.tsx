@@ -15,11 +15,15 @@ import RulesDialog from "@/components/RulesDialog"
 import Scoreboard from "@/components/Scoreboard"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { isCurrentUserTurn } from "@/lib/skyjo"
+import { getRedirectionUrl } from "@/lib/utils"
+import { useRouter } from "@/navigation"
+import { useEffect } from "react"
 import { useLocalStorage } from "react-use"
 import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const GamePage = () => {
   const { game, player, opponents } = useSkyjo()
+  const router = useRouter()
   const [firstGame, setFirstGame] = useLocalStorage<boolean>("firstGame")
 
   const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
@@ -31,6 +35,12 @@ const GamePage = () => {
   const onRulesDialogOpenChange = () => {
     if (isFirstPlayerGame) setFirstGame(false)
   }
+
+  useEffect(() => {
+    if (game.status === GAME_STATUS.STOPPED) return
+
+    router.replace(getRedirectionUrl(game.code, game.status))
+  }, [game.status])
 
   return (
     <div className="h-full w-full bg-body flex flex-col gap-6">

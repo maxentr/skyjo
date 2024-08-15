@@ -7,7 +7,7 @@ import { useUser } from "@/contexts/UserContext"
 import { useRouter } from "@/navigation"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import { ERROR } from "shared/constants"
+import { ERROR, GAME_STATUS } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { CreatePlayer } from "shared/validations/player"
 
@@ -49,18 +49,7 @@ const GameLobbyButtons = ({
     if (!player) return
 
     if (type === "reconnect") {
-      delete lastGame?.maxDateToReconnect
-      socket.emit("reconnect", lastGame!)
-
-      socket.once("error:reconnect", (message: string) => {
-        if (message === ERROR.CANNOT_RECONNECT) {
-          toast({
-            description: t("cannot-reconnect.description"),
-            variant: "destructive",
-            duration: 5000,
-          })
-        }
-      })
+      handleReconnection()
     } else if (type === "join")
       socket.emit("join", { gameCode: gameCode!, player })
     else socket.emit(type, player)
@@ -100,7 +89,26 @@ const GameLobbyButtons = ({
 
       setLoading(false)
 
-      router.push(`/game/${game.code}`)
+      if (game.status === GAME_STATUS.LOBBY)
+        router.push(`/game/${game.code}/lobby`)
+      else router.push(`/game/${game.code}`)
+    })
+  }
+
+  const handleReconnection = () => {
+    if (socket === null) return
+
+    delete lastGame?.maxDateToReconnect
+    socket.emit("reconnect", lastGame!)
+
+    socket.once("error:reconnect", (message: string) => {
+      if (message === ERROR.CANNOT_RECONNECT) {
+        toast({
+          description: t("cannot-reconnect.description"),
+          variant: "destructive",
+          duration: 5000,
+        })
+      }
     })
   }
 

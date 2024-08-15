@@ -26,10 +26,9 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
     setHasUnreadMessage(true)
   }
 
-  const clearUnreadMessages = () => {
-    setUnreadMessages([])
-  }
+  const clearUnreadMessages = () => setUnreadMessages([])
 
+  useEffect(() => clearUnreadMessages(), [])
   useEffect(() => {
     if (open === false) {
       const lastMessage = chat?.[0]

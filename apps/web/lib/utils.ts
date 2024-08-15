@@ -1,20 +1,22 @@
 import { DEFAULT_LOCALE } from "@/navigation"
 import { type ClassValue, clsx } from "clsx"
-import { API_REGIONS, ApiRegionsTag } from "shared/constants"
+import {
+  API_REGIONS,
+  ApiRegionsTag,
+  GAME_STATUS,
+  GameStatus,
+} from "shared/constants"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getGameInviteLink = (
-  currentUrl: string,
-  region: ApiRegionsTag | null,
-) => {
-  const thirdSlashIndex = currentUrl.indexOf("/", 10)
-  const lastSlashIndex = currentUrl.lastIndexOf("/")
-  const baseUrl = currentUrl.slice(0, thirdSlashIndex)
-  const gameCode = currentUrl.slice(lastSlashIndex + 1)
+export const getGameInviteLink = (currentUrl: string, region: "EU" | null) => {
+  const urlArray = currentUrl.split("/")
+
+  const baseUrl = urlArray.slice(0, 3).join("/")
+  const gameCode = urlArray[4]
 
   let link = `${baseUrl}/?gameCode=${gameCode}`
 
@@ -78,4 +80,15 @@ export const getCurrentRegion = (region: ApiRegionsTag | null) => {
   ].find((server) => server.tag === region)
 
   return currentRegion
+}
+
+export const getRedirectionUrl = (code: string, status: GameStatus) => {
+  const redirectionUrls = {
+    [GAME_STATUS.LOBBY]: `/game/${code}/lobby`,
+    [GAME_STATUS.PLAYING]: `/game/${code}`,
+    [GAME_STATUS.STOPPED]: `/game/${code}/results`,
+    [GAME_STATUS.FINISHED]: `/game/${code}/results`,
+  } as const
+
+  return redirectionUrls[status]
 }
