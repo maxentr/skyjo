@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  api:
+    image: ghcr.io/maxentr/skyjo/api:test
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./apps/api/.env
+    restart: unless-stopped
