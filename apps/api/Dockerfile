@@ -3,8 +3,7 @@ ARG PROJECT=api
 
 FROM node:22.6-alpine AS base
 RUN apk update && apk add --no-cache libc6-compat
-RUN yarn global add turbo
-RUN yarn global add pnpm
+RUN yarn global add turbo pnpm
 
 
 FROM base AS pruner
@@ -24,7 +23,7 @@ RUN pnpm i
 COPY --from=pruner /app/out/full/ .
 RUN pnpm run build --filter=${PROJECT}
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 RUN pnpm install --prod
 
 
