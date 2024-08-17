@@ -200,17 +200,17 @@ export class GameService {
   }
 
   async removeInactiveGames() {
-    await db
-      .select()
-      .from(gameTable)
-      .innerJoin(playerTable, eq(gameTable.id, playerTable.gameId))
+    const deletedGameIds = await db
+      .delete(gameTable)
       .where(
         and(
           eq(gameTable.region, process.env.REGION),
-          lte(gameTable.updatedAt, dayjs().subtract(30, "minutes").toDate()),
+          lte(gameTable.updatedAt, dayjs().subtract(10, "minutes").toDate()),
         ),
       )
-      .execute()
+      .returning({ id: gameTable.id })
+
+    return deletedGameIds.map((game) => game.id)
   }
 
   private async formatArraySkyjo(games: DbGame[]): Promise<Skyjo[]> {

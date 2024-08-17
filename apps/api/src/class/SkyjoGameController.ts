@@ -1,6 +1,7 @@
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { GameService } from "@/service/game.service"
 import { PlayerService } from "@/service/player.service"
+import cron from "node-cron"
 import {
   CONNECTION_LOST_TIMEOUT_IN_MS,
   CONNECTION_STATUS,
@@ -322,11 +323,23 @@ export default class SkyjoGameController {
 
   //#region private methods
   async beforeStart() {
-    console.log("Remove inactive games")
     await this.gameService.removeInactiveGames()
-
-    console.log("Retrieve games from database")
     this.games = await this.gameService.getGamesByRegion()
+
+    this.startCronJob()
+  }
+
+  private startCronJob() {
+    cron.schedule("* * * * *", () => {
+      this.removeInactiveGames()
+    })
+  }
+
+  private async removeInactiveGames() {
+    console.log("Remove inactive games")
+    const deletedGameIds = await this.gameService.removeInactiveGames()
+
+    this.games = this.games.filter((game) => !deletedGameIds.includes(game.id))
   }
 
   private async createGame(

@@ -19,6 +19,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.1",
     "hono": "^3.12.8",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "shared": "workspace:*",
     "socket.io": "^4.7.4",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.15",
     "@vitest/coverage-istanbul": "^1.6.0",
     "@vitest/ui": "^1.6.0",
