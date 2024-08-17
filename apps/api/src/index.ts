@@ -31,7 +31,7 @@ const app = new Hono()
 app.use(
   "/*",
   cors({
-    origin: process.env.ORIGINS as string,
+    origin: process.env.ORIGINS,
   }),
 )
 
@@ -46,7 +46,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(
   {
     parser: customParser,
     cors: {
-      origin: process.env.ORIGINS as string,
+      origin: process.env.ORIGINS,
     },
     connectionStateRecovery: {},
   },
