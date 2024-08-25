@@ -1,7 +1,7 @@
 import PostHogPageView from "@/app/[locale]/PostHogPageView"
 import Providers from "@/app/[locale]/providers"
 import { getCurrentUrl } from "@/lib/utils"
-import { Metadata } from "next"
+import { Metadata, Viewport } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getTranslations } from "next-intl/server"
 import { Fredoka } from "next/font/google"
@@ -33,6 +33,12 @@ export async function generateMetadata({
     description: t("description"),
     keywords: t("keywords").split(","),
     category: "game",
+    applicationName: "Skyjo",
+    appleWebApp: {
+      capable: true,
+      title: "Skyjo",
+      statusBarStyle: "default",
+    },
     icons: [
       { url: "/favicon.ico", rel: "shortcut icon" },
       {
@@ -56,7 +62,7 @@ export async function generateMetadata({
         rel: "msapplication-TileImage",
       },
       { url: "/safari-pinned-tab.svg", color: "#5bbad5", rel: "mask-icon" },
-      { url: "/site.webmanifest", rel: "manifest" },
+      { url: "/manifest.json", rel: "manifest" },
     ],
     metadataBase: new URL(baseUrl),
     alternates: {
@@ -111,6 +117,16 @@ export async function generateMetadata({
   }
 
   return metadata
+}
+
+export const viewport: Viewport = {
+  themeColor: "#fefdf7",
+  minimumScale: 1,
+  initialScale: 1,
+  width: "device-width",
+  height: "device-height",
+  userScalable: false,
+  viewportFit: "cover",
 }
 
 export default async function LocaleLayout({

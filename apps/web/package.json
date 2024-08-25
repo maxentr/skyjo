@@ -31,6 +31,7 @@
     "lucide-react": "^0.320.0",
     "next": "14.1.0",
     "next-intl": "^3.9.2",
+    "next-pwa": "^5.6.0",
     "posthog-js": "^1.155.0",
     "react": "^18",
     "react-dom": "^18",
@@ -44,6 +45,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/next-pwa": "^5.6.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
