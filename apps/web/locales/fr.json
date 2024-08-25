@@ -238,7 +238,8 @@
       "rules": "Règles du jeu",
       "home": "Accueil",
       "release-notes": "Notes de version",
-      "privacy-policy": "Politique de confidentialité"
+      "privacy-policy": "Politique de confidentialité",
+      "disclaimer": "Ce site n'est pas affilié aux créateurs ou distributeurs de Skyjo. Tous les droits sur le nom Skyjo et les mécaniques du jeu sont de l'auteur Alexander Bernhardt et Magilano"
     },
     "GameInfo": {
       "last-turn": "Dernier tour !"

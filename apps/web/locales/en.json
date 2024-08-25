@@ -237,7 +237,8 @@
       "rules": "Game rules",
       "home": "Home",
       "release-notes": "Release notes",
-      "privacy-policy": "Privacy policy"
+      "privacy-policy": "Privacy policy",
+      "disclaimer": "This website is not affiliated with the creators or distributors of Skyjo. All rights to the Skyjo name and game mechanics are owned by Alexander Bernhardt and Magilano"
     },
     "GameInfo": {
       "last-turn": "Last turn!"
