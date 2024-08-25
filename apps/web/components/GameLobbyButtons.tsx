@@ -87,8 +87,6 @@ const GameLobbyButtons = ({
         }),
       )
 
-      setLoading(false)
-
       if (game.status === GAME_STATUS.LOBBY)
         router.push(`/game/${game.code}/lobby`)
       else router.push(`/game/${game.code}`)
@@ -102,6 +100,8 @@ const GameLobbyButtons = ({
     socket.emit("reconnect", lastGame!)
 
     socket.once("error:reconnect", (message: string) => {
+      setLoading(false)
+
       if (message === ERROR.CANNOT_RECONNECT) {
         toast({
           description: t("cannot-reconnect.description"),
