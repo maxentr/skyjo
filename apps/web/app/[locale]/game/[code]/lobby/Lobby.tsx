@@ -296,20 +296,23 @@ const Lobby = () => {
                   </div>
                 </div>
               </div>
-              {isAdmin && (
-                <div className="flex flex-row justify-center items-center gap-8 mt-6 md:mt-8">
-                  <button onClick={actions.resetSettings}>
-                    <p className="underline">{t("settings.reset-settings")}</p>
-                  </button>
+              <div className="flex flex-row justify-center items-center gap-8 mt-6 md:mt-8">
+                {isAdmin && (
                   <Button
-                    onClick={beforeStartGame}
-                    disabled={hasMinPlayers}
-                    loading={isLoading}
+                    onClick={actions.resetSettings}
+                    className="bg-slate-200"
                   >
-                    {t("start-game-button")}
+                    {t("settings.reset-settings")}
                   </Button>
-                </div>
-              )}
+                )}
+                <Button
+                  onClick={beforeStartGame}
+                  disabled={hasMinPlayers || !isAdmin}
+                  loading={isLoading}
+                >
+                  {t("start-game-button")}
+                </Button>
+              </div>
             </div>
             <div className="block bg-container border-2 border-black rounded-2xl w-full md:w-80 p-4 md:p-8">
               <h3 className="text-slate-900 text-center text-xl mb-2 md:mb-5">
