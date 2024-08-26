@@ -103,12 +103,12 @@ const Card = ({
   const [scope, animate] = useAnimate()
   const controls = useAnimationControls()
 
-  const [isInAnimation, setIsInAnimation] = useState<boolean>(false)
+  const [value, setValue] = useState<number | undefined>(undefined)
 
   useEffect(() => {
-    const animation = async () => {
-      setIsInAnimation(true)
-      controls.set({ rotateY: -180 })
+    const turnCard = async () => {
+      controls.set({ rotateY: -180, backgroundColor: "white", color: "white" })
+
       const animation = animate(
         scope.current,
         {
@@ -120,11 +120,19 @@ const Card = ({
         },
       )
 
-      setTimeout(() => {
-        setIsInAnimation(false)
-      }, 220)
+      animate(
+        scope.current,
+        {
+          backgroundColor: "revert-layer",
+          color: "revert-layer",
+        },
+        {
+          delay: 0.15,
+        },
+      )
 
-      Promise.all([animation])
+      // set classname
+      await Promise.all([animation])
 
       controls.set({ rotateY: 0 })
     }
@@ -133,20 +141,21 @@ const Card = ({
       flipAnimation &&
       card.isVisible &&
       game?.lastTurnStatus === LAST_TURN_STATUS.TURN
-    )
-      animation()
+    ) {
+      turnCard()
+    }
   }, [flipAnimation, card.isVisible])
+
+  useEffect(() => {
+    setValue(card.value)
+  }, [card.isVisible])
 
   let cardContent: string | JSX.Element = ""
 
-  if (card.value === -98) {
+  if (value === -98) {
     cardContent = <Trash2Icon className={throwIconClass({ size })} />
-  } else if (
-    card.isVisible &&
-    card.value !== null &&
-    card.value !== undefined
-  ) {
-    cardContent = card.value.toString()
+  } else if (card.isVisible && value !== null && value !== undefined) {
+    cardContent = value.toString()
   }
 
   return (
@@ -168,9 +177,7 @@ const Card = ({
       className={cn(
         cardClass({
           size,
-          value: isInAnimation
-            ? "not-visible"
-            : cardValue[card.value ?? "not-visible"],
+          value: cardValue[value ?? "not-visible"],
           disabled,
         }),
         className,
