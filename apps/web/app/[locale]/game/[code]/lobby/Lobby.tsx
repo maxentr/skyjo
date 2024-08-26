@@ -19,7 +19,7 @@ import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { useRouter } from "@/navigation"
 import { m } from "framer-motion"
-import { LockIcon, UnlockIcon } from "lucide-react"
+import { HomeIcon, LockIcon, UnlockIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { useLocalStorage } from "react-use"
@@ -93,15 +93,19 @@ const Lobby = () => {
         <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-4xl p-4">
           <div className="flex flex-col md:flex-row gap-4 w-full">
             <div className="bg-container border-2 border-black rounded-2xl w-full px-8 md:px-12 py-8 relative">
+              <HomeIcon
+                className="absolute top-4 left-4 h-6 w-6 text-slate-700 cursor-pointer"
+                onClick={actions.leave}
+              />
               <span className="absolute top-4 right-4">
                 <TooltipProvider delayDuration={200}>
-                  <Tooltip>
+                  <Tooltip defaultOpen={settings.private && isAdmin}>
                     <TooltipTrigger className="relative">
                       {settings.private ? (
                         <LockIcon
                           className={cn(
                             "h-6 w-6 text-slate-700",
-                            !isAdmin && "cursor-default",
+                            isAdmin ? "cursor-pointer" : "cursor-not-allowed",
                           )}
                           onClick={() => changeSettings("private", false)}
                         />
