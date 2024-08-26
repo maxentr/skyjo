@@ -38,7 +38,9 @@ const GamePage = () => {
   useEffect(() => {
     if (game.status === GAME_STATUS.STOPPED) return
 
-    router.replace(getRedirectionUrl(game.code, game.status))
+    setTimeout(() => {
+      router.replace(getRedirectionUrl(game.code, game.status))
+    }, 2000)
   }, [game.status])
 
   return (
