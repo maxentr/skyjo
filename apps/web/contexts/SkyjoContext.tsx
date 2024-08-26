@@ -124,7 +124,7 @@ const SkyjoContextProvider = ({
   const onLeave = () => {
     setGame(undefined)
     setChat([])
-    router.push("/")
+    router.replace("/")
   }
 
   const initGameListeners = () => {

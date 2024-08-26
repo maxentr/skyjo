@@ -32,7 +32,7 @@ const LanguageSettings = ({ locale }: LanguageSettingsProps) => {
       route = `${route}?gameCode=${gameCode}`
     }
 
-    router.push(route, { locale: locale as Locales })
+    router.replace(route, { locale: locale as Locales })
   }
 
   return (

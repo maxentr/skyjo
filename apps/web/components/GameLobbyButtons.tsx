@@ -88,8 +88,8 @@ const GameLobbyButtons = ({
       )
 
       if (game.status === GAME_STATUS.LOBBY)
-        router.push(`/game/${game.code}/lobby`)
-      else router.push(`/game/${game.code}`)
+        router.replace(`/game/${game.code}/lobby`)
+      else router.replace(`/game/${game.code}`)
     })
   }
 
