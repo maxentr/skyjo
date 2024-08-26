@@ -2,4 +2,4 @@ pre-commit:
   commands:
     check:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: TURBO_UI=0 pnpm dlx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --apply {staged_files} && git update-index --again
+      run: TURBO_UI=0 pnpm dlx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --write {staged_files} && git update-index --again
