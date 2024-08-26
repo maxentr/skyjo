@@ -9,7 +9,9 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["./dist/*"]
+      "*": [
+        "./dist/*"
+      ]
     }
   },
   "scripts": {
@@ -17,9 +19,9 @@
     "biome:check": "pnpm biome check --apply ."
   },
   "dependencies": {
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.5.4"
   }
 }

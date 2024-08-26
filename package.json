@@ -2,7 +2,10 @@
   "name": "skyjo",
   "version": "1.0.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -15,10 +18,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",
-    "@pnpm/logger": "^5.0.0",
-    "lefthook": "^1.6.14",
-    "syncpack": "^12.3.0",
-    "turbo": "^2.0.4"
+    "@pnpm/logger": "^5.2.0",
+    "lefthook": "^1.7.14",
+    "syncpack": "^12.4.0",
+    "turbo": "^2.0.14"
   },
-  "packageManager": "pnpm@9.0.6"
+  "packageManager": "pnpm@9.8.0+sha512.8e4c3550fb500e808dbc30bb0ce4dd1eb614e30b1c55245f211591ec2cdf9c611cabd34e1364b42f564bd54b3945ed0f49d61d1bbf2ec9bd74b866fcdc723276"
 }
