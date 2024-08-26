@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/toaster"
 import FeedbackContextProvider from "@/contexts/FeedbackContext"
 import SocketContextProvider from "@/contexts/SocketContext"
 import UserContextProvider from "@/contexts/UserContext"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { LazyMotion, domAnimation } from "framer-motion"
 import posthog from "posthog-js"
 import { PostHogProvider } from "posthog-js/react"
@@ -22,7 +21,6 @@ if (typeof window !== "undefined") {
 const Providers = ({ children }: PropsWithChildren) => {
   return (
     <PostHogProvider client={posthog}>
-      <SpeedInsights />
       <SocketContextProvider>
         <FeedbackContextProvider>
           <UserContextProvider>
