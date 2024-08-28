@@ -99,7 +99,7 @@ const Lobby = () => {
               />
               <span className="absolute top-4 right-4">
                 <TooltipProvider delayDuration={200}>
-                  <Tooltip defaultOpen={settings.private && isAdmin}>
+                  <Tooltip defaultOpen={isAdmin}>
                     <TooltipTrigger className="relative">
                       {settings.private ? (
                         <LockIcon
