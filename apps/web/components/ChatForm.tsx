@@ -77,6 +77,7 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
                       "focus-visible:ring-red-500",
                   )}
                   tabIndex={tabIndex}
+                  autoComplete="off"
                   {...field}
                 />
               </FormControl>
