@@ -148,7 +148,7 @@ const Card = ({
 
   useEffect(() => {
     setValue(card.value)
-  }, [card.isVisible])
+  }, [card.isVisible, card.value])
 
   let cardContent: string | JSX.Element = ""
 
