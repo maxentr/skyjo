@@ -133,7 +133,7 @@ export class Skyjo implements SkyjoInterface {
   }
 
   isFull() {
-    return this.getConnectedPlayers().length === this.settings.maxPlayers
+    return this.getConnectedPlayers().length >= this.settings.maxPlayers
   }
 
   checkTurn(playerSocketId: string) {
