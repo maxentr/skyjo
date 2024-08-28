@@ -24,7 +24,7 @@ export async function generateMetadata({
 }) {
   const t = await getTranslations({ locale, namespace: "head" })
 
-  const baseUrl = process.env.SITE_URL ?? ""
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ""
   const currentUrl = getCurrentUrl("", locale)
   const githubUrl = new URL("https://github.com/Maxentr")
 

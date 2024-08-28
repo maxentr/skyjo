@@ -12,13 +12,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getGameInviteLink = (currentUrl: string, region: "EU" | null) => {
-  const urlArray = currentUrl.split("/")
-
-  const baseUrl = urlArray.slice(0, 3).join("/")
-  const gameCode = urlArray[4]
-
-  let link = `${baseUrl}/?gameCode=${gameCode}`
+export const getGameInviteLink = (gameCode: string, region: "EU" | null) => {
+  let link = `${process.env.NEXT_PUBLIC_SITE_URL}/?gameCode=${gameCode}`
 
   if (region) link = `${link}&region=${region}`
 
@@ -26,7 +21,7 @@ export const getGameInviteLink = (currentUrl: string, region: "EU" | null) => {
 }
 
 export const getCurrentUrl = (route: string, locale?: string) => {
-  const baseUrl = process.env.SITE_URL ?? ""
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ""
   const url =
     locale && locale !== DEFAULT_LOCALE
       ? `${baseUrl}/${locale}/${route}`

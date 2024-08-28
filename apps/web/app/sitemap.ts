@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE } from "@/navigation"
 import { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.SITE_URL ?? ""
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ""
   const pages = ["", "rules"]
 
   const sitemap = pages.map((page) => {

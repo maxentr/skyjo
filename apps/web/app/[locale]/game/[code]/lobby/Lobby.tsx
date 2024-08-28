@@ -29,7 +29,11 @@ import { ChangeSettings } from "shared/validations/changeSettings"
 type ChangeSettingsKey = keyof ChangeSettings
 type ChangeSettingsValue = ChangeSettings[ChangeSettingsKey]
 
-const Lobby = () => {
+type LobbyProps = {
+  gameCode: string
+}
+
+const Lobby = ({ gameCode }: LobbyProps) => {
   const t = useTranslations("pages.Lobby")
   const {
     player,
@@ -330,7 +334,7 @@ const Lobby = () => {
               </div>
             </div>
           </div>
-          <CopyLink />
+          <CopyLink gameCode={gameCode} />
         </div>
       </m.div>
       <Chat className="z-[60]" />

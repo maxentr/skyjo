@@ -6,11 +6,15 @@ import { getGameInviteLink } from "@/lib/utils"
 import { CheckIcon, ClipboardCopyIcon } from "lucide-react"
 import { MouseEvent, useState } from "react"
 
-const CopyLink = () => {
+type CopyLinkProps = {
+  gameCode: string
+}
+
+const CopyLink = ({ gameCode }: CopyLinkProps) => {
   // const { region } = useSocket()
   const [copied, setCopied] = useState(false)
   const [interval, setInterval] = useState<NodeJS.Timeout>()
-  const inviteLink = getGameInviteLink(window.location.href, null)
+  const inviteLink = getGameInviteLink(gameCode, null)
 
   const copyLink = () => {
     navigator.clipboard.writeText(inviteLink)
