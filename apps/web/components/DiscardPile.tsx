@@ -53,7 +53,6 @@ const DiscardPile = ({ isPlayerTurn }: DiscardPileProps) => {
 
   const canDiscard =
     isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
-  isPlayerTurn && game.turnStatus === TURN_STATUS.CHOOSE_A_PILE
 
   return (
     <div className="relative">
