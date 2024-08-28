@@ -241,9 +241,6 @@
       "privacy-policy": "Politique de confidentialité",
       "disclaimer": "Ce site n'est pas affilié aux créateurs ou distributeurs de Skyjo. Tous les droits sur le nom Skyjo et les mécaniques du jeu sont de l'auteur Alexander Bernhardt et Magilano"
     },
-    "GameInfo": {
-      "last-turn": "Dernier tour !"
-    },
     "GameLobbyButtons": {
       "reconnect-game-button": "Se reconnecter à la partie",
       "join-game-button": "Rejoindre la partie",
@@ -399,6 +396,7 @@
         "turnACard": "Tournez une carte"
       },
       "player-turn": "C'est au tour de {playerName}",
+      "last-turn": "Dernier tour !",
       "game-stopped": "Partie arrêtée",
       "round-over": "Manche terminée",
       "game-ended": "Partie terminée !"

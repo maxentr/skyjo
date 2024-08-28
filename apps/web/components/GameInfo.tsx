@@ -26,14 +26,38 @@ const GameInfo = () => {
   }
 
   return (
-    <div className="absolute -top-8 text-center text-sm animate-scale">
+    <div className="absolute -top-11 text-center text-sm animate-scale flex flex-col items-center">
       <AnimatePresence>
+        {game.roundStatus === ROUND_STATUS.LAST_LAP && (
+          <m.p
+            initial={{
+              scale: 0,
+            }}
+            animate={{
+              scale: 1,
+              transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+              },
+            }}
+            exit={{
+              scale: 0,
+              transition: {
+                duration: 0.5,
+                ease: "easeInOut",
+              },
+            }}
+          >
+            {t("last-turn")}
+          </m.p>
+        )}
         {isPlayerTurn &&
           (game.roundStatus ===
             ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS ||
             game.roundStatus === ROUND_STATUS.PLAYING ||
             game.roundStatus === ROUND_STATUS.LAST_LAP) && (
             <m.p
+              className="text-nowrap"
               initial={{
                 scale: 0,
               }}

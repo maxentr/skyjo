@@ -240,9 +240,6 @@
       "privacy-policy": "Privacy policy",
       "disclaimer": "This website is not affiliated with the creators or distributors of Skyjo. All rights to the Skyjo name and game mechanics are owned by Alexander Bernhardt and Magilano"
     },
-    "GameInfo": {
-      "last-turn": "Last turn!"
-    },
     "GameLobbyButtons": {
       "reconnect-game-button": "Reconnect to the game",
       "join-game-button": "Join the game",
@@ -398,6 +395,7 @@
         "turnACard": "Turn a card"
       },
       "player-turn": "It's {playerName}'s turn",
+      "last-turn": "Last turn!",
       "game-stopped": "Game stopped",
       "round-over": "Round finished",
       "game-ended": "Game over!"
