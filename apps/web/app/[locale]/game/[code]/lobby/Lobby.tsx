@@ -300,7 +300,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row justify-center items-center gap-8 mt-6 md:mt-8">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-8 mt-6 md:mt-8">
                 {isAdmin && (
                   <Button
                     onClick={actions.resetSettings}
