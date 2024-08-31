@@ -62,7 +62,7 @@ const ResultsPage = () => {
             <MotionTableHeader
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, display: "table-header-group" }}
-              transition={{ delay: 1 }}
+              transition={{ delay: 0.2 }}
             >
               <TableRow>
                 <TableHead className="py-2 w-fit">{t("rank")}</TableHead>
@@ -73,7 +73,7 @@ const ResultsPage = () => {
             </MotionTableHeader>
           )}
           <TableBody>
-            {visibleRows.map((player, index) => (
+            {visibleRows.reverse().map((player, index) => (
               <MotionTableRow
                 key={player.socketId}
                 initial={{ opacity: 0, y: -20 }}
@@ -83,7 +83,7 @@ const ResultsPage = () => {
                 className="border-b"
               >
                 <TableCell className="w-8">
-                  {sortedPlayers.length - 1 + index}
+                  {allRowsVisible && visibleRows.length - 1 + index}
                 </TableCell>
                 <TableCell className="w-52 py-2 flex flex-row gap-2 items-center">
                   <UserAvatar avatar={player.avatar} size="small" />
