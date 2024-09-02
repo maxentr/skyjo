@@ -388,7 +388,7 @@ export default class SkyjoGameController {
     player: SkyjoPlayer,
   ) {
     if (game.status !== GAME_STATUS.LOBBY)
-      throw new Error("game-already-started")
+      throw new Error(ERROR.GAME_ALREADY_STARTED)
 
     game.addPlayer(player)
     const createPlayer = this.playerService.createPlayer(

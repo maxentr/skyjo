@@ -89,8 +89,9 @@ export const ERROR = {
   TOO_FEW_PLAYERS: "too-few-players",
   CANNOT_RECONNECT: "cannot-reconnect",
   GAME_IS_FULL: "game-is-full",
+  GAME_ALREADY_STARTED: "game-already-started",
 } as const
-
+export type Error = (typeof ERROR)[keyof typeof ERROR]
 export const CONNECTION_LOST_TIMEOUT_IN_MS = 30000
 export const LEAVE_TIMEOUT_IN_MS = 15000
 

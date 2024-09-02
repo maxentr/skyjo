@@ -287,7 +287,7 @@ describe("Skyjo", () => {
 
       await expect(() =>
         instance.onJoin(socket, game.code, player),
-      ).rejects.toThrowError("game-already-started")
+      ).rejects.toThrowError(ERROR.GAME_ALREADY_STARTED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
