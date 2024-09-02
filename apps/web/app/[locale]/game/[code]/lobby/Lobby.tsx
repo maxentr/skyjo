@@ -198,7 +198,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                       key={settings.initialTurnedCount}
                       name={"initial-turned-count"}
                       step={1}
-                      min={1}
+                      min={0}
                       max={maxInitialTurnedCount}
                       defaultValue={[settings.initialTurnedCount]}
                       onValueCommit={(value) =>
@@ -212,6 +212,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     <Input
                       name={"initial-turned-count"}
                       type="number"
+                      min={0}
                       max={maxInitialTurnedCount}
                       value={settings.initialTurnedCount}
                       onChange={(e) =>
@@ -248,6 +249,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     <Input
                       name={"multiplier-for-first-player"}
                       type="number"
+                      min={1}
                       max={10}
                       value={settings.multiplierForFirstPlayer}
                       onChange={(e) =>
@@ -273,6 +275,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                       key={settings.scoreToEndGame}
                       name={"score-to-end-game"}
                       step={10}
+                      min={10}
                       max={1000}
                       defaultValue={[settings.scoreToEndGame]}
                       onValueCommit={(value) =>
@@ -286,6 +289,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     <Input
                       name={"score-to-end-game"}
                       type="number"
+                      min={10}
                       max={1000}
                       value={settings.scoreToEndGame}
                       onChange={(e) =>
