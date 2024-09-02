@@ -1,3 +1,4 @@
+import { Error } from "constants"
 import { ChangeSettings } from "validations/changeSettings"
 import { ChatMessage } from "../types/chat"
 import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
@@ -32,9 +33,15 @@ export type ClientToServerEvents = {
   disconnect: () => void
 }
 
+export type ErrorJoinMessage = Extract<
+  Error,
+  "game-not-found" | "game-already-started" | "game-is-full"
+>
+export type ErrorReconnectMessage = Extract<Error, "cannot-reconnect">
+
 export type ServerToClientEvents = {
-  "error:join": (message: string) => void
-  "error:reconnect": (message: string) => void
+  "error:join": (message: ErrorJoinMessage) => void
+  "error:reconnect": (message: ErrorReconnectMessage) => void
   join: (game: SkyjoToJson, playerId: string) => void
   game: (game: SkyjoToJson) => void
   message: (message: ChatMessage) => void

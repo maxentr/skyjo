@@ -254,6 +254,12 @@
       },
       "cannot-reconnect": {
         "description": "Ce n'est plus possible de se reconnecter à la partie, le temps imparti pour se reconnecter a expiré"
+      },
+      "game-is-full": {
+        "description": "La partie est pleine, vous ne pouvez pas y rejoindre"
+      },
+      "game-already-started": {
+        "description": "La partie a déjà commencé"
       }
     },
     "GameStoppedDialog": {

@@ -253,6 +253,12 @@
       },
       "cannot-reconnect": {
         "description": "It is no longer possible to reconnect to the game, the time to reconnect has expired"
+      },
+      "game-is-full": {
+        "description": "The game is full, you cannot join"
+      },
+      "game-already-started": {
+        "description": "The game has already started"
       }
     },
     "GameStoppedDialog": {

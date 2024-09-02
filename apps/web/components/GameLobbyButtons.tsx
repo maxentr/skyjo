@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { ERROR, GAME_STATUS } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
+import { ErrorJoinMessage, ErrorReconnectMessage } from "shared/types/socket"
 import { CreatePlayer } from "shared/validations/player"
 
 export type GameLobbyButtonAction =
@@ -62,18 +63,23 @@ const GameLobbyButtons = ({
       })
     }, 10000)
 
-    socket.once("error:join", (message: string) => {
+    socket.once("error:join", (message: ErrorJoinMessage) => {
       clearTimeout(timeout)
       setLoading(false)
 
-      if (message === ERROR.GAME_NOT_FOUND) {
-        router.replace(`/`)
-        toast({
-          description: t("game-not-found.description"),
-          variant: "destructive",
-          duration: 5000,
-        })
+      const descriptionObject: Record<ErrorJoinMessage, string> = {
+        [ERROR.GAME_NOT_FOUND]: t("game-not-found.description"),
+        [ERROR.GAME_ALREADY_STARTED]: t("game-already-started.description"),
+        [ERROR.GAME_IS_FULL]: t("game-is-full.description"),
       }
+
+      router.replace(`/`)
+
+      toast({
+        description: descriptionObject[message],
+        variant: "destructive",
+        duration: 5000,
+      })
     })
 
     socket.once("join", (game: SkyjoToJson, playerId: string) => {
@@ -99,16 +105,20 @@ const GameLobbyButtons = ({
     delete lastGame?.maxDateToReconnect
     socket.emit("reconnect", lastGame!)
 
-    socket.once("error:reconnect", (message: string) => {
+    socket.once("error:reconnect", (message: ErrorReconnectMessage) => {
       setLoading(false)
 
-      if (message === ERROR.CANNOT_RECONNECT) {
-        toast({
-          description: t("cannot-reconnect.description"),
-          variant: "destructive",
-          duration: 5000,
-        })
+      const descriptionObject: Record<ErrorReconnectMessage, string> = {
+        [ERROR.CANNOT_RECONNECT]: t("cannot-reconnect.description"),
       }
+
+      toast({
+        description: descriptionObject[message],
+        variant: "destructive",
+        duration: 5000,
+      })
+
+      router.replace("/")
     })
   }
 
