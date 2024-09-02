@@ -1,4 +1,5 @@
 import { MIN_PLAYERS } from "@/constants"
+import { logger } from "@/utils/logs"
 import { DbGame, DbPlayer } from "database/schema"
 import {
   CONNECTION_STATUS,
@@ -156,7 +157,7 @@ export class Skyjo implements SkyjoInterface {
     this.status = GAME_STATUS.PLAYING
     this.turn = Math.floor(Math.random() * this.players.length)
 
-    console.log(`Game ${this.code} started`)
+    logger.info(`Game ${this.code} started`)
   }
 
   checkAllPlayersRevealedCards(count: number) {

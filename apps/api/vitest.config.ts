@@ -17,6 +17,7 @@ export default defineConfig({
         "src/socketRouter.ts",
         "test/constants.ts",
         "src/service/*.ts",
+        "src/utils/logs.ts",
       ],
       thresholds: {
         lines: 90,

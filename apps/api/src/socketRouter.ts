@@ -1,3 +1,4 @@
+import { logger } from "@/utils/logs"
 import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
 import {
   ChangeSettings,
@@ -40,7 +41,7 @@ const skyjoRouter = (
 
         instance.onCreate(socket, player)
       } catch (error) {
-        console.error(`Error while creating a game : ${error}`)
+        logger.error(`Error while creating a game : ${error}`)
       }
     })
 
@@ -50,7 +51,7 @@ const skyjoRouter = (
 
         await instance.onFind(socket, player)
       } catch (error) {
-        console.error(`Error while finding a game : ${error}`)
+        logger.error(`Error while finding a game : ${error}`)
       }
     })
 
@@ -62,7 +63,7 @@ const skyjoRouter = (
       } catch (error: unknown) {
         if (error instanceof Error) {
           socket.emit("error:join", error.message)
-          console.error(`Error while joining a game : ${error.message}`)
+          logger.error(`Error while joining a game : ${error.message}`)
         }
       }
     })
@@ -71,7 +72,7 @@ const skyjoRouter = (
       try {
         await instance.onGet(socket)
       } catch (error) {
-        console.error(`Error while getting a game : ${error}`)
+        logger.error(`Error while getting a game : ${error}`)
       }
     })
 
@@ -81,7 +82,7 @@ const skyjoRouter = (
 
         instance.onSettingsChange(socket, newSettings)
       } catch (error) {
-        console.error(`Error while changing the game settings : ${error}`)
+        logger.error(`Error while changing the game settings : ${error}`)
       }
     })
 
@@ -89,7 +90,7 @@ const skyjoRouter = (
       try {
         await instance.onGameStart(socket)
       } catch (error) {
-        console.error(`Error while getting a game : ${error}`)
+        logger.error(`Error while getting a game : ${error}`)
       }
     })
 
@@ -99,7 +100,7 @@ const skyjoRouter = (
 
         instance.onMessage(socket, message)
       } catch (error) {
-        console.error(`Error while chatting : ${error}`)
+        logger.error(`Error while chatting : ${error}`)
       }
     })
 
@@ -109,7 +110,7 @@ const skyjoRouter = (
 
         instance.onRevealCard(socket, turnCardData)
       } catch (error) {
-        console.error(`Error while turning a card : ${error}`)
+        logger.error(`Error while turning a card : ${error}`)
       }
     })
 
@@ -119,7 +120,7 @@ const skyjoRouter = (
 
         await instance.onPickCard(socket, playData)
       } catch (error) {
-        console.error(`Error while playing a game : ${error}`)
+        logger.error(`Error while playing a game : ${error}`)
       }
     })
 
@@ -129,7 +130,7 @@ const skyjoRouter = (
 
         await instance.onReplaceCard(socket, playData)
       } catch (error) {
-        console.error(`Error while playing a game : ${error}`)
+        logger.error(`Error while playing a game : ${error}`)
       }
     })
 
@@ -137,7 +138,7 @@ const skyjoRouter = (
       try {
         await instance.onDiscardCard(socket)
       } catch (error) {
-        console.error(`Error while playing a game : ${error}`)
+        logger.error(`Error while playing a game : ${error}`)
       }
     })
 
@@ -146,7 +147,7 @@ const skyjoRouter = (
         const playData = playTurnCard.parse(data)
         await instance.onTurnCard(socket, playData)
       } catch (error) {
-        console.error(`Error while playing a game : ${error}`)
+        logger.error(`Error while playing a game : ${error}`)
       }
     })
 
@@ -154,7 +155,7 @@ const skyjoRouter = (
       try {
         await instance.onReplay(socket)
       } catch (error) {
-        console.error(`Error while replaying a game : ${error}`)
+        logger.error(`Error while replaying a game : ${error}`)
       }
     })
 
@@ -163,17 +164,17 @@ const skyjoRouter = (
         await instance.onLeave(socket)
         socket.emit("leave:success")
       } catch (error) {
-        console.error(`Error while leaving a game : ${error}`)
+        logger.error(`Error while leaving a game : ${error}`)
       }
     })
 
     socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
-        console.log(`Socket ${socket.id} disconnected for reason ${reason}`)
+        logger.debug(`Socket ${socket.id} disconnected for reason ${reason}`)
         if (reason === "ping timeout") await instance.onLeave(socket, true)
         else await instance.onLeave(socket)
       } catch (error) {
-        console.error(`Error while disconnecting a game : ${error}`)
+        logger.error(`Error while disconnecting a game : ${error}`)
       }
     })
 
@@ -185,7 +186,7 @@ const skyjoRouter = (
       } catch (error) {
         if (error instanceof Error) {
           socket.emit("error:reconnect", error.message)
-          console.error(`Error while reconnecting a game : ${error.message}`)
+          logger.error(`Error while reconnecting a game : ${error.message}`)
         }
       }
     })

@@ -1,6 +1,7 @@
 import { Skyjo } from "@/class/Skyjo"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { PlayerService } from "@/service/player.service"
+import { logger } from "@/utils/logs"
 import { db } from "database/provider"
 import { DbGame, gameTable, playerTable } from "database/schema"
 import dayjs from "dayjs"
@@ -221,7 +222,10 @@ export class GameService {
 
         formattedGames.push(skyjo)
       } catch (error) {
-        console.log(`Error while formatting game ${game.code} : ${error}`, game)
+        logger.error(
+          `Error while formatting game ${game.code} : ${error}`,
+          game,
+        )
 
         continue
       }
