@@ -65,7 +65,6 @@ const Lobby = ({ gameCode }: LobbyProps) => {
   useEffect(() => {
     if (status !== GAME_STATUS.LOBBY) {
       clearTimeout(timeoutStart)
-      setIsLoading(false)
       router.replace(`/game/${code}`)
     }
   }, [status])
@@ -78,6 +77,8 @@ const Lobby = ({ gameCode }: LobbyProps) => {
   }
 
   const beforeStartGame = () => {
+    if (isLoading) return
+
     setIsLoading(true)
     setSettingsLocalStorage(settings)
 
