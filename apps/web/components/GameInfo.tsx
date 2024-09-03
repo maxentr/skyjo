@@ -48,6 +48,7 @@ const GameInfo = () => {
                 ease: "easeInOut",
               },
             }}
+            className="text-sm"
           >
             {t("last-turn")}
           </m.p>
@@ -59,7 +60,7 @@ const GameInfo = () => {
             game.roundStatus === ROUND_STATUS.LAST_LAP) && (
             <m.p
               key="game-info-text"
-              className="text-nowrap"
+              className="text-nowrap text-sm"
               initial={{
                 scale: 0,
               }}
