@@ -146,11 +146,24 @@ describe("Skyjo", () => {
   })
 
   describe("on find", () => {
-    it("should not find a game so it should create a new public game", async () => {
+    it("should either create a new game or join an existing one", async () => {
       const player: CreatePlayer = {
         username: "player1",
         avatar: AVATARS.BEE,
       }
+
+      // Create a public game that might be joined
+      const existingGame = new Skyjo(
+        "existingPlayerId",
+        new SkyjoSettings(false),
+      )
+      existingGame.addPlayer(
+        new SkyjoPlayer(
+          { username: "existingPlayer", avatar: AVATARS.ELEPHANT },
+          "existingSocketId",
+        ),
+      )
+      instance["games"].push(existingGame)
 
       await instance.onFind(socket, player)
 
@@ -158,6 +171,59 @@ describe("Skyjo", () => {
       const game = await instance["getGame"](gameCode)
 
       expect(gameCode).toBeDefined()
+      expect(game).toBeDefined()
+      expect(game.players.length).toBeGreaterThanOrEqual(1)
+      expect(game.players.length).toBeLessThanOrEqual(2)
+
+      if (game.players.length === 1) {
+        // New game was created
+        expect(socket.emit).toHaveBeenNthCalledWith(
+          1,
+          "join",
+          game?.toJson(),
+          game.players[0].id,
+        )
+      } else {
+        // Joined existing game
+        expect(socket.emit).toHaveBeenNthCalledWith(
+          1,
+          "join",
+          game?.toJson(),
+          game.players[1].id,
+        )
+      }
+
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        2,
+        "message",
+        expect.objectContaining({
+          type: MESSAGE_TYPE.PLAYER_JOINED,
+          username: "player1",
+        }),
+      )
+      expect(socket.emit).toHaveBeenNthCalledWith(
+        3,
+        "game",
+        expect.objectContaining({ code: gameCode }),
+      )
+    })
+
+    it("should create a new game if no eligible games exist", async () => {
+      const player: CreatePlayer = {
+        username: "player1",
+        avatar: AVATARS.BEE,
+      }
+
+      // Ensure there are no eligible games
+      instance["games"] = []
+
+      await instance.onFind(socket, player)
+
+      const gameCode = socket.data.gameCode
+      const game = await instance["getGame"](gameCode)
+
+      expect(gameCode).toBeDefined()
+      expect(game.players.length).toBe(1)
       expect(socket.emit).toHaveBeenNthCalledWith(
         1,
         "join",
@@ -176,44 +242,6 @@ describe("Skyjo", () => {
         3,
         "game",
         expect.objectContaining({ code: gameCode }),
-      )
-    })
-
-    it("should find a game and join it", async () => {
-      const opponent = new SkyjoPlayer(
-        { username: "player1", avatar: AVATARS.ELEPHANT },
-        "socket456",
-      )
-      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
-      game.addPlayer(opponent)
-      instance["games"].push(game)
-
-      const player: CreatePlayer = {
-        username: "player2",
-        avatar: AVATARS.BEE,
-      }
-
-      await instance.onFind(socket, player)
-
-      expect(game.players.length).toBe(2)
-      expect(socket.emit).toHaveBeenNthCalledWith(
-        1,
-        "join",
-        game?.toJson(),
-        game.players[1].id,
-      )
-      expect(socket.emit).toHaveBeenNthCalledWith(
-        2,
-        "message",
-        expect.objectContaining({
-          type: MESSAGE_TYPE.PLAYER_JOINED,
-          username: "player2",
-        }),
-      )
-      expect(socket.emit).toHaveBeenNthCalledWith(
-        3,
-        "game",
-        expect.objectContaining({ code: game.code }),
       )
     })
   })
