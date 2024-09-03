@@ -30,6 +30,7 @@ const GameInfo = () => {
       <AnimatePresence>
         {game.roundStatus === ROUND_STATUS.LAST_LAP && (
           <m.p
+            key="game-info-last-turn"
             initial={{
               scale: 0,
             }}
@@ -57,6 +58,7 @@ const GameInfo = () => {
             game.roundStatus === ROUND_STATUS.PLAYING ||
             game.roundStatus === ROUND_STATUS.LAST_LAP) && (
             <m.p
+              key="game-info-text"
               className="text-nowrap"
               initial={{
                 scale: 0,
