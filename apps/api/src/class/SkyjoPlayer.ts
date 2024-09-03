@@ -19,6 +19,7 @@ interface SkyjoPlayerInterface {
   connectionStatus: ConnectionStatus
   score: number
   wantsReplay: boolean
+  hasPlayedLastTurn: boolean
 
   toggleReplay(): void
   setCards(cardsValue: number[], cardSettings: SkyjoSettings): void
@@ -42,6 +43,7 @@ export class SkyjoPlayer implements SkyjoPlayerInterface {
   cards: SkyjoCard[][] = []
   score: number = 0
   scores: SkyjoPlayerScores = []
+  hasPlayedLastTurn = false
   wantsReplay: boolean = false
   disconnectionTimeout: NodeJS.Timeout | null = null
 
@@ -194,6 +196,7 @@ export class SkyjoPlayer implements SkyjoPlayerInterface {
 
   reset() {
     this.cards = []
+    this.hasPlayedLastTurn = false
     this.wantsReplay = false
     this.scores = []
     this.score = 0
@@ -201,6 +204,7 @@ export class SkyjoPlayer implements SkyjoPlayerInterface {
 
   resetRound() {
     this.cards = []
+    this.hasPlayedLastTurn = false
   }
 
   toJson(adminId?: string) {

@@ -522,8 +522,11 @@ export default class SkyjoGameController {
 
     if (game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS)
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-    else {
-      socket.to(game.code).emit("game", game.toJson())
+    else if (
+      game.roundStatus === ROUND_STATUS.LAST_LAP &&
+      game.allConnectedPlayersHavePlayedLastTurn()
+    ) {
+      game.endRound()
     }
 
     const updateGame = this.gameService.updateGame(game)

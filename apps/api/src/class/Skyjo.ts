@@ -216,15 +216,39 @@ export class Skyjo implements SkyjoInterface {
 
     this.checkCardsToDiscard(currentPlayer)
 
-    const playerFinished = this.checkIfPlayerFinished(currentPlayer)
+    this.checkAndSetFirstPlayerToFinish(currentPlayer)
 
-    if (this.firstToFinishPlayerId && !playerFinished) {
-      this.checkEndOfRound()
-      this.checkEndOfGame()
+    if (this.roundStatus === ROUND_STATUS.LAST_LAP) {
+      currentPlayer.hasPlayedLastTurn = true
+
+      if (this.allConnectedPlayersHavePlayedLastTurn()) {
+        this.endRound()
+        return
+      }
     }
 
     this.turnStatus = TURN_STATUS.CHOOSE_A_PILE
     this.turn = this.getNextTurn()
+  }
+
+  allConnectedPlayersHavePlayedLastTurn() {
+    return this.getConnectedPlayers().every(
+      (player) => player.hasPlayedLastTurn,
+    )
+  }
+
+  endRound() {
+    this.players.forEach((player) => {
+      player.turnAllCards()
+      this.checkCardsToDiscard(player)
+      player.finalRoundScore()
+    })
+
+    this.multiplyScoreForFirstPlayer()
+
+    this.roundStatus = ROUND_STATUS.OVER
+
+    this.checkEndOfGame()
   }
 
   startNewRound() {
@@ -378,7 +402,7 @@ export class Skyjo implements SkyjoInterface {
     }
   }
 
-  private checkIfPlayerFinished(player: SkyjoPlayer) {
+  private checkAndSetFirstPlayerToFinish(player: SkyjoPlayer) {
     // check if the player has turned all his cards
     const hasPlayerFinished = player.hasRevealedCardCount(
       player.cards.flat().length,
@@ -387,11 +411,7 @@ export class Skyjo implements SkyjoInterface {
     if (hasPlayerFinished && !this.firstToFinishPlayerId) {
       this.firstToFinishPlayerId = player.id
       this.roundStatus = ROUND_STATUS.LAST_LAP
-
-      return true
     }
-
-    return false
   }
 
   private getNextTurn() {
@@ -404,23 +424,6 @@ export class Skyjo implements SkyjoInterface {
     }
 
     return nextTurn
-  }
-
-  private checkEndOfRound() {
-    const connectedPlayers = this.getConnectedPlayers()
-    const nextTurn = this.getNextTurn()
-
-    if (connectedPlayers[nextTurn].id === this.firstToFinishPlayerId) {
-      this.players.forEach((player) => {
-        player.turnAllCards()
-        this.checkCardsToDiscard(player)
-        player.finalRoundScore()
-      })
-
-      this.multiplyScoreForFirstPlayer()
-
-      this.roundStatus = ROUND_STATUS.OVER
-    }
   }
 
   private removeDisconnectedPlayers() {
