@@ -107,14 +107,29 @@ export const getCurrentWhoHasToPlay = (game: SkyjoToJson) => {
   )
 }
 
-export const getNextPlayer = (game: SkyjoToJson) => {
-  const players = getConnectedPlayers(game.players)
+export const getNextPlayerIndex = (
+  game: SkyjoToJson,
+  currentPlayer: SkyjoPlayerToJson,
+): number => {
+  const opponents = getOpponents(game.players, currentPlayer.socketId).flat()
 
-  let nextTurn = (game.turn + 1) % players.length
-
-  while (players[nextTurn].connectionStatus !== CONNECTION_STATUS.CONNECTED) {
-    nextTurn = (nextTurn + 1) % players.length
+  if (opponents.length === 0) {
+    return -1
   }
 
-  return players[nextTurn]
+  const currentTurnIndex = game.players.findIndex(
+    (p) => p.socketId === game.players[game.turn].socketId,
+  )
+
+  let nextOpponentIndex = opponents.findIndex(
+    (opponent) =>
+      game.players.findIndex((p) => p.socketId === opponent.socketId) >
+      currentTurnIndex,
+  )
+
+  if (nextOpponentIndex === -1) {
+    nextOpponentIndex = 0
+  }
+
+  return nextOpponentIndex
 }
