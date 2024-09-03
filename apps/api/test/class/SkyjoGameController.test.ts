@@ -1322,6 +1322,70 @@ describe("Skyjo", () => {
         game.turn = 0
         game.roundNumber = 1
         game.firstToFinishPlayerId = opponent.id
+        opponent.hasPlayedLastTurn = true
+        game.turnStatus = TURN_STATUS.TURN_A_CARD
+        game.roundStatus = ROUND_STATUS.LAST_LAP
+
+        await instance.onTurnCard(socket, { column: 0, row: 2 })
+
+        expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+
+        vi.runAllTimers()
+
+        expect(game.roundStatus).toBe<RoundStatus>(
+          ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+        )
+        expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
+
+        vi.useRealTimers()
+      })
+
+      it("should turn a card, finish the turn and start a new round when first player to finish is disconnected", async () => {
+        vi.useFakeTimers()
+        const player = new SkyjoPlayer(
+          { username: "player1", avatar: AVATARS.PENGUIN },
+          TEST_SOCKET_ID,
+        )
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        instance["games"].push(game)
+
+        socket.data.gameCode = game.code
+        game.addPlayer(player)
+
+        const opponent = new SkyjoPlayer(
+          { username: "player2", avatar: AVATARS.ELEPHANT },
+          "socketId132312",
+        )
+        game.addPlayer(opponent)
+
+        const opponent2 = new SkyjoPlayer(
+          { username: "player3", avatar: AVATARS.ELEPHANT },
+          "socketId113226",
+        )
+        game.addPlayer(opponent2)
+
+        game.start()
+
+        player.turnCard(0, 0)
+        player.turnCard(0, 1)
+        opponent.turnCard(0, 0)
+        opponent.turnCard(0, 1)
+
+        game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+        opponent.cards = [
+          [new SkyjoCard(1, true), new SkyjoCard(1, true)],
+          [new SkyjoCard(1, true), new SkyjoCard(1, true)],
+          [new SkyjoCard(1, true), new SkyjoCard(1, true)],
+          [new SkyjoCard(1, true), new SkyjoCard(1, true)],
+        ]
+
+        game.turn = 0
+        game.roundNumber = 1
+        game.firstToFinishPlayerId = opponent.id
+        opponent.connectionStatus = CONNECTION_STATUS.DISCONNECTED
+        opponent2.hasPlayedLastTurn = true
         game.turnStatus = TURN_STATUS.TURN_A_CARD
         game.roundStatus = ROUND_STATUS.LAST_LAP
 

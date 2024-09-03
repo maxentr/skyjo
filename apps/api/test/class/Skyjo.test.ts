@@ -652,6 +652,8 @@ describe("Skyjo", () => {
     it("should set next turn, end the round and not double score of the first player", () => {
       skyjo.start()
       skyjo.firstToFinishPlayerId = player.id
+      skyjo.roundStatus = ROUND_STATUS.LAST_LAP
+      player.hasPlayedLastTurn = true
       skyjo.turn = 1
 
       player.cards = [
@@ -679,6 +681,8 @@ describe("Skyjo", () => {
     it("should set next turn, end the round and double score of the first player", () => {
       skyjo.start()
       skyjo.firstToFinishPlayerId = player.id
+      skyjo.roundStatus = ROUND_STATUS.LAST_LAP
+      player.hasPlayedLastTurn = true
       skyjo.turn = 1
 
       player.cards = [
@@ -706,6 +710,8 @@ describe("Skyjo", () => {
     it("should set next turn, end the round and not double score of the first player because it's 0", () => {
       skyjo.start()
       skyjo.firstToFinishPlayerId = player.id
+      skyjo.roundStatus = ROUND_STATUS.LAST_LAP
+      player.hasPlayedLastTurn = true
       skyjo.turn = 1
 
       player.cards = [
@@ -733,6 +739,8 @@ describe("Skyjo", () => {
     it("should set next turn, end the round and not double score of the first player because it's negative", () => {
       skyjo.start()
       skyjo.firstToFinishPlayerId = player.id
+      skyjo.roundStatus = ROUND_STATUS.LAST_LAP
+      player.hasPlayedLastTurn = true
       skyjo.turn = 1
 
       player.cards = [
@@ -761,6 +769,8 @@ describe("Skyjo", () => {
       skyjo.start()
       skyjo.roundNumber = 2
       skyjo.firstToFinishPlayerId = player.id
+      skyjo.roundStatus = ROUND_STATUS.LAST_LAP
+      player.hasPlayedLastTurn = true
       skyjo.turn = 1
 
       player.scores = [90]
