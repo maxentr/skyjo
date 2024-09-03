@@ -26,7 +26,7 @@ const GameInfo = () => {
   }
 
   return (
-    <div className="absolute -top-11 text-center text-sm animate-scale flex flex-col items-center">
+    <div className="absolute -top-8 sm:-top-11 text-center text-sm animate-scale flex flex-col items-center">
       <AnimatePresence>
         {game.roundStatus === ROUND_STATUS.LAST_LAP && (
           <m.p
