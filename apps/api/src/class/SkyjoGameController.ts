@@ -96,6 +96,7 @@ export default class SkyjoGameController {
     if (!game.isAdmin(socket.id)) throw new Error(ERROR.NOT_ALLOWED)
 
     game.settings.changeSettings(settings)
+    game.updatedAt = new Date()
 
     const updateSettings = this.gameService.updateSettings(
       game.id,
@@ -309,6 +310,8 @@ export default class SkyjoGameController {
     if (!game.getPlayerBySocketId(socket.id))
       throw new Error(ERROR.PLAYER_NOT_FOUND)
 
+    game.updatedAt = new Date()
+
     const newMessage = {
       id: crypto.randomUUID(),
       username,
@@ -369,17 +372,42 @@ export default class SkyjoGameController {
   }
 
   private async getPublicGameWithFreePlace() {
-    const game = this.games.find((game) => {
+    const MAX_GAME_INACTIVE_TIME_IN_MS = 5 * 60 * 1000
+    const BASE_NEW_GAME_CHANCE = 0.05
+    const MAX_NEW_GAME_CHANCE = 0.2
+    const IDEAL_LOBBY_GAME_COUNT = 3 // Number of lobby wanted at the same time
+
+    const now = new Date().getTime()
+
+    const eligibleGames = this.games.filter((game) => {
+      const hasRecentActivity =
+        now - game.updatedAt.getTime() < MAX_GAME_INACTIVE_TIME_IN_MS
+
       return (
-        !game.isFull() &&
+        !game.settings.private &&
         game.status === GAME_STATUS.LOBBY &&
-        !game.settings.private
+        !game.isFull() &&
+        hasRecentActivity
       )
     })
 
-    if (!game) return await this.gameService.getPublicGameWithFreePlace()
+    // Adjust new game chance based on number of eligible games
+    const missingLobbyGameCount = Math.max(
+      0,
+      IDEAL_LOBBY_GAME_COUNT - eligibleGames.length,
+    )
+    const additionalChance = BASE_NEW_GAME_CHANCE * missingLobbyGameCount
+    const newGameChance = Math.min(
+      MAX_NEW_GAME_CHANCE,
+      BASE_NEW_GAME_CHANCE + additionalChance,
+    )
 
-    return game
+    const shouldCreateNewGame =
+      Math.random() < newGameChance || eligibleGames.length === 0
+    if (shouldCreateNewGame) return null
+
+    const randomGameIndex = Math.floor(Math.random() * eligibleGames.length)
+    return eligibleGames[randomGameIndex]
   }
 
   private async addPlayerToGame(
@@ -396,6 +424,7 @@ export default class SkyjoGameController {
       socket.id,
       player,
     )
+    game.updatedAt = new Date()
     const updateGame = this.gameService.updateGame(game, false)
 
     await Promise.all([createPlayer, updateGame])

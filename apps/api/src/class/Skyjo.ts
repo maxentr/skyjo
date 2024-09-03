@@ -65,12 +65,19 @@ export class Skyjo implements SkyjoInterface {
   roundNumber: number = 1
   firstToFinishPlayerId: string | null = null
 
+  createdAt: Date
+  updatedAt: Date
+
   constructor(
     adminPlayerId: string,
     settings: SkyjoSettings = new SkyjoSettings(),
   ) {
     this.adminId = adminPlayerId
     this.settings = settings
+
+    const now = new Date()
+    this.createdAt = now
+    this.updatedAt = now
   }
 
   populate(game: DbGame, { players }: { players: DbPlayer[] }) {
@@ -88,6 +95,9 @@ export class Skyjo implements SkyjoInterface {
     this.roundNumber = game.roundNumber
 
     this.firstToFinishPlayerId = game.firstToFinishPlayerId
+
+    this.createdAt = game.createdAt
+    this.updatedAt = game.updatedAt
 
     this.players = players.map((player) => new SkyjoPlayer().populate(player))
 
@@ -260,6 +270,7 @@ export class Skyjo implements SkyjoInterface {
     if (this.getConnectedPlayers().every((player) => player.wantsReplay)) {
       this.resetRound()
       this.status = GAME_STATUS.LOBBY
+      this.updatedAt = new Date()
       this.turn = 0
     }
   }
