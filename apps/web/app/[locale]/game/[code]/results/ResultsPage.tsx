@@ -1,6 +1,5 @@
 "use client"
 
-import Chat from "@/components/Chat"
 import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -138,7 +137,6 @@ const ResultsPage = () => {
           </m.div>
         )}
       </m.div>
-      <Chat />
     </AnimatePresence>
   )
 }

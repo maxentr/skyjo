@@ -1,6 +1,5 @@
 "use client"
 
-import Chat from "@/components/Chat"
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndRoundDialog from "@/components/EndRoundDialog"
@@ -102,7 +101,6 @@ const GamePage = () => {
       </div>
       <EndRoundDialog />
       <GameStoppedDialog />
-      <Chat disabled={game.status === GAME_STATUS.LOBBY} />
     </div>
   )
 }
