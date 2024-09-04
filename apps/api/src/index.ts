@@ -48,7 +48,10 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(
     cors: {
       origin: process.env.ORIGINS,
     },
-    connectionStateRecovery: {},
+    connectionStateRecovery: {
+      maxDisconnectionDuration: 3 * 60 * 1000,
+      skipMiddlewares: true,
+    },
   },
 )
 

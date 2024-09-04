@@ -27,6 +27,8 @@ const initSocket = (url: string) => {
   console.log("Connecting to", url)
   const socket = io(url, {
     autoConnect: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 15000,
     parser: customParser,
   })
 

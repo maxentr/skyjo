@@ -31,10 +31,6 @@ const skyjoRouter = (
   io: Server<ClientToServerEvents, ServerToClientEvents>,
 ) => {
   io.on("connection", (socket: SkyjoSocket) => {
-    if (socket.recovered) {
-      instance.onReconnect(socket, socket.data)
-    }
-
     socket.on("create-private", (player: CreatePlayer) => {
       try {
         createPlayer.parse(player)
