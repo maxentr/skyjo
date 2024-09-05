@@ -69,22 +69,26 @@ const OpponentsMobileView = () => {
     <AnimatePresence>
       <div className="flex md:hidden flex-row grow">
         <div className="flex flex-col w-20 gap-2 max-h-52">
-          <p>{t("opponents-list.title")}</p>
-          {opponentsWithoutSelected.map((opponent, index) => (
-            <m.button
-              key={opponent.socketId}
-              initial={{ opacity: 0, scale: 0.8, x: 50 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ display: "none", transition: { duration: 0 } }}
-              onClick={() => setSelectedOpponentIndex(index)}
-            >
-              <UserAvatar
-                avatar={opponent.avatar}
-                pseudo={opponent.name}
-                size="small"
-              />
-            </m.button>
-          ))}
+          {opponentsWithoutSelected.length > 0 && (
+            <>
+              <p>{t("opponents-list.title")}</p>
+              {opponentsWithoutSelected.map((opponent, index) => (
+                <m.button
+                  key={opponent.socketId}
+                  initial={{ opacity: 0, scale: 0.8, x: 50 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ display: "none", transition: { duration: 0 } }}
+                  onClick={() => setSelectedOpponentIndex(index)}
+                >
+                  <UserAvatar
+                    avatar={opponent.avatar}
+                    pseudo={opponent.name}
+                    size="small"
+                  />
+                </m.button>
+              ))}
+            </>
+          )}
         </div>
         <div className="flex grow justify-center items-center">
           {selectedOpponent && (
