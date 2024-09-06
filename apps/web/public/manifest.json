@@ -18,5 +18,11 @@
   "display": "standalone",
   "start_url": "/",
   "scope": "/",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "Skyjo online",
+      "url": "https://localhost:3000/manifest.json"
+    }
+  ]
 }
