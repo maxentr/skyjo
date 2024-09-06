@@ -285,6 +285,21 @@
     "PlayerBoard": {
       "you": "Vous"
     },
+    "PWABanner": {
+      "title": "Installer Skyjo Online sur votre appareil !",
+      "Safari": "Appuyez sur l'icône de partage, puis sur 'Ajouter au Dock' pour installer",
+      "Chrome": "Cliquez sur le bouton 'Installer' pour installer",
+      "FirefoxAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
+      "ChromeAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
+      "SamsungBrowser": "Appuyez sur l'icône de menu, puis sur 'Ajouter la page à' pour installer",
+      "ChromeIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "FirefoxIOS": "Appuyez sur l'icône du menu, puis de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "SafariIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "install-button": {
+        "title": "Installer l'application",
+        "content": "Installer"
+      }
+    },
     "RegionsSelect": {
       "title": "Région du serveur :",
       "button-loading": "Chargement des serveurs...",

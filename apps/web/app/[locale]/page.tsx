@@ -3,6 +3,7 @@ import FeedbackButton from "@/components/FeedbackButton"
 import Footer from "@/components/Footer"
 import LanguageSettings from "@/components/LanguageSettings"
 import MovingArrow from "@/components/MovingArrow"
+import PWABanner from "@/components/PWABanner"
 import RulesDialog from "@/components/RulesDialog"
 import {
   Accordion,
@@ -32,6 +33,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
     <>
       <div className="bg-body flex flex-col">
         <div className="relative h-dvh !p-6 bg-body flex items-center justify-center">
+          <PWABanner />
           <div className="absolute top-6 right-6 w-10 flex flex-col gap-4 z-10">
             <LanguageSettings locale={params.locale} />
             <RulesDialog />
