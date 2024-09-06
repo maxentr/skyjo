@@ -52,12 +52,12 @@ const ResultsPage = () => {
   return (
     <AnimatePresence>
       <m.div
-        className="h-dvh flex flex-col items-center justify-center overflow-auto max-w-3xl container"
+        className="h-dvh flex flex-col items-center justify-center overflow-auto sm:container"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
         <h1 className="text-2xl font-semibold mb-4">{t("title")}</h1>
-        <Table className="border border-black bg-container">
+        <Table className="border border-black bg-container lg:w-2/3 mx-auto">
           {allRowsVisible && (
             <MotionTableHeader
               initial={{ opacity: 0 }}
