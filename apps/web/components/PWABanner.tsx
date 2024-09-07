@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button"
 import { UserAgent, useUserAgent } from "@/hooks/useUserAgent"
-import { AnimatePresence } from "framer-motion"
-import { m } from "framer-motion"
+import { BeforeInstallPromptEvent } from "@/types/beforeInstallPrompt"
+import { AnimatePresence, m } from "framer-motion"
 import { XIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useFeatureFlagEnabled } from "posthog-js/react"
@@ -14,7 +14,8 @@ const PWABanner = () => {
   const flagPwaBannerEnabled = useFeatureFlagEnabled("pwa-banner")
 
   const t = useTranslations("components.PWABanner")
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null)
   const { userAgent, isInstalled } = useUserAgent()
   const [hasBeenDismissed, setHasBeenDismissed] = useLocalStorage(
     "pwaBannerDismissed",
@@ -22,14 +23,14 @@ const PWABanner = () => {
   )
   const [show, setShow] = useState(false)
 
-  const handleBeforeInstallPrompt = (e: Event) => {
+  const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
     console.log("beforeinstallprompt event fired")
     e.preventDefault()
     setDeferredPrompt(e)
   }
 
   useEffect(() => {
-    if (!flagPwaBannerEnabled || !window) return
+    if (!flagPwaBannerEnabled || typeof window === "undefined") return
 
     if (userAgent === "Chrome") {
       window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
@@ -45,7 +46,7 @@ const PWABanner = () => {
         )
       }
     }
-  }, [window, flagPwaBannerEnabled, userAgent])
+  }, [flagPwaBannerEnabled, userAgent, isInstalled, hasBeenDismissed])
 
   const handleInstallation = () => {
     if (deferredPrompt) {
