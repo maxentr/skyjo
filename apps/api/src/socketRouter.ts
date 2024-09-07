@@ -33,9 +33,9 @@ const skyjoRouter = (
   io.on("connection", (socket: SkyjoSocket) => {
     socket.on("create-private", (player: CreatePlayer) => {
       try {
-        createPlayer.parse(player)
+        const parsedPlayer = createPlayer.parse(player)
 
-        instance.onCreate(socket, player)
+        instance.onCreate(socket, parsedPlayer)
       } catch (error) {
         logger.error(`Error while creating a game : ${error}`)
       }
@@ -43,9 +43,9 @@ const skyjoRouter = (
 
     socket.on("find", async (player: CreatePlayer) => {
       try {
-        createPlayer.parse(player)
+        const parsedPlayer = createPlayer.parse(player)
 
-        await instance.onFind(socket, player)
+        await instance.onFind(socket, parsedPlayer)
       } catch (error) {
         logger.error(`Error while finding a game : ${error}`)
       }

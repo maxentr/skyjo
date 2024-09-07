@@ -6,7 +6,10 @@ const avatar: z.ZodType<Avatar> = z.enum(
 )
 
 export const createPlayer = z.object({
-  username: z.string().min(1).max(100),
+  username: z
+    .string()
+    .min(1)
+    .transform((val) => val.slice(0, 20).replace(/ /g, "_")),
   avatar: avatar,
 })
 

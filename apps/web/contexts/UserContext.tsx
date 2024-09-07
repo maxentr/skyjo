@@ -11,6 +11,7 @@ import React, {
 } from "react"
 import { useLocalStorage } from "react-use"
 import { AVATARS, Avatar } from "shared/constants"
+import { createPlayer } from "shared/validations/player"
 
 const USERNAME_KEY = "username"
 const AVATAR_KEY = "Avatar-index"
@@ -52,7 +53,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const saveUserInLocalStorage = () => {
-    setPreferredUsername(username)
+    const player = createPlayer.parse({ username, avatar: getAvatar() })
+    setPreferredUsername(player.username)
     setPreferredAvatarIndex(avatarIndex)
   }
 
