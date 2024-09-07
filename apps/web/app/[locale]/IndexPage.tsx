@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { useTranslations } from "next-intl"
-import { useEffect } from "react"
+import { ChangeEvent, useEffect } from "react"
 import { ApiRegionsTag } from "shared/constants"
 import { CreatePlayer } from "shared/validations/player"
 
@@ -41,13 +41,25 @@ const IndexPage = ({ searchParams }: Props) => {
     return player
   }
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (value.length > 20) return
+
+    const newValue = value.replace(/[ ]/g, "_")
+
+    setUsername(newValue)
+  }
+
   return (
     <>
       <SelectAvatar containerClassName="mb-4" />
       <Input
         placeholder={t("name-input-placeholder")}
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={onChange}
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect="off"
       />
       <GameLobbyButtons
         beforeButtonAction={beforeButtonAction}

@@ -24,7 +24,7 @@ const ChatMessage = ({ username, message, type }: ChatMessage) => {
   const players = game?.players.map((p) => p.name)
 
   const highlightTags = (text: string) => {
-    const parts = text.split(/(@\w+)/)
+    const parts = text.split(/(@[\w-_]+)/)
 
     return parts.map((part, index) => {
       if (part.startsWith("@") && players.includes(part.slice(1))) {
