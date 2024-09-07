@@ -230,6 +230,8 @@ export class Skyjo implements SkyjoInterface {
 
     if (this.roundStatus === ROUND_STATUS.LAST_LAP) {
       currentPlayer.hasPlayedLastTurn = true
+      this.lastTurnStatus = LAST_TURN_STATUS.TURN
+      currentPlayer.turnAllCards()
 
       if (this.allConnectedPlayersHavePlayedLastTurn()) {
         this.endRound()
