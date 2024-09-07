@@ -144,7 +144,7 @@ const Card = ({
     ) {
       turnCard()
     }
-  }, [flipAnimation, card.isVisible])
+  }, [flipAnimation, card.isVisible, controls, animate, scope])
 
   useEffect(() => {
     setValue(card.value)
