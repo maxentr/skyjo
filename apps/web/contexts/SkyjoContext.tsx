@@ -143,9 +143,13 @@ const SkyjoContextProvider = ({
   const sendMessage = (message: string) => {
     if (!player) return
 
+    const taggedPlayers =
+      message.match(/@(\w+)/g)?.map((tag) => tag.slice(1)) || []
+
     socket!.send({
       message,
       username: player.name,
+      taggedPlayers,
     })
   }
 

@@ -16,7 +16,7 @@ function ChatMessageList({ unreadMessages }: ChatMessageListProps) {
       className="overflow-y-auto flex flex-grow flex-col-reverse my-2 gap-2 scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent scrollbar-thumb-rounded-full scrollbar-track-rounded-full"
     >
       {unreadMessages.map((message) => (
-        <ChatMessage key={message.id} message={message} />
+        <ChatMessage key={message.id} {...message} />
       ))}
       {unreadMessages.length > 0 && (
         <div className="flex flex-row items-center">
@@ -30,7 +30,7 @@ function ChatMessageList({ unreadMessages }: ChatMessageListProps) {
       {chat
         .filter((message) => !unreadMessages.includes(message))
         .map((message) => (
-          <ChatMessage key={message.id} message={message} />
+          <ChatMessage key={message.id} {...message} />
         ))}
     </div>
   )
