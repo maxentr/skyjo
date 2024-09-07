@@ -24,7 +24,6 @@ const PWABanner = () => {
   const [show, setShow] = useState(false)
 
   const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-    console.log("beforeinstallprompt event fired")
     e.preventDefault()
     setDeferredPrompt(e)
   }
