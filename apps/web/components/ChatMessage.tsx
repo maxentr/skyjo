@@ -1,39 +1,52 @@
-import { cn } from "@/lib/utils"
+import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cva } from "class-variance-authority"
 import { useTranslations } from "next-intl"
 import { MessageType } from "shared/constants"
 import type { ChatMessage } from "shared/types/chat"
 
-type ChatMessageProps = {
-  message: ChatMessage
-}
-
-const chatMessageClasses = cva("", {
-  variants: {
-    type: {
-      message: "text-slate-800",
-      "player-joined": "text-green-600",
-      "player-reconnect": "text-green-600",
-      "player-left": "text-red-600",
+const chatMessageClasses = cva(
+  "font-inter text-sm text-wrap break-words w-full",
+  {
+    variants: {
+      type: {
+        message: "text-slate-800",
+        "player-joined": "text-green-600",
+        "player-reconnect": "text-green-600",
+        "player-left": "text-red-600",
+      },
     },
   },
-})
-const ChatMessage = ({ message }: ChatMessageProps) => {
+)
+
+const ChatMessage = ({ username, message, type }: ChatMessage) => {
+  const { game } = useSkyjo()
   const t = useTranslations("components.ChatMessage")
+  const players = game?.players.map((p) => p.name)
+
+  const highlightTags = (text: string) => {
+    const parts = text.split(/(@\w+)/)
+
+    return parts.map((part, index) => {
+      if (part.startsWith("@") && players.includes(part.slice(1))) {
+        return (
+          <span key={index} className="font-semibold text-blue-500 ">
+            {part}
+          </span>
+        )
+      }
+      return part
+    })
+  }
+
   return (
-    <p
-      className={cn(
-        "font-inter text-sm text-wrap break-words w-full",
-        chatMessageClasses({ type: message.type as MessageType }),
-      )}
-    >
-      {message?.username && (
+    <p className={chatMessageClasses({ type: type as MessageType })}>
+      {username && (
         <span className="font-semibold">
-          {message?.username}
+          {username}
           {t("separator")}
         </span>
       )}
-      {message.message}
+      {highlightTags(message)}
     </p>
   )
 }
