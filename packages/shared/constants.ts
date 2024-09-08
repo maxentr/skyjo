@@ -74,10 +74,20 @@ export const MESSAGE_TYPE = {
   PLAYER_JOINED: "player-joined",
   PLAYER_RECONNECT: "player-reconnect",
   PLAYER_LEFT: "player-left",
+  SYSTEM_MESSAGE: "system-message",
+  WARN_SYSTEM_MESSAGE: "warn-system-message",
+  ERROR_SYSTEM_MESSAGE: "error-system-message",
   USER_MESSAGE: "message",
 } as const
 export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE]
 export type SystemMessageType = Exclude<MessageType, "message">
+
+export const SERVER_MESSAGE = {
+  PLAYER_JOINED: "player-joined",
+  PLAYER_RECONNECT: "player-reconnect",
+  PLAYER_LEFT: "player-left",
+} as const
+export type ServerMessage = (typeof SERVER_MESSAGE)[keyof typeof SERVER_MESSAGE]
 
 //#endregion Skyjo
 

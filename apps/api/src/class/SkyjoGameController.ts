@@ -12,6 +12,7 @@ import {
   MESSAGE_TYPE,
   MessageType,
   ROUND_STATUS,
+  SERVER_MESSAGE,
   TURN_STATUS,
   TurnStatus,
 } from "shared/constants"
@@ -288,7 +289,7 @@ export default class SkyjoGameController {
       socket.to(game.code).emit("message", {
         id: crypto.randomUUID(),
         username: player.name,
-        message: MESSAGE_TYPE.PLAYER_LEFT,
+        message: SERVER_MESSAGE.PLAYER_LEFT,
         type: MESSAGE_TYPE.PLAYER_LEFT,
       })
 
@@ -445,16 +446,15 @@ export default class SkyjoGameController {
 
     socket.emit("join", game.toJson(), player.id)
 
-    const messageType = reconnection
-      ? MESSAGE_TYPE.PLAYER_RECONNECT
-      : MESSAGE_TYPE.PLAYER_JOINED
     await this.onMessage(
       socket,
       {
         username: player.name,
-        message: messageType,
+        message: reconnection
+          ? SERVER_MESSAGE.PLAYER_RECONNECT
+          : SERVER_MESSAGE.PLAYER_JOINED,
       },
-      messageType,
+      reconnection ? MESSAGE_TYPE.PLAYER_RECONNECT : MESSAGE_TYPE.PLAYER_JOINED,
     )
 
     const updateGame = this.gameService.updateGame(game)
