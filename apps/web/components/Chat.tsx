@@ -1,9 +1,8 @@
 "use client"
 
 import ChatForm from "@/components/ChatForm"
-import ChatMessage from "@/components/ChatMessage"
 import ChatMessageList from "@/components/ChatMessageList"
-import { useSkyjo } from "@/contexts/SkyjoContext"
+import { useChat } from "@/contexts/ChatContext"
 import { cn } from "@/lib/utils"
 import { ClassValue } from "clsx"
 import { useTranslations } from "next-intl"
@@ -14,28 +13,23 @@ type ChatProps = {
   disabled?: boolean
 }
 const Chat = ({ className, disabled = false }: ChatProps) => {
-  const { chat } = useSkyjo()
+  const {
+    chat,
+    setHasUnreadMessage,
+    hasUnreadMessage,
+    addUnreadMessage,
+    clearUnreadMessages,
+  } = useChat()
   const t = useTranslations("components.Chat")
 
   const [open, setOpen] = useState(false)
-  const [unreadMessages, setUnreadMessages] = useState<ChatMessage[]>([])
-  const [hasUnreadMessage, setHasUnreadMessage] = useState<boolean>(false)
-
-  const addUnreadMessage = (message: ChatMessage) => {
-    setUnreadMessages((prev) => [message, ...prev])
-    setHasUnreadMessage(true)
-  }
-
-  const clearUnreadMessages = () => setUnreadMessages([])
 
   useEffect(() => clearUnreadMessages(), [])
   useEffect(() => {
     if (open === false) {
       const lastMessage = chat?.[0]
 
-      if (lastMessage) {
-        addUnreadMessage(lastMessage)
-      }
+      if (lastMessage) addUnreadMessage(lastMessage)
     } else {
       clearUnreadMessages()
     }
@@ -45,19 +39,11 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
     const newOpenState = !open
     setOpen(newOpenState)
 
-    if (newOpenState === true) {
-      setHasUnreadMessage(false)
-    }
+    if (newOpenState === true) setHasUnreadMessage(false)
 
     setTimeout(() => {
-      if (newOpenState === false) {
-        clearUnreadMessages()
-      }
+      if (newOpenState === false) clearUnreadMessages()
     }, 300)
-  }
-
-  const onMessageSent = () => {
-    clearUnreadMessages()
   }
 
   return (
@@ -89,8 +75,8 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
           </>
         )}
         <div className="h-96 w-full flex flex-col pl-2 pr-1">
-          <ChatMessageList unreadMessages={unreadMessages} />
-          <ChatForm chatOpen={open} onMessageSent={onMessageSent} />
+          <ChatMessageList />
+          <ChatForm chatOpen={open} />
         </div>
       </div>
     </div>

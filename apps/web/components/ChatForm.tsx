@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
+import { useChat } from "@/contexts/ChatContext"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,12 +20,12 @@ const chatFormSchema = z.object({
 
 type ChatFormProps = {
   chatOpen: boolean
-  onMessageSent: () => void
 }
 
-const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
+const ChatForm = ({ chatOpen }: ChatFormProps) => {
   const { toast } = useToast()
-  const { actions, opponents } = useSkyjo()
+  const { player, opponents } = useSkyjo()
+  const { sendMessage, clearUnreadMessages } = useChat()
   const t = useTranslations("components.ChatForm")
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
@@ -106,8 +107,8 @@ const ChatForm = ({ chatOpen, onMessageSent }: ChatFormProps) => {
         duration: 3000,
       })
     } else {
-      onMessageSent()
-      actions.sendMessage(values.message)
+      sendMessage(player.name, values.message)
+      clearUnreadMessages()
     }
 
     form.reset()

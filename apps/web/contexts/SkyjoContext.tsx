@@ -1,12 +1,12 @@
 "use client"
 
+import { useChat } from "@/contexts/ChatContext"
 import { useSocket } from "@/contexts/SocketContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
 import { useRouter } from "@/navigation"
 import { Opponents } from "@/types/opponents"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
   createContext,
@@ -16,8 +16,7 @@ import {
   useRef,
   useState,
 } from "react"
-import { GAME_STATUS, MESSAGE_TYPE } from "shared/constants"
-import { ChatMessage } from "shared/types/chat"
+import { GAME_STATUS } from "shared/constants"
 import { SkyjoToJson } from "shared/types/skyjo"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 import { ChangeSettings } from "shared/validations/changeSettings"
@@ -30,7 +29,6 @@ type SkyjoContextInterface = {
   player: SkyjoPlayerToJson
   opponents: Opponents
   actions: {
-    sendMessage: (message: string) => void
     changeSettings: (settings: ChangeSettings) => void
     resetSettings: () => void
     startGame: () => void
@@ -42,7 +40,6 @@ type SkyjoContextInterface = {
     replay: () => void
     leave: () => void
   }
-  chat: ChatMessage[]
 }
 
 const SkyjoContext = createContext({} as SkyjoContextInterface)
@@ -56,11 +53,10 @@ const SkyjoContextProvider = ({
   gameCode,
 }: SkyjoContextProviderProps) => {
   const { socket, createLastGame } = useSocket()
+  const { sendMessage, setChat } = useChat()
   const router = useRouter()
-  const t = useTranslations("utils.server.messages")
 
   const [game, setGame] = useState<SkyjoToJson>()
-  const [chat, setChat] = useState<ChatMessage[]>([])
 
   const player = getCurrentUser(game?.players, socket?.id ?? "")
   const opponents = getOpponents(game?.players, socket?.id ?? "")
@@ -101,26 +97,6 @@ const SkyjoContextProvider = ({
     setGame(game)
   }
 
-  const onMessageReceived = (message: ChatMessage) => {
-    if (message.type === MESSAGE_TYPE.USER_MESSAGE)
-      setChat((prev) => [message, ...prev])
-    else {
-      const messageContent = t(message.message, {
-        username: message.username,
-      })
-
-      setChat((prev) => [
-        {
-          id: message.id,
-          username: undefined,
-          message: messageContent,
-          type: message.type,
-        } as ChatMessage,
-        ...prev,
-      ])
-    }
-  }
-
   const onLeave = () => {
     setGame(undefined)
     setChat([])
@@ -129,30 +105,15 @@ const SkyjoContextProvider = ({
 
   const initGameListeners = () => {
     socket!.on("game", onGameUpdate)
-    socket!.on("message", onMessageReceived)
     socket!.on("leave:success", onLeave)
   }
   const destroyGameListeners = () => {
     socket!.off("game", onGameUpdate)
-    socket!.off("message", onMessageReceived)
     socket!.off("leave:success", onLeave)
   }
   //#endregion
 
   //#region actions
-  const sendMessage = (message: string) => {
-    if (!player) return
-
-    const taggedPlayers =
-      message.match(/@(\w+)/g)?.map((tag) => tag.slice(1)) || []
-
-    socket!.send({
-      message,
-      username: player.name,
-      taggedPlayers,
-    })
-  }
-
   const changeSettings = (settings: ChangeSettings) => {
     if (!player?.isAdmin) return
 
@@ -245,9 +206,8 @@ const SkyjoContextProvider = ({
       player: player as SkyjoPlayerToJson,
       opponents,
       actions,
-      chat,
     }),
-    [game, chat, opponents, player],
+    [game, opponents, player],
   )
 
   if (!game || !player) return null

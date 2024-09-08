@@ -1,13 +1,9 @@
 import ChatMessage from "@/components/ChatMessage"
-import { useSkyjo } from "@/contexts/SkyjoContext"
+import { useChat } from "@/contexts/ChatContext"
 import { useTranslations } from "next-intl"
 
-type ChatMessageListProps = Readonly<{
-  unreadMessages: ChatMessage[]
-}>
-
-function ChatMessageList({ unreadMessages }: ChatMessageListProps) {
-  const { chat } = useSkyjo()
+function ChatMessageList() {
+  const { chat, unreadMessages } = useChat()
   const t = useTranslations("components.ChatMessageList")
 
   return (
