@@ -1,5 +1,6 @@
 "use client"
 
+import { AutoCompleteChoice, Autocomplete } from "@/components/ui/autocomplete"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -25,7 +26,13 @@ type ChatFormProps = {
 const ChatForm = ({ chatOpen }: ChatFormProps) => {
   const { toast } = useToast()
   const { player, opponents } = useSkyjo()
-  const { sendMessage, clearUnreadMessages } = useChat()
+  const {
+    sendMessage,
+    clearUnreadMessages,
+    mutePlayer,
+    unmutePlayer,
+    addSystemMessage,
+  } = useChat()
   const t = useTranslations("components.ChatForm")
   const form = useForm<z.infer<typeof chatFormSchema>>({
     resolver: zodResolver(chatFormSchema),
@@ -35,11 +42,22 @@ const ChatForm = ({ chatOpen }: ChatFormProps) => {
   })
 
   const [showAutocomplete, setShowAutocomplete] = useState(false)
-  const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([])
+  const [autocompleteOptions, setAutocompleteOptions] = useState<
+    Array<AutoCompleteChoice>
+  >([])
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(-1)
+
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const [tabIndex, setTabIndex] = useState(-1)
+  const commands: AutoCompleteChoice[] = [
+    { name: "/mute [username]", value: "/mute", description: "Mute a player" },
+    {
+      name: "/unmute [username]",
+      value: "/unmute",
+      description: "Unmute a player",
+    },
+  ]
 
   useEffect(() => {
     if (chatOpen) setTimeout(() => setTabIndex(0), 300)
@@ -50,50 +68,105 @@ const ChatForm = ({ chatOpen }: ChatFormProps) => {
     const value = e.target.value
     form.setValue("message", value)
 
-    const lastWord = value.split(" ").pop() || ""
-    if (lastWord.startsWith("@")) {
-      const searchTerm = lastWord.slice(1).toLowerCase()
-      const matchingPlayers = opponents
-        .flat()
-        .map((p) => p.name)
-        .filter((p) => p.toLowerCase().includes(searchTerm))
-
-      setAutocompleteOptions(matchingPlayers)
-      setShowAutocomplete(matchingPlayers.length > 0)
-      setSelectedOptionIndex(0)
+    if (value.startsWith("/")) {
+      const [command, ...args] = value.split(" ")
+      if (command === "/mute" || command === "/unmute") {
+        handleNameTagSuggestion(args.join(" "), false)
+      } else {
+        handleCommandSuggestion(command)
+      }
+    } else if (value.includes("@")) {
+      const lastWord = value.split(" ").pop() ?? ""
+      if (lastWord.startsWith("@")) {
+        handleNameTagSuggestion(lastWord)
+      } else {
+        setShowAutocomplete(false)
+      }
     } else {
       setShowAutocomplete(false)
     }
   }
 
+  const handleNameTagSuggestion = (lastWord: string, addAtSymbol = true) => {
+    const searchTerm = addAtSymbol
+      ? lastWord.slice(1).toLowerCase()
+      : lastWord.toLowerCase()
+    const matchingPlayers = opponents
+      .flat()
+      .map((p) => ({
+        name: p.name,
+        value: `@${p.name}`,
+      }))
+      .filter((p) => p.value.toLowerCase().includes(searchTerm))
+
+    setAutocompleteOptions(matchingPlayers)
+    setShowAutocomplete(matchingPlayers.length > 0)
+    setSelectedOptionIndex(0)
+  }
+
+  const handleCommandSuggestion = (lastWord: string) => {
+    const matchingCommands = commands.filter((cmd) =>
+      cmd.value.startsWith(lastWord),
+    )
+    setAutocompleteOptions(matchingCommands)
+    setShowAutocomplete(matchingCommands.length > 0)
+    setSelectedOptionIndex(0)
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (showAutocomplete) {
-      if (e.key === "ArrowDown") {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault()
-        setSelectedOptionIndex(
-          (prev) => (prev + 1) % autocompleteOptions.length,
-        )
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault()
-        setSelectedOptionIndex(
-          (prev) =>
-            (prev - 1 + autocompleteOptions.length) %
-            autocompleteOptions.length,
-        )
+        const newIndex =
+          e.key === "ArrowDown"
+            ? (selectedOptionIndex + 1) % autocompleteOptions.length
+            : (selectedOptionIndex - 1 + autocompleteOptions.length) %
+              autocompleteOptions.length
+        setSelectedOptionIndex(newIndex)
+        scrollToOption(newIndex)
       } else if (e.key === "Enter" || e.key === "Tab") {
         e.preventDefault()
-        insertPlayerTag(autocompleteOptions[selectedOptionIndex])
+        insertPlayerTag(autocompleteOptions[selectedOptionIndex].value)
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault()
+      const currentValue = form.getValues("message")
+      const words = currentValue.split(" ")
+      const lastWord = words[words.length - 1]
+
+      if (lastWord.startsWith("/")) {
+        const matchingCommands = commands.filter((cmd) =>
+          cmd.value.startsWith(lastWord),
+        )
+
+        if (matchingCommands.length === 1) {
+          words[words.length - 1] = matchingCommands[0].value
+          form.setValue("message", words.join(" ") + " ")
+        } else if (matchingCommands.length > 1) {
+          setAutocompleteOptions(matchingCommands)
+          setShowAutocomplete(true)
+          setSelectedOptionIndex(0)
+        }
       }
     }
   }
 
-  const insertPlayerTag = (playerName: string) => {
+  const scrollToOption = (index: number) => {
+    const optionElement = document.getElementById(
+      `autocomplete-option-${index}`,
+    )
+    optionElement?.scrollIntoView({ block: "nearest" })
+  }
+
+  const insertPlayerTag = (option: string) => {
     const currentValue = form.getValues("message")
     const words = currentValue.split(" ")
-    words[words.length - 1] = `@${playerName}`
+
+    words[words.length - 1] = option
+
+    setShowAutocomplete(false)
     const newValue = words.join(" ") + " "
     form.setValue("message", newValue)
-    setShowAutocomplete(false)
     inputRef.current?.focus()
   }
 
@@ -107,11 +180,29 @@ const ChatForm = ({ chatOpen }: ChatFormProps) => {
         duration: 3000,
       })
     } else {
-      sendMessage(player.name, values.message)
-      clearUnreadMessages()
+      const [command, ...args] = values.message.split(" ")
+      if (command.startsWith("/")) {
+        handleCommand(command, args.join(" "))
+      } else {
+        sendMessage(player.name, values.message)
+        clearUnreadMessages()
+      }
     }
 
     form.reset()
+  }
+
+  const handleCommand = (command: string, args: string) => {
+    switch (command) {
+      case "/mute":
+        mutePlayer(args.slice(1).trim() ?? "")
+        break
+      case "/unmute":
+        unmutePlayer(args.slice(1).trim() ?? "")
+        break
+      default:
+        addSystemMessage(t("unknown-command", { command }))
+    }
   }
 
   return (
@@ -145,20 +236,11 @@ const ChatForm = ({ chatOpen }: ChatFormProps) => {
           )}
         />
         {showAutocomplete && (
-          <div className="absolute bottom-full left-0 bg-white border-2 border-black rounded-md max-h-32 overflow-y-auto select-none">
-            {autocompleteOptions.map((option, index) => (
-              <div
-                key={option}
-                className={cn(
-                  "px-2 py-1 cursor-pointer hover:bg-gray-100",
-                  index === selectedOptionIndex && "",
-                )}
-                onClick={() => insertPlayerTag(option)}
-              >
-                {option}
-              </div>
-            ))}
-          </div>
+          <Autocomplete
+            choices={autocompleteOptions}
+            onSelect={insertPlayerTag}
+            selectedIndex={selectedOptionIndex}
+          />
         )}
         <Button
           variant="icon"

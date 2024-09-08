@@ -422,12 +422,15 @@
       "round-over": "Manche terminée",
       "game-ended": "Partie terminée !"
     },
-    "server": {
-      "messages": {
-        "player-joined": "{username} a rejoint la partie",
-        "player-left": "{username} a quitté la partie",
-        "player-reconnect": "{username} s'est reconnecté"
-      }
+    "chat": {
+      "player-joined": "{username} a rejoint la partie",
+      "player-left": "{username} a quitté la partie",
+      "player-reconnect": "{username} s'est reconnecté",
+      "argument-required": "Un ou des arguments sont requis pour la commande: {command}",
+      "player-already-muted": "{username} est déjà muet",
+      "player-muted": "{username} est maintenant muet",
+      "player-not-muted": "{username} n'est pas muet",
+      "player-unmuted": "{username} n'est plus muet"
     }
   },
   "contexts": {

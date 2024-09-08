@@ -9,7 +9,7 @@ import {
   useEffect,
   useState,
 } from "react"
-import { MESSAGE_TYPE } from "shared/constants"
+import { MESSAGE_TYPE, SystemMessageType } from "shared/constants"
 import { ChatMessage } from "shared/types/chat"
 
 type ChatContextInterface = {
@@ -21,17 +21,24 @@ type ChatContextInterface = {
   clearUnreadMessages: () => void
   setChat: (chat: ChatMessage[]) => void
   sendMessage: (message: string, username: string) => void
+  addSystemMessage: (message: string) => void
+  mutedPlayers: string[]
+  mutePlayer: (username: string) => void
+  unmutePlayer: (username: string) => void
+  toggleMutePlayer: (username: string) => void
 }
 
 const ChatContext = createContext({} as ChatContextInterface)
 
 const ChatContextProvider = ({ children }: PropsWithChildren) => {
   const { socket } = useSocket()
-  const t = useTranslations("utils.server.messages")
+  const t = useTranslations("utils.chat")
   const [chat, setChat] = useState<ChatMessage[]>([])
 
   const [unreadMessages, setUnreadMessages] = useState<ChatMessage[]>([])
   const [hasUnreadMessage, setHasUnreadMessage] = useState<boolean>(false)
+
+  const [mutedPlayers, setMutedPlayers] = useState<string[]>([])
 
   useEffect(() => {
     if (socket) socket.on("message", onMessageReceived)
@@ -39,7 +46,7 @@ const ChatContextProvider = ({ children }: PropsWithChildren) => {
     return () => {
       if (socket) socket.off("message", onMessageReceived)
     }
-  }, [socket])
+  }, [socket, mutedPlayers])
 
   const sendMessage = (username: string, message: string) => {
     socket!.send({
@@ -48,7 +55,25 @@ const ChatContextProvider = ({ children }: PropsWithChildren) => {
     })
   }
 
+  const addSystemMessage = (
+    message: string,
+    type: Extract<
+      SystemMessageType,
+      "system-message" | "warn-system-message" | "error-system-message"
+    > = MESSAGE_TYPE.SYSTEM_MESSAGE,
+  ) => {
+    const chatMessage = {
+      id: crypto.randomUUID(),
+      message,
+      type,
+    } as ChatMessage
+
+    setChat((prev) => [chatMessage, ...prev])
+  }
+
   const onMessageReceived = (message: ChatMessage) => {
+    if (mutedPlayers.includes(message.username!)) return
+
     if (message.type === MESSAGE_TYPE.USER_MESSAGE) {
       setChat((prev) => [message, ...prev])
     } else {
@@ -75,6 +100,44 @@ const ChatContextProvider = ({ children }: PropsWithChildren) => {
 
   const clearUnreadMessages = () => setUnreadMessages([])
 
+  //#region Mute functionality
+  const mutePlayer = (username: string) => {
+    if (!username) {
+      addSystemMessage(
+        t("argument-required", { command: "/mute" }),
+        MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
+      )
+    } else if (mutedPlayers.includes(username)) {
+      addSystemMessage(t("player-already-muted", { username }))
+    } else {
+      setMutedPlayers((prev) => [...prev, username])
+      addSystemMessage(t("player-muted", { username }))
+    }
+  }
+
+  const unmutePlayer = (username: string) => {
+    if (!username) {
+      addSystemMessage(
+        t("argument-required", { command: "/unmute" }),
+        MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
+      )
+    } else if (!mutedPlayers.includes(username)) {
+      addSystemMessage(t("player-not-muted", { username }))
+    } else {
+      setMutedPlayers((prev) => prev.filter((user) => user !== username))
+      addSystemMessage(t("player-unmuted", { username }))
+    }
+  }
+
+  const toggleMutePlayer = (username: string) => {
+    setMutedPlayers((prev) =>
+      prev.includes(username)
+        ? prev.filter((user) => user !== username)
+        : [...prev, username],
+    )
+  }
+  //#endregion
+
   return (
     <ChatContext.Provider
       value={{
@@ -83,9 +146,14 @@ const ChatContextProvider = ({ children }: PropsWithChildren) => {
         hasUnreadMessage,
         setHasUnreadMessage,
         addUnreadMessage,
+        addSystemMessage,
         clearUnreadMessages,
         setChat,
         sendMessage,
+        mutedPlayers,
+        mutePlayer,
+        unmutePlayer,
+        toggleMutePlayer,
       }}
     >
       {children}

@@ -74,7 +74,7 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-400 animate-ping" />
           </>
         )}
-        <div className="h-96 w-full flex flex-col pl-2 pr-1">
+        <div className="h-96 w-full flex flex-col px-2">
           <ChatMessageList />
           <ChatForm chatOpen={open} />
         </div>

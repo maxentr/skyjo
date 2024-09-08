@@ -421,12 +421,15 @@
       "round-over": "Round finished",
       "game-ended": "Game over!"
     },
-    "server": {
-      "messages": {
-        "player-joined": "{username} joined the game",
-        "player-left": "{username} left the game",
-        "player-reconnect": "{username} reconnected to the game"
-      }
+    "chat": {
+      "player-joined": "{username} joined the game",
+      "player-left": "{username} left the game",
+      "player-reconnect": "{username} reconnected to the game",
+      "argument-required": "One or more arguments are required for command: {command}",
+      "player-already-muted": "{username} is already muted",
+      "player-muted": "{username} is now muted",
+      "player-not-muted": "{username} is not muted",
+      "player-unmuted": "{username} is no longer muted"
     }
   },
   "contexts": {
