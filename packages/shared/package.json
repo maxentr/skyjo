@@ -9,9 +9,7 @@
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "./dist/*"
-      ]
+      "*": ["./dist/*"]
     }
   },
   "scripts": {
@@ -22,6 +20,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   }
 }
