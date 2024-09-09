@@ -12,7 +12,7 @@ import {
 import { MESSAGE_TYPE, SystemMessageType } from "shared/constants"
 import { ChatMessage } from "shared/types/chat"
 
-type ChatContextInterface = {
+type ChatContext = {
   chat: ChatMessage[]
   unreadMessages: ChatMessage[]
   hasUnreadMessage: boolean
@@ -28,9 +28,9 @@ type ChatContextInterface = {
   toggleMutePlayer: (username: string) => void
 }
 
-const ChatContext = createContext({} as ChatContextInterface)
+const ChatContext = createContext<ChatContext | undefined>(undefined)
 
-const ChatContextProvider = ({ children }: PropsWithChildren) => {
+const ChatProvider = ({ children }: PropsWithChildren) => {
   const { socket } = useSocket()
   const t = useTranslations("utils.chat")
   const [chat, setChat] = useState<ChatMessage[]>([])
@@ -161,6 +161,10 @@ const ChatContextProvider = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const useChat = () => useContext(ChatContext)
+export const useChat = () => {
+  const context = useContext(ChatContext)
+  if (!context) throw new Error("useChat must be used within a ChatProvider")
+  return context
+}
 
-export default ChatContextProvider
+export default ChatProvider

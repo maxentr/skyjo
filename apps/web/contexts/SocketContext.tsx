@@ -37,15 +37,15 @@ const initSocket = (url: string) => {
 
 export type SkyjoSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
-type SocketContextInterface = {
+type SocketContext = {
   socket: SkyjoSocket | null
   createSocket: () => void
   getLastGameIfPossible: () => LastGame | null
   createLastGame: () => void
 }
-const SocketContext = createContext({} as SocketContextInterface)
+const SocketContext = createContext<SocketContext | undefined>(undefined)
 
-const SocketContextProvider = ({ children }: PropsWithChildren) => {
+const SocketProvider = ({ children }: PropsWithChildren) => {
   const { toast } = useToast()
   const t = useTranslations("contexts.SocketContext")
 
@@ -183,5 +183,12 @@ const SocketContextProvider = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const useSocket = () => useContext(SocketContext)
-export default SocketContextProvider
+export const useSocket = () => {
+  const context = useContext(SocketContext)
+  if (context === undefined) {
+    throw new Error("useSocket must be used within a SocketProvider")
+  }
+  return context
+}
+
+export default SocketProvider

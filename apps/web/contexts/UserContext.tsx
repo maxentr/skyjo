@@ -1,7 +1,8 @@
 "use client"
 
-import React, {
+import {
   Dispatch,
+  PropsWithChildren,
   SetStateAction,
   createContext,
   useContext,
@@ -18,7 +19,7 @@ const AVATAR_KEY = "Avatar-index"
 
 export const AVATARS_ARRAY = Object.values(AVATARS)
 
-type UserContextInterface = {
+type UserContext = {
   username: string
   avatarIndex: number
   setUsername: Dispatch<SetStateAction<string>>
@@ -27,9 +28,9 @@ type UserContextInterface = {
   getAvatar: () => Avatar
 }
 
-const UserContext = createContext({} as UserContextInterface)
+const UserContext = createContext<UserContext | undefined>(undefined)
 
-const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
+const UserProvider = ({ children }: PropsWithChildren) => {
   const [preferredUsername, setPreferredUsername] = useLocalStorage<string>(
     USERNAME_KEY,
     "",
@@ -73,5 +74,12 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
-export const useUser = () => useContext(UserContext)
-export default UserContextProvider
+export const useUser = () => {
+  const context = useContext(UserContext)
+  if (context === undefined) {
+    throw new Error("useUser must be used within a UserProvider")
+  }
+  return context
+}
+
+export default UserProvider
