@@ -22,7 +22,9 @@ const EndRoundDialog = () => {
     game.status === GAME_STATUS.PLAYING
 
   useEffect(() => {
-    setOpen(isRoundOver)
+    setTimeout(() => {
+      setOpen(isRoundOver)
+    }, 1400)
   }, [isRoundOver])
 
   return (
