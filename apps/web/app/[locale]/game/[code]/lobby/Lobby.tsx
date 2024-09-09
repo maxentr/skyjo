@@ -40,8 +40,8 @@ const Lobby = ({ gameCode }: LobbyProps) => {
     actions,
   } = useSkyjo()
   const router = useRouter()
-  const [settingsLocalStorage, setSettingsLocalStorage] =
-    useLocalStorage<ChangeSettings>("settings")
+  const [gameSettingsLocalStorage, setGameSettingsLocalStorage] =
+    useLocalStorage<ChangeSettings>("gameSettings")
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -52,9 +52,17 @@ const Lobby = ({ gameCode }: LobbyProps) => {
   let timeoutStart: NodeJS.Timeout
 
   useEffect(() => {
-    if (settingsLocalStorage) {
-      const newSettings = settingsLocalStorage
-      if (settingsLocalStorage.private !== settings.private)
+    const oldSettings = localStorage.getItem("settings")
+    if (oldSettings) {
+      const parsedOldSettings = JSON.parse(oldSettings)
+      setGameSettingsLocalStorage(parsedOldSettings)
+
+      localStorage.removeItem("settings")
+    }
+
+    if (gameSettingsLocalStorage) {
+      const newSettings = { ...gameSettingsLocalStorage }
+      if (gameSettingsLocalStorage.private !== settings.private)
         newSettings.private = settings.private
 
       actions.changeSettings(newSettings)
@@ -79,7 +87,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
     if (isLoading) return
 
     setIsLoading(true)
-    setSettingsLocalStorage(settings)
+    setGameSettingsLocalStorage(settings)
 
     actions.startGame()
 
