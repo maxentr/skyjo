@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils"
 import { AnimatePresence, m } from "framer-motion"
 import { useEffect, useState } from "react"
-import { ROUND_STATUS, TURN_STATUS } from "shared/constants"
+import { LAST_TURN_STATUS, ROUND_STATUS, TURN_STATUS } from "shared/constants"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 type CardTableProps = {
@@ -88,6 +88,7 @@ const CardTable = ({
                     : ""
                 }
                 disabled={cardDisabled || !canBeSelected}
+                flipAnimation={game?.lastTurnStatus === LAST_TURN_STATUS.TURN}
                 exitAnimation={
                   game.roundStatus === ROUND_STATUS.PLAYING ||
                   game.roundStatus === ROUND_STATUS.LAST_LAP

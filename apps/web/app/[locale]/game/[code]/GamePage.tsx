@@ -63,9 +63,13 @@ const GamePage = () => {
             <Scoreboard />
             <RulesDialog
               defaultOpen={isFirstPlayerGame}
+              tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
               onOpenChange={onRulesDialogOpenChange}
             />
-            <FeedbackButton className="mt-4" />
+            <FeedbackButton
+              tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
+              className="mt-4"
+            />
           </div>
         </div>
       </div>
