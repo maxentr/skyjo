@@ -190,9 +190,6 @@
     "ChatMessageList": {
       "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
-    "FeedbackButton": {
-      "aria-label": "Leave a feedback"
-    },
     "FeedbackDialog": {
       "title": "Leave a comment",
       "description": "You can write a feedback to help us improve the game.",
@@ -265,13 +262,13 @@
       "title": "Game stopped",
       "description": "The game has been stopped because there are not enough players"
     },
-    "LanguageSettings": {
-      "title": "Language",
-      "en": "English",
-      "fr": "French",
+    "MenuDropdown": {
       "button": {
-        "aria-label": "Change the game language"
-      }
+        "aria-label": "Menu"
+      },
+      "rules": "Rules",
+      "feedback": "Leave a feedback",
+      "settings": "Settings"
     },
     "OpponentBoard": {
       "connection-lost": "Connection lost"

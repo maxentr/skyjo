@@ -3,9 +3,9 @@
 import DiscardPile from "@/components/DiscardPile"
 import DrawPile from "@/components/DrawPile"
 import EndRoundDialog from "@/components/EndRoundDialog"
-import FeedbackButton from "@/components/FeedbackButton"
 import GameInfo from "@/components/GameInfo"
 import GameStoppedDialog from "@/components/GameStoppedDialog"
+import MenuDropdown from "@/components/MenuDropdown"
 import OpponentBoard from "@/components/OpponentBoard"
 import OpponentsMobileView from "@/components/OpponentsMobileView"
 import PlayerBoard from "@/components/PlayerBoard"
@@ -66,11 +66,8 @@ const GamePage = () => {
         </div>
         <div className="flex flex-row justify-end">
           <div className="flex flex-col gap-4 items-center justify-start">
+            <MenuDropdown />
             <Scoreboard />
-            <FeedbackButton
-              tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
-              className="mt-4"
-            />
           </div>
         </div>
       </div>

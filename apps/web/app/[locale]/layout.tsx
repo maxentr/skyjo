@@ -1,5 +1,6 @@
 import PostHogPageView from "@/app/[locale]/PostHogPageView"
 import Providers from "@/app/[locale]/providers"
+import { Locales } from "@/i18n"
 import { getCurrentUrl } from "@/lib/utils"
 import { Metadata, Viewport } from "next"
 import { NextIntlClientProvider } from "next-intl"
@@ -139,7 +140,7 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning style={fredoka.style}>
       <body className="bg-body antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Providers>
+          <Providers locale={locale as Locales}>
             <PostHogPageView />
             {children}
           </Providers>

@@ -191,9 +191,6 @@
     "ChatMessageList": {
       "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
     },
-    "FeedbackButton": {
-      "aria-label": "Laisser un commentaire"
-    },
     "FeedbackDialog": {
       "title": "Laisser un commentaire",
       "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
@@ -266,13 +263,13 @@
       "title": "La partie s'est arrêtée",
       "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
     },
-    "LanguageSettings": {
-      "title": "Langue",
-      "en": "Anglais",
-      "fr": "Français",
+    "MenuDropdown": {
       "button": {
-        "aria-label": "Changer la langue du jeu"
-      }
+        "aria-label": "Menu"
+      },
+      "rules": "Règles",
+      "feedback": "Laisser un commentaire",
+      "settings": "Paramètres"
     },
     "OpponentBoard": {
       "connection-lost": "Connexion perdue"
