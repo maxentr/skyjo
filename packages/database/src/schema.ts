@@ -25,7 +25,7 @@ import {
   TURN_STATUS,
   TurnStatus,
 } from "shared/constants"
-import { SkyjoCardToJson } from "shared/types/skyjoCard"
+import { SkyjoCardDb } from "shared/types/skyjoCard"
 import { SkyjoPlayerScores } from "shared/types/skyjoPlayer"
 
 const gameStatusEnum = pgEnum(
@@ -121,7 +121,7 @@ export const playerTable = pgTable("players", {
   connectionStatus: connectionStatusEnum("connection_status")
     .$type<ConnectionStatus>()
     .notNull(),
-  cards: json("cards").$type<SkyjoCardToJson[][]>().notNull(),
+  cards: json("cards").$type<SkyjoCardDb[][]>().notNull(),
   scores: json("scores").$type<SkyjoPlayerScores>().notNull(),
   disconnectionDate: timestamp("disconnection_date"),
 
