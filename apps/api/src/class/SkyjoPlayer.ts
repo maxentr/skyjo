@@ -69,7 +69,7 @@ export class SkyjoPlayer implements SkyjoPlayerInterface {
     if (player.cards.length > 0) {
       this.cards = player.cards.map((column) =>
         column.map(
-          (card) => new SkyjoCard(card.value!, card.isVisible, card.id),
+          (card) => new SkyjoCard(card.value, card.isVisible, card.id),
         ),
       )
     }
