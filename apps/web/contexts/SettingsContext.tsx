@@ -33,6 +33,7 @@ type Settings = {
   chatNotificationSize: ChatNotificationSize
   locale: Locales
   appearance: Appearance
+  switchToPlayerWhoIsPlaying: boolean
 }
 
 type SettingsContext = {
@@ -53,6 +54,7 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
     chatNotificationSize: ChatNotificationSize.NORMAL,
     appearance: Appearance.LIGHT,
     locale,
+    switchToPlayerWhoIsPlaying: true,
   })
 
   const [open, setOpen] = useState(false)

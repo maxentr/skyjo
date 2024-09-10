@@ -401,17 +401,29 @@
     "SettingsDialog": {
       "description": "Personnalisez votre expérience de jeu",
       "title": "Paramètres",
-      "general": "Général",
-      "chat": "Chat",
-      "language": "Langue",
-      "language-warn": "Cela rechargera le jeu !",
-      "appearance": "Apparence",
-      "comingSoon": "Bientôt disponible",
-      "chatVisibility": "Visibilité du chat",
-      "chatNotificationSize": "Taille des notifications du chat",
-      "small": "Petit",
-      "normal": "Normal",
-      "big": "Grand"
+      "general": {
+        "title": "Général",
+        "language": "Langue",
+        "language-warn": "Cela rechargera le jeu !",
+        "appearance": "Apparence",
+        "coming-soon": "Bientôt disponible"
+      },
+      "mobile": {
+        "title": "Mobile",
+        "switch-to-player-who-is-playing": "Basculer sur le joueur qui joue"
+      },
+      "chat": {
+        "title": "Chat",
+        "chat-visibility": "Visibilité du chat",
+        "chat-notification-size": {
+          "label": "Taille des notifications du chat",
+          "values": {
+            "small": "Petit",
+            "normal": "Normal",
+            "big": "Grand"
+          }
+        }
+      }
     },
     "Avatar": {
       "bee": "abeille",
