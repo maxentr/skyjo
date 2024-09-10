@@ -3,10 +3,22 @@
 import ChatForm from "@/components/ChatForm"
 import ChatMessageList from "@/components/ChatMessageList"
 import { useChat } from "@/contexts/ChatContext"
+import { useSettings } from "@/contexts/SettingsContext"
 import { cn } from "@/lib/utils"
+import { cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+
+const ChatNotificationVariant = cva("absolute rounded-full bg-red-400", {
+  variants: {
+    size: {
+      small: "top-1.5 right-1.5 w-1 h-1",
+      normal: "top-1.5 right-1.5 w-2 h-2",
+      big: "top-1.5 right-1.5 w-3 h-3",
+    },
+  },
+})
 
 type ChatProps = {
   className?: ClassValue
@@ -20,6 +32,9 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
     addUnreadMessage,
     clearUnreadMessages,
   } = useChat()
+  const {
+    settings: { chatVisibility, chatNotificationSize },
+  } = useSettings()
   const t = useTranslations("components.Chat")
 
   const [open, setOpen] = useState(false)
@@ -46,6 +61,8 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
     }, 300)
   }
 
+  if (!chatVisibility) return null
+
   return (
     <div
       className={cn(
@@ -70,8 +87,17 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
         </div>
         {hasUnreadMessage && (
           <>
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-400" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-400 animate-ping" />
+            <span
+              className={ChatNotificationVariant({
+                size: chatNotificationSize,
+              })}
+            />
+            <span
+              className={cn(
+                ChatNotificationVariant({ size: chatNotificationSize }),
+                "animate-ping",
+              )}
+            />
           </>
         )}
         <div className="h-96 w-full flex flex-col px-2">

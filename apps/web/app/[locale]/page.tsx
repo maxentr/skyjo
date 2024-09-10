@@ -1,10 +1,8 @@
 import IndexPage from "@/app/[locale]/IndexPage"
-import FeedbackButton from "@/components/FeedbackButton"
 import Footer from "@/components/Footer"
-import LanguageSettings from "@/components/LanguageSettings"
+import MenuDropdown from "@/components/MenuDropdown"
 import MovingArrow from "@/components/MovingArrow"
 import PWABanner from "@/components/PWABanner"
-import RulesDialog from "@/components/RulesDialog"
 import {
   Accordion,
   AccordionContent,
@@ -26,7 +24,7 @@ type IndexServerPageProps = {
     locale: string
   }
 }
-const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
+const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
   const t = useTranslations("pages.Index")
 
   return (
@@ -35,9 +33,7 @@ const IndexServerPage = ({ searchParams, params }: IndexServerPageProps) => {
         <div className="relative h-dvh !p-6 bg-body flex items-center justify-center">
           <PWABanner />
           <div className="absolute top-6 right-6 w-10 flex flex-col gap-4 z-10">
-            <LanguageSettings locale={params.locale} />
-            <RulesDialog />
-            <FeedbackButton className="md:mt-4" />
+            <MenuDropdown />
           </div>
           <div className="bg-container border-2 border-black px-10 md:px-16 py-6 mdh:md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
             <h1 className="mb-5">

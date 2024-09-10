@@ -1,6 +1,7 @@
 "use client"
 
 import CopyLink from "@/components/CopyLink"
+import MenuDropdown from "@/components/MenuDropdown"
 import UserAvatar from "@/components/UserAvatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,8 +41,8 @@ const Lobby = ({ gameCode }: LobbyProps) => {
     actions,
   } = useSkyjo()
   const router = useRouter()
-  const [settingsLocalStorage, setSettingsLocalStorage] =
-    useLocalStorage<ChangeSettings>("settings")
+  const [gameSettingsLocalStorage, setGameSettingsLocalStorage] =
+    useLocalStorage<ChangeSettings>("gameSettings")
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -52,9 +53,17 @@ const Lobby = ({ gameCode }: LobbyProps) => {
   let timeoutStart: NodeJS.Timeout
 
   useEffect(() => {
-    if (settingsLocalStorage) {
-      const newSettings = settingsLocalStorage
-      if (settingsLocalStorage.private !== settings.private)
+    const oldSettings = localStorage.getItem("settings")
+    if (oldSettings) {
+      const parsedOldSettings = JSON.parse(oldSettings)
+      setGameSettingsLocalStorage(parsedOldSettings)
+
+      localStorage.removeItem("settings")
+    }
+
+    if (gameSettingsLocalStorage) {
+      const newSettings = { ...gameSettingsLocalStorage }
+      if (gameSettingsLocalStorage.private !== settings.private)
         newSettings.private = settings.private
 
       actions.changeSettings(newSettings)
@@ -79,7 +88,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
     if (isLoading) return
 
     setIsLoading(true)
-    setSettingsLocalStorage(settings)
+    setGameSettingsLocalStorage(settings)
 
     actions.startGame()
 
@@ -93,6 +102,9 @@ const Lobby = ({ gameCode }: LobbyProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+      <div className="fixed top-6 right-6">
+        <MenuDropdown />
+      </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-4xl p-4">
         <div className="flex flex-col md:flex-row gap-4 w-full">
           <div className="bg-container border-2 border-black rounded-2xl w-full px-8 md:px-12 py-8 relative">

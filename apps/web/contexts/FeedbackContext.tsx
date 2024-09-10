@@ -9,12 +9,12 @@ import {
   useState,
 } from "react"
 
-type FeedbackContextInterface = {
+type FeedbackContext = {
   openFeedback: () => void
 }
-const FeedbackContext = createContext({} as FeedbackContextInterface)
+const FeedbackContext = createContext<FeedbackContext | undefined>(undefined)
 
-const FeedbackContextProvider = ({ children }: PropsWithChildren) => {
+const FeedbackProvider = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false)
 
   const openFeedback = () => {
@@ -36,5 +36,12 @@ const FeedbackContextProvider = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const useFeedback = () => useContext(FeedbackContext)
-export default FeedbackContextProvider
+export const useFeedback = () => {
+  const context = useContext(FeedbackContext)
+  if (context === undefined) {
+    throw new Error("useFeedback must be used within a FeedbackProvider")
+  }
+  return context
+}
+
+export default FeedbackProvider

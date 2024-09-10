@@ -1,13 +1,11 @@
 "use client"
 
-import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
 import { m, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
-import { LAST_TURN_STATUS } from "shared/constants"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 const cardClass = cva(
@@ -99,7 +97,6 @@ const Card = ({
   flipAnimation = true,
   exitAnimation = false,
 }: CardProps) => {
-  const { game } = useSkyjo()
   const [scope, animate] = useAnimate()
   const controls = useAnimationControls()
 
@@ -137,11 +134,7 @@ const Card = ({
       controls.set({ rotateY: 0 })
     }
 
-    if (
-      flipAnimation &&
-      card.isVisible &&
-      game?.lastTurnStatus === LAST_TURN_STATUS.TURN
-    ) {
+    if (flipAnimation && card.isVisible) {
       turnCard()
     }
   }, [flipAnimation, card.isVisible, controls, animate, scope])

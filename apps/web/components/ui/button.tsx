@@ -12,6 +12,7 @@ const buttonVariants = cva(
       variant: {
         default:
           "h-10 px-4 py-2 shadow-[3px_3px_0px_0px_rgba(0,0,0)] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_rgba(0,0,0)]",
+        outline: "h-10 w-fit px-4 py-2 bg-white",
         icon: "h-10 w-10 p-2.5 shadow-[2px_2px_0px_0px_rgba(0,0,0)] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_0px_rgba(0,0,0)]",
       },
     },

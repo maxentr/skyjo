@@ -24,7 +24,7 @@ import { PlayPickCard } from "shared/validations/play"
 
 dayjs.extend(utc)
 
-type SkyjoContextInterface = {
+type SkyjoContext = {
   game: SkyjoToJson
   player: SkyjoPlayerToJson
   opponents: Opponents
@@ -42,16 +42,13 @@ type SkyjoContextInterface = {
   }
 }
 
-const SkyjoContext = createContext({} as SkyjoContextInterface)
+const SkyjoContext = createContext<SkyjoContext | undefined>(undefined)
 
-interface SkyjoContextProviderProps extends PropsWithChildren {
+interface SkyjoProviderProps extends PropsWithChildren {
   gameCode: string
 }
 
-const SkyjoContextProvider = ({
-  children,
-  gameCode,
-}: SkyjoContextProviderProps) => {
+const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
   const { socket, createLastGame } = useSocket()
   const { sendMessage, setChat } = useChat()
   const router = useRouter()
@@ -219,5 +216,11 @@ const SkyjoContextProvider = ({
   )
 }
 
-export const useSkyjo = () => useContext(SkyjoContext)
-export default SkyjoContextProvider
+export const useSkyjo = () => {
+  const context = useContext(SkyjoContext)
+  if (context === undefined) {
+    throw new Error("useSkyjo must be used within a SkyjoProvider")
+  }
+  return context
+}
+export default SkyjoProvider

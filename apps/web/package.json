@@ -15,6 +15,7 @@
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-slider": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
@@ -41,6 +42,7 @@
     "socket.io-msgpack-parser": "^3.0.2",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

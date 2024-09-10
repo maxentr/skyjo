@@ -1,5 +1,6 @@
 import OpponentBoard from "@/components/OpponentBoard"
 import UserAvatar from "@/components/UserAvatar"
+import { useSettings } from "@/contexts/SettingsContext"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import {
   getCurrentWhoHasToPlay,
@@ -13,6 +14,9 @@ import { GAME_STATUS } from "shared/constants"
 
 const OpponentsMobileView = () => {
   const { opponents, game, player } = useSkyjo()
+  const {
+    settings: { switchToPlayerWhoIsPlaying },
+  } = useSettings()
   const t = useTranslations("components.OpponentsMobileView")
   const flattenOpponents = opponents.flat()
 
@@ -21,6 +25,8 @@ const OpponentsMobileView = () => {
   )
 
   useEffect(() => {
+    if (!switchToPlayerWhoIsPlaying) return
+
     const getCurrentPlayer = () => {
       const currentWhoHasToPlay = getCurrentWhoHasToPlay(game)
 
@@ -44,6 +50,7 @@ const OpponentsMobileView = () => {
 
     setNewSelectedOpponentIndex()
   }, [
+    switchToPlayerWhoIsPlaying,
     game.turn,
     game,
     player.socketId,

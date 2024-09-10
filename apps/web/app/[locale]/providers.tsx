@@ -1,9 +1,12 @@
 "use client"
 
 import { Toaster } from "@/components/ui/toaster"
-import FeedbackContextProvider from "@/contexts/FeedbackContext"
-import SocketContextProvider from "@/contexts/SocketContext"
-import UserContextProvider from "@/contexts/UserContext"
+import FeedbackProvider from "@/contexts/FeedbackContext"
+import RulesProvider from "@/contexts/RulesContext"
+import SettingsProvider from "@/contexts/SettingsContext"
+import SocketProvider from "@/contexts/SocketContext"
+import UserProvider from "@/contexts/UserContext"
+import { Locales } from "@/i18n"
 import { LazyMotion, domAnimation } from "framer-motion"
 import posthog from "posthog-js"
 import { PostHogProvider } from "posthog-js/react"
@@ -18,19 +21,28 @@ if (typeof window !== "undefined") {
     capture_pageleave: true,
   })
 }
-const Providers = ({ children }: PropsWithChildren) => {
+
+type ProvidersProps = PropsWithChildren<{ locale: Locales }>
+const Providers = ({ children, locale }: ProvidersProps) => {
   return (
     <PostHogProvider client={posthog}>
-      <SocketContextProvider>
-        <FeedbackContextProvider>
-          <UserContextProvider>
-            <LazyMotion strict features={domAnimation}>
-              {children}
-            </LazyMotion>
-          </UserContextProvider>
-          <Toaster />
-        </FeedbackContextProvider>
-      </SocketContextProvider>
+      <FeedbackProvider>
+        <RulesProvider>
+          <SettingsProvider locale={locale}>
+            <SocketProvider>
+              <FeedbackProvider>
+                <UserProvider>
+                  <LazyMotion strict features={domAnimation}>
+                    {children}
+                  </LazyMotion>
+                </UserProvider>
+                <Toaster />
+              </FeedbackProvider>
+            </SocketProvider>
+          </SettingsProvider>
+        </RulesProvider>
+      </FeedbackProvider>
+      <Toaster />
     </PostHogProvider>
   )
 }

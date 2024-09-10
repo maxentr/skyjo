@@ -191,9 +191,6 @@
     "ChatMessageList": {
       "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
     },
-    "FeedbackButton": {
-      "aria-label": "Laisser un commentaire"
-    },
     "FeedbackDialog": {
       "title": "Laisser un commentaire",
       "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
@@ -232,7 +229,7 @@
       "description": "La manche suivante va commencer dans quelques secondes..."
     },
     "Footer": {
-      "feedback": "Laisser un avis",
+      "feedback": "Laisser un commentaire",
       "buy-game": "Acheter le jeu",
       "explanation": "Qu'est-ce que Skyjo ?",
       "rules": "Règles du jeu",
@@ -266,13 +263,22 @@
       "title": "La partie s'est arrêtée",
       "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
     },
-    "LanguageSettings": {
-      "title": "Langue",
-      "en": "Anglais",
-      "fr": "Français",
-      "button": {
-        "aria-label": "Changer la langue du jeu"
+    "LanguageCombobox": {
+      "select-language": "Sélectionner la langue",
+      "search-language": "Rechercher une langue",
+      "no-language-found": "Aucune langue trouvée",
+      "locale": {
+        "en": "English",
+        "fr": "Français"
       }
+    },
+    "MenuDropdown": {
+      "button": {
+        "aria-label": "Menu"
+      },
+      "rules": "Règles",
+      "feedback": "Laisser un commentaire",
+      "settings": "Paramètres"
     },
     "OpponentBoard": {
       "connection-lost": "Connexion perdue"
@@ -391,6 +397,33 @@
       "name": "Nom",
       "round": "Manche",
       "total": "Total"
+    },
+    "SettingsDialog": {
+      "description": "Personnalisez votre expérience de jeu",
+      "title": "Paramètres",
+      "general": {
+        "title": "Général",
+        "language": "Langue",
+        "language-warn": "Cela rechargera le jeu !",
+        "appearance": "Apparence",
+        "coming-soon": "Bientôt disponible"
+      },
+      "mobile": {
+        "title": "Mobile",
+        "switch-to-player-who-is-playing": "Basculer sur le joueur qui joue"
+      },
+      "chat": {
+        "title": "Chat",
+        "chat-visibility": "Visibilité du chat",
+        "chat-notification-size": {
+          "label": "Taille des notifications du chat",
+          "values": {
+            "small": "Petit",
+            "normal": "Normal",
+            "big": "Grand"
+          }
+        }
+      }
     },
     "Avatar": {
       "bee": "abeille",
