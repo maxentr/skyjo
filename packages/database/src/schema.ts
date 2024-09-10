@@ -73,7 +73,7 @@ export const gameTable = pgTable("games", {
   selectedCardValue: integer("selected_card_value"),
   lastDiscardCardValue: integer("last_discard_card_value"),
 
-  adminId: uuid("admin_id"),
+  adminId: uuid("admin_id").notNull(),
   firstToFinishPlayerId: uuid("first_to_finish_player_id"),
 
   // settings

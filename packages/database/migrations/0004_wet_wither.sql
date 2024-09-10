@@ -1,0 +1,1 @@
+ALTER TABLE "games" ALTER COLUMN "admin_id" SET NOT NULL;
