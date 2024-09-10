@@ -9,6 +9,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
 import { useLocalStorage } from "react-use"
@@ -83,10 +84,17 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
     }
   }
 
+  const contextValue = useMemo(
+    () => ({
+      settings: settings!,
+      openSettings,
+      updateSetting,
+    }),
+    [settings, openSettings, updateSetting],
+  )
+
   return (
-    <SettingsContext.Provider
-      value={{ settings: settings!, openSettings, updateSetting }}
-    >
+    <SettingsContext.Provider value={contextValue}>
       {children}
       <SettingsDialog open={open} onOpenChange={setOpen} />
     </SettingsContext.Provider>
