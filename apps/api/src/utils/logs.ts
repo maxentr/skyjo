@@ -7,7 +7,8 @@ const logger = createLogger({
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
     format.printf(({ level, message, timestamp, stack }) => {
-      return `${timestamp} [${level}]: ${message} ${stack ? `\n${stack}` : ""}`
+      const stackTrace = stack ? `\n${stack}` : ""
+      return `${timestamp} [${level}]: ${message} ${stackTrace}`
     }),
   ),
   transports: [new transports.Console()],
