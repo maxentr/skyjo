@@ -1,7 +1,5 @@
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { beforeEach, describe, expect, it } from "vitest"
-import { i } from "vitest/dist/reporters-yx5ZTtEV.js"
-import { any } from "zod"
 
 let card: SkyjoCard
 
