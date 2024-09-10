@@ -80,7 +80,7 @@ describe("Skyjo", () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       }
-      skyjo = new Skyjo(dbGame.adminId!)
+      skyjo = new Skyjo(dbGame.adminId)
       skyjo.populate(dbGame, { players: [] })
 
       expect(skyjo.id).toBe(dbGame.id)
