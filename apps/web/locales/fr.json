@@ -263,6 +263,15 @@
       "title": "La partie s'est arrêtée",
       "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
     },
+    "LanguageCombobox": {
+      "select-language": "Sélectionner la langue",
+      "search-language": "Rechercher une langue",
+      "no-language-found": "Aucune langue trouvée",
+      "locale": {
+        "en": "English",
+        "fr": "Français"
+      }
+    },
     "MenuDropdown": {
       "button": {
         "aria-label": "Menu"
