@@ -4,7 +4,6 @@ import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { DbGame, DbPlayer } from "database/schema"
 import {
-  API_REGIONS,
   API_REGIONS_TAGS,
   AVATARS,
   CONNECTION_STATUS,
