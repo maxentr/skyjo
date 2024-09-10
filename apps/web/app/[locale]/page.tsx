@@ -24,6 +24,12 @@ type IndexServerPageProps = {
 const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
   const t = useTranslations("pages.Index")
 
+  const rulesLink = (chunks: React.ReactNode) => (
+    <Link href="/rules" className="underline">
+      {chunks}
+    </Link>
+  )
+
   return (
     <>
       <div className="bg-body flex flex-col">
@@ -87,11 +93,7 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
               <AccordionTrigger>{t("faq.how-to-play.title")}</AccordionTrigger>
               <AccordionContent>
                 {t.rich("faq.how-to-play.content", {
-                  rules: (chunks) => (
-                    <Link href="/rules" className="underline">
-                      {chunks}
-                    </Link>
-                  ),
+                  rules: rulesLink,
                 })}
               </AccordionContent>
             </AccordionItem>
