@@ -398,6 +398,21 @@
       "round": "Manche",
       "total": "Total"
     },
+    "SettingsDialog": {
+      "description": "Personnalisez votre expérience de jeu",
+      "title": "Paramètres",
+      "general": "Général",
+      "chat": "Chat",
+      "language": "Langue",
+      "language-warn": "Cela rechargera le jeu !",
+      "appearance": "Apparence",
+      "comingSoon": "Bientôt disponible",
+      "chatVisibility": "Visibilité du chat",
+      "chatNotificationSize": "Taille des notifications du chat",
+      "small": "Petit",
+      "normal": "Normal",
+      "big": "Grand"
+    },
     "Avatar": {
       "bee": "abeille",
       "crab": "crabe",

@@ -397,6 +397,21 @@
       "round": "Round",
       "total": "Total"
     },
+    "SettingsDialog": {
+      "description": "Customize your game experience",
+      "title": "Settings",
+      "general": "General",
+      "chat": "Chat",
+      "language": "Language",
+      "language-warn": "This will reload the game!",
+      "appearance": "Appearance",
+      "comingSoon": "Coming soon",
+      "chatVisibility": "Chat visibility",
+      "chatNotificationSize": "Chat notification size",
+      "small": "Small",
+      "normal": "Normal",
+      "big": "Big"
+    },
     "Avatar": {
       "bee": "bee",
       "crab": "crab",

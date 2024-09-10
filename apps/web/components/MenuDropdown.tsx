@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useFeedback } from "@/contexts/FeedbackContext"
 import { useRules } from "@/contexts/RulesContext"
+import { useSettings } from "@/contexts/SettingsContext"
 import {
   BookOpenIcon,
   MenuIcon,
@@ -20,6 +21,7 @@ import { useTranslations } from "next-intl"
 const MenuDropdown = () => {
   const { openFeedback } = useFeedback()
   const { openRules } = useRules()
+  const { openSettings } = useSettings()
   const t = useTranslations("components.MenuDropdown")
 
   return (
@@ -38,7 +40,7 @@ const MenuDropdown = () => {
           <MessageSquareWarningIcon className="mr-2 h-4 w-4" />
           <span>Feedback</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={openSettings}>
           <SettingsIcon className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>

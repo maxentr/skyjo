@@ -3,7 +3,7 @@
 import ScoreDialog from "@/components/ScoreDialog"
 import { Button } from "@/components/ui/button"
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { ListIcon } from "lucide-react"
+import { TrophyIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { GAME_STATUS } from "shared/constants"
@@ -22,7 +22,7 @@ const Scoreboard = () => {
         title={t("button-title")}
         tabIndex={game?.status === GAME_STATUS.LOBBY ? -1 : 0}
       >
-        <ListIcon />
+        <TrophyIcon />
       </Button>
 
       <ScoreDialog open={open} onOpenChange={setOpen} />

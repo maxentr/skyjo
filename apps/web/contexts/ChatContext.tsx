@@ -1,5 +1,6 @@
 "use client"
 
+import { useSettings } from "@/contexts/SettingsContext"
 import { useSocket } from "@/contexts/SocketContext"
 import { useTranslations } from "next-intl"
 import {
@@ -32,6 +33,9 @@ const ChatContext = createContext<ChatContext | undefined>(undefined)
 
 const ChatProvider = ({ children }: PropsWithChildren) => {
   const { socket } = useSocket()
+  const {
+    settings: { chatVisibility },
+  } = useSettings()
   const t = useTranslations("utils.chat")
   const [chat, setChat] = useState<ChatMessage[]>([])
 
@@ -41,12 +45,14 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   const [mutedPlayers, setMutedPlayers] = useState<string[]>([])
 
   useEffect(() => {
+    if (!chatVisibility) return
+
     if (socket) socket.on("message", onMessageReceived)
 
     return () => {
       if (socket) socket.off("message", onMessageReceived)
     }
-  }, [socket, mutedPlayers])
+  }, [socket, chatVisibility, mutedPlayers])
 
   const sendMessage = (username: string, message: string) => {
     socket!.send({
