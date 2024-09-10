@@ -1,41 +1,24 @@
 "use client"
 
 import Rules from "@/components/Rules"
-import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
-import { BookOpenIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 type RulesDialogProps = {
-  defaultOpen?: boolean
-  tabIndex?: number
-  onOpenChange?: () => void
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-const RulesDialog = ({
-  defaultOpen = false,
-  tabIndex = 0,
-  onOpenChange,
-}: RulesDialogProps) => {
+const RulesDialog = ({ open, onOpenChange }: RulesDialogProps) => {
   const t = useTranslations("components.RulesDialog")
 
   return (
-    <Dialog defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button
-          variant="icon"
-          aria-label={t("trigger.aria-label")}
-          tabIndex={tabIndex}
-        >
-          <BookOpenIcon />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="h-2/3 px-0 bg-container">
         <DialogHeader className="px-6">
           <DialogTitle className="text-2xl">{t("title")}</DialogTitle>

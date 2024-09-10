@@ -2,6 +2,7 @@
 
 import { Toaster } from "@/components/ui/toaster"
 import FeedbackProvider from "@/contexts/FeedbackContext"
+import RulesProvider from "@/contexts/RulesContext"
 import SettingsProvider from "@/contexts/SettingsContext"
 import SocketProvider from "@/contexts/SocketContext"
 import UserProvider from "@/contexts/UserContext"
@@ -22,18 +23,23 @@ if (typeof window !== "undefined") {
 const Providers = ({ children }: PropsWithChildren) => {
   return (
     <PostHogProvider client={posthog}>
-      <SettingsProvider>
-        <SocketProvider>
-          <FeedbackProvider>
-            <UserProvider>
-              <LazyMotion strict features={domAnimation}>
-                {children}
-              </LazyMotion>
-            </UserProvider>
-            <Toaster />
-          </FeedbackProvider>
-        </SocketProvider>
-      </SettingsProvider>
+      <FeedbackProvider>
+        <RulesProvider>
+          <SettingsProvider>
+            <SocketProvider>
+              <FeedbackProvider>
+                <UserProvider>
+                  <LazyMotion strict features={domAnimation}>
+                    {children}
+                  </LazyMotion>
+                </UserProvider>
+                <Toaster />
+              </FeedbackProvider>
+            </SocketProvider>
+          </SettingsProvider>
+        </RulesProvider>
+      </FeedbackProvider>
+      <Toaster />
     </PostHogProvider>
   )
 }
