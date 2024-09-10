@@ -20,9 +20,7 @@ export type LocaleLayoutProps = Readonly<{
 
 export async function generateMetadata({
   params: { locale },
-}: {
-  params: { locale: string }
-}) {
+}: LocaleLayoutProps) {
   const t = await getTranslations({ locale, namespace: "head" })
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ""

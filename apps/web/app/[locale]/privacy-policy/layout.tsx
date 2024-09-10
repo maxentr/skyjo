@@ -3,16 +3,14 @@ import { getCurrentUrl } from "@/lib/utils"
 import { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 
-export type RulesLayoutProps = Readonly<{
+export type PrivacyPolicyLayoutProps = Readonly<{
   children: React.ReactNode
   params: { locale: string }
 }>
 
 export async function generateMetadata({
   params: { locale },
-}: {
-  params: { locale: string }
-}) {
+}: PrivacyPolicyLayoutProps) {
   const t = await getTranslations({
     locale,
     namespace: "pages.PrivacyPolicy.head",
@@ -45,7 +43,9 @@ export async function generateMetadata({
   return metadata
 }
 
-export default async function RulesLayout({ children }: RulesLayoutProps) {
+export default async function PrivacyPolicyLayout({
+  children,
+}: PrivacyPolicyLayoutProps) {
   return (
     <>
       {children}

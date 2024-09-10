@@ -10,9 +10,7 @@ export type RulesLayoutProps = Readonly<{
 
 export async function generateMetadata({
   params: { locale },
-}: {
-  params: { locale: string }
-}) {
+}: RulesLayoutProps) {
   const t = await getTranslations({ locale, namespace: "pages.Rules.head" })
 
   const currentUrl = getCurrentUrl("rules", locale)
