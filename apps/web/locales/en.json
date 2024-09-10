@@ -191,7 +191,7 @@
       "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
     "FeedbackDialog": {
-      "title": "Leave a comment",
+      "title": "Leave a feedback",
       "description": "You can write a feedback to help us improve the game.",
       "toast": {
         "success": {
@@ -228,7 +228,7 @@
       "description": "The next round will start in few seconds..."
     },
     "Footer": {
-      "feedback": "Leave a comment",
+      "feedback": "Leave a feedback",
       "buy-game": "Buy the game",
       "explanation": "What is Skyjo?",
       "rules": "Game rules",
