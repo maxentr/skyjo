@@ -20,9 +20,6 @@ type IndexServerPageProps = {
     gameCode?: string
     region?: ApiRegionsTag
   }
-  params: {
-    locale: string
-  }
 }
 const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
   const t = useTranslations("pages.Index")
