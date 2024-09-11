@@ -2,7 +2,7 @@ import { MESSAGE_TYPE, SystemMessageType } from "../constants"
 
 export type PlayerChatMessage = {
   id: string
-  username?: string
+  username: string
   message: string
   type: typeof MESSAGE_TYPE.USER_MESSAGE
 }

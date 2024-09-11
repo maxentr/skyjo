@@ -78,7 +78,11 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   }
 
   const onMessageReceived = (message: ChatMessage) => {
-    if (mutedPlayers.includes(message.username!)) return
+    if (
+      message.type === MESSAGE_TYPE.USER_MESSAGE &&
+      mutedPlayers.includes(message.username)
+    )
+      return
 
     if (message.type === MESSAGE_TYPE.USER_MESSAGE) {
       setChat((prev) => [message, ...prev])
