@@ -8,6 +8,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
 import { MESSAGE_TYPE, SystemMessageType } from "shared/constants"
@@ -148,26 +149,27 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   }
   //#endregion
 
+  const contextValue = useMemo(
+    () => ({
+      chat,
+      unreadMessages,
+      hasUnreadMessage,
+      setHasUnreadMessage,
+      addUnreadMessage,
+      clearUnreadMessages,
+      setChat,
+      sendMessage,
+      addSystemMessage,
+      mutedPlayers,
+      mutePlayer,
+      unmutePlayer,
+      toggleMutePlayer,
+    }),
+    [chat, unreadMessages, hasUnreadMessage, mutedPlayers],
+  )
+
   return (
-    <ChatContext.Provider
-      value={{
-        chat,
-        unreadMessages,
-        hasUnreadMessage,
-        setHasUnreadMessage,
-        addUnreadMessage,
-        addSystemMessage,
-        clearUnreadMessages,
-        setChat,
-        sendMessage,
-        mutedPlayers,
-        mutePlayer,
-        unmutePlayer,
-        toggleMutePlayer,
-      }}
-    >
-      {children}
-    </ChatContext.Provider>
+    <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>
   )
 }
 
