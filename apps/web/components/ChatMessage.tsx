@@ -30,10 +30,10 @@ const ChatMessage = ({ username, message, type }: ChatMessage) => {
   const highlightTags = (text: string) => {
     const parts = text.split(/(@[\w-]+)/)
 
-    return parts.map((part, index) => {
+    return parts.map((part) => {
       if (part.startsWith("@") && players.includes(part.slice(1))) {
         return (
-          <span key={index} className="font-semibold text-blue-500 ">
+          <span key={part} className="font-semibold text-blue-500 ">
             {part}
           </span>
         )
