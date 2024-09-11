@@ -1,3 +1,10 @@
 {
-  "typescript.preferences.autoImportFileExcludePatterns": ["node/test.d.ts", "@radix-ui"]
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "node/test.d.ts",
+    "@radix-ui"
+  ],
+  "sonarlint.connectedMode.project": {
+    "connectionId": "maxentr",
+    "projectKey": "maxentr_skyjo"
+  }
 }
