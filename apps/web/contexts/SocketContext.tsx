@@ -108,31 +108,8 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   }
   //#endregion reconnection
 
-  // const changeRegion = (regionTag: ApiRegionsTag, manual = false) => {
-  //   const newUrl = getCurrentRegion(regionTag)?.url
-  //   if (newUrl) {
-  //     setSocket(initSocket(newUrl))
-  //     setRegion(regionTag)
-
-  //     if (manual) setPreferredRegion(regionTag)
-  //   }
-  // }
-
   const createSocket = async () => {
     setSocket(initSocket(process.env.NEXT_PUBLIC_API_URL!))
-    // if region is specified in the url
-    // if (regionTag) {
-    //   changeRegion(regionTag)
-    //   return
-    // }
-
-    // // if region is not specified in the url, use the preferred region
-    // if (preferredRegion) changeRegion(preferredRegion)
-    // else {
-    //   // if no region is specified in the url and no preferred region is set, use the server with the lowest ping
-    //   const serverWithLessPing = await getRegionWithLessPing()
-    //   changeRegion(serverWithLessPing.tag)
-    // }
   }
 
   //#region listeners

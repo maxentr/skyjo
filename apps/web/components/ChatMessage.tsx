@@ -21,8 +21,9 @@ const chatMessageClasses = cva(
     },
   },
 )
+type ChatMessageProps = Readonly<ChatMessage>
 
-const ChatMessage = ({ username, message, type }: ChatMessage) => {
+const ChatMessage = ({ username, message, type }: ChatMessageProps) => {
   const { game } = useSkyjo()
   const t = useTranslations("components.ChatMessage")
   const players = game?.players.map((p) => p.name)

@@ -29,7 +29,6 @@ type FeedbackDialogProps = {
 const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
   const t = useTranslations("components.FeedbackDialog")
   const { toast } = useToast()
-  // const { region } = useSocket()
 
   const form = useForm<z.infer<typeof feedbackSchema>>({
     resolver: zodResolver(feedbackSchema),
@@ -41,9 +40,6 @@ const FeedbackDialog = ({ open, setOpen }: FeedbackDialogProps) => {
 
   const onSubmit = async (values: z.infer<typeof feedbackSchema>) => {
     if (!values.message) return
-
-    // const currentRegion = getCurrentRegion(region)
-    // if (!currentRegion) return
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/feedback`,

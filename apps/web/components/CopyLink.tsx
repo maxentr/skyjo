@@ -11,10 +11,9 @@ type CopyLinkProps = {
 }
 
 const CopyLink = ({ gameCode }: CopyLinkProps) => {
-  // const { region } = useSocket()
   const [copied, setCopied] = useState(false)
   const [interval, setInterval] = useState<NodeJS.Timeout>()
-  const inviteLink = getGameInviteLink(gameCode, null)
+  const inviteLink = getGameInviteLink(gameCode)
 
   const copyLink = () => {
     navigator.clipboard.writeText(inviteLink)

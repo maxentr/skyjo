@@ -306,14 +306,6 @@
         "content": "Installer"
       }
     },
-    "RegionsSelect": {
-      "title": "Région du serveur :",
-      "button-loading": "Chargement des serveurs...",
-      "command": {
-        "placeholder": "Rechercher...",
-        "empty": "Aucune région trouvée."
-      }
-    },
     "RulesDialog": {
       "title": "Règles du jeu",
       "trigger": {

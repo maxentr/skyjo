@@ -7,13 +7,11 @@ import { useSocket } from "@/contexts/SocketContext"
 import { useUser } from "@/contexts/UserContext"
 import { useTranslations } from "next-intl"
 import { ChangeEvent, useEffect } from "react"
-import { ApiRegionsTag } from "shared/constants"
 import { CreatePlayer } from "shared/validations/player"
 
 type Props = {
   searchParams: {
     gameCode?: string
-    region?: ApiRegionsTag
   }
 }
 
@@ -23,9 +21,7 @@ const IndexPage = ({ searchParams }: Props) => {
   const { username, getAvatar, setUsername, saveUserInLocalStorage } = useUser()
 
   useEffect(() => {
-    createSocket(
-      // searchParams.region as ApiRegionsTag
-    )
+    createSocket()
   }, [])
 
   const beforeButtonAction = () => {

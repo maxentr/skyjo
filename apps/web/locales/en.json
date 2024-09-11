@@ -305,14 +305,6 @@
         "content": "Install"
       }
     },
-    "RegionsSelect": {
-      "title": "Server region:",
-      "button-loading": "Loading servers...",
-      "command": {
-        "placeholder": "Search...",
-        "empty": "No region found."
-      }
-    },
     "RulesDialog": {
       "title": "Game rules",
       "trigger": {

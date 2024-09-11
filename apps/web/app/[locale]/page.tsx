@@ -13,12 +13,10 @@ import { Button } from "@/components/ui/button"
 import { Link } from "@/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { ApiRegionsTag } from "shared/constants"
 
 type IndexServerPageProps = {
   searchParams: {
     gameCode?: string
-    region?: ApiRegionsTag
   }
 }
 const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
@@ -56,9 +54,6 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
           </div>
           <div className="hidden mdh:sm:flex absolute bottom-6 left-6 right-6 z-10 items-center justify-center">
             <MovingArrow href="#explanation" />
-          </div>
-          <div className="absolute bottom-6 left-6 z-20 flex items-center justify-end">
-            {/* <RegionsSelect /> */}
           </div>
         </div>
         <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">

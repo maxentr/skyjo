@@ -106,44 +106,8 @@ export const CONNECTION_LOST_TIMEOUT_IN_MS = 30000
 export const LEAVE_TIMEOUT_IN_MS = 15000
 
 //#region api regions
-export const LOCAL_REGIONS = [
-  {
-    name: "Local",
-    tag: "LOCAL",
-    url: "http://localhost:3001",
-  },
-] as const
 
-const PROD_REGIONS = [
-  {
-    name: "Europe",
-    tag: "FR",
-    url: "https://skyjo-online-eu.fly.dev",
-  },
-  {
-    name: "America",
-    tag: "US",
-    url: "https://skyjo-online-us.fly.dev",
-  },
-] as const
-
-export const API_REGIONS = {
-  LOCAL: LOCAL_REGIONS,
-  PROD: PROD_REGIONS,
-}
-
-export const API_REGIONS_TAGS = Object.values(API_REGIONS)
-  .map((regionEnv) => regionEnv.map((region) => region.tag))
-  .flat() as ["LOCAL", "FR", "US"]
-
-export type ApiRegions = {
-  name: string
-  tag: string
-  url: string
-  ms?: number
-}
-
-export type ApiRegionsTag =
-  (typeof API_REGIONS)[keyof typeof API_REGIONS][number]["tag"]
+export const API_REGIONS_TAGS = ["LOCAL", "FR"] as const
+export type ApiRegionsTag = (typeof API_REGIONS_TAGS)[number]
 
 //#endregion api regions
