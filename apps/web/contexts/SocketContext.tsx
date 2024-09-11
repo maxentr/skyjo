@@ -109,7 +109,10 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   //#endregion reconnection
 
   const createSocket = async () => {
-    setSocket(initSocket(process.env.NEXT_PUBLIC_API_URL!))
+    if (!process.env.NEXT_PUBLIC_API_URL)
+      throw new Error("NEXT_PUBLIC_API_URL is not set")
+
+    setSocket(initSocket(process.env.NEXT_PUBLIC_API_URL))
   }
 
   //#region listeners
