@@ -16,7 +16,6 @@ import {
   ROUND_STATUS,
   RoundStatus,
   SERVER_MESSAGE_TYPE,
-  SYSTEM_MESSAGE_TYPE,
   TURN_STATUS,
   TurnStatus,
 } from "shared/constants"
