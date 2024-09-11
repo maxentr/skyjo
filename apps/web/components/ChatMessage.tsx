@@ -1,5 +1,6 @@
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cva } from "class-variance-authority"
+import { m } from "framer-motion"
 import { useTranslations } from "next-intl"
 import type { ChatMessage } from "shared/types/chat"
 
@@ -45,7 +46,17 @@ const ChatMessage = ({ username, message, type }: ChatMessageProps) => {
   }
 
   return (
-    <p className={chatMessageClasses({ type })}>
+    <m.p
+      initial={{
+        opacity: 0.5,
+        translateY: 10,
+      }}
+      animate={{
+        opacity: 1,
+        translateY: 0,
+      }}
+      className={chatMessageClasses({ type })}
+    >
       {username && (
         <span className="font-semibold">
           {username}
@@ -53,7 +64,7 @@ const ChatMessage = ({ username, message, type }: ChatMessageProps) => {
         </span>
       )}
       {highlightTags(message)}
-    </p>
+    </m.p>
   )
 }
 
