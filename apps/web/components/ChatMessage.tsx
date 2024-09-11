@@ -1,7 +1,6 @@
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { cva } from "class-variance-authority"
 import { useTranslations } from "next-intl"
-import { MessageType } from "shared/constants"
 import type { ChatMessage } from "shared/types/chat"
 
 const chatMessageClasses = cva(
@@ -21,7 +20,9 @@ const chatMessageClasses = cva(
     },
   },
 )
-type ChatMessageProps = Readonly<ChatMessage>
+type ChatMessageProps = Readonly<ChatMessage> & {
+  username?: string
+}
 
 const ChatMessage = ({ username, message, type }: ChatMessageProps) => {
   const { game } = useSkyjo()
@@ -44,7 +45,7 @@ const ChatMessage = ({ username, message, type }: ChatMessageProps) => {
   }
 
   return (
-    <p className={chatMessageClasses({ type: type as MessageType })}>
+    <p className={chatMessageClasses({ type })}>
       {username && (
         <span className="font-semibold">
           {username}

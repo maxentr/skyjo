@@ -1,17 +1,30 @@
-import { MESSAGE_TYPE, SystemMessageType } from "../constants"
+import {
+  ServerMessageType,
+  SystemMessageType,
+  UserMessageType,
+} from "../constants"
 
-export type PlayerChatMessage = {
+export type UserChatMessage = {
   id: string
   username: string
   message: string
-  type: typeof MESSAGE_TYPE.USER_MESSAGE
+  type: UserMessageType
 }
 
 export type SystemChatMessage = {
   id: string
-  username?: string
-  message: SystemMessageType
+  message: string
   type: SystemMessageType
 }
 
-export type ChatMessage = PlayerChatMessage | SystemChatMessage
+export type ServerChatMessage = {
+  id: string
+  username: string
+  message: ServerMessageType
+  type: ServerMessageType
+}
+
+export type ChatMessage =
+  | UserChatMessage
+  | SystemChatMessage
+  | ServerChatMessage

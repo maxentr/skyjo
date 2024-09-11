@@ -11,8 +11,13 @@ import {
   useMemo,
   useState,
 } from "react"
-import { MESSAGE_TYPE, SystemMessageType } from "shared/constants"
-import { ChatMessage } from "shared/types/chat"
+import { SYSTEM_MESSAGE_TYPE, SystemMessageType } from "shared/constants"
+import {
+  ChatMessage,
+  ServerChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+} from "shared/types/chat"
 
 type ChatContext = {
   chat: ChatMessage[]
@@ -48,10 +53,18 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (!chatVisibility) return
 
-    if (socket) socket.on("message", onMessageReceived)
+    if (socket) {
+      socket.on("message", onMessageReceived)
+      socket.on("message:system", onSystemMessageReceived)
+      socket.on("message:server", onServerMessageReceived)
+    }
 
     return () => {
-      if (socket) socket.off("message", onMessageReceived)
+      if (socket) {
+        socket.off("message", onMessageReceived)
+        socket.off("message:system", onSystemMessageReceived)
+        socket.off("message:server", onServerMessageReceived)
+      }
     }
   }, [socket, chatVisibility, mutedPlayers])
 
@@ -62,46 +75,43 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
     })
   }
 
-  const addSystemMessage = (
-    message: string,
-    type: Extract<
-      SystemMessageType,
-      "system-message" | "warn-system-message" | "error-system-message"
-    > = MESSAGE_TYPE.SYSTEM_MESSAGE,
-  ) => {
+  //#region Message received
+  const onMessageReceived = (message: UserChatMessage) => {
+    if (mutedPlayers.includes(message.username)) return
+
+    setChat((prev) => [message, ...prev])
+  }
+
+  const onServerMessageReceived = (message: ServerChatMessage) => {
+    const messageContent = t(message.message, {
+      username: message.username,
+    })
+
     const chatMessage = {
-      id: crypto.randomUUID(),
-      message,
-      type,
+      id: message.id,
+      message: messageContent,
+      type: message.type,
     } as ChatMessage
 
     setChat((prev) => [chatMessage, ...prev])
   }
 
-  const onMessageReceived = (message: ChatMessage) => {
-    if (
-      message.type === MESSAGE_TYPE.USER_MESSAGE &&
-      mutedPlayers.includes(message.username)
-    )
-      return
+  const onSystemMessageReceived = (message: SystemChatMessage) => {
+    setChat((prev) => [message, ...prev])
+  }
+  //#endregion
 
-    if (message.type === MESSAGE_TYPE.USER_MESSAGE) {
-      setChat((prev) => [message, ...prev])
-    } else {
-      const messageContent = t(message.message, {
-        username: message.username,
-      })
-
-      setChat((prev) => [
-        {
-          id: message.id,
-          username: undefined,
-          message: messageContent,
-          type: message.type,
-        } as ChatMessage,
-        ...prev,
-      ])
+  const addSystemMessage = (
+    message: string,
+    type: SystemMessageType = SYSTEM_MESSAGE_TYPE.SYSTEM_MESSAGE,
+  ) => {
+    const chatMessage: SystemChatMessage = {
+      id: crypto.randomUUID(),
+      message,
+      type,
     }
+
+    setChat((prev) => [chatMessage, ...prev])
   }
 
   const addUnreadMessage = (message: ChatMessage) => {
@@ -116,7 +126,7 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
     if (!username) {
       addSystemMessage(
         t("argument-required", { command: "/mute" }),
-        MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
+        SYSTEM_MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
       )
     } else if (mutedPlayers.includes(username)) {
       addSystemMessage(t("player-already-muted", { username }))
@@ -130,7 +140,7 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
     if (!username) {
       addSystemMessage(
         t("argument-required", { command: "/unmute" }),
-        MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
+        SYSTEM_MESSAGE_TYPE.WARN_SYSTEM_MESSAGE,
       )
     } else if (!mutedPlayers.includes(username)) {
       addSystemMessage(t("player-not-muted", { username }))

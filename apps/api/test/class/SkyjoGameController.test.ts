@@ -13,9 +13,10 @@ import {
   ERROR,
   GAME_STATUS,
   GameStatus,
-  MESSAGE_TYPE,
   ROUND_STATUS,
   RoundStatus,
+  SERVER_MESSAGE_TYPE,
+  SYSTEM_MESSAGE_TYPE,
   TURN_STATUS,
   TurnStatus,
 } from "shared/constants"
@@ -86,9 +87,9 @@ describe("Skyjo", () => {
     )
     expect(socket.emit).toHaveBeenNthCalledWith(
       2,
-      "message",
+      "message:server",
       expect.objectContaining({
-        type: MESSAGE_TYPE.PLAYER_JOINED,
+        type: SERVER_MESSAGE_TYPE.PLAYER_JOINED,
         username: "player1",
       }),
     )
@@ -131,9 +132,9 @@ describe("Skyjo", () => {
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
-        "message",
+        "message:server",
         expect.objectContaining({
-          type: MESSAGE_TYPE.PLAYER_JOINED,
+          type: SERVER_MESSAGE_TYPE.PLAYER_JOINED,
           username: "player1",
         }),
       )
@@ -195,9 +196,9 @@ describe("Skyjo", () => {
 
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
-        "message",
+        "message:server",
         expect.objectContaining({
-          type: MESSAGE_TYPE.PLAYER_JOINED,
+          type: SERVER_MESSAGE_TYPE.PLAYER_JOINED,
           username: "player1",
         }),
       )
@@ -232,9 +233,9 @@ describe("Skyjo", () => {
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
-        "message",
+        "message:server",
         expect.objectContaining({
-          type: MESSAGE_TYPE.PLAYER_JOINED,
+          type: SERVER_MESSAGE_TYPE.PLAYER_JOINED,
           username: "player1",
         }),
       )
@@ -347,9 +348,9 @@ describe("Skyjo", () => {
       )
       expect(socket.emit).toHaveBeenNthCalledWith(
         2,
-        "message",
+        "message:server",
         expect.objectContaining({
-          type: MESSAGE_TYPE.PLAYER_JOINED,
+          type: SERVER_MESSAGE_TYPE.PLAYER_JOINED,
           username: "player2",
         }),
       )

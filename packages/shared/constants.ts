@@ -70,24 +70,27 @@ export const CONNECTION_STATUS = {
 export type ConnectionStatus =
   (typeof CONNECTION_STATUS)[keyof typeof CONNECTION_STATUS]
 
-export const MESSAGE_TYPE = {
-  PLAYER_JOINED: "player-joined",
-  PLAYER_RECONNECT: "player-reconnect",
-  PLAYER_LEFT: "player-left",
+export const USER_MESSAGE_TYPE = "message" as const
+export type UserMessageType = typeof USER_MESSAGE_TYPE
+
+export const SYSTEM_MESSAGE_TYPE = {
   SYSTEM_MESSAGE: "system-message",
   WARN_SYSTEM_MESSAGE: "warn-system-message",
   ERROR_SYSTEM_MESSAGE: "error-system-message",
-  USER_MESSAGE: "message",
 } as const
-export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE]
-export type SystemMessageType = Exclude<MessageType, "message">
+export type SystemMessageType =
+  (typeof SYSTEM_MESSAGE_TYPE)[keyof typeof SYSTEM_MESSAGE_TYPE]
 
-export const SERVER_MESSAGE = {
+export const SERVER_MESSAGE_TYPE = {
   PLAYER_JOINED: "player-joined",
   PLAYER_RECONNECT: "player-reconnect",
   PLAYER_LEFT: "player-left",
 } as const
-export type ServerMessage = (typeof SERVER_MESSAGE)[keyof typeof SERVER_MESSAGE]
+
+export const SERVER_MESSAGE_TYPE_ARRAY = Object.values(SERVER_MESSAGE_TYPE)
+
+export type ServerMessageType =
+  (typeof SERVER_MESSAGE_TYPE)[keyof typeof SERVER_MESSAGE_TYPE]
 
 //#endregion Skyjo
 

@@ -9,14 +9,13 @@ import {
   ERROR,
   GAME_STATUS,
   LEAVE_TIMEOUT_IN_MS,
-  MESSAGE_TYPE,
-  MessageType,
   ROUND_STATUS,
-  SERVER_MESSAGE,
+  SERVER_MESSAGE_TYPE,
   TURN_STATUS,
   TurnStatus,
+  USER_MESSAGE_TYPE,
 } from "shared/constants"
-import { ChatMessage } from "shared/types/chat"
+import { ServerChatMessage, UserChatMessage } from "shared/types/chat"
 import { ChangeSettings } from "shared/validations/changeSettings"
 import {
   PlayPickCard,
@@ -286,11 +285,11 @@ export default class SkyjoGameController {
 
       await Promise.all(promises)
     } else {
-      socket.to(game.code).emit("message", {
+      socket.to(game.code).emit("message:server", {
         id: crypto.randomUUID(),
         username: player.name,
-        message: SERVER_MESSAGE.PLAYER_LEFT,
-        type: MESSAGE_TYPE.PLAYER_LEFT,
+        message: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
+        type: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
       })
 
       this.startDisconnectionTimeout(player, timeout, () =>
@@ -303,8 +302,7 @@ export default class SkyjoGameController {
 
   async onMessage(
     socket: SkyjoSocket,
-    { username, message }: Omit<ChatMessage, "id" | "type">,
-    type: MessageType = MESSAGE_TYPE.USER_MESSAGE,
+    { username, message }: Omit<UserChatMessage, "id" | "type">,
   ) {
     const game = await this.getGame(socket.data.gameCode)
 
@@ -313,15 +311,14 @@ export default class SkyjoGameController {
 
     game.updatedAt = new Date()
 
-    const newMessage = {
+    const newMessage: UserChatMessage = {
       id: crypto.randomUUID(),
       username,
       message,
-      type,
-    } as ChatMessage
+      type: USER_MESSAGE_TYPE,
+    }
 
     socket.to(game.code).emit("message", newMessage)
-
     socket.emit("message", newMessage)
   }
   //#endregion
@@ -446,16 +443,17 @@ export default class SkyjoGameController {
 
     socket.emit("join", game.toJson(), player.id)
 
-    await this.onMessage(
-      socket,
-      {
-        username: player.name,
-        message: reconnection
-          ? SERVER_MESSAGE.PLAYER_RECONNECT
-          : SERVER_MESSAGE.PLAYER_JOINED,
-      },
-      reconnection ? MESSAGE_TYPE.PLAYER_RECONNECT : MESSAGE_TYPE.PLAYER_JOINED,
-    )
+    const messageType = reconnection
+      ? SERVER_MESSAGE_TYPE.PLAYER_RECONNECT
+      : SERVER_MESSAGE_TYPE.PLAYER_JOINED
+    const message: ServerChatMessage = {
+      id: crypto.randomUUID(),
+      username: player.name,
+      message: messageType,
+      type: messageType,
+    }
+    socket.to(game.code).emit("message:server", message)
+    socket.emit("message:server", message)
 
     const updateGame = this.gameService.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)

@@ -1,6 +1,10 @@
 import { Error } from "constants"
 import { ChangeSettings } from "validations/changeSettings"
-import { ChatMessage } from "../types/chat"
+import {
+  ServerChatMessage,
+  SystemChatMessage,
+  UserChatMessage,
+} from "../types/chat"
 import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
 import { SendChatMessage } from "../validations/chatMessage"
 import { JoinGame } from "../validations/joinGame"
@@ -44,7 +48,9 @@ export type ServerToClientEvents = {
   "error:reconnect": (message: ErrorReconnectMessage) => void
   join: (game: SkyjoToJson, playerId: string) => void
   game: (game: SkyjoToJson) => void
-  message: (message: ChatMessage) => void
+  message: (message: UserChatMessage) => void
+  "message:system": (message: SystemChatMessage) => void
+  "message:server": (message: ServerChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   "leave:success": () => void
 }
