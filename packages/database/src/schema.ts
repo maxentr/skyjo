@@ -1,4 +1,3 @@
-import { uuid } from "drizzle-orm/pg-core"
 import {
   boolean,
   integer,
@@ -6,6 +5,7 @@ import {
   pgEnum,
   pgTable,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core"
 import {
