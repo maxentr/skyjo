@@ -28,6 +28,7 @@
     "cmdk": "^1.0.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.5.4",
+    "howler": "^2.2.4",
     "lucide-react": "^0.320.0",
     "next": "14.1.0",
     "next-intl": "^3.19.1",
@@ -46,6 +47,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.11",
     "@types/next-pwa": "^5.6.9",
     "@types/node": "^20.16.5",
     "@types/react": "^18.3.5",
