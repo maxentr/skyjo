@@ -393,6 +393,15 @@
     "SettingsDialog": {
       "description": "Personnalisez votre expérience de jeu",
       "title": "Paramètres",
+      "sound": {
+        "title": "Son",
+        "audio": {
+          "label": "Activer le son"
+        },
+        "volume": {
+          "label": "Volume ({volume}%)"
+        }
+      },
       "general": {
         "title": "Général",
         "language": "Langue",
