@@ -3,6 +3,7 @@
 import SettingsDialog from "@/components/SettingsDialog"
 import { Locales } from "@/i18n"
 import { usePathname, useRouter } from "@/navigation"
+import { Howler } from "howler"
 import { useSearchParams } from "next/navigation"
 import {
   PropsWithChildren,
@@ -13,6 +14,8 @@ import {
   useState,
 } from "react"
 import { useLocalStorage } from "react-use"
+
+const VOLUME_DIVISOR = 100
 
 export const ChatNotificationSize = {
   SMALL: "small",
@@ -35,6 +38,19 @@ type Settings = {
   locale: Locales
   appearance: Appearance
   switchToPlayerWhoIsPlaying: boolean
+  audio: boolean
+  volume: number
+}
+type SettingsKeys = keyof Settings
+
+const DEFAULT_SETTINGS: Settings = {
+  chatVisibility: true,
+  chatNotificationSize: ChatNotificationSize.NORMAL,
+  appearance: Appearance.LIGHT,
+  locale: "en",
+  switchToPlayerWhoIsPlaying: true,
+  audio: true,
+  volume: 50,
 }
 
 type SettingsContext = {
@@ -51,27 +67,40 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
   const query = useSearchParams()
 
   const [settings, setSettings] = useLocalStorage<Settings>("userSettings", {
-    chatVisibility: true,
-    chatNotificationSize: ChatNotificationSize.NORMAL,
-    appearance: Appearance.LIGHT,
+    ...DEFAULT_SETTINGS,
     locale,
-    switchToPlayerWhoIsPlaying: true,
   })
 
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    // check all settings keys, if not present in settings, add them
+    if (!settings) return
+
+    Object.keys(settings).forEach((key) => {
+      const k = key as SettingsKeys
+
+      if (settings[k] === undefined)
+        setSettings({ ...settings, [k]: DEFAULT_SETTINGS[k] })
+    })
+  }, [settings])
+
+  useEffect(() => {
     let route = pathname
     const gameCode = query.get("gameCode")
 
-    if (gameCode) {
-      route += `?gameCode=${gameCode}`
-    }
+    if (gameCode) route += `?gameCode=${gameCode}`
 
-    if (settings) {
-      router.push(route, { locale: settings.locale })
-    }
+    if (settings) router.push(route, { locale: settings.locale })
   }, [settings?.locale])
+
+  useEffect(() => {
+    if (settings) Howler.mute(!settings.audio)
+  }, [settings?.audio])
+
+  useEffect(() => {
+    if (settings) Howler.volume((settings.volume ?? 50) / VOLUME_DIVISOR)
+  }, [settings?.volume])
 
   const openSettings = () => setOpen(true)
 
@@ -79,9 +108,7 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
     key: K,
     value: Settings[K],
   ) => {
-    if (settings) {
-      setSettings({ ...settings, [key]: value })
-    }
+    if (settings) setSettings({ ...settings, [key]: value })
   }
 
   const contextValue = useMemo(

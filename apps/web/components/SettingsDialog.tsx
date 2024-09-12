@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { ChatNotificationSize, useSettings } from "@/contexts/SettingsContext"
 import { useTranslations } from "next-intl"
@@ -46,6 +47,33 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               <div className="flex flex-col gap-2 opacity-50">
                 <Label>{t("general.appearance")}</Label>
                 <p className="text-sm">{t("general.coming-soon")}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <h2 className="text-lg font-semibold">{t("sound.title")}</h2>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="sound-enabled">{t("sound.audio.label")}</Label>
+                <Switch
+                  id="sound-enabled"
+                  checked={settings.audio ?? true}
+                  onCheckedChange={(value) => updateSetting("audio", value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label>
+                  {t("sound.volume.label", { volume: settings.volume })}
+                </Label>
+                <Slider
+                  value={[settings.volume ?? 50]}
+                  onValueChange={(value) => updateSetting("volume", value[0])}
+                  min={0}
+                  max={100}
+                  step={1}
+                  disabled={!settings.audio}
+                />
               </div>
             </div>
           </div>
