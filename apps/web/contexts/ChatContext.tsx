@@ -2,6 +2,7 @@
 
 import { useSettings } from "@/contexts/SettingsContext"
 import { useSocket } from "@/contexts/SocketContext"
+import { Howl } from "howler"
 import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
@@ -18,6 +19,16 @@ import {
   SystemChatMessage,
   UserChatMessage,
 } from "shared/types/chat"
+
+const messageSound = new Howl({
+  src: ["/sounds/message.ogg"],
+})
+const playerJoinedSound = new Howl({
+  src: ["/sounds/player-joined.ogg"],
+})
+const playerLeftSound = new Howl({
+  src: ["/sounds/player-left.ogg"],
+})
 
 type ChatContext = {
   chat: ChatMessage[]
@@ -79,10 +90,17 @@ const ChatProvider = ({ children }: PropsWithChildren) => {
   const onMessageReceived = (message: UserChatMessage) => {
     if (mutedPlayers.includes(message.username)) return
 
+    messageSound.play()
     setChat((prev) => [message, ...prev])
   }
 
   const onServerMessageReceived = (message: ServerChatMessage) => {
+    if (message.type === "player-joined") {
+      playerJoinedSound.play()
+    } else if (message.type === "player-left") {
+      playerLeftSound.play()
+    }
+
     const messageContent = t(message.message, {
       username: message.username,
     })
