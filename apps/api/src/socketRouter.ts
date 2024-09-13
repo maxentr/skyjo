@@ -166,7 +166,7 @@ const skyjoRouter = (
 
     socket.on("disconnect", async (reason: DisconnectReason) => {
       try {
-        logger.debug(`Socket ${socket.id} disconnected for reason ${reason}`)
+        logger.info(`Socket ${socket.id} disconnected for reason ${reason}`)
         if (reason === "ping timeout") await instance.onLeave(socket, true)
         else await instance.onLeave(socket)
       } catch (error) {

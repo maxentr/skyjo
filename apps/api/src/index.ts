@@ -1,4 +1,5 @@
 import { Server as HttpServer } from "http"
+import { logger } from "@/utils/logs"
 import { serve } from "@hono/node-server"
 import { zValidator } from "@hono/zod-validator"
 import { config } from "dotenv"
@@ -54,6 +55,10 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(
     },
   },
 )
+
+io.engine.on("connection_error", (err) => {
+  logger.error(`${err.code} - ${err.message} - ${err.context}`)
+})
 
 skyjoRouter(io)
 
