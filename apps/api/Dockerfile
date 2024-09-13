@@ -3,7 +3,7 @@ ARG PROJECT=api
 
 FROM node:22.6-alpine AS base
 RUN apk update && apk add --no-cache libc6-compat
-&& yarn global add turbo pnpm
+RUN yarn global add turbo pnpm
 
 
 FROM base AS pruner
