@@ -285,17 +285,17 @@ export default class SkyjoGameController {
 
       await Promise.all(promises)
     } else {
-      socket.to(game.code).emit("message:server", {
-        id: crypto.randomUUID(),
-        username: player.name,
-        message: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
-        type: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
-      })
-
       this.startDisconnectionTimeout(player, timeout, () =>
         this.updateGameAfterTimeoutExpired(socket, game),
       )
     }
+
+    socket.to(game.code).emit("message:server", {
+      id: crypto.randomUUID(),
+      username: player.name,
+      message: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
+      type: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
+    })
 
     await socket.leave(game.code)
   }
