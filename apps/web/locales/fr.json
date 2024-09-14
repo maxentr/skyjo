@@ -391,7 +391,6 @@
       "total": "Total"
     },
     "SettingsDialog": {
-      "description": "Personnalisez votre expérience de jeu",
       "title": "Paramètres",
       "sound": {
         "title": "Son",

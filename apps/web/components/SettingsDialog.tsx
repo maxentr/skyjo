@@ -32,7 +32,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
           <DialogTitle className="text-center text-2xl">
             {t("title")}
           </DialogTitle>
-          <DialogDescription>{t("description")}</DialogDescription>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-6 px-6 overflow-y-auto">
           <div className="flex flex-col gap-2">

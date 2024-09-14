@@ -390,7 +390,6 @@
       "total": "Total"
     },
     "SettingsDialog": {
-      "description": "Customize your game experience",
       "title": "Settings",
       "sound": {
         "title": "Sound",
