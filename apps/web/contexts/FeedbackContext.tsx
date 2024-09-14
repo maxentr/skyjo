@@ -1,6 +1,6 @@
 "use client"
 
-import FeedbackDialog from "@/components/FeedbackDialog"
+import Feedback from "@/components/Feedback"
 import {
   PropsWithChildren,
   createContext,
@@ -31,7 +31,7 @@ const FeedbackProvider = ({ children }: PropsWithChildren) => {
   return (
     <FeedbackContext.Provider value={value}>
       {children}
-      <FeedbackDialog open={open} setOpen={setOpen} />
+      <Feedback open={open} setOpen={setOpen} />
     </FeedbackContext.Provider>
   )
 }

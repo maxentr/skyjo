@@ -191,7 +191,7 @@
     "ChatMessageList": {
       "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
     },
-    "FeedbackDialog": {
+    "Feedback": {
       "title": "Laisser un commentaire",
       "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
       "toast": {

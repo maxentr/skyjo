@@ -190,7 +190,7 @@
     "ChatMessageList": {
       "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
     },
-    "FeedbackDialog": {
+    "Feedback": {
       "title": "Leave a feedback",
       "description": "You can write a feedback to help us improve the game.",
       "toast": {
