@@ -19,4 +19,5 @@ export interface SkyjoToJson {
   turnStatus: TurnStatus
   lastDiscardCardValue?: number
   lastTurnStatus: LastTurnStatus
+  updatedAt: Date
 }

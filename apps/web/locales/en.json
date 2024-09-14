@@ -39,6 +39,19 @@
     "GamePage": {
       "your-turn": "It's your turn!"
     },
+    "InactivityCheck": {
+      "warning": {
+        "title": "Are you still here?",
+        "button": {
+          "label": "Yes",
+          "title": "Confirm your presence"
+        }
+      },
+      "timeout": {
+        "title": "You have been disconnected from the lobby due to inactivity",
+        "description": "Please note that as an administrator of a public game, your inactivity prevents the game from starting, affecting the experience of other players."
+      }
+    },
     "Lobby": {
       "settings": {
         "title": "Settings",

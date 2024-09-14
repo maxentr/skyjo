@@ -1,3 +1,4 @@
+import InactivityCheck from "./InactivityCheck"
 import Lobby from "./Lobby"
 
 type LobbyServerPageProps = {
@@ -8,7 +9,12 @@ type LobbyServerPageProps = {
 }
 
 const LobbyServerPage = ({ params }: LobbyServerPageProps) => {
-  return <Lobby gameCode={params.code} />
+  return (
+    <>
+      <Lobby gameCode={params.code} />
+      <InactivityCheck />
+    </>
+  )
 }
 
 export default LobbyServerPage

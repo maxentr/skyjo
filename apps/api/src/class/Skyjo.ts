@@ -298,6 +298,7 @@ export class Skyjo implements SkyjoInterface {
       turnStatus: this.turnStatus,
       lastTurnStatus: this.lastTurnStatus,
       settings: this.settings.toJson(),
+      updatedAt: this.updatedAt,
     } satisfies SkyjoToJson
   }
 
