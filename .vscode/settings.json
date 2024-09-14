@@ -1,7 +1,8 @@
 {
   "typescript.preferences.autoImportFileExcludePatterns": [
     "node/test.d.ts",
-    "@radix-ui"
+    "@radix-ui",
+    "vaul"
   ],
   "sonarlint.connectedMode.project": {
     "connectionId": "maxentr",
