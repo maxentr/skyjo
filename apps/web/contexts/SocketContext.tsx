@@ -121,8 +121,20 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
     else console.log("Socket connected")
   }
 
-  const onConnectionLost = (reason: string) => {
-    console.log("Socket disconnected", reason)
+  const onConnectionLost = (reason: Socket.DisconnectReason, details?: any) => {
+    // the reason of the disconnection, for example "transport error"
+    console.log(reason)
+
+    // the low-level reason of the disconnection, for example "xhr post error"
+    console.log(details?.message)
+
+    // some additional description, for example the status code of the HTTP response
+    console.log(details?.description)
+
+    // some additional context, for example the XMLHttpRequest object
+    console.log(details?.context)
+
+    console.log("Socket disconnected", reason, details)
     toast({
       description: t(CONNECTION_STATUS.CONNECTION_LOST),
       variant: "destructive",

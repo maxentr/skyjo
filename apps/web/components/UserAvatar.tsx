@@ -69,14 +69,12 @@ const UserAvatar = ({ avatar, pseudo, size = "normal" }: UserAvatarProps) => {
           priority
         />
       ) : (
-        <div
+        <span
           className={cn(
-            containerVariants({ size }),
-            "bg-zinc-200 rounded-full",
+            imageVariants({ size }),
+            "bg-zinc-200 rounded-3xl animate-pulse scale-50",
           )}
-        >
-          <p className="text-center text-2xl text-zinc-400">?</p>
-        </div>
+        />
       )}
       {pseudo && <p className={textVariants({ size })}>{pseudo}</p>}
     </div>

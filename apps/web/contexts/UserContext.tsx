@@ -40,17 +40,21 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     useLocalStorage<number>(AVATAR_KEY)
 
   const [username, setUsername] = useState<string>("")
-  const [avatarIndex, setAvatarIndex] = useState<number>(0)
+  const [avatarIndex, setAvatarIndex] = useState<number>(-1)
 
   useEffect(() => {
     if (localStorage) {
       if (preferredUsername) setUsername(preferredUsername)
       if (preferredAvatarIndex) setAvatarIndex(preferredAvatarIndex)
+      else {
+        const randomIndex = Math.floor(Math.random() * AVATARS_ARRAY.length)
+        setAvatarIndex(randomIndex)
+      }
     }
   }, [preferredUsername, preferredAvatarIndex])
 
   const getAvatar = () => {
-    return AVATARS_ARRAY[avatarIndex] ?? AVATARS_ARRAY[0]
+    return AVATARS_ARRAY[avatarIndex]
   }
 
   const saveUserInLocalStorage = () => {

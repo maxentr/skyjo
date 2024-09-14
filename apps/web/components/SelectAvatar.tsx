@@ -1,14 +1,16 @@
 "use client"
 
 import { AVATARS_ARRAY, useUser } from "@/contexts/UserContext"
+import { cn } from "@/lib/utils"
+import { AnimatePresence, m } from "framer-motion"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import UserAvatar from "./UserAvatar"
 
-type Props = {
+type SelectAvatarProps = {
   containerClassName?: string
 }
 
-const SelectAvatar = ({ containerClassName }: Props) => {
+const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
   const { avatarIndex, setAvatarIndex, getAvatar } = useUser()
 
   const handlePrevious = () => {
@@ -25,14 +27,22 @@ const SelectAvatar = ({ containerClassName }: Props) => {
   }
 
   return (
-    <div className={`flex flex-row gap-2 items-center ${containerClassName}`}>
+    <div className={cn("flex flex-row gap-2 items-center", containerClassName)}>
       <ChevronLeftIcon
         className="h-6 w-6 cursor-pointer dark:text-primary"
         onClick={handlePrevious}
       />
-      <div className="flex flex-col gap-2">
-        <UserAvatar avatar={getAvatar()} />
-      </div>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <m.div
+          key={avatarIndex}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <UserAvatar avatar={getAvatar()} />
+        </m.div>
+      </AnimatePresence>
       <ChevronRightIcon
         className="h-6 w-6 cursor-pointer dark:text-primary"
         onClick={handleNext}
