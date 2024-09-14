@@ -1,16 +1,16 @@
 "use client"
 
 import { useSkyjo } from "@/contexts/SkyjoContext"
-import { isCurrentUserTurn } from "@/lib/skyjo"
+import { hasRevealedCardCount, isCurrentUserTurn } from "@/lib/skyjo"
 import { AnimatePresence, m } from "framer-motion"
 import { useTranslations } from "next-intl"
 import { GAME_STATUS, ROUND_STATUS } from "shared/constants"
 
 const GameInfo = () => {
-  const { game, player } = useSkyjo()
+  const { game, player, opponents } = useSkyjo()
   const t = useTranslations("utils.skyjo")
 
-  const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
+  const isPlayerTurn = isCurrentUserTurn(game, player)
 
   const getGameInfo = () => {
     if (!player || !game) return t("waiting")
@@ -19,7 +19,16 @@ const GameInfo = () => {
       game.status === GAME_STATUS.PLAYING &&
       game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS
     ) {
-      return t("turn-cards", { number: game.settings.initialTurnedCount })
+      if (hasRevealedCardCount(player, game.settings.initialTurnedCount)) {
+        return t("waiting-opponents-to-turn-cards", {
+          nbOpponents: opponents.flat().length,
+          number: game.settings.initialTurnedCount,
+        })
+      } else {
+        return t("turn-cards", {
+          number: game.settings.initialTurnedCount,
+        })
+      }
     }
 
     return t(`turn.${game.turnStatus}`)

@@ -62,8 +62,11 @@ export const getOpponents = (
   }
 }
 
-export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
-  if (!socketId || !game) return false
+export const isCurrentUserTurn = (
+  game?: SkyjoToJson,
+  player?: SkyjoPlayerToJson,
+) => {
+  if (!player || !game) return false
   if (
     game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS &&
     game.status === GAME_STATUS.PLAYING
@@ -76,7 +79,18 @@ export const isCurrentUserTurn = (game?: SkyjoToJson, socketId?: string) => {
   )
     return false
 
-  return game.players[game.turn].socketId === socketId
+  return game.players[game.turn].socketId === player.socketId
+}
+
+export const hasRevealedCardCount = (
+  player: SkyjoPlayerToJson,
+  count: number,
+) => {
+  const currentCount = player.cards
+    .flat()
+    .filter((card) => card.isVisible).length
+
+  return currentCount === count
 }
 
 export const canTurnInitialCard = (game: SkyjoToJson) => {

@@ -443,6 +443,7 @@
     "skyjo": {
       "waiting": "Waiting for players",
       "turn-cards": "Turn {number} card{number, plural, =1 {} other {s}}",
+      "waiting-opponents-to-turn-cards": "Waiting for opponent{nbOpponents, plural, =1 {} other {s}} to turn {number} card{number, plural, =1 {} other {s}}",
       "turn": {
         "chooseAPile": "Choose a pile",
         "throwOrReplace": "Replace or discard",

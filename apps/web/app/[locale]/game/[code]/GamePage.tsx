@@ -25,7 +25,7 @@ const GamePage = () => {
   const router = useRouter()
   const [firstGame, setFirstGame] = useLocalStorage<boolean>("firstGame")
 
-  const isPlayerTurn = isCurrentUserTurn(game, player?.socketId)
+  const isPlayerTurn = isCurrentUserTurn(game, player)
   const roundInProgress =
     game.roundStatus === ROUND_STATUS.PLAYING ||
     game.roundStatus === ROUND_STATUS.LAST_LAP
@@ -60,7 +60,7 @@ const GamePage = () => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
         </div>
@@ -77,7 +77,7 @@ const GamePage = () => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
         </div>
@@ -93,7 +93,7 @@ const GamePage = () => {
             <OpponentBoard
               opponent={opponent}
               key={opponent.socketId}
-              isPlayerTurn={isCurrentUserTurn(game, opponent.socketId)}
+              isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
         </div>

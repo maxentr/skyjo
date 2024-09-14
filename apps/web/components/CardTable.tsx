@@ -38,7 +38,7 @@ const CardTable = ({
   const onClick = (column: number, row: number) => {
     if (canTurnCardsAtBeginning) {
       actions.playRevealCard(column, row)
-    } else if (isCurrentUserTurn(game, player.socketId)) {
+    } else if (isCurrentUserTurn(game, player)) {
       if (canReplaceCard) actions.replaceCard(column, row)
       else if (
         game.turnStatus === TURN_STATUS.TURN_A_CARD &&

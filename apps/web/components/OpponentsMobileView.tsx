@@ -37,7 +37,7 @@ const OpponentsMobileView = () => {
       return currentPlayerIndex
     }
     const setNewSelectedOpponentIndex = () => {
-      const newSelectedOpponentIndex = isCurrentUserTurn(game, player.socketId)
+      const newSelectedOpponentIndex = isCurrentUserTurn(game, player)
         ? getNextPlayerIndex(game, player)
         : getCurrentPlayer()
 
@@ -107,10 +107,7 @@ const OpponentsMobileView = () => {
             >
               <OpponentBoard
                 opponent={selectedOpponent}
-                isPlayerTurn={isCurrentUserTurn(
-                  game,
-                  selectedOpponent.socketId,
-                )}
+                isPlayerTurn={isCurrentUserTurn(game, selectedOpponent)}
                 className="w-fit h-fit snap-center"
               />
             </m.div>
