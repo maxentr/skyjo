@@ -27,14 +27,14 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="h-5/6 mdh:h-fit px-0 bg-container">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
             {t("title")}
           </DialogTitle>
           <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 px-6 overflow-y-auto">
           <div className="flex flex-col gap-2">
             <h2 className="text-lg font-semibold">{t("general.title")}</h2>
             <div className="flex flex-col gap-4">
