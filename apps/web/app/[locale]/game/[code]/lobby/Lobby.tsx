@@ -97,12 +97,12 @@ const Lobby = ({ gameCode }: LobbyProps) => {
 
   return (
     <m.div
-      className="fixed inset-0 z-20 flex mdh:md:items-center justify-center overflow-auto"
+      className="fixed inset-0 z-20 flex flex-col md:items-center mdh:md:justify-center overflow-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="fixed top-6 right-6">
+      <div className="w-full pt-4 px-4 flex justify-end lgh:md:fixed lgh:md:top-0 lgh:md:right-0">
         <MenuDropdown />
       </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-4xl p-4">
