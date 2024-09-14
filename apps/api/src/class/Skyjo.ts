@@ -106,9 +106,11 @@ export class Skyjo implements SkyjoInterface {
     return this
   }
 
-  getConnectedPlayers() {
+  getConnectedPlayers(playerIdsToExclude: string[] = []) {
     return this.players.filter(
-      (player) => player.connectionStatus !== CONNECTION_STATUS.DISCONNECTED,
+      (player) =>
+        player.connectionStatus !== CONNECTION_STATUS.DISCONNECTED &&
+        !playerIdsToExclude?.includes(player.id),
     )
   }
 

@@ -568,7 +568,7 @@ export default class SkyjoGameController {
   }
 
   private async changeAdmin(game: Skyjo) {
-    const players = game.getConnectedPlayers()
+    const players = game.getConnectedPlayers([game.adminId])
     if (players.length === 0) return
 
     const player = players[0]
