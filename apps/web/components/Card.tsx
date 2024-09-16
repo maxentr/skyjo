@@ -133,15 +133,11 @@ const Card = ({
 
       controls.set({ rotateY: 0 })
     }
-
-    if (flipAnimation && card.isVisible) {
+    setValue(card.value)
+    if (flipAnimation && card.isVisible && card.value !== value) {
       turnCard()
     }
-  }, [flipAnimation, card.isVisible, controls, animate, scope])
-
-  useEffect(() => {
-    setValue(card.value)
-  }, [card.isVisible, card.value])
+  }, [flipAnimation, card.isVisible, card.value, controls, animate, scope])
 
   let cardContent: string | JSX.Element = ""
 
