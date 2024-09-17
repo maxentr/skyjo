@@ -34,15 +34,15 @@ const MenuDropdown = () => {
       <DropdownMenuContent className="mr-6">
         <DropdownMenuItem onClick={openRules}>
           <BookOpenIcon className="mr-2 h-4 w-4" />
-          <span>Rules</span>
+          <span>{t("rules")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={openFeedback}>
           <MessageSquareWarningIcon className="mr-2 h-4 w-4" />
-          <span>Feedback</span>
+          <span>{t("feedback")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={openSettings}>
           <SettingsIcon className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+          <span>{t("settings")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
