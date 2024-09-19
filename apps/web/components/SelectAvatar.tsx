@@ -4,7 +4,8 @@ import { AVATARS_ARRAY, useUser } from "@/contexts/UserContext"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, m } from "framer-motion"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import UserAvatar from "./UserAvatar"
+import { useTranslations } from "next-intl"
+import Image from "next/image"
 
 type SelectAvatarProps = {
   containerClassName?: string
@@ -12,6 +13,7 @@ type SelectAvatarProps = {
 
 const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
   const { avatarIndex, setAvatarIndex, getAvatar } = useUser()
+  const tAvatar = useTranslations("utils.avatar")
 
   const handlePrevious = () => {
     const newIndex =
@@ -25,6 +27,8 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
       avatarIndex === AVATARS_ARRAY.length - 1 ? 0 : avatarIndex + 1
     setAvatarIndex(newIndex)
   }
+
+  const avatar = getAvatar()
 
   return (
     <div className={cn("flex flex-row gap-2 items-center", containerClassName)}>
@@ -40,7 +44,19 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
           exit={{ opacity: 0, scale: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <UserAvatar avatar={getAvatar()} />
+          {avatar ? (
+            <Image
+              src={`/avatars/${avatar}.png`}
+              width={100}
+              height={100}
+              alt={tAvatar(avatar)}
+              title={tAvatar(avatar)}
+              className="size-12 sdh:sm:size-16 mdh:md:size-[6.25rem]"
+              priority
+            />
+          ) : (
+            <div className="size-12 sdh:sm:size-16 mdh:md:size-[6.25rem] bg-zinc-200 rounded-3xl animate-pulse scale-50" />
+          )}
         </m.div>
       </AnimatePresence>
       <ChevronRightIcon
