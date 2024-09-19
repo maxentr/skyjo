@@ -342,7 +342,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                 <UserAvatar
                   key={player.socketId}
                   avatar={player.avatar}
-                  pseudo={player.name}
+                  username={player.name}
                   size="small"
                 />
               ))}

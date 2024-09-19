@@ -1,5 +1,13 @@
-import { cn } from "@/lib/utils"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import { useChat } from "@/contexts/ChatContext"
+import { useSkyjo } from "@/contexts/SkyjoContext"
 import { VariantProps, cva } from "class-variance-authority"
+import { MessageSquareIcon, MessageSquareOffIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { Avatar } from "shared/constants"
@@ -45,39 +53,53 @@ const textVariants = cva(
 )
 
 interface UserAvatarProps extends VariantProps<typeof containerVariants> {
-  avatar?: Avatar
-  pseudo?: string
+  avatar: Avatar
+  username?: string
+  allowContextMenu?: boolean
 }
 
-const UserAvatar = ({ avatar, pseudo, size = "normal" }: UserAvatarProps) => {
+const UserAvatar = ({
+  avatar,
+  username,
+  size = "normal",
+  allowContextMenu = true,
+}: UserAvatarProps) => {
   const t = useTranslations("components.Avatar")
+  const tAvatar = useTranslations("utils.avatar")
+  const { unmutePlayer, mutePlayer, mutedPlayers } = useChat()
+  const { player } = useSkyjo()
 
   return (
-    <div
-      className={containerVariants({
-        size,
-      })}
-    >
-      {avatar ? (
+    <ContextMenu>
+      <ContextMenuTrigger
+        disabled={!allowContextMenu || !username || player.name === username}
+        className={containerVariants({ size })}
+      >
         <Image
           src={`/avatars/${avatar}.png`}
           width={size === "small" ? 40 : 100}
           height={size === "small" ? 40 : 100}
-          alt={t(avatar)}
-          title={t(avatar)}
+          alt={tAvatar(avatar)}
+          title={tAvatar(avatar)}
           className={imageVariants({ size })}
           priority
         />
-      ) : (
-        <span
-          className={cn(
-            imageVariants({ size }),
-            "bg-zinc-200 rounded-3xl animate-pulse scale-50",
-          )}
-        />
-      )}
-      {pseudo && <p className={textVariants({ size })}>{pseudo}</p>}
-    </div>
+        {username && <p className={textVariants({ size })}>{username}</p>}
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        {mutedPlayers.includes(username!) ? (
+          <ContextMenuItem onClick={() => unmutePlayer(username!)}>
+            <MessageSquareIcon className="w-4 h-4 mr-2" />
+            {t("context-menu.unmute")}
+          </ContextMenuItem>
+        ) : (
+          <ContextMenuItem onClick={() => mutePlayer(username!)}>
+            <MessageSquareOffIcon className="w-4 h-4 mr-2" />
+            {t("context-menu.mute")}
+          </ContextMenuItem>
+        )}
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }
 
