@@ -89,7 +89,7 @@ const OpponentsMobileView = () => {
                 >
                   <UserAvatar
                     avatar={opponent.avatar}
-                    pseudo={opponent.name}
+                    username={opponent.name}
                     size="small"
                   />
                 </m.button>

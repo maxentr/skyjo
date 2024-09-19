@@ -438,17 +438,11 @@
       }
     },
     "Avatar": {
-      "bee": "bee",
-      "crab": "crab",
-      "dog": "dog",
-      "elephant": "elephant",
-      "fox": "fox",
-      "frog": "frog",
-      "koala": "koala",
-      "octopus": "octopus",
-      "penguin": "penguin",
-      "turtle": "turtle",
-      "whale": "whale"
+      "context-menu": {
+        "kick": "Kick",
+        "mute": "Mute",
+        "unmute": "Unmute"
+      }
     }
   },
   "utils": {
@@ -477,6 +471,19 @@
       "player-muted": "{username} is now muted",
       "player-not-muted": "{username} is not muted",
       "player-unmuted": "{username} is no longer muted"
+    },
+    "avatar": {
+      "bee": "bee",
+      "crab": "crab",
+      "dog": "dog",
+      "elephant": "elephant",
+      "fox": "fox",
+      "frog": "frog",
+      "koala": "koala",
+      "octopus": "octopus",
+      "penguin": "penguin",
+      "turtle": "turtle",
+      "whale": "whale"
     }
   },
   "contexts": {
