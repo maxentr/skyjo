@@ -49,7 +49,7 @@ const GamePage = () => {
   }, [game.status])
 
   return (
-    <div className="h-full w-full bg-body flex flex-col gap-6">
+    <div className="ph-no-capture h-full w-full bg-body flex flex-col gap-6">
       <div className="w-full flex flex-row items-start h-full">
         {/* mobile */}
         <OpponentsMobileView />
