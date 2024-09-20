@@ -49,7 +49,7 @@ interface SkyjoProviderProps extends PropsWithChildren {
 }
 
 const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
-  const { socket, createLastGame } = useSocket()
+  const { socket, saveLastGame } = useSocket()
   const { sendMessage, setChat } = useChat()
   const router = useRouter()
 
@@ -78,7 +78,7 @@ const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
 
   useEffect(() => {
     const onUnload = () => {
-      if (gameStatusRef.current === GAME_STATUS.PLAYING) createLastGame()
+      if (gameStatusRef.current === GAME_STATUS.PLAYING) saveLastGame()
     }
 
     window.addEventListener("beforeunload", onUnload)
