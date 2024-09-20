@@ -41,7 +41,7 @@ type SocketContext = {
   socket: SkyjoSocket | null
   createSocket: () => void
   getLastGameIfPossible: () => LastGame | null
-  createLastGame: () => void
+  saveLastGame: () => void
 }
 const SocketContext = createContext<SocketContext | undefined>(undefined)
 
@@ -62,7 +62,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   }, [socket])
 
   //#region reconnection
-  const createLastGame = () => {
+  const saveLastGame = () => {
     if (typeof window === "undefined") return
 
     const lastGameString = localStorage.getItem("lastGame")
@@ -141,7 +141,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
       duration: 5000,
     })
 
-    if (reason === "ping timeout") createLastGame()
+    if (reason === "ping timeout") saveLastGame()
   }
 
   const onConnectionError = (err: unknown) => {
@@ -164,7 +164,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
     () => ({
       socket,
       createSocket,
-      createLastGame,
+      saveLastGame,
       getLastGameIfPossible,
     }),
     [socket],
