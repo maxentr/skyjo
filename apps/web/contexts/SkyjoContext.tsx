@@ -87,6 +87,7 @@ const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
       window.removeEventListener("beforeunload", onUnload)
     }
   }, [])
+  //#endregion
 
   //#region listeners
   const onGameUpdate = async (game: SkyjoToJson) => {
