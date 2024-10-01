@@ -79,7 +79,7 @@ export const isCurrentUserTurn = (
   )
     return false
 
-  return game.players[game.turn].socketId === player.socketId
+  return game.players[game.turn].id === player.id
 }
 
 export const hasRevealedCardCount = (
@@ -116,9 +116,7 @@ export const getWinner = (game: SkyjoToJson) => {
 export const getCurrentWhoHasToPlay = (game: SkyjoToJson) => {
   const players = getConnectedPlayers(game.players)
 
-  return players.find(
-    (player) => player.socketId === game.players[game.turn].socketId,
-  )
+  return players.find((player) => player.id === game.players[game.turn].id)
 }
 
 export const getNextPlayerIndex = (
@@ -132,13 +130,12 @@ export const getNextPlayerIndex = (
   }
 
   const currentTurnIndex = game.players.findIndex(
-    (p) => p.socketId === game.players[game.turn].socketId,
+    (p) => p.id === game.players[game.turn].id,
   )
 
   let nextOpponentIndex = opponents.findIndex(
     (opponent) =>
-      game.players.findIndex((p) => p.socketId === opponent.socketId) >
-      currentTurnIndex,
+      game.players.findIndex((p) => p.id === opponent.id) > currentTurnIndex,
   )
 
   if (nextOpponentIndex === -1) {

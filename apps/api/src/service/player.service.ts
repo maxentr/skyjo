@@ -113,11 +113,9 @@ export class PlayerService {
       .where(eq(playerTable.id, player.id))
   }
 
-  async removePlayer(gameId: string, socketId: string) {
+  async removePlayer(gameId: string, playerId: string) {
     await db
       .delete(playerTable)
-      .where(
-        and(eq(playerTable.gameId, gameId), eq(playerTable.socketId, socketId)),
-      )
+      .where(and(eq(playerTable.gameId, gameId), eq(playerTable.id, playerId)))
   }
 }

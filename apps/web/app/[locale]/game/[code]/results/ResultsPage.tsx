@@ -75,7 +75,7 @@ const ResultsPage = () => {
           <TableBody>
             {visibleRows.reverse().map((player, index) => (
               <MotionTableRow
-                key={player.socketId}
+                key={player.id}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
@@ -115,12 +115,12 @@ const ResultsPage = () => {
                 {getConnectedPlayers(game.players).map((player) =>
                   player.wantsReplay ? (
                     <CheckCircle2Icon
-                      key={player.socketId}
+                      key={player.id}
                       size={24}
                       className="text-emerald-600"
                     />
                   ) : (
-                    <XCircleIcon key={player.socketId} size={24} />
+                    <XCircleIcon key={player.id} size={24} />
                   ),
                 )}
               </div>

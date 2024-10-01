@@ -209,6 +209,7 @@ export class SkyjoPlayer implements SkyjoPlayerInterface {
 
   toJson(adminId?: string) {
     return {
+      id: this.id,
       name: this.name,
       socketId: this.socketId,
       avatar: this.avatar,

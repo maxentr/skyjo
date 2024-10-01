@@ -4,6 +4,7 @@ import { SkyjoCardToJson } from "./skyjoCard"
 export type SkyjoPlayerScores = (number | "-")[]
 
 export interface SkyjoPlayerToJson {
+  readonly id: string
   readonly name: string
   readonly socketId: string
   readonly avatar: Avatar

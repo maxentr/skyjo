@@ -31,7 +31,7 @@ const OpponentsMobileView = () => {
       const currentWhoHasToPlay = getCurrentWhoHasToPlay(game)
 
       const currentPlayerIndex = flattenOpponents.findIndex(
-        (opponent) => opponent.socketId === currentWhoHasToPlay?.socketId,
+        (opponent) => opponent.id === currentWhoHasToPlay?.id,
       )
 
       return currentPlayerIndex
@@ -53,7 +53,7 @@ const OpponentsMobileView = () => {
     switchToPlayerWhoIsPlaying,
     game.turn,
     game,
-    player.socketId,
+    player.id,
     selectedOpponentIndex,
     flattenOpponents,
   ])
@@ -81,7 +81,7 @@ const OpponentsMobileView = () => {
               <p>{t("opponents-list.title")}</p>
               {opponentsWithoutSelected.map((opponent, index) => (
                 <m.button
-                  key={opponent.socketId}
+                  key={opponent.id}
                   initial={{ opacity: 0, scale: 0.8, x: 50 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ display: "none", transition: { duration: 0 } }}
@@ -100,7 +100,7 @@ const OpponentsMobileView = () => {
         <div className="flex grow justify-center items-center">
           {selectedOpponent && (
             <m.div
-              key={selectedOpponent.socketId}
+              key={selectedOpponent.id}
               initial={{ opacity: 0, scale: 0.8, x: -50 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ display: "none", transition: { duration: 0 } }}
