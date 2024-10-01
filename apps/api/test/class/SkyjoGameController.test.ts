@@ -399,6 +399,7 @@ describe("Skyjo", () => {
       )
       game.addPlayer(player)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const newSettings: ChangeSettings = {
         private: false,
@@ -426,6 +427,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const newSettings: ChangeSettings = {
         private: true,
@@ -465,14 +467,16 @@ describe("Skyjo", () => {
       )
       const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
+
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player1", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       await expect(() => instance.onGameStart(socket)).rejects.toThrowError(
         ERROR.NOT_ALLOWED,
@@ -490,6 +494,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -519,20 +524,21 @@ describe("Skyjo", () => {
       })
 
       it("should throw if player is not in the game", async () => {
-        const player1 = new SkyjoPlayer(
+        const player = new SkyjoPlayer(
           { username: "player1", avatar: AVATARS.PENGUIN },
           "socket2131123",
         )
-        const game = new Skyjo(player1.id, new SkyjoSettings(false))
-        game.addPlayer(player1)
+        const game = new Skyjo(player.id, new SkyjoSettings(false))
+        game.addPlayer(player)
+        socket.data.gameCode = game.code
+
         instance["games"].push(game)
+
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.TURTLE },
           "socketId132312",
         )
         game.addPlayer(opponent)
-
-        socket.data.gameCode = game.code
 
         await expect(() =>
           instance.onRevealCard(socket, { column: 0, row: 0 }),
@@ -550,6 +556,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -582,6 +589,7 @@ describe("Skyjo", () => {
         player.turnCard(0, 1)
 
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         instance.onRevealCard(socket, { column: 0, row: 2 })
 
@@ -608,6 +616,7 @@ describe("Skyjo", () => {
 
         game.addPlayer(player)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         game.start()
         player.turnCard(0, 0)
@@ -640,6 +649,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
+
         instance["games"].push(game)
         socket.data.gameCode = game.code
 
@@ -675,6 +685,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -698,6 +709,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -729,6 +741,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -761,6 +774,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
 
@@ -793,6 +807,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
 
@@ -838,6 +853,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
+
         instance["games"].push(game)
         socket.data.gameCode = game.code
 
@@ -873,6 +889,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -896,6 +913,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -927,6 +945,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -959,6 +978,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1005,6 +1025,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
+
         instance["games"].push(game)
         socket.data.gameCode = game.code
 
@@ -1040,6 +1061,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1063,6 +1085,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1094,6 +1117,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1127,6 +1151,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1170,6 +1195,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(opponent.id, new SkyjoSettings(false))
         game.addPlayer(opponent)
+
         instance["games"].push(game)
         socket.data.gameCode = game.code
 
@@ -1205,6 +1231,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1228,6 +1255,7 @@ describe("Skyjo", () => {
         game.addPlayer(player)
         instance["games"].push(game)
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
 
         const opponent = new SkyjoPlayer(
           { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1259,6 +1287,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1291,6 +1320,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1324,6 +1354,7 @@ describe("Skyjo", () => {
         )
         const game = new Skyjo(player.id, new SkyjoSettings(false))
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
         instance["games"].push(game)
         const opponent = new SkyjoPlayer(
@@ -1379,6 +1410,7 @@ describe("Skyjo", () => {
         instance["games"].push(game)
 
         socket.data.gameCode = game.code
+        socket.data.playerId = player.id
         game.addPlayer(player)
 
         const opponent = new SkyjoPlayer(
@@ -1454,6 +1486,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1487,6 +1520,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1519,6 +1553,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1563,6 +1598,7 @@ describe("Skyjo", () => {
       )
       const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
+
       instance["games"].push(game)
       socket.data.gameCode = game.code
 
@@ -1587,6 +1623,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -1616,14 +1653,17 @@ describe("Skyjo", () => {
       )
       const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
+
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
+      socket.data.playerId = player.id
 
       await instance.onLeave(socket)
 
@@ -1640,6 +1680,7 @@ describe("Skyjo", () => {
     //   game.addPlayer(player)
     //   instance["games"].push(game)
     //   socket.data.gameCode = game.code
+    // socket.data.playerId = player.id
 
     //   const opponent = new SkyjoPlayer(
     //     { username: "player1", avatar: AVATARS.ELEPHANT },
@@ -1685,13 +1726,14 @@ describe("Skyjo", () => {
       game.addPlayer(opponent)
 
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent2 = new SkyjoPlayer(
         { username: "opponent2", avatar: AVATARS.TURTLE },
@@ -1732,6 +1774,7 @@ describe("Skyjo", () => {
       const game = new Skyjo(player.id, new SkyjoSettings(false))
       game.addPlayer(player)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
       instance["games"].push(game)
 
       await instance.onLeave(socket)
@@ -1751,13 +1794,14 @@ describe("Skyjo", () => {
       game.addPlayer(opponent)
 
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent2 = new SkyjoPlayer(
         { username: "opponent2", avatar: AVATARS.TURTLE },
@@ -1815,13 +1859,14 @@ describe("Skyjo", () => {
       game.addPlayer(opponent)
 
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent2 = new SkyjoPlayer(
         { username: "opponent2", avatar: AVATARS.TURTLE },
@@ -1881,13 +1926,14 @@ describe("Skyjo", () => {
       game.addPlayer(opponent)
 
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent2 = new SkyjoPlayer(
         { username: "opponent2", avatar: AVATARS.TURTLE },
@@ -1949,13 +1995,14 @@ describe("Skyjo", () => {
       game.addPlayer(opponent)
 
       instance["games"].push(game)
-      socket.data.gameCode = game.code
 
       const player = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.PENGUIN },
         TEST_SOCKET_ID,
       )
       game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       game.start()
 
@@ -2012,6 +2059,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },
@@ -2160,6 +2208,7 @@ describe("Skyjo", () => {
       const game = new Skyjo(opponent.id, new SkyjoSettings(false))
       game.addPlayer(opponent)
       instance["games"].push(game)
+
       socket.data.gameCode = game.code
 
       await expect(() =>
@@ -2178,6 +2227,7 @@ describe("Skyjo", () => {
       game.addPlayer(player)
       instance["games"].push(game)
       socket.data.gameCode = game.code
+      socket.data.playerId = player.id
 
       const opponent = new SkyjoPlayer(
         { username: "player2", avatar: AVATARS.ELEPHANT },

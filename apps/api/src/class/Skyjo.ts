@@ -118,11 +118,6 @@ export class Skyjo implements SkyjoInterface {
     return this.players[this.turn]
   }
 
-  getPlayerBySocketId(playerSocketId: string) {
-    return this.players.find((player) => {
-      return player.socketId === playerSocketId
-    })
-  }
   getPlayerById(playerId: string) {
     return this.players.find((player) => {
       return player.id === playerId
@@ -134,23 +129,20 @@ export class Skyjo implements SkyjoInterface {
     this.players.push(player)
   }
 
-  removePlayer(playerSocketId: string) {
-    this.players = this.players.filter((player) => {
-      return player.socketId !== playerSocketId
-    })
+  removePlayer(playerId: string) {
+    this.players = this.players.filter((player) => player.id !== playerId)
   }
 
-  isAdmin(playerSocketId: string) {
-    const admin = this.getPlayerById(this.adminId)
-    return admin?.socketId === playerSocketId
+  isAdmin(playerId: string) {
+    return this.adminId === playerId
   }
 
   isFull() {
     return this.getConnectedPlayers().length >= this.settings.maxPlayers
   }
 
-  checkTurn(playerSocketId: string) {
-    return this.players[this.turn].socketId === playerSocketId
+  checkTurn(playerId: string) {
+    return this.players[this.turn].id === playerId
   }
 
   haveAtLeastMinPlayersConnected() {

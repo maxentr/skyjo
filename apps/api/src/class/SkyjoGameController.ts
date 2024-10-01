@@ -93,7 +93,7 @@ export default class SkyjoGameController {
 
   async onSettingsChange(socket: SkyjoSocket, settings: ChangeSettings) {
     const game = await this.getGame(socket.data.gameCode)
-    if (!game.isAdmin(socket.id)) throw new Error(ERROR.NOT_ALLOWED)
+    if (!game.isAdmin(socket.data.playerId)) throw new Error(ERROR.NOT_ALLOWED)
 
     game.settings.changeSettings(settings)
     game.updatedAt = new Date()
@@ -109,7 +109,7 @@ export default class SkyjoGameController {
 
   async onGameStart(socket: SkyjoSocket) {
     const game = await this.getGame(socket.data.gameCode)
-    if (!game.isAdmin(socket.id)) throw new Error(ERROR.NOT_ALLOWED)
+    if (!game.isAdmin(socket.data.playerId)) throw new Error(ERROR.NOT_ALLOWED)
 
     game.start()
 
@@ -126,7 +126,7 @@ export default class SkyjoGameController {
 
     const game = await this.getGame(gameCode)
 
-    const player = game.getPlayerBySocketId(socket.id)
+    const player = game.getPlayerById(socket.data.playerId)
     if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     if (
@@ -207,7 +207,7 @@ export default class SkyjoGameController {
     const game = await this.getGame(socket.data.gameCode)
     if (game.status !== GAME_STATUS.FINISHED) throw new Error(ERROR.NOT_ALLOWED)
 
-    game.getPlayerBySocketId(socket.id)?.toggleReplay()
+    game.getPlayerById(socket.data.playerId)?.toggleReplay()
 
     game.restartGameIfAllPlayersWantReplay()
 
@@ -248,7 +248,7 @@ export default class SkyjoGameController {
   async onLeave(socket: SkyjoSocket, timeout: boolean = false) {
     const game = await this.getGame(socket.data.gameCode)
 
-    const player = game.getPlayerBySocketId(socket.id)
+    const player = game.getPlayerById(socket.data.playerId)
     if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     player.connectionStatus = timeout
@@ -256,15 +256,15 @@ export default class SkyjoGameController {
       : CONNECTION_STATUS.LEAVE
     await this.playerService.updatePlayer(player)
 
-    if (game.isAdmin(socket.id)) await this.changeAdmin(game)
+    if (game.isAdmin(player.id)) await this.changeAdmin(game)
 
     if (
       game.status === GAME_STATUS.LOBBY ||
       game.status === GAME_STATUS.FINISHED ||
       game.status === GAME_STATUS.STOPPED
     ) {
-      game.removePlayer(socket.id)
-      await this.playerService.removePlayer(game.id, socket.id)
+      game.removePlayer(player.id)
+      await this.playerService.removePlayer(game.id, player.id)
 
       // TODO do a function to clean up players. It will remove every player that are disconnected
 
@@ -306,7 +306,7 @@ export default class SkyjoGameController {
   ) {
     const game = await this.getGame(socket.data.gameCode)
 
-    if (!game.getPlayerBySocketId(socket.id))
+    if (!game.getPlayerById(socket.data.playerId))
       throw new Error(ERROR.PLAYER_NOT_FOUND)
 
     game.updatedAt = new Date()
@@ -480,10 +480,10 @@ export default class SkyjoGameController {
     )
       throw new Error(ERROR.NOT_ALLOWED)
 
-    const player = game.getPlayerBySocketId(socket.id)
+    const player = game.getPlayerById(socket.data.playerId)
     if (!player) throw new Error(`player-not-found`)
 
-    if (!game.checkTurn(socket.id)) throw new Error(`not-your-turn`)
+    if (!game.checkTurn(player.id)) throw new Error(`not-your-turn`)
 
     if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus))
       throw new Error(ERROR.INVALID_TURN_STATE)
@@ -545,7 +545,7 @@ export default class SkyjoGameController {
       return
     }
 
-    if (game.getCurrentPlayer()?.socketId === socket.id) game.nextTurn()
+    if (game.getCurrentPlayer()?.id === socket.data.playerId) game.nextTurn()
 
     if (game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS)
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)

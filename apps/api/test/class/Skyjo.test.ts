@@ -185,8 +185,8 @@ describe("Skyjo", () => {
   })
 
   it("should get player", () => {
-    expect(skyjo.getPlayerBySocketId(TEST_SOCKET_ID)).toBe(player)
-    expect(skyjo.getPlayerBySocketId("socketId456")).toBe(opponent)
+    expect(skyjo.getPlayerById(player.id)).toBe(player)
+    expect(skyjo.getPlayerById(opponent.id)).toBe(opponent)
   })
 
   describe("add player", () => {
@@ -214,13 +214,13 @@ describe("Skyjo", () => {
   })
 
   it("should check if the player is admin", () => {
-    expect(skyjo.isAdmin(TEST_SOCKET_ID)).toBeTruthy()
-    expect(skyjo.isAdmin("socketId456")).toBeFalsy()
+    expect(skyjo.isAdmin(player.id)).toBeTruthy()
+    expect(skyjo.isAdmin(opponent.id)).toBeFalsy()
   })
 
   it("should check if it's player turn", () => {
-    expect(skyjo.checkTurn(TEST_SOCKET_ID)).toBeTruthy()
-    expect(skyjo.checkTurn("socketId456")).toBeFalsy()
+    expect(skyjo.checkTurn(player.id)).toBeTruthy()
+    expect(skyjo.checkTurn(opponent.id)).toBeFalsy()
   })
 
   describe("have at least min players connected", () => {
@@ -229,7 +229,7 @@ describe("Skyjo", () => {
     })
 
     it("should return false if there are less than min players connected", () => {
-      skyjo.removePlayer(TEST_SOCKET_ID)
+      skyjo.removePlayer(player.id)
       expect(skyjo.haveAtLeastMinPlayersConnected()).toBeFalsy()
     })
   })
@@ -237,7 +237,7 @@ describe("Skyjo", () => {
 
   describe("start", () => {
     it("should not start the game if min players is not reached", () => {
-      skyjo.removePlayer("socketId456")
+      skyjo.removePlayer(opponent.id)
       expect(() => skyjo.start()).toThrowError(ERROR.TOO_FEW_PLAYERS)
     })
 
@@ -913,6 +913,7 @@ describe("Skyjo", () => {
       turn: 0,
       turnStatus: TURN_STATUS.CHOOSE_A_PILE,
       settings: skyjo.settings.toJson(),
+      updatedAt: skyjo.updatedAt,
     })
   })
 })

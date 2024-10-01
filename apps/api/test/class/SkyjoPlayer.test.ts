@@ -404,6 +404,7 @@ describe("SkyjoPlayer", () => {
       const playerToJson = player.toJson()
 
       expect(playerToJson).toStrictEqual({
+        id: player.id,
         name: "username",
         socketId: TEST_SOCKET_ID,
         avatar: AVATARS.BEE,
@@ -424,6 +425,7 @@ describe("SkyjoPlayer", () => {
       const playerToJson = player.toJson(adminId)
 
       expect(playerToJson).toStrictEqual({
+        id: adminId,
         name: "username",
         socketId: TEST_SOCKET_ID,
         avatar: AVATARS.BEE,

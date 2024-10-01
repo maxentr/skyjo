@@ -59,7 +59,7 @@ const GamePage = () => {
           {opponents[1].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
-              key={opponent.socketId}
+              key={opponent.id}
               isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
@@ -76,7 +76,7 @@ const GamePage = () => {
           {opponents[0].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
-              key={opponent.socketId}
+              key={opponent.id}
               isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
@@ -92,7 +92,7 @@ const GamePage = () => {
           {opponents[2].map((opponent) => (
             <OpponentBoard
               opponent={opponent}
-              key={opponent.socketId}
+              key={opponent.id}
               isPlayerTurn={isCurrentUserTurn(game, opponent)}
             />
           ))}
