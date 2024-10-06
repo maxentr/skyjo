@@ -26,12 +26,17 @@ import {
 import { CreatePlayer } from "shared/validations/player"
 import { LastGame } from "shared/validations/reconnect"
 import { SkyjoSocket } from "../types/skyjoSocket"
+import { KickVoteController } from "./KickVoteController"
 import { Skyjo } from "./Skyjo"
 import { SkyjoPlayer } from "./SkyjoPlayer"
 
 export default class SkyjoGameController {
   private gameService: GameService = new GameService()
   private playerService: PlayerService = new PlayerService()
+  private kickVoteController: KickVoteController = new KickVoteController(
+    this.playerService,
+    this.gameService,
+  )
   private static instance: SkyjoGameController
 
   private games: Skyjo[] = []
@@ -320,6 +325,20 @@ export default class SkyjoGameController {
 
     socket.to(game.code).emit("message", newMessage)
     socket.emit("message", newMessage)
+  }
+
+  async onInitiateKickVote(socket: SkyjoSocket, playerToKickId: string) {
+    const game = await this.getGame(socket.data.gameCode)
+    await this.kickVoteController.initiateKickVote(socket, game, playerToKickId)
+  }
+
+  async onVoteToKick(
+    socket: SkyjoSocket,
+    playerToKickId: string,
+    vote: boolean,
+  ) {
+    const game = await this.getGame(socket.data.gameCode)
+    await this.kickVoteController.voteToKick(socket, game, playerToKickId, vote)
   }
   //#endregion
 

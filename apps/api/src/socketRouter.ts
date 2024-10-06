@@ -100,6 +100,32 @@ const skyjoRouter = (
       }
     })
 
+    socket.on(
+      "kick:initiate-vote",
+      async (data: { playerToKickId: string }) => {
+        try {
+          const { playerToKickId } = data
+
+          await instance.onInitiateKickVote(socket, playerToKickId)
+        } catch (error) {
+          logger.error(`Error while initiating a kick vote : ${error}`)
+        }
+      },
+    )
+
+    socket.on(
+      "kick:vote",
+      async (data: { playerToKickId: string; vote: boolean }) => {
+        try {
+          const { playerToKickId, vote } = data
+
+          await instance.onVoteToKick(socket, playerToKickId, vote)
+        } catch (error) {
+          logger.error(`Error while voting to kick a player : ${error}`)
+        }
+      },
+    )
+
     socket.on("play:reveal-card", (data: PlayRevealCard) => {
       try {
         const turnCardData = playRevealCard.parse(data)

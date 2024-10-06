@@ -6,11 +6,16 @@ import {
 } from "@/components/ui/context-menu"
 import { useChat } from "@/contexts/ChatContext"
 import { useSkyjo } from "@/contexts/SkyjoContext"
+import { useVoteKick } from "@/contexts/VoteKickContext"
 import { VariantProps, cva } from "class-variance-authority"
-import { MessageSquareIcon, MessageSquareOffIcon } from "lucide-react"
+import {
+  MessageSquareIcon,
+  MessageSquareOffIcon,
+  UserRoundXIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { Avatar } from "shared/constants"
+import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 const containerVariants = cva("flex flex-col items-center", {
   variants: {
@@ -53,53 +58,71 @@ const textVariants = cva(
 )
 
 interface UserAvatarProps extends VariantProps<typeof containerVariants> {
-  avatar: Avatar
-  username?: string
+  player: SkyjoPlayerToJson
   allowContextMenu?: boolean
 }
 
 const UserAvatar = ({
-  avatar,
-  username,
+  player,
   size = "normal",
   allowContextMenu = true,
 }: UserAvatarProps) => {
-  const t = useTranslations("components.Avatar")
   const tAvatar = useTranslations("utils.avatar")
-  const { unmutePlayer, mutePlayer, mutedPlayers } = useChat()
-  const { player } = useSkyjo()
+  const { player: currentPlayer } = useSkyjo()
+
+  const isCurrentPlayer = currentPlayer.socketId === player.socketId
+  const disableContextMenu =
+    !allowContextMenu || !player.name || isCurrentPlayer
 
   return (
     <ContextMenu>
       <ContextMenuTrigger
-        disabled={!allowContextMenu || !username || player.name === username}
+        disabled={disableContextMenu}
         className={containerVariants({ size })}
       >
         <Image
-          src={`/avatars/${avatar}.png`}
+          src={`/avatars/${player.avatar}.png`}
           width={size === "small" ? 40 : 100}
           height={size === "small" ? 40 : 100}
-          alt={tAvatar(avatar)}
-          title={tAvatar(avatar)}
+          alt={tAvatar(player.avatar)}
+          title={tAvatar(player.avatar)}
           className={imageVariants({ size })}
           priority
         />
-        {username && <p className={textVariants({ size })}>{username}</p>}
+        {player.name && <p className={textVariants({ size })}>{player.name}</p>}
       </ContextMenuTrigger>
-      <ContextMenuContent>
-        {mutedPlayers.includes(username!) ? (
-          <ContextMenuItem onClick={() => unmutePlayer(username!)}>
-            <MessageSquareIcon className="w-4 h-4 mr-2" />
-            {t("context-menu.unmute")}
-          </ContextMenuItem>
-        ) : (
-          <ContextMenuItem onClick={() => mutePlayer(username!)}>
-            <MessageSquareOffIcon className="w-4 h-4 mr-2" />
-            {t("context-menu.mute")}
-          </ContextMenuItem>
-        )}
-      </ContextMenuContent>
+      {!disableContextMenu && <UserContextMenu player={player} />}
     </ContextMenu>
+  )
+}
+
+const UserContextMenu = ({ player }: { player: SkyjoPlayerToJson }) => {
+  const { unmutePlayer, mutePlayer, mutedPlayers } = useChat()
+  const { actions } = useVoteKick()
+  const t = useTranslations("components.Avatar")
+
+  const handleKickPlayer = () => {
+    actions.initiateKickVote(player.id)
+  }
+
+  return (
+    <ContextMenuContent>
+      <ContextMenuItem onClick={handleKickPlayer}>
+        <UserRoundXIcon className="w-4 h-4 mr-2" />
+        {t("context-menu.kick")}
+      </ContextMenuItem>
+      {mutedPlayers.includes(player.socketId) ? (
+        <ContextMenuItem onClick={() => unmutePlayer(player.socketId)}>
+          <MessageSquareIcon className="w-4 h-4 mr-2" />
+          {t("context-menu.unmute")}
+        </ContextMenuItem>
+      ) : (
+        <ContextMenuItem onClick={() => mutePlayer(player.socketId)}>
+          <MessageSquareOffIcon className="w-4 h-4 mr-2" />
+          {t("context-menu.mute")}
+        </ContextMenuItem>
+      )}
+    </ContextMenuContent>
   )
 }
 
