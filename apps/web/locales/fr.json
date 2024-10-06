@@ -444,6 +444,28 @@
         "mute": "Rendre muet",
         "unmute": "Rendre non muet"
       }
+    },
+    "KickVote": {
+      "vote-started": {
+        "title": "Vote pour expulser {playerName}",
+        "button": "Expulser"
+      },
+      "vote-started-against-you": {
+        "title": "Vote pour vous expulser",
+        "description": "{initiatorName} a demandé un vote pour vous expulser."
+      },
+      "vote-failed": {
+        "title": "Le vote pour expulser {playerName} a échoué",
+        "description": "Le vote pour expulser {playerName} a échoué, il n'y a pas assez de votes."
+      },
+      "player-kicked": {
+        "title": "{playerName} a été expulsé",
+        "description": "Le vote pour expulser {playerName} a réussi."
+      },
+      "you-were-kicked": {
+        "title": "Vous avez été expulsé",
+        "description": "Les joueurs ont voté pour vous expulser de la partie."
+      }
     }
   },
   "utils": {

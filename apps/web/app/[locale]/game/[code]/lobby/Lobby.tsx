@@ -339,12 +339,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
             </h3>
             <div className="flex flex-row flex-wrap justify-center gap-2">
               {players.map((player) => (
-                <UserAvatar
-                  key={player.id}
-                  avatar={player.avatar}
-                  username={player.name}
-                  size="small"
-                />
+                <UserAvatar key={player.id} player={player} size="small" />
               ))}
             </div>
           </div>

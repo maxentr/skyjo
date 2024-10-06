@@ -443,6 +443,28 @@
         "mute": "Mute",
         "unmute": "Unmute"
       }
+    },
+    "KickVote": {
+      "vote-started": {
+        "title": "Vote to kick {playerName}",
+        "button": "Kick"
+      },
+      "vote-started-against-you": {
+        "title": "Vote to kick you",
+        "description": "{initiatorName} has requested a vote to kick you."
+      },
+      "vote-failed": {
+        "title": "The vote to kick {playerName} failed",
+        "description": "The vote to kick {playerName} failed, there are not enough votes."
+      },
+      "player-kicked": {
+        "title": "{playerName} has been kicked",
+        "description": "The vote to kick {playerName} has succeeded."
+      },
+      "you-were-kicked": {
+        "title": "You have been kicked",
+        "description": "The players have voted to kick you out of the game."
+      }
     }
   },
   "utils": {

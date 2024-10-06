@@ -87,11 +87,7 @@ const OpponentsMobileView = () => {
                   exit={{ display: "none", transition: { duration: 0 } }}
                   onClick={() => setSelectedOpponentIndex(index)}
                 >
-                  <UserAvatar
-                    avatar={opponent.avatar}
-                    username={opponent.name}
-                    size="small"
-                  />
+                  <UserAvatar player={opponent} size="small" />
                 </m.button>
               ))}
             </>

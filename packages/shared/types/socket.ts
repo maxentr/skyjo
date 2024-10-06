@@ -16,6 +16,7 @@ import {
 } from "../validations/play"
 import { CreatePlayer } from "../validations/player"
 import { LastGame } from "../validations/reconnect"
+import { KickVote } from "./kickVote"
 import { SkyjoToJson } from "./skyjo"
 
 export type ClientToServerEvents = {
@@ -35,6 +36,8 @@ export type ClientToServerEvents = {
   replay: () => void
   leave: () => void
   disconnect: () => void
+  "kick:initiate-vote": (data: { playerToKickId: string }) => void
+  "kick:vote": (data: { playerToKickId: string; vote: boolean }) => void
 }
 
 export type ErrorJoinMessage = Extract<
@@ -53,6 +56,10 @@ export type ServerToClientEvents = {
   "message:server": (message: ServerChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   "leave:success": () => void
+  "kick:vote-started": (data: KickVote) => void
+  "kick:vote-failed": (data: KickVote) => void
+  "kick:player-kicked": (data: { username: string }) => void
+  "kick:you-were-kicked": () => void
 }
 
 export type SocketData = {
