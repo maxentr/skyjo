@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.prod.json",
     "prod": "tsx dist/src/index.js",
     "biome:check": "pnpm biome check --apply .",
     "test": "vitest",
