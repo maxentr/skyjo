@@ -1,4 +1,9 @@
 import { Server as HttpServer } from "http"
+import { chatRouter } from "@/routers/chat.router"
+import { gameRouter } from "@/routers/game.router"
+import { lobbyRouter } from "@/routers/lobby.router"
+import { playerRouter } from "@/routers/player.router"
+import { SkyjoSocket } from "@/types/skyjoSocket"
 import { logger } from "@/utils/logs"
 import { serve } from "@hono/node-server"
 import { zValidator } from "@hono/zod-validator"
@@ -11,7 +16,6 @@ import { feedbackSchema } from "shared/validations/feedback"
 import { Server } from "socket.io"
 import customParser from "socket.io-msgpack-parser"
 import { checkEnv } from "../env.schema"
-import skyjoRouter from "./socketRouter"
 
 checkEnv()
 config()
@@ -62,7 +66,12 @@ io.engine.on("connection_error", (err) => {
   logger.error(`${err.code} - ${err.message} - ${err.context}`)
 })
 
-skyjoRouter(io)
+io.on("connection", (socket: SkyjoSocket) => {
+  lobbyRouter(socket)
+  playerRouter(socket)
+  gameRouter(socket)
+  chatRouter(socket)
+})
 
 app.get("/", (c) => {
   return c.text("API is running!")

@@ -8,7 +8,7 @@ import {
   LEAVE_TIMEOUT_IN_MS,
 } from "shared/constants"
 
-export class PlayerService {
+export class PlayerDb {
   async createPlayer(gameId: string, socketId: string, player: SkyjoPlayer) {
     const [newPlayer] = await db
       .insert(playerTable)

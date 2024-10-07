@@ -1,6 +1,6 @@
 import { Skyjo } from "@/class/Skyjo"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { PlayerService } from "@/service/player.service"
+import { PlayerDb } from "@/db/player.db"
 import { logger } from "@/utils/logs"
 import { db } from "database/provider"
 import { DbGame, gameTable, playerTable } from "database/schema"
@@ -8,11 +8,11 @@ import dayjs from "dayjs"
 import { and, eq, lte } from "drizzle-orm"
 import { GAME_STATUS } from "shared/constants"
 
-export class GameService {
-  playerService: PlayerService
+export class GameDb {
+  playerDb: PlayerDb
 
   constructor() {
-    this.playerService = new PlayerService()
+    this.playerDb = new PlayerDb()
   }
 
   async createGame(game: Skyjo) {
@@ -76,7 +76,7 @@ export class GameService {
 
     if (updatePlayers) {
       const playersPromises = game.players.map((player) => {
-        this.playerService.updatePlayer(player)
+        this.playerDb.updatePlayer(player)
       })
 
       await Promise.all(playersPromises)
@@ -235,7 +235,7 @@ export class GameService {
   }
 
   private async formatSkyjo(game: DbGame) {
-    const players = await this.playerService.getPlayersByGameId(game.id)
+    const players = await this.playerDb.getPlayersByGameId(game.id)
 
     const admin =
       players.find((player) => player.id === game.adminId)! ?? players[0]?.id
