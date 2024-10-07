@@ -152,15 +152,5 @@ export class PlayerService extends BaseService {
     this.games = this.games.filter((game) => game.code !== gameCode)
     await this.gameDb.removeGame(gameCode)
   }
-
-  private async changeAdmin(game: Skyjo) {
-    const players = game.getConnectedPlayers([game.adminId])
-    if (players.length === 0) return
-
-    const player = players[0]
-    await this.gameDb.updateAdmin(game.id, player.id)
-
-    game.adminId = player.id
-  }
   //#endregion
 }

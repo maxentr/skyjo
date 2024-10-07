@@ -8,6 +8,11 @@ import { ChangeSettings } from "shared/validations/changeSettings"
 import { CreatePlayer } from "shared/validations/player"
 
 export class LobbyService extends BaseService {
+  private readonly MAX_GAME_INACTIVE_TIME = 300000 // 5 minutes
+  private readonly BASE_NEW_GAME_CHANCE = 0.05 // 5%
+  private readonly MAX_NEW_GAME_CHANCE = 0.2 // 20%
+  private readonly IDEAL_LOBBY_GAME_COUNT = 3 // Number of lobby wanted at the same time
+
   async onCreate(
     socket: SkyjoSocket,
     playerToCreate: CreatePlayer,
@@ -100,16 +105,11 @@ export class LobbyService extends BaseService {
   }
 
   private async getPublicGameWithFreePlace() {
-    const MAX_GAME_INACTIVE_TIME_IN_MS = 5 * 60 * 1000
-    const BASE_NEW_GAME_CHANCE = 0.05
-    const MAX_NEW_GAME_CHANCE = 0.2
-    const IDEAL_LOBBY_GAME_COUNT = 3 // Number of lobby wanted at the same time
-
     const now = new Date().getTime()
 
     const eligibleGames = this.games.filter((game) => {
       const hasRecentActivity =
-        now - game.updatedAt.getTime() < MAX_GAME_INACTIVE_TIME_IN_MS
+        now - game.updatedAt.getTime() < this.MAX_GAME_INACTIVE_TIME
 
       return (
         !game.settings.private &&
@@ -122,12 +122,12 @@ export class LobbyService extends BaseService {
     // Adjust new game chance based on number of eligible games
     const missingLobbyGameCount = Math.max(
       0,
-      IDEAL_LOBBY_GAME_COUNT - eligibleGames.length,
+      this.IDEAL_LOBBY_GAME_COUNT - eligibleGames.length,
     )
-    const additionalChance = BASE_NEW_GAME_CHANCE * missingLobbyGameCount
+    const additionalChance = this.BASE_NEW_GAME_CHANCE * missingLobbyGameCount
     const newGameChance = Math.min(
-      MAX_NEW_GAME_CHANCE,
-      BASE_NEW_GAME_CHANCE + additionalChance,
+      this.MAX_NEW_GAME_CHANCE,
+      this.BASE_NEW_GAME_CHANCE + additionalChance,
     )
 
     const shouldCreateNewGame =

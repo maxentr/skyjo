@@ -75,6 +75,16 @@ export abstract class BaseService {
     await Promise.all([updateGame, broadcast])
   }
 
+  protected async changeAdmin(game: Skyjo) {
+    const players = game.getConnectedPlayers([game.adminId])
+    if (players.length === 0) return
+
+    const player = players[0]
+    await this.gameDb.updateAdmin(game.id, player.id)
+
+    game.adminId = player.id
+  }
+
   //#region private methods
   private async beforeStart() {
     await this.gameDb.removeInactiveGames()
