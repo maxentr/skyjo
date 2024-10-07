@@ -18,7 +18,7 @@ import {
   TurnStatus,
 } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
-import { TEST_SOCKET_ID } from "../constants"
+import { TEST_SOCKET_ID } from "./constants-test"
 
 const TOTAL_CARDS = 150
 const CARDS_PER_PLAYER = 12
