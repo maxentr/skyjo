@@ -23,6 +23,7 @@ export class PlayerService extends BaseService {
     player.connectionStatus = timeout
       ? CONNECTION_STATUS.CONNECTION_LOST
       : CONNECTION_STATUS.LEAVE
+
     await this.playerDb.updatePlayer(player)
 
     if (game.isAdmin(player.id)) await this.changeAdmin(game)
@@ -149,7 +150,9 @@ export class PlayerService extends BaseService {
   }
 
   private async removeGame(gameCode: string) {
-    this.games = this.games.filter((game) => game.code !== gameCode)
+    BaseService.games = BaseService.games.filter(
+      (game) => game.code !== gameCode,
+    )
     await this.gameDb.removeGame(gameCode)
   }
   //#endregion

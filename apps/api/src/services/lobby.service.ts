@@ -13,6 +13,10 @@ export class LobbyService extends BaseService {
   private readonly MAX_NEW_GAME_CHANCE = 0.2 // 20%
   private readonly IDEAL_LOBBY_GAME_COUNT = 3 // Number of lobby wanted at the same time
 
+  constructor() {
+    super()
+  }
+
   async onCreate(
     socket: SkyjoSocket,
     playerToCreate: CreatePlayer,
@@ -98,7 +102,7 @@ export class LobbyService extends BaseService {
   ) {
     const player = new SkyjoPlayer(playerToCreate, socket.id)
     const game = new Skyjo(player.id, new SkyjoSettings(isprotectedGame))
-    this.games.push(game)
+    BaseService.games.push(game)
     await this.gameDb.createGame(game)
 
     return { player, game }
@@ -107,7 +111,7 @@ export class LobbyService extends BaseService {
   private async getPublicGameWithFreePlace() {
     const now = new Date().getTime()
 
-    const eligibleGames = this.games.filter((game) => {
+    const eligibleGames = BaseService.games.filter((game) => {
       const hasRecentActivity =
         now - game.updatedAt.getTime() < this.MAX_GAME_INACTIVE_TIME
 

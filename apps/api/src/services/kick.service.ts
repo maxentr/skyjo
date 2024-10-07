@@ -9,6 +9,10 @@ export class KickService extends BaseService {
   private readonly KICK_VOTE_THRESHOLD = 0.6 // 60%
   private readonly KICK_VOTE_EXPIRATION_TIME = 30000 // 30 seconds
 
+  constructor() {
+    super()
+  }
+
   async onInitiateKickVote(socket: SkyjoSocket, playerToKickId: string) {
     const game = await this.getGame(socket.data.gameCode)
     await this.initiateKickVote(socket, game, playerToKickId)
@@ -60,8 +64,6 @@ export class KickService extends BaseService {
       requiredVotes,
       expiresAt: Date.now() + this.KICK_VOTE_EXPIRATION_TIME,
     }
-
-    // TODO reflechir a ce que je renvoie au client. Afficher le nombre de vote sur requiredVotes dans le toast front. Tester tout ça.
 
     this.kickVotes.set(playerToKick.id, kickVote)
 
