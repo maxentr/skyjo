@@ -1,5 +1,5 @@
-import { Error } from "constants"
 import { ChangeSettings } from "validations/changeSettings"
+import { Error } from "../constants"
 import {
   ServerChatMessage,
   SystemChatMessage,
