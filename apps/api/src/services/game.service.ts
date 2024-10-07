@@ -16,6 +16,10 @@ import {
 import { BaseService } from "./base.service"
 
 export class GameService extends BaseService {
+  constructor() {
+    super()
+  }
+
   async onGet(socket: SkyjoSocket) {
     const game = await this.getGame(socket.data.gameCode)
 

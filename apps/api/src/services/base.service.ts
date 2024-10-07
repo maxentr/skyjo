@@ -9,30 +9,28 @@ import { SkyjoPlayer } from "../class/SkyjoPlayer"
 import { SkyjoSocket } from "../types/skyjoSocket"
 
 export abstract class BaseService {
-  protected gameDb: GameDb = new GameDb()
-  protected playerDb: PlayerDb = new PlayerDb()
-
-  protected static instance: BaseService
-
-  protected games: Skyjo[] = []
+  protected readonly gameDb = new GameDb()
+  protected readonly playerDb = new PlayerDb()
+  protected static games: Skyjo[] = []
+  protected static firstInit = true
 
   constructor() {
-    if (!BaseService.instance) {
-      BaseService.instance = this
+    if (BaseService.firstInit) {
+      BaseService.firstInit = false
 
       this.beforeStart()
     }
   }
 
   protected async getGame(gameCode: string) {
-    let game = this.games.find((game) => game.code === gameCode)
+    let game = BaseService.games.find((game) => game.code === gameCode)
 
     if (!game) {
       game = await this.gameDb.retrieveGameByCode(gameCode)
       if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
     }
 
-    this.games.push(game)
+    BaseService.games.push(game)
     return game
   }
 
@@ -88,7 +86,7 @@ export abstract class BaseService {
   //#region private methods
   private async beforeStart() {
     await this.gameDb.removeInactiveGames()
-    this.games = await this.gameDb.getGamesByRegion()
+    BaseService.games = await this.gameDb.getGamesByRegion()
 
     this.startCronJob()
   }
@@ -103,7 +101,9 @@ export abstract class BaseService {
     logger.info("Remove inactive games")
     const deletedGameIds = await this.gameDb.removeInactiveGames()
 
-    this.games = this.games.filter((game) => !deletedGameIds.includes(game.id))
+    BaseService.games = BaseService.games.filter(
+      (game) => !deletedGameIds.includes(game.id),
+    )
   }
   //#endregion
 }

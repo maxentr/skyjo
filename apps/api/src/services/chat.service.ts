@@ -4,6 +4,10 @@ import { ERROR, USER_MESSAGE_TYPE } from "shared/constants"
 import { UserChatMessage } from "shared/types/chat"
 
 export class ChatService extends BaseService {
+  constructor() {
+    super()
+  }
+
   async onMessage(
     socket: SkyjoSocket,
     { username, message }: Omit<UserChatMessage, "id" | "type">,
