@@ -1,5 +1,5 @@
-import { GameService } from "@/service/game.service"
-import { PlayerService } from "@/service/player.service"
+import { GameDb } from "@/db/game.db"
+import { PlayerDb } from "@/db/player.db"
 import { ERROR } from "shared/constants"
 import { KickVote } from "shared/types/KickVote"
 import { SkyjoSocket } from "../types/skyjoSocket"
@@ -7,15 +7,15 @@ import { Skyjo } from "./Skyjo"
 
 export class KickVoteController {
   private readonly kickVotes: Map<string, KickVote> = new Map()
-  private readonly playerService: PlayerService
-  private readonly gameService: GameService
+  private readonly playerDb: PlayerDb
+  private readonly gameDb: GameDb
 
   private readonly KICK_VOTE_THRESHOLD = 0.6
   private readonly KICK_VOTE_EXPIRATION_TIME = 30000
 
-  constructor(playerService: PlayerService, gameService: GameService) {
-    this.playerService = playerService
-    this.gameService = gameService
+  constructor(playerDb: PlayerDb, gameDb: GameDb) {
+    this.playerDb = playerDb
+    this.gameDb = gameDb
   }
 
   async initiateKickVote(socket: SkyjoSocket, game: Skyjo, playerId: string) {
@@ -105,7 +105,7 @@ export class KickVoteController {
     if (!playerToKick) return
 
     game.removePlayer(playerToKick.id)
-    await this.playerService.removePlayer(game.id, playerToKick.id)
+    await this.playerDb.removePlayer(game.id, playerToKick.id)
 
     if (game.isAdmin(playerToKick.id)) {
       await this.changeAdmin(game)
@@ -116,7 +116,7 @@ export class KickVoteController {
       .emit("kick:player-kicked", { username: playerToKick.name })
     socket.to(playerToKick.socketId).emit("kick:you-were-kicked")
 
-    const updateGame = this.gameService.updateGame(game)
+    const updateGame = this.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
@@ -127,7 +127,7 @@ export class KickVoteController {
     if (players.length === 0) return
 
     const player = players[0]
-    await this.gameService.updateAdmin(game.id, player.id)
+    await this.gameDb.updateAdmin(game.id, player.id)
 
     game.adminId = player.id
   }
