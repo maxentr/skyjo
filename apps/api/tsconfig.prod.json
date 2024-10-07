@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig",
+  "exclude": [
+    "test-coverage",
+    "./src/**/__tests__",
+    "vitest.config.ts",
+    "**/*.mock.ts"
+  ]
+}
