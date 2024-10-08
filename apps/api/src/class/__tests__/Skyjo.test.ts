@@ -2,6 +2,7 @@ import { Skyjo } from "@/class/Skyjo"
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
+import { TEST_SOCKET_ID } from "@tests/constants-test"
 import { DbGame, DbPlayer } from "database/schema"
 import {
   API_REGIONS_TAGS,
@@ -18,7 +19,6 @@ import {
   TurnStatus,
 } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
-import { TEST_SOCKET_ID } from "./constants-test"
 
 const TOTAL_CARDS = 150
 const CARDS_PER_PLAYER = 12

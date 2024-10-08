@@ -1,10 +1,10 @@
 import { SkyjoCard } from "@/class/SkyjoCard"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
+import { TEST_SOCKET_ID } from "@tests/constants-test"
 import { DbPlayer } from "database/schema"
 import { AVATARS, CONNECTION_STATUS } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
-import { TEST_SOCKET_ID } from "./constants-test"
 
 let nbColumns: number
 let nbRows: number
