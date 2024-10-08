@@ -66,6 +66,14 @@ const gameRouter = (socket: SkyjoSocket) => {
       logger.error(`Error while playing a game : ${error}`)
     }
   })
+
+  socket.on("replay", async () => {
+    try {
+      await instance.onReplay(socket)
+    } catch (error) {
+      logger.error(`Error while replaying a game : ${error}`)
+    }
+  })
 }
 
 export { gameRouter }
