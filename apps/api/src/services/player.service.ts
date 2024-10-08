@@ -24,7 +24,7 @@ export class PlayerService extends BaseService {
       ? CONNECTION_STATUS.CONNECTION_LOST
       : CONNECTION_STATUS.LEAVE
 
-    await this.playerDb.updatePlayer(player)
+    await BaseService.playerDb.updatePlayer(player)
 
     if (game.isAdmin(player.id)) await this.changeAdmin(game)
 
@@ -34,7 +34,7 @@ export class PlayerService extends BaseService {
       game.status === GAME_STATUS.STOPPED
     ) {
       game.removePlayer(player.id)
-      await this.playerDb.removePlayer(game.id, player.id)
+      await BaseService.playerDb.removePlayer(game.id, player.id)
 
       // TODO do a function to clean up players. It will remove every player that are disconnected
 
@@ -46,7 +46,7 @@ export class PlayerService extends BaseService {
         const removeGame = this.removeGame(game.code)
         promises.push(removeGame)
       } else {
-        const updateGame = this.gameDb.updateGame(game)
+        const updateGame = BaseService.gameDb.updateGame(game)
         promises.push(updateGame)
       }
 
@@ -71,18 +71,18 @@ export class PlayerService extends BaseService {
   }
 
   async onReconnect(socket: SkyjoSocket, reconnectData: LastGame) {
-    const isPlayerInGame = await this.gameDb.isPlayerInGame(
+    const isPlayerInGame = await BaseService.gameDb.isPlayerInGame(
       reconnectData.gameCode,
       reconnectData.playerId,
     )
     if (!isPlayerInGame) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
-    const canReconnect = await this.playerDb.canReconnect(
+    const canReconnect = await BaseService.playerDb.canReconnect(
       reconnectData.playerId,
     )
     if (!canReconnect) throw new Error(ERROR.CANNOT_RECONNECT)
 
-    await this.playerDb.updateSocketId(reconnectData.playerId, socket.id)
+    await BaseService.playerDb.updateSocketId(reconnectData.playerId, socket.id)
 
     const game = await this.getGame(reconnectData.gameCode)
 
@@ -92,7 +92,7 @@ export class PlayerService extends BaseService {
     player.socketId = socket.id
     player.connectionStatus = CONNECTION_STATUS.CONNECTED
 
-    const updatePlayer = this.playerDb.reconnectPlayer(player)
+    const updatePlayer = BaseService.playerDb.reconnectPlayer(player)
     const joinGame = this.joinGame(socket, game, player, true)
 
     await Promise.all([updatePlayer, joinGame])
@@ -107,7 +107,7 @@ export class PlayerService extends BaseService {
     player.connectionStatus = connectionLost
       ? CONNECTION_STATUS.CONNECTION_LOST
       : CONNECTION_STATUS.LEAVE
-    this.playerDb.updateDisconnectionDate(player, new Date())
+    BaseService.playerDb.updateDisconnectionDate(player, new Date())
 
     player.disconnectionTimeout = setTimeout(
       () => {
@@ -143,7 +143,7 @@ export class PlayerService extends BaseService {
       game.endRound()
     }
 
-    const updateGame = this.gameDb.updateGame(game)
+    const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
@@ -153,7 +153,7 @@ export class PlayerService extends BaseService {
     BaseService.games = BaseService.games.filter(
       (game) => game.code !== gameCode,
     )
-    await this.gameDb.removeGame(gameCode)
+    await BaseService.gameDb.removeGame(gameCode)
   }
   //#endregion
 }

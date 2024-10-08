@@ -9,12 +9,14 @@ import { SkyjoPlayer } from "../class/SkyjoPlayer"
 import { SkyjoSocket } from "../types/skyjoSocket"
 
 export abstract class BaseService {
-  protected readonly gameDb = new GameDb()
-  protected readonly playerDb = new PlayerDb()
+  private static firstInit = true
+
   protected static games: Skyjo[] = []
-  protected static firstInit = true
+  protected static gameDb = new GameDb()
+  protected static playerDb = new PlayerDb()
 
   constructor() {
+    /* istanbul ignore next 3 -- @preserve */
     if (BaseService.firstInit) {
       BaseService.firstInit = false
 
@@ -26,11 +28,12 @@ export abstract class BaseService {
     let game = BaseService.games.find((game) => game.code === gameCode)
 
     if (!game) {
-      game = await this.gameDb.retrieveGameByCode(gameCode)
+      game = await BaseService.gameDb.retrieveGameByCode(gameCode)
       if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
+
+      BaseService.games.push(game)
     }
 
-    BaseService.games.push(game)
     return game
   }
 
@@ -67,7 +70,7 @@ export abstract class BaseService {
     socket.to(game.code).emit("message:server", message)
     socket.emit("message:server", message)
 
-    const updateGame = this.gameDb.updateGame(game)
+    const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
@@ -78,28 +81,31 @@ export abstract class BaseService {
     if (players.length === 0) return
 
     const player = players[0]
-    await this.gameDb.updateAdmin(game.id, player.id)
+    await BaseService.gameDb.updateAdmin(game.id, player.id)
 
     game.adminId = player.id
   }
 
   //#region private methods
+  /* istanbul ignore next function -- @preserve */
   private async beforeStart() {
-    await this.gameDb.removeInactiveGames()
-    BaseService.games = await this.gameDb.getGamesByRegion()
+    await BaseService.gameDb.removeInactiveGames()
+    BaseService.games = await BaseService.gameDb.getGamesByRegion()
 
     this.startCronJob()
   }
 
+  /* istanbul ignore next function -- @preserve */
   private startCronJob() {
     cron.schedule("* * * * *", () => {
       this.removeInactiveGames()
     })
   }
 
+  /* istanbul ignore next function -- @preserve */
   private async removeInactiveGames() {
     logger.info("Remove inactive games")
-    const deletedGameIds = await this.gameDb.removeInactiveGames()
+    const deletedGameIds = await BaseService.gameDb.removeInactiveGames()
 
     BaseService.games = BaseService.games.filter(
       (game) => !deletedGameIds.includes(game.id),

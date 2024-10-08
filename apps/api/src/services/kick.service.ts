@@ -104,7 +104,7 @@ export class KickService extends BaseService {
     if (!playerToKick) return
 
     game.removePlayer(playerToKick.id)
-    await this.playerDb.removePlayer(game.id, playerToKick.id)
+    await BaseService.playerDb.removePlayer(game.id, playerToKick.id)
 
     if (game.isAdmin(playerToKick.id)) {
       await this.changeAdmin(game)
@@ -115,7 +115,7 @@ export class KickService extends BaseService {
       .emit("kick:player-kicked", { username: playerToKick.name })
     socket.to(playerToKick.socketId).emit("kick:you-were-kicked")
 
-    const updateGame = this.gameDb.updateGame(game)
+    const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
