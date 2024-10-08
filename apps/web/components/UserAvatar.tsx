@@ -111,13 +111,13 @@ const UserContextMenu = ({ player }: { player: SkyjoPlayerToJson }) => {
         <UserRoundXIcon className="w-4 h-4 mr-2" />
         {t("context-menu.kick")}
       </ContextMenuItem>
-      {mutedPlayers.includes(player.socketId) ? (
-        <ContextMenuItem onClick={() => unmutePlayer(player.socketId)}>
+      {mutedPlayers.includes(player.name) ? (
+        <ContextMenuItem onClick={() => unmutePlayer(player.name)}>
           <MessageSquareIcon className="w-4 h-4 mr-2" />
           {t("context-menu.unmute")}
         </ContextMenuItem>
       ) : (
-        <ContextMenuItem onClick={() => mutePlayer(player.socketId)}>
+        <ContextMenuItem onClick={() => mutePlayer(player.name)}>
           <MessageSquareOffIcon className="w-4 h-4 mr-2" />
           {t("context-menu.mute")}
         </ContextMenuItem>
