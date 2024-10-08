@@ -62,7 +62,10 @@ export class LobbyService extends BaseService {
     game.settings.changeSettings(settings)
     game.updatedAt = new Date()
 
-    const updateSettings = this.gameDb.updateSettings(game.id, game.settings)
+    const updateSettings = BaseService.gameDb.updateSettings(
+      game.id,
+      game.settings,
+    )
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateSettings, broadcast])
@@ -74,21 +77,7 @@ export class LobbyService extends BaseService {
 
     game.start()
 
-    const updateGame = this.gameDb.updateGame(game)
-    const broadcast = this.broadcastGame(socket, game)
-
-    await Promise.all([updateGame, broadcast])
-  }
-
-  async onReplay(socket: SkyjoSocket) {
-    const game = await this.getGame(socket.data.gameCode)
-    if (game.status !== GAME_STATUS.FINISHED) throw new Error(ERROR.NOT_ALLOWED)
-
-    game.getPlayerById(socket.data.playerId)?.toggleReplay()
-
-    game.restartGameIfAllPlayersWantReplay()
-
-    const updateGame = this.gameDb.updateGame(game)
+    const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
@@ -103,7 +92,7 @@ export class LobbyService extends BaseService {
     const player = new SkyjoPlayer(playerToCreate, socket.id)
     const game = new Skyjo(player.id, new SkyjoSettings(isprotectedGame))
     BaseService.games.push(game)
-    await this.gameDb.createGame(game)
+    await BaseService.gameDb.createGame(game)
 
     return { player, game }
   }
@@ -151,9 +140,13 @@ export class LobbyService extends BaseService {
       throw new Error(ERROR.GAME_ALREADY_STARTED)
 
     game.addPlayer(player)
-    const createPlayer = this.playerDb.createPlayer(game.id, socket.id, player)
+    const createPlayer = BaseService.playerDb.createPlayer(
+      game.id,
+      socket.id,
+      player,
+    )
     game.updatedAt = new Date()
-    const updateGame = this.gameDb.updateGame(game, false)
+    const updateGame = BaseService.gameDb.updateGame(game, false)
 
     await Promise.all([createPlayer, updateGame])
   }
