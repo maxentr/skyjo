@@ -1,3 +1,4 @@
+import { checkDatabaseEnv } from "database/env.schema"
 import { API_REGIONS_TAGS } from "shared/constants"
 import { z } from "zod"
 export const envSchema = z.object({
@@ -6,13 +7,13 @@ export const envSchema = z.object({
   GMAIL_APP_PASSWORD: z.string({
     message: "GMAIL_APP_PASSWORD must be set in .env file",
   }),
-  DATABASE_URL: z.string({ message: "DATABASE_URL must be set in .env file" }),
   REGION: z.enum(API_REGIONS_TAGS, {
     message: "REGION must be set in .env file",
   }),
 })
 
 export const checkEnv = () => {
+  checkDatabaseEnv()
   envSchema.parse(process.env)
 }
 

@@ -1,11 +1,19 @@
-import { neon } from "@neondatabase/serverless"
 import { config } from "dotenv"
-import { drizzle } from "drizzle-orm/neon-http"
+import { drizzle } from "drizzle-orm/node-postgres"
+import { Client } from "pg"
+import { checkDatabaseEnv } from "../env.schema"
 import * as schema from "./schema"
 
-config({ path: ".env" })
+checkDatabaseEnv()
+config()
 
-if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set")
+const client = new Client({
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+  ssl: process.env.POSTGRES_SSL,
+})
 
-const sql = neon(process.env.DATABASE_URL)
-export const db = drizzle(sql, { schema })
+export const db = drizzle(client, { schema })
