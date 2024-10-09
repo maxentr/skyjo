@@ -56,10 +56,9 @@ export type ServerToClientEvents = {
   "message:server": (message: ServerChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   "leave:success": () => void
-  "kick:vote-started": (data: KickVote) => void
+  "kick:vote": (data: KickVote) => void
+  "kick:vote-success": (data: KickVote) => void
   "kick:vote-failed": (data: KickVote) => void
-  "kick:player-kicked": (data: { username: string }) => void
-  "kick:you-were-kicked": () => void
 }
 
 export type SocketData = {

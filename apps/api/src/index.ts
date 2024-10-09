@@ -1,6 +1,7 @@
 import { Server as HttpServer } from "http"
 import { chatRouter } from "@/routers/chat.router"
 import { gameRouter } from "@/routers/game.router"
+import { kickRouter } from "@/routers/kick.router"
 import { lobbyRouter } from "@/routers/lobby.router"
 import { playerRouter } from "@/routers/player.router"
 import { SkyjoSocket } from "@/types/skyjoSocket"
@@ -71,6 +72,7 @@ io.on("connection", (socket: SkyjoSocket) => {
   playerRouter(socket)
   gameRouter(socket)
   chatRouter(socket)
+  kickRouter(socket)
 })
 
 app.get("/", (c) => {
