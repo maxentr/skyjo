@@ -1,6 +1,8 @@
 import { config } from "dotenv"
 import { defineConfig } from "drizzle-kit"
+import { checkDatabaseEnv } from "./env.schema"
 
+checkDatabaseEnv()
 config({ path: ".env" })
 
 export default defineConfig({
@@ -8,6 +10,12 @@ export default defineConfig({
   out: "./migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL!,
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    // drizzle-kit doesn't support boolean env variables
+    ssl: (process.env.POSTGRES_SSL as unknown as string) === "true",
   },
 })

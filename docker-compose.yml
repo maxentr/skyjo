@@ -1,12 +1,26 @@
-version: '3.8'
-
 services:
-  api:
-    image: ghcr.io/maxentr/skyjo/api:test
+  database:
+    image: postgres:latest
     ports:
-      - "3001:3001"
-    environment:
-      - NODE_ENV=production
+      - "${POSTGRES_PORT:-5432}:5432"
+    env_file:
+      - ./packages/database/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  api:
+    build:
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - "${API_PORT:-3001}:3001"
     env_file:
       - ./apps/api/.env
-    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    restart: always
+    depends_on:
+      - database
+
+volumes:
+  postgres_data:
