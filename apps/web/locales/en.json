@@ -447,15 +447,30 @@
     "KickVote": {
       "vote-started": {
         "title": "Vote to kick {playerName}",
-        "button": "Kick"
+        "kick-button": {
+          "title": "Kick",
+          "label": "Kick"
+        },
+        "dismiss-button": {
+          "title": "Dismiss",
+          "label": "Dismiss"
+        }
       },
       "vote-started-against-you": {
         "title": "Vote to kick you",
         "description": "{initiatorName} has requested a vote to kick you."
       },
+      "vote-updated": {
+        "title": "Vote to kick {playerName}",
+        "description": "{yesVotes}/{requiredVotes}"
+      },
       "vote-failed": {
         "title": "The vote to kick {playerName} failed",
         "description": "The vote to kick {playerName} failed, there are not enough votes."
+      },
+      "you-were-not-kicked": {
+        "title": "You were not kicked",
+        "description": "The vote to kick you has failed, there are not enough votes."
       },
       "player-kicked": {
         "title": "{playerName} has been kicked",

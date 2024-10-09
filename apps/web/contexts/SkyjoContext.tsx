@@ -1,5 +1,6 @@
 "use client"
 
+import { useToast } from "@/components/ui/use-toast"
 import { useChat } from "@/contexts/ChatContext"
 import { useSocket } from "@/contexts/SocketContext"
 import { getCurrentUser, getOpponents } from "@/lib/skyjo"
@@ -52,6 +53,7 @@ const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
   const { socket, saveLastGame } = useSocket()
   const { sendMessage, setChat } = useChat()
   const router = useRouter()
+  const { dismiss: dismissToast } = useToast()
 
   const [game, setGame] = useState<SkyjoToJson>()
 
@@ -180,6 +182,7 @@ const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
   }
 
   const leave = () => {
+    dismissToast()
     socket!.emit("leave")
   }
 

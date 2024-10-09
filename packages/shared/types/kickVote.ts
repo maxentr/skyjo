@@ -1,7 +1,7 @@
 export type KickVote = {
   playerToKickId: string
   initiatorId: string
-  votes: Map<string, boolean>
+  votes: { playerId: string; vote: boolean }[]
   requiredVotes: number
   expiresAt: number
 }

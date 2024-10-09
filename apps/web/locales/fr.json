@@ -448,15 +448,30 @@
     "KickVote": {
       "vote-started": {
         "title": "Vote pour expulser {playerName}",
-        "button": "Expulser"
+        "kick-button": {
+          "title": "Expulser",
+          "label": "Expulser"
+        },
+        "dismiss-button": {
+          "title": "Ignorer",
+          "label": "Ignorer"
+        }
       },
       "vote-started-against-you": {
         "title": "Vote pour vous expulser",
         "description": "{initiatorName} a demandé un vote pour vous expulser."
       },
+      "vote-updated": {
+        "title": "Vote pour expulser {playerName}",
+        "description": "{yesVotes}/{requiredVotes}"
+      },
       "vote-failed": {
         "title": "Le vote pour expulser {playerName} a échoué",
         "description": "Le vote pour expulser {playerName} a échoué, il n'y a pas assez de votes."
+      },
+      "you-were-not-kicked": {
+        "title": "Vous n'avez pas été expulsé",
+        "description": "Le vote pour vous expulser a échoué, il n'y a pas assez de votes."
       },
       "player-kicked": {
         "title": "{playerName} a été expulsé",
