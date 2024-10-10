@@ -1,29 +1,39 @@
+import { SeqTransport } from "@datalust/winston-seq"
+import { config } from "dotenv"
 import { createLogger, format, transports } from "winston"
-import DailyRotateFile from "winston-daily-rotate-file"
+
+config()
 
 const logger = createLogger({
   format: format.combine(
-    format.json(),
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
-    format.printf(({ level, message, timestamp, stack }) => {
-      const stackTrace = stack ? `\n${stack}` : ""
-      return `${timestamp} [${level}]: ${message} ${stackTrace}`
-    }),
+    format.json(),
   ),
-  transports: [new transports.Console()],
+  defaultMeta: {
+    app: "skyjo-api",
+    environment: process.env.NODE_ENV,
+  },
+  transports: [
+    new transports.Console({
+      format: format.combine(
+        format.json(),
+        format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+        format.errors({ stack: true }),
+        format.printf(({ level, message, timestamp, stack }) => {
+          const stackTrace = stack ? `\n${stack}` : ""
+          return `${timestamp} [${level}]: ${message} ${stackTrace}`
+        }),
+      ),
+    }),
+    new SeqTransport({
+      serverUrl: process.env.SEQ_URL,
+      apiKey: process.env.SEQ_API_KEY,
+      onError: (e) => console.error(e),
+      handleExceptions: true,
+      handleRejections: true,
+    }),
+  ],
 })
-
-if (process.env.NODE_ENV === "production") {
-  const transport = new DailyRotateFile({
-    filename: "skyjo-api-%DATE%.log",
-    datePattern: "YYYY-MM-DD-HH",
-    zippedArchive: true,
-    maxSize: "20m",
-    maxFiles: "14d",
-  })
-
-  logger.transports.push(transport)
-}
 
 export { logger }
