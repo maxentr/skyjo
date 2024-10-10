@@ -67,6 +67,7 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
                 delay: pickFromDrawPile ? 0.075 : 0,
               },
             }}
+            className="absolute top-0 left-0 w-full h-full"
           >
             <Card
               card={{
@@ -74,7 +75,6 @@ const SelectedCard = ({ show }: SelectedCardProps) => {
                 value: game.selectedCardValue,
                 isVisible: true,
               }}
-              className="absolute top-0 left-0 w-full h-full"
               size="normal"
               disabled
               flipAnimation={false}
