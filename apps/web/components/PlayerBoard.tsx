@@ -13,7 +13,7 @@ type PlayerBoardProps = {
 
 const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
   const { game } = useSkyjo()
-  const ta = useTranslations("components.Avatar")
+  const ta = useTranslations("utils.avatar")
   const tp = useTranslations("components.PlayerBoard")
 
   const showSelectionAnimation =

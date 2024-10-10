@@ -24,7 +24,7 @@ const OpponentBoard = ({
   isPlayerTurn,
   className,
 }: OpponentBoardProps) => {
-  const ta = useTranslations("components.Avatar")
+  const ta = useTranslations("utils.avatar")
   const to = useTranslations("components.OpponentBoard")
 
   return (
