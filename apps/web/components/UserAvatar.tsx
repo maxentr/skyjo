@@ -99,18 +99,23 @@ const UserAvatar = ({
 const UserContextMenu = ({ player }: { player: SkyjoPlayerToJson }) => {
   const { unmutePlayer, mutePlayer, mutedPlayers } = useChat()
   const { actions } = useVoteKick()
+  const { game } = useSkyjo()
   const t = useTranslations("components.Avatar")
 
   const handleKickPlayer = () => {
+    if (game.players.length <= 2) return
+
     actions.initiateKickVote(player.id)
   }
 
   return (
     <ContextMenuContent>
-      <ContextMenuItem onClick={handleKickPlayer}>
-        <UserRoundXIcon className="w-4 h-4 mr-2" />
-        {t("context-menu.kick")}
-      </ContextMenuItem>
+      {game.players.length > 2 && (
+        <ContextMenuItem onClick={handleKickPlayer}>
+          <UserRoundXIcon className="w-4 h-4 mr-2" />
+          {t("context-menu.kick")}
+        </ContextMenuItem>
+      )}
       {mutedPlayers.includes(player.name) ? (
         <ContextMenuItem onClick={() => unmutePlayer(player.name)}>
           <MessageSquareIcon className="w-4 h-4 mr-2" />
