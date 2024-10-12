@@ -62,8 +62,8 @@
           }
         },
         "reset-settings": "Réinitialiser les paramètres",
-        "allow-skyjo-for-column": "Autoriser les Skyjo pour de colonne",
-        "allow-skyjo-for-row": "Autoriser les Skyjo pour de ligne",
+        "allow-skyjo-for-column": "Autoriser les Skyjo pour les colonnes",
+        "allow-skyjo-for-row": "Autoriser les Skyjo pour les lignes",
         "nb-columns": {
           "label": "Nombre de colonnes",
           "title": "$number colonnes"
