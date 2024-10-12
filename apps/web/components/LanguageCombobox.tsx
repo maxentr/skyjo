@@ -93,7 +93,7 @@ const LanguageCombobox = () => {
             {currentLocale
               ? t(`locale.${currentLocale}`)
               : t("select-language")}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
@@ -109,13 +109,13 @@ const LanguageCombobox = () => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
+        <Button variant="outline" className="justify-start">
           {currentLocale ? t(`locale.${currentLocale}`) : t("select-language")}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mt-4 border-t">
+        <div className="mt-4 border-t-[1.5px] border-black">
           <LocaleList
             currentLocale={currentLocale}
             updateLocale={updateLocale}
