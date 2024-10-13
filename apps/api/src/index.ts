@@ -5,7 +5,7 @@ import { kickRouter } from "@/routers/kick.router"
 import { lobbyRouter } from "@/routers/lobby.router"
 import { playerRouter } from "@/routers/player.router"
 import { SkyjoSocket } from "@/types/skyjoSocket"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import { serve } from "@hono/node-server"
 import { zValidator } from "@hono/zod-validator"
 import { config } from "dotenv"
@@ -64,7 +64,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(
 )
 
 io.engine.on("connection_error", (err) => {
-  logger.error(`${err.code} - ${err.message} - ${err.context}`)
+  Logger.error("Socket connection error", err)
 })
 
 io.on("connection", (socket: SkyjoSocket) => {
@@ -98,4 +98,4 @@ app.post("/feedback", zValidator("json", feedbackSchema), (c) => {
   return c.json({ success: true })
 })
 
-console.log(`Server is running on port ${port}`)
+Logger.info(`Server started on port ${port}`)

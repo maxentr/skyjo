@@ -1,7 +1,7 @@
 import { Skyjo } from "@/class/Skyjo"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { PlayerDb } from "@/db/player.db"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import { db } from "database/provider"
 import { DbGame, gameTable, playerTable } from "database/schema"
 import dayjs from "dayjs"
@@ -222,10 +222,9 @@ export class GameDb {
 
         formattedGames.push(skyjo)
       } catch (error) {
-        logger.error(
-          `Error while formatting game ${game.code} : ${error}`,
-          game,
-        )
+        Logger.error(`Error while formatting game with code: ${game.code}`, {
+          error,
+        })
 
         continue
       }
@@ -240,10 +239,13 @@ export class GameDb {
     const admin =
       players.find((player) => player.id === game.adminId)! ?? players[0]?.id
 
-    if (!admin)
-      throw new Error(
-        "Impossible error while formatting game: no admin and no player",
+    if (!admin) {
+      Logger.warn(
+        `Impossible error while formatting game with code: ${game.code}. Reason: no admin and no player in it. Game will be removed.`,
       )
+
+      await this.removeGame(game.code)
+    }
 
     const skyjo = new Skyjo(admin.id).populate(game, { players })
     return skyjo

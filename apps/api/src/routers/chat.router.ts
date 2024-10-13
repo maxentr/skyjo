@@ -1,5 +1,5 @@
 import { ChatService } from "@/services/chat.service"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import {
   SendChatMessage,
   sendChatMessage,
@@ -14,7 +14,9 @@ const chatRouter = (socket: SkyjoSocket) => {
       const message = sendChatMessage.parse(data)
       instance.onMessage(socket, message)
     } catch (error) {
-      logger.error(`Error while chatting : ${error}`)
+      Logger.error(`Error while chatting`, {
+        error,
+      })
     }
   })
 }

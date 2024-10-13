@@ -1,5 +1,5 @@
 import { Constants } from "@/constants"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import { DbGame, DbPlayer } from "database/schema"
 import {
   CONNECTION_STATUS,
@@ -161,7 +161,7 @@ export class Skyjo implements SkyjoInterface {
     this.status = GAME_STATUS.PLAYING
     this.turn = Math.floor(Math.random() * this.players.length)
 
-    logger.info(`Game ${this.code} started`)
+    Logger.info(`Game ${this.code} started`)
   }
 
   checkAllPlayersRevealedCards(count: number) {

@@ -1,5 +1,5 @@
 import { GameService } from "@/services/game.service"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import {
   PlayPickCard,
   PlayReplaceCard,
@@ -19,7 +19,9 @@ const gameRouter = (socket: SkyjoSocket) => {
     try {
       await instance.onGet(socket)
     } catch (error) {
-      logger.error(`Error while getting a game : ${error}`)
+      Logger.error(`Error while getting a game`, {
+        error,
+      })
     }
   })
 
@@ -28,7 +30,9 @@ const gameRouter = (socket: SkyjoSocket) => {
       const turnCardData = playRevealCard.parse(data)
       instance.onRevealCard(socket, turnCardData)
     } catch (error) {
-      logger.error(`Error while turning a card : ${error}`)
+      Logger.error(`Error while turning a card`, {
+        error,
+      })
     }
   })
 
@@ -37,7 +41,9 @@ const gameRouter = (socket: SkyjoSocket) => {
       const playData = playPickCard.parse(data)
       await instance.onPickCard(socket, playData)
     } catch (error) {
-      logger.error(`Error while playing a game : ${error}`)
+      Logger.error(`Error while playing a game`, {
+        error,
+      })
     }
   })
 
@@ -46,7 +52,9 @@ const gameRouter = (socket: SkyjoSocket) => {
       const playData = playReplaceCard.parse(data)
       await instance.onReplaceCard(socket, playData)
     } catch (error) {
-      logger.error(`Error while playing a game : ${error}`)
+      Logger.error(`Error while playing a game`, {
+        error,
+      })
     }
   })
 
@@ -54,7 +62,9 @@ const gameRouter = (socket: SkyjoSocket) => {
     try {
       await instance.onDiscardCard(socket)
     } catch (error) {
-      logger.error(`Error while playing a game : ${error}`)
+      Logger.error(`Error while playing a game`, {
+        error,
+      })
     }
   })
 
@@ -63,7 +73,9 @@ const gameRouter = (socket: SkyjoSocket) => {
       const playData = playTurnCard.parse(data)
       await instance.onTurnCard(socket, playData)
     } catch (error) {
-      logger.error(`Error while playing a game : ${error}`)
+      Logger.error(`Error while playing a game`, {
+        error,
+      })
     }
   })
 
@@ -71,7 +83,9 @@ const gameRouter = (socket: SkyjoSocket) => {
     try {
       await instance.onReplay(socket)
     } catch (error) {
-      logger.error(`Error while replaying a game : ${error}`)
+      Logger.error(`Error while replaying a game`, {
+        error,
+      })
     }
   })
 }

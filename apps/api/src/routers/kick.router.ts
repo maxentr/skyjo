@@ -1,5 +1,5 @@
 import { KickService } from "@/services/kick.service"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import {
   InitiateKickVote,
   VoteToKick,
@@ -16,7 +16,9 @@ export const kickRouter = (socket: SkyjoSocket) => {
       const { targetId } = initiateKickVote.parse(data)
       await instance.onInitiateKickVote(socket, targetId)
     } catch (error) {
-      logger.error(`Error while initiating a kick vote : ${error}`)
+      Logger.error(`Error while initiating a kick vote`, {
+        error,
+      })
     }
   })
 
@@ -25,7 +27,9 @@ export const kickRouter = (socket: SkyjoSocket) => {
       const { vote } = voteToKick.parse(data)
       await instance.onVoteToKick(socket, vote)
     } catch (error) {
-      logger.error(`Error while voting to kick a player : ${error}`)
+      Logger.error(`Error while voting to kick a player`, {
+        error,
+      })
     }
   })
 }

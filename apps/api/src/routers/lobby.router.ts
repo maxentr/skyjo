@@ -1,5 +1,5 @@
 import { LobbyService } from "@/services/lobby.service"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import { ErrorJoinMessage } from "shared/types/socket"
 import {
   ChangeSettings,
@@ -17,7 +17,9 @@ const lobbyRouter = (socket: SkyjoSocket) => {
       const parsedPlayer = createPlayer.parse(player)
       instance.onCreate(socket, parsedPlayer)
     } catch (error) {
-      logger.error(`Error while creating a game : ${error}`)
+      Logger.error(`Error while creating a game`, {
+        error,
+      })
     }
   })
 
@@ -26,7 +28,9 @@ const lobbyRouter = (socket: SkyjoSocket) => {
       const parsedPlayer = createPlayer.parse(player)
       await instance.onFind(socket, parsedPlayer)
     } catch (error) {
-      logger.error(`Error while finding a game : ${error}`)
+      Logger.error(`Error while finding a game`, {
+        error,
+      })
     }
   })
 
@@ -37,8 +41,10 @@ const lobbyRouter = (socket: SkyjoSocket) => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         socket.emit("error:join", error.message as ErrorJoinMessage)
-        logger.error(`Error while joining a game : ${error.message}`)
       }
+      Logger.error(`Error while joining a game`, {
+        error,
+      })
     }
   })
 
@@ -47,7 +53,9 @@ const lobbyRouter = (socket: SkyjoSocket) => {
       const newSettings = changeSettings.parse(data)
       instance.onSettingsChange(socket, newSettings)
     } catch (error) {
-      logger.error(`Error while changing the game settings : ${error}`)
+      Logger.error(`Error while changing the game settings`, {
+        error,
+      })
     }
   })
 
@@ -55,7 +63,9 @@ const lobbyRouter = (socket: SkyjoSocket) => {
     try {
       await instance.onGameStart(socket)
     } catch (error) {
-      logger.error(`Error while starting a game : ${error}`)
+      Logger.error(`Error while starting a game`, {
+        error,
+      })
     }
   })
 }

@@ -1,6 +1,6 @@
 import { GameDb } from "@/db/game.db"
 import { PlayerDb } from "@/db/player.db"
-import { logger } from "@/utils/logs"
+import { Logger } from "@/utils/logs"
 import cron from "node-cron"
 import { ERROR, SERVER_MESSAGE_TYPE } from "shared/constants"
 import { ServerChatMessage } from "shared/types/chat"
@@ -111,7 +111,7 @@ export abstract class BaseService {
 
   /* istanbul ignore next function -- @preserve */
   private async removeInactiveGames() {
-    logger.info("Remove inactive games")
+    Logger.info("Remove inactive games")
     const deletedGameIds = await BaseService.gameDb.removeInactiveGames()
 
     BaseService.games = BaseService.games.filter(
