@@ -86,6 +86,13 @@ export abstract class BaseService {
     game.adminId = player.id
   }
 
+  protected async removeGame(gameCode: string) {
+    BaseService.games = BaseService.games.filter(
+      (game) => game.code !== gameCode,
+    )
+    await BaseService.gameDb.removeGame(gameCode)
+  }
+
   //#region private methods
   /* istanbul ignore next function -- @preserve */
   private async beforeStart() {

@@ -36,8 +36,6 @@ export class PlayerService extends BaseService {
       game.removePlayer(player.id)
       await BaseService.playerDb.removePlayer(game.id, player.id)
 
-      // TODO do a function to clean up players. It will remove every player that are disconnected
-
       game.restartGameIfAllPlayersWantReplay()
 
       const promises: Promise<void>[] = []
@@ -55,7 +53,7 @@ export class PlayerService extends BaseService {
 
       await Promise.all(promises)
     } else {
-      this.startDisconnectionTimeout(player, timeout, () =>
+      await this.startDisconnectionTimeout(player, timeout, () =>
         this.updateGameAfterTimeoutExpired(socket, game),
       )
     }
@@ -99,7 +97,7 @@ export class PlayerService extends BaseService {
   }
 
   //#region private methods
-  private startDisconnectionTimeout(
+  private async startDisconnectionTimeout(
     player: SkyjoPlayer,
     connectionLost: boolean,
     callback: (...args: unknown[]) => Promise<unknown>,
@@ -107,12 +105,12 @@ export class PlayerService extends BaseService {
     player.connectionStatus = connectionLost
       ? CONNECTION_STATUS.CONNECTION_LOST
       : CONNECTION_STATUS.LEAVE
-    BaseService.playerDb.updateDisconnectionDate(player, new Date())
+    await BaseService.playerDb.updateDisconnectionDate(player, new Date())
 
     player.disconnectionTimeout = setTimeout(
-      () => {
+      async () => {
         player.connectionStatus = CONNECTION_STATUS.DISCONNECTED
-        callback()
+        await callback()
       },
       connectionLost ? CONNECTION_LOST_TIMEOUT_IN_MS : LEAVE_TIMEOUT_IN_MS,
     )
@@ -147,13 +145,6 @@ export class PlayerService extends BaseService {
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
-  }
-
-  private async removeGame(gameCode: string) {
-    BaseService.games = BaseService.games.filter(
-      (game) => game.code !== gameCode,
-    )
-    await BaseService.gameDb.removeGame(gameCode)
   }
   //#endregion
 }
