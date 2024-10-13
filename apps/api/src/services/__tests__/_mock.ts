@@ -45,7 +45,7 @@ export const mockBaseService = () => {
   BaseService["gameDb"] = mockGameDb()
 }
 
-export const mockSocket = () => {
+export const mockSocket = (id: string = TEST_SOCKET_ID) => {
   return {
     emit: vi.fn(),
     on: vi.fn(),
@@ -53,7 +53,7 @@ export const mockSocket = () => {
     to: vi.fn(() => ({ emit: vi.fn() })),
     leave: vi.fn(),
     data: {},
-    id: TEST_SOCKET_ID,
+    id,
     connected: true,
     disconnected: false,
     recovered: true,

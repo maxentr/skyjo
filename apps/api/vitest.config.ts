@@ -15,6 +15,7 @@ export default defineConfig({
         "src/constants.ts",
         "src/index.ts",
         "src/**/__tests__/constants-test.ts",
+        "src/**/__tests__/_mock.ts",
         "tests/*.ts",
         "src/service/*.ts",
         "src/utils/logs.ts",

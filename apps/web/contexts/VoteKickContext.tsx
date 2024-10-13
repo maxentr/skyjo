@@ -1,23 +1,24 @@
-import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useSocket } from "@/contexts/SocketContext"
+import { useKickVoteToasts } from "@/hooks/useKickVoteToasts"
 import { useRouter } from "@/navigation"
-import { useTranslations } from "next-intl"
 import {
   PropsWithChildren,
   createContext,
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react"
-import { KickVote } from "shared/types/kickVote"
+import { KickVoteToJson } from "shared/types/kickVote"
 
 type VoteKickContext = {
   actions: {
     initiateKickVote: (playerSocketId: string) => void
     voteToKick: (playerSocketId: string, vote: boolean) => void
   }
+  kickVoteInProgress: boolean
 }
 
 const VoteKickContext = createContext<VoteKickContext | undefined>(undefined)
@@ -25,9 +26,20 @@ const VoteKickContext = createContext<VoteKickContext | undefined>(undefined)
 export const VoteKickProvider = ({ children }: PropsWithChildren) => {
   const { socket } = useSocket()
   const { game, player } = useSkyjo()
-  const { toast, dismiss } = useToast()
-  const t = useTranslations("components.KickVote")
+  const { dismiss } = useToast()
   const router = useRouter()
+  const {
+    showVoteInitiated,
+    showVoteWithAction,
+    showVoteAgainstYou,
+    showVoteWithoutAction,
+    showVoteAgainstYouFailed,
+    showVoteFailed,
+    showVoteSucceeded,
+    showVoteAgainstYouSucceeded,
+  } = useKickVoteToasts()
+
+  const [kickVoteInProgress, setKickVoteInProgress] = useState(false)
 
   useEffect(() => {
     if (!game || !socket) return
@@ -38,110 +50,35 @@ export const VoteKickProvider = ({ children }: PropsWithChildren) => {
   }, [socket, game])
 
   //#region listeners
-  const onKickVote = ({
-    initiatorId,
-    playerToKickId,
-    votes,
-    requiredVotes,
-  }: KickVote) => {
-    const playerToKick = game?.players.find((p) => p.id === playerToKickId)
-    const initiator = game?.players.find((p) => p.id === initiatorId)
-    if (!playerToKick || !initiator) return
+  const onKickVote = (kickVote: KickVoteToJson) => {
+    setKickVoteInProgress(true)
 
-    const isPlayerToKick = playerToKick.id === player.id
-    const hasVoted = votes.find((v) => v.playerId === player.id)
-    if (isPlayerToKick) {
-      toast({
-        title: t("vote-started-against-you.title"),
-        description: t("vote-started-against-you.description", {
-          initiatorName: initiator.name,
-        }),
-        duration: 12000,
-      })
-    } else if (hasVoted) {
-      toast({
-        title: t("vote-updated.title", { playerName: playerToKick.name }),
-        description: t("vote-updated.description", {
-          playerName: playerToKick.name,
-          yesVotes: votes.filter((v) => v.vote).length,
-          requiredVotes,
-        }),
-        duration: 30000, // 30 seconds to vote
-      })
-    } else {
-      toast({
-        title: t("vote-started.title", { playerName: playerToKick.name }),
-        description: (
-          <div className="flex flex-row items-center gap-2">
-            <Button
-              onClick={() => voteToKick(playerToKick.id, true)}
-              title={t("vote-started.kick-button.title")}
-              variant="small"
-            >
-              {t("vote-started.kick-button.label")}
-            </Button>
-            <Button
-              onClick={() => dismiss()}
-              title={t("vote-started.dismiss-button.title")}
-              variant="small"
-              className="bg-gray-200"
-            >
-              {t("vote-started.dismiss-button.label")}
-            </Button>
-          </div>
-        ),
-        duration: 30000, // 30 seconds to vote
-      })
-    }
+    const isPlayerToKick = kickVote.targetId === player.id
+    const hasVoted = kickVote.votes.find((v) => v.playerId === player.id)
+
+    if (isPlayerToKick) showVoteAgainstYou(kickVote)
+    else if (hasVoted) showVoteWithoutAction(kickVote)
+    else showVoteWithAction(kickVote, voteToKick)
   }
 
-  const onKickVoteFailed = ({ playerToKickId }: KickVote) => {
-    const playerToKick = game?.players.find((p) => p.id === playerToKickId)
-    if (!playerToKick) return
+  const onKickVoteFailed = (kickVote: KickVoteToJson) => {
+    setKickVoteInProgress(false)
 
-    const isPlayerToKick = playerToKick.id === player.id
-    if (isPlayerToKick) {
-      toast({
-        title: t("you-were-not-kicked.title"),
-        description: t("you-were-not-kicked.description"),
-        duration: 5000,
-      })
-    } else {
-      toast({
-        title: t("vote-failed.title", { playerName: playerToKick.name }),
-        description: t("vote-failed.description", {
-          playerName: playerToKick.name,
-        }),
-        duration: 5000,
-      })
-    }
+    const isPlayerToKick = kickVote.targetId === player.id
+
+    if (isPlayerToKick) showVoteAgainstYouFailed()
+    else showVoteFailed(kickVote)
   }
 
-  const onKickVoteSuccess = ({ playerToKickId }: KickVote) => {
-    const playerToKick = game?.players.find((p) => p.id === playerToKickId)
-    if (!playerToKick) return
+  const onKickVoteSuccess = (kickVote: KickVoteToJson) => {
+    setKickVoteInProgress(false)
 
-    const isPlayerToKick = playerToKick.id === player.id
+    const isPlayerToKick = kickVote.targetId === player.id
+
     if (isPlayerToKick) {
-      onYouWereKicked()
-    } else {
-      toast({
-        title: t("player-kicked.title", { playerName: playerToKick.name }),
-        description: t("player-kicked.description", {
-          playerName: playerToKick.name,
-        }),
-        duration: 5000,
-      })
-    }
-  }
-
-  const onYouWereKicked = () => {
-    toast({
-      title: t("you-were-kicked.title"),
-      description: t("you-were-kicked.description"),
-      duration: 5000,
-    })
-    router.replace("/")
+      showVoteAgainstYouSucceeded()
+      router.replace("/")
+    } else showVoteSucceeded(kickVote)
   }
 
   const initKickVoteListeners = () => {
@@ -158,24 +95,19 @@ export const VoteKickProvider = ({ children }: PropsWithChildren) => {
   //#endregion
 
   //#region actions
-  const initiateKickVote = (playerToKickId: string) => {
-    socket!.emit("kick:initiate-vote", { playerToKickId })
-    const playerToKick = game?.players.find(
-      (p) => p.socketId === playerToKickId,
-    )
+  const initiateKickVote = (targetId: string) => {
+    setKickVoteInProgress(true)
+
+    socket!.emit("kick:initiate-vote", { targetId })
+    const playerToKick = game?.players.find((p) => p.socketId === targetId)
     if (!playerToKick) return
 
-    toast({
-      title: t("vote-initiated.title"),
-      description: t("vote-initiated.description", {
-        playerName: playerToKick.name,
-      }),
-      duration: 5000,
-    })
+    showVoteInitiated(playerToKick.name)
   }
 
-  const voteToKick = (playerToKickId: string, vote: boolean) => {
-    socket!.emit("kick:vote", { playerToKickId, vote })
+  const voteToKick = (targetId: string, vote: boolean) => {
+    socket!.emit("kick:vote", { targetId, vote })
+    if (!vote) dismiss()
   }
 
   const actions = {
@@ -184,7 +116,7 @@ export const VoteKickProvider = ({ children }: PropsWithChildren) => {
   }
   //#endregion
 
-  const providerValue = useMemo(() => ({ actions }), [])
+  const providerValue = useMemo(() => ({ kickVoteInProgress, actions }), [])
 
   return (
     <VoteKickContext.Provider value={providerValue}>

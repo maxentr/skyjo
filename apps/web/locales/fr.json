@@ -446,38 +446,39 @@
       }
     },
     "KickVote": {
-      "vote-started": {
+      "player-has-not-voted": {
         "title": "Vote pour expulser {playerName}",
+        "description": "{initiatorName} veut expulser {playerName}",
         "kick-button": {
-          "title": "Expulser",
+          "alt": "Voter pour expulser {playerName}",
           "label": "Expulser"
         },
-        "dismiss-button": {
-          "title": "Ignorer",
+        "ignore-button": {
+          "alt": "Ignorer le vote pour expulser {playerName}",
           "label": "Ignorer"
         }
       },
-      "vote-started-against-you": {
+      "player-has-voted": {
+        "title": "Vote pour expulser {playerName}",
+        "description": "Vous avez voté {vote, select, true {pour} false {contre} other {vote}}"
+      },
+      "vote-against-you": {
         "title": "Vote pour vous expulser",
         "description": "{initiatorName} a demandé un vote pour vous expulser."
       },
-      "vote-updated": {
-        "title": "Vote pour expulser {playerName}",
-        "description": "{yesVotes}/{requiredVotes}"
-      },
       "vote-failed": {
         "title": "Le vote pour expulser {playerName} a échoué",
-        "description": "Le vote pour expulser {playerName} a échoué, il n'y a pas assez de votes."
+        "description": "Il n'y a pas assez de votes pour expulser {playerName}"
       },
-      "you-were-not-kicked": {
+      "vote-against-you-failed": {
         "title": "Vous n'avez pas été expulsé",
-        "description": "Le vote pour vous expulser a échoué, il n'y a pas assez de votes."
+        "description": "Il n'y a pas assez de votes pour vous expulser"
       },
-      "player-kicked": {
+      "vote-succeeded": {
         "title": "{playerName} a été expulsé",
         "description": "Le vote pour expulser {playerName} a réussi."
       },
-      "you-were-kicked": {
+      "vote-against-you-succeeded": {
         "title": "Vous avez été expulsé",
         "description": "Les joueurs ont voté pour vous expulser de la partie."
       }

@@ -445,38 +445,39 @@
       }
     },
     "KickVote": {
-      "vote-started": {
+      "player-has-not-voted": {
         "title": "Vote to kick {playerName}",
+        "description": "{initiatorName} wants to kick {playerName}",
         "kick-button": {
-          "title": "Kick",
+          "alt": "Kick {playerName}",
           "label": "Kick"
         },
-        "dismiss-button": {
-          "title": "Dismiss",
-          "label": "Dismiss"
+        "ignore-button": {
+          "alt": "Ignore the vote to kick {playerName}",
+          "label": "Ignore"
         }
       },
-      "vote-started-against-you": {
+      "player-has-voted": {
+        "title": "Vote to kick {playerName}",
+        "description": "You have voted {vote, select, true {for} false {against} other {vote}}"
+      },
+      "vote-against-you": {
         "title": "Vote to kick you",
         "description": "{initiatorName} has requested a vote to kick you."
       },
-      "vote-updated": {
-        "title": "Vote to kick {playerName}",
-        "description": "{yesVotes}/{requiredVotes}"
-      },
       "vote-failed": {
         "title": "The vote to kick {playerName} failed",
-        "description": "The vote to kick {playerName} failed, there are not enough votes."
+        "description": "There are not enough votes to kick {playerName}"
       },
-      "you-were-not-kicked": {
+      "vote-against-you-failed": {
         "title": "You were not kicked",
-        "description": "The vote to kick you has failed, there are not enough votes."
+        "description": "There are not enough votes to kick you"
       },
-      "player-kicked": {
+      "vote-succeeded": {
         "title": "{playerName} has been kicked",
         "description": "The vote to kick {playerName} has succeeded."
       },
-      "you-were-kicked": {
+      "vote-against-you-succeeded": {
         "title": "You have been kicked",
         "description": "The players have voted to kick you out of the game."
       }
