@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { ToastAction } from "@/components/ui/toast"
 import { ToastReturn, useToast } from "@/components/ui/use-toast"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useTranslations } from "next-intl"
@@ -37,16 +37,16 @@ const InactivityCheck = () => {
         variant: "default",
         duration: INACTIVITY_CHECK_INTERVAL - 1000,
         action: (
-          <Button
+          <ToastAction
             onClick={() => {
               if (warningToast) warningToast.dismiss()
               clearTimers()
               createTimers()
             }}
-            title={t("warning.button.title")}
+            altText={t("warning.button.title")}
           >
             {t("warning.button.label")}
-          </Button>
+          </ToastAction>
         ),
       })
       inactivtySound.play()
