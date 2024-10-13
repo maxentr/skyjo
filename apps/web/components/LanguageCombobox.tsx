@@ -18,8 +18,10 @@ import {
 import { useSettings } from "@/contexts/SettingsContext"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { Locales, locales } from "@/i18n"
+import { usePathname, useRouter } from "@/navigation"
 import { CheckIcon, ChevronsUpDown } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useSearchParams } from "next/navigation"
 import { useMemo, useState } from "react"
 
 type LocalListProps = {
@@ -72,12 +74,23 @@ const LanguageCombobox = () => {
   } = useSettings()
   const t = useTranslations("components.LanguageCombobox")
   const isDesktop = useMediaQuery("(min-width: 768px)")
+  const router = useRouter()
+  const pathname = usePathname()
+  const query = useSearchParams()
 
   const [open, setOpen] = useState(false)
 
-  const updateLocale = (locale: string) => {
-    updateSetting("locale", locale as Locales)
+  const inGame = pathname.includes("/game/")
+
+  const updateLocale = (locale: Locales) => {
+    updateSetting("locale", locale)
     setOpen(false)
+
+    let route = pathname
+    const gameCode = query.get("gameCode")
+    if (gameCode) route += `?gameCode=${gameCode}`
+
+    router.replace(route, { locale })
   }
 
   if (isDesktop)
@@ -89,6 +102,7 @@ const LanguageCombobox = () => {
             role="input-list"
             aria-expanded={open}
             className="justify-between"
+            disabled={inGame}
           >
             {currentLocale
               ? t(`locale.${currentLocale}`)
@@ -109,7 +123,7 @@ const LanguageCombobox = () => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="justify-start">
+        <Button variant="outline" className="justify-start" disabled={inGame}>
           {currentLocale ? t(`locale.${currentLocale}`) : t("select-language")}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

@@ -2,9 +2,7 @@
 
 import SettingsDialog from "@/components/SettingsDialog"
 import { Locales } from "@/i18n"
-import { usePathname, useRouter } from "@/navigation"
 import { Howler } from "howler"
-import { useSearchParams } from "next/navigation"
 import {
   PropsWithChildren,
   createContext,
@@ -62,10 +60,6 @@ const SettingsContext = createContext<SettingsContext | undefined>(undefined)
 
 type SettingsProviderProps = PropsWithChildren<{ locale: Locales }>
 const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const query = useSearchParams()
-
   const [settings, setSettings] = useLocalStorage<Settings>("userSettings", {
     ...DEFAULT_SETTINGS,
     locale,
@@ -84,15 +78,6 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
         setSettings({ ...settings, [k]: DEFAULT_SETTINGS[k] })
     })
   }, [settings])
-
-  useEffect(() => {
-    let route = pathname
-    const gameCode = query.get("gameCode")
-
-    if (gameCode) route += `?gameCode=${gameCode}`
-
-    if (settings) router.push(route, { locale: settings.locale })
-  }, [settings?.locale])
 
   useEffect(() => {
     if (settings) Howler.mute(!settings.audio)

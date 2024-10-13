@@ -416,7 +416,7 @@
       "general": {
         "title": "General",
         "language": "Language",
-        "language-warn": "This will reload the game!",
+        "language-warn": "Changeable only on the home page",
         "appearance": "Appearance",
         "coming-soon": "Coming soon"
       },

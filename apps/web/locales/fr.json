@@ -417,7 +417,7 @@
       "general": {
         "title": "Général",
         "language": "Langue",
-        "language-warn": "Cela rechargera le jeu !",
+        "language-warn": "Changeable uniquement sur la page d'accueil",
         "appearance": "Apparence",
         "coming-soon": "Bientôt disponible"
       },
