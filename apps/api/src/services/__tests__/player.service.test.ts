@@ -16,7 +16,6 @@ import {
   GameStatus,
   ROUND_STATUS,
   RoundStatus,
-  TURN_STATUS,
 } from "shared/constants"
 import { LastGame } from "shared/validations/reconnect"
 import { beforeEach, describe, expect, it, vi } from "vitest"
