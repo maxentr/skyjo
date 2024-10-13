@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const reconnect = z.object({
   gameCode: z.string(),
-  playerId: z.string(),
+  playerId: z.string().uuid(),
   maxDateToReconnect: z.string().optional(),
 })
 
