@@ -41,8 +41,6 @@ export const mockBaseService = () => {
   BaseService["firstInit"] = false
   BaseService["games"] = []
 
-  vi.mock("database/provider")
-
   BaseService["playerDb"] = mockPlayerDb()
   BaseService["gameDb"] = mockGameDb()
 }
