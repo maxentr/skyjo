@@ -1,4 +1,4 @@
-import { MIN_PLAYERS } from "@/constants"
+import { Constants } from "@/constants"
 import { logger } from "@/utils/logs"
 import { DbGame, DbPlayer } from "database/schema"
 import {
@@ -146,7 +146,7 @@ export class Skyjo implements SkyjoInterface {
   }
 
   haveAtLeastMinPlayersConnected() {
-    return this.getConnectedPlayers().length >= MIN_PLAYERS
+    return this.getConnectedPlayers().length >= Constants.MIN_PLAYERS
   }
 
   start() {
@@ -155,7 +155,7 @@ export class Skyjo implements SkyjoInterface {
     if (this.settings.initialTurnedCount === 0)
       this.roundStatus = ROUND_STATUS.PLAYING
 
-    if (this.getConnectedPlayers().length < MIN_PLAYERS)
+    if (this.getConnectedPlayers().length < Constants.MIN_PLAYERS)
       throw new Error(ERROR.TOO_FEW_PLAYERS)
 
     this.status = GAME_STATUS.PLAYING

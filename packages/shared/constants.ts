@@ -105,6 +105,7 @@ export const ERROR = {
   GAME_ALREADY_STARTED: "game-already-started",
   KICK_VOTE_IN_PROGRESS: "kick-vote-in-progress",
   NO_KICK_VOTE_IN_PROGRESS: "no-kick-vote-in-progress",
+  PLAYER_ALREADY_VOTED: "player-already-voted",
 } as const
 export type Error = (typeof ERROR)[keyof typeof ERROR]
 export const CONNECTION_LOST_TIMEOUT_IN_MS = 30000

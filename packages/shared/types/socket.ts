@@ -1,4 +1,6 @@
+import { KickVoteToJson } from "types/kickVote"
 import { ChangeSettings } from "validations/changeSettings"
+import { InitiateKickVote, VoteToKick } from "validations/kick"
 import { Error } from "../constants"
 import {
   ServerChatMessage,
@@ -16,7 +18,6 @@ import {
 } from "../validations/play"
 import { CreatePlayer } from "../validations/player"
 import { LastGame } from "../validations/reconnect"
-import { KickVote } from "./kickVote"
 import { SkyjoToJson } from "./skyjo"
 
 export type ClientToServerEvents = {
@@ -36,8 +37,8 @@ export type ClientToServerEvents = {
   replay: () => void
   leave: () => void
   disconnect: () => void
-  "kick:initiate-vote": (data: { playerToKickId: string }) => void
-  "kick:vote": (data: { playerToKickId: string; vote: boolean }) => void
+  "kick:initiate-vote": (data: InitiateKickVote) => void
+  "kick:vote": (data: VoteToKick) => void
 }
 
 export type ErrorJoinMessage = Extract<
@@ -56,9 +57,9 @@ export type ServerToClientEvents = {
   "message:server": (message: ServerChatMessage) => void
   winner: (game: SkyjoToJson, winner: SkyjoPlayerToJson) => void
   "leave:success": () => void
-  "kick:vote": (data: KickVote) => void
-  "kick:vote-success": (data: KickVote) => void
-  "kick:vote-failed": (data: KickVote) => void
+  "kick:vote": (data: KickVoteToJson) => void
+  "kick:vote-success": (data: KickVoteToJson) => void
+  "kick:vote-failed": (data: KickVoteToJson) => void
 }
 
 export type SocketData = {
