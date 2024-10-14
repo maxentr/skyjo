@@ -41,18 +41,21 @@ export class Logger {
   static info(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.info(message, {
       ...meta,
+      explanation: message,
     })
   }
 
   static warn(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.warn(message, {
       ...meta,
+      explanation: message,
     })
   }
 
   static error(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.error(message, {
       ...meta,
+      explanation: message,
     })
   }
 }
