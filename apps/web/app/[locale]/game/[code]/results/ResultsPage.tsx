@@ -89,7 +89,12 @@ const ResultsPage = () => {
                   {allRowsVisible && visibleRows.length - 1 + index}
                 </TableCell>
                 <TableCell className="w-52 py-2 flex flex-row gap-2 items-center">
-                  <UserAvatar player={player} size="small" />
+                  <UserAvatar
+                    player={player}
+                    size="small"
+                    showName={false}
+                    allowContextMenu={false}
+                  />
                   <p className="text-sm text-ellipsis overflow-hidden whitespace-nowrap">
                     {player.name}
                   </p>

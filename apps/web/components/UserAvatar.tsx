@@ -60,12 +60,14 @@ const textVariants = cva(
 interface UserAvatarProps extends VariantProps<typeof containerVariants> {
   player: SkyjoPlayerToJson
   allowContextMenu?: boolean
+  showName?: boolean
 }
 
 const UserAvatar = ({
   player,
   size = "normal",
   allowContextMenu = true,
+  showName = true,
 }: UserAvatarProps) => {
   const tAvatar = useTranslations("utils.avatar")
   const { player: currentPlayer } = useSkyjo()
@@ -89,7 +91,9 @@ const UserAvatar = ({
           className={imageVariants({ size })}
           priority
         />
-        {player.name && <p className={textVariants({ size })}>{player.name}</p>}
+        {player.name && showName && (
+          <p className={textVariants({ size })}>{player.name}</p>
+        )}
       </ContextMenuTrigger>
       {!disableContextMenu && <UserContextMenu player={player} />}
     </ContextMenu>
