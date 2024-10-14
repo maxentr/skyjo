@@ -27,7 +27,7 @@ const ResultsPage = () => {
   const router = useRouter()
   const t = useTranslations("pages.ResultsPage")
   const [visibleRows, setVisibleRows] = useState<SkyjoPlayerToJson[]>([])
-  const sortedPlayers = [...game.players].sort((a, b) => b.score - a.score)
+  const sortedPlayers = game.players.sort((a, b) => b.score - a.score)
 
   const allRowsVisible = visibleRows.length >= sortedPlayers.length
 
@@ -44,7 +44,7 @@ const ResultsPage = () => {
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [sortedPlayers, visibleRows.length])
+  }, [visibleRows.length])
 
   useEffect(() => {
     if (game.status === GAME_STATUS.STOPPED) return
@@ -76,7 +76,7 @@ const ResultsPage = () => {
             </MotionTableHeader>
           )}
           <TableBody>
-            {visibleRows.reverse().map((player, index) => (
+            {visibleRows.map((player, index) => (
               <MotionTableRow
                 key={player.id}
                 initial={{ opacity: 0, y: -20 }}
@@ -86,7 +86,7 @@ const ResultsPage = () => {
                 className="border-b"
               >
                 <TableCell className="w-8">
-                  {allRowsVisible && visibleRows.length - 1 + index}
+                  {allRowsVisible && index + 1}
                 </TableCell>
                 <TableCell className="w-52 py-2 flex flex-row gap-2 items-center">
                   <UserAvatar
