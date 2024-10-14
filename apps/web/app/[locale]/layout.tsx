@@ -1,6 +1,8 @@
+import MaintenancePage from "@/app/[locale]/MaintenancePage"
 import PostHogPageView from "@/app/[locale]/PostHogPageView"
 import Providers from "@/app/[locale]/providers"
 import { Locales } from "@/i18n"
+import { posthogServer } from "@/lib/posthog-server"
 import { getCurrentUrl } from "@/lib/utils"
 import { Metadata, Viewport } from "next"
 import { NextIntlClientProvider } from "next-intl"
@@ -134,14 +136,23 @@ export default async function LocaleLayout({
 }: LocaleLayoutProps) {
   const messages = await getMessages()
 
+  const isSiteUnderMaintenance = await posthogServer.isFeatureEnabled(
+    "maintenance",
+    "web-server",
+  )
+
   return (
     <html lang={locale} suppressHydrationWarning style={fredoka.style}>
       <body className="bg-body antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Providers locale={locale as Locales}>
-            <PostHogPageView />
-            {children}
-          </Providers>
+          {isSiteUnderMaintenance ? (
+            <MaintenancePage />
+          ) : (
+            <Providers locale={locale as Locales}>
+              <PostHogPageView />
+              {children}
+            </Providers>
+          )}
         </NextIntlClientProvider>
       </body>
     </html>

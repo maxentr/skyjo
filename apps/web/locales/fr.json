@@ -36,6 +36,11 @@
         }
       }
     },
+    "Maintenance": {
+      "title": "Site en maintenance",
+      "description": "Nous sommes en ce moment en train de faire des mises à jour sur le site, veuillez réessayer plus tard.",
+      "github-alt": "Voir le code source sur GitHub"
+    },
     "NotFound": {
       "title": "Erreur 404",
       "description": "La page que vous recherchez n'existe pas.",
