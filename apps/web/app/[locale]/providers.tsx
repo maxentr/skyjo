@@ -19,6 +19,7 @@ if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     persistence: "memory",
     capture_pageview: false,
     capture_pageleave: true,
+    opt_in_site_apps: true,
   })
 }
 
