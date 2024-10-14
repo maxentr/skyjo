@@ -41,9 +41,6 @@
       "description": "La page que vous recherchez n'existe pas.",
       "go-back-to-homepage": "Retour à l'accueil"
     },
-    "GamePage": {
-      "your-turn": "C'est votre tour !"
-    },
     "InactivityCheck": {
       "warning": {
         "title": "Êtes-vous toujours là ?",
