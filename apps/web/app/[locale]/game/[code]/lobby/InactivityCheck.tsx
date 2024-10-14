@@ -4,7 +4,6 @@ import { ToastAction } from "@/components/ui/toast"
 import { ToastReturn, useToast } from "@/components/ui/use-toast"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useTranslations } from "next-intl"
-import { useFeatureFlagEnabled } from "posthog-js/react"
 import { useEffect } from "react"
 
 const INACTIVITY_CHECK_INTERVAL = 30000
@@ -15,7 +14,6 @@ const inactivtySound = new Howl({
 })
 
 const InactivityCheck = () => {
-  const flagInactivityCheckEnabled = useFeatureFlagEnabled("inactivity-check")
   const { player, game, actions, opponents } = useSkyjo()
   const t = useTranslations("pages.InactivityCheck")
   const { toast } = useToast()
@@ -66,7 +64,7 @@ const InactivityCheck = () => {
   }
 
   useEffect(() => {
-    if (!isAdmin || !flagInactivityCheckEnabled) return
+    if (!isAdmin) return
 
     if (warningToast) warningToast.dismiss()
     clearTimers()
@@ -76,13 +74,7 @@ const InactivityCheck = () => {
     createTimers()
 
     return clearTimers
-  }, [
-    isAdmin,
-    game.updatedAt,
-    game.settings,
-    opponents,
-    flagInactivityCheckEnabled,
-  ])
+  }, [isAdmin, game.updatedAt, game.settings, opponents])
 
   return null
 }

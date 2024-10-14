@@ -1,3 +1,4 @@
+import { posthogServer } from "@/lib/posthog-server"
 import InactivityCheck from "./InactivityCheck"
 import Lobby from "./Lobby"
 
@@ -8,11 +9,15 @@ type LobbyServerPageProps = {
   }
 }
 
-const LobbyServerPage = ({ params }: LobbyServerPageProps) => {
+const LobbyServerPage = async ({ params }: LobbyServerPageProps) => {
+  const isInactivityCheckEnabled = await posthogServer.isFeatureEnabled(
+    "inactivity-check",
+    "web-server",
+  )
   return (
     <>
       <Lobby gameCode={params.code} />
-      <InactivityCheck />
+      {isInactivityCheckEnabled && <InactivityCheck />}
     </>
   )
 }
