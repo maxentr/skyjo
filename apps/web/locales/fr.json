@@ -36,6 +36,11 @@
         }
       }
     },
+    "NotFound": {
+      "title": "Erreur 404",
+      "description": "La page que vous recherchez n'existe pas.",
+      "go-back-to-homepage": "Retour à l'accueil"
+    },
     "GamePage": {
       "your-turn": "C'est votre tour !"
     },
