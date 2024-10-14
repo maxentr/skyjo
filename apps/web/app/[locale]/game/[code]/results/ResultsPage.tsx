@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { getConnectedPlayers } from "@/lib/skyjo"
-import { getRedirectionUrl } from "@/lib/utils"
+import { cn, getRedirectionUrl } from "@/lib/utils"
 import { useRouter } from "@/navigation"
 import { AnimatePresence, m } from "framer-motion"
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react"
@@ -30,6 +30,9 @@ const ResultsPage = () => {
   const sortedPlayers = [...game.players].sort((a, b) => b.score - a.score)
 
   const allRowsVisible = visibleRows.length >= sortedPlayers.length
+
+  const connectedPlayers = getConnectedPlayers(game.players)
+  const hasMoreThanOneConnectedPlayer = connectedPlayers.length > 1
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -109,29 +112,42 @@ const ResultsPage = () => {
             animate={{ opacity: 1, display: "flex" }}
             transition={{ delay: 1 }}
           >
-            <div className="flex flex-col gap-1 items-center">
-              <p>{t("player-want-to-replay")}</p>
-              <div className="flex flex-row gap-1">
-                {getConnectedPlayers(game.players).map((player) =>
-                  player.wantsReplay ? (
-                    <CheckCircle2Icon
-                      key={player.id}
-                      size={24}
-                      className="text-emerald-600"
-                    />
-                  ) : (
-                    <XCircleIcon key={player.id} size={24} />
-                  ),
-                )}
+            {hasMoreThanOneConnectedPlayer && (
+              <div className="flex flex-col gap-1 items-center">
+                <p>{t("player-want-to-replay")}</p>
+                <div className="flex flex-row gap-1">
+                  {connectedPlayers.map((player) =>
+                    player.wantsReplay ? (
+                      <CheckCircle2Icon
+                        key={player.id}
+                        size={24}
+                        className="text-emerald-600"
+                      />
+                    ) : (
+                      <XCircleIcon key={player.id} size={24} />
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
-            <Button onClick={actions.replay} className="w-full">
+            )}
+            <Button
+              onClick={actions.replay}
+              className={cn(
+                "w-full",
+                hasMoreThanOneConnectedPlayer ? "" : "mt-6",
+              )}
+            >
               {player.wantsReplay
                 ? t("replay-button.cancel")
                 : t("replay-button.replay")}
             </Button>
-
-            <Button onClick={actions.leave} className="w-full mt-6">
+            <Button
+              onClick={actions.leave}
+              className={cn(
+                "w-full",
+                hasMoreThanOneConnectedPlayer ? "mt-6" : "mt-2",
+              )}
+            >
               {t("leave-button")}
             </Button>
           </m.div>
