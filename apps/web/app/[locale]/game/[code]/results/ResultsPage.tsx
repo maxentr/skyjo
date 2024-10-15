@@ -19,7 +19,7 @@ import { AnimatePresence, m } from "framer-motion"
 import { CheckCircle2Icon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
-import { GAME_STATUS } from "shared/constants"
+import { CONNECTION_STATUS, GAME_STATUS } from "shared/constants"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 const ResultsPage = () => {
@@ -27,21 +27,33 @@ const ResultsPage = () => {
   const router = useRouter()
   const t = useTranslations("pages.ResultsPage")
   const [visibleRows, setVisibleRows] = useState<SkyjoPlayerToJson[]>([])
-  const sortedPlayers = game.players.sort((a, b) => b.score - a.score)
 
-  const allRowsVisible = visibleRows.length >= sortedPlayers.length
+  const sortedConnectedPlayers = game.players
+    .filter((player) => player.connectionStatus === CONNECTION_STATUS.CONNECTED)
+    .sort((a, b) => b.score - a.score)
+
+  const sortedDisconnectedPlayers = game.players
+    .filter((player) => player.connectionStatus !== CONNECTION_STATUS.CONNECTED)
+    .sort((a, b) => b.score - a.score)
+
+  const allRowsVisible = visibleRows.length >= sortedConnectedPlayers.length
 
   const connectedPlayers = getConnectedPlayers(game.players)
   const hasMoreThanOneConnectedPlayer = connectedPlayers.length > 1
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (visibleRows.length < sortedPlayers.length) {
-        const nextPlayer = sortedPlayers[visibleRows.length]
+    let interval: NodeJS.Timeout
+    if (visibleRows.length < sortedConnectedPlayers.length) {
+      const nextPlayer = sortedConnectedPlayers[visibleRows.length]
 
+      interval = setInterval(() => {
         if (nextPlayer) setVisibleRows((prev) => [nextPlayer, ...prev])
-      }
-    }, 2000)
+      }, 2000)
+    } else if (visibleRows.length === sortedConnectedPlayers.length) {
+      interval = setInterval(() => {
+        setVisibleRows((prev) => [...prev, ...sortedDisconnectedPlayers])
+      }, 1000)
+    }
 
     return () => clearInterval(interval)
   }, [visibleRows.length])
@@ -86,9 +98,18 @@ const ResultsPage = () => {
                 className="border-b"
               >
                 <TableCell className="w-8">
-                  {allRowsVisible && index + 1}
+                  {player.connectionStatus === CONNECTION_STATUS.CONNECTED
+                    ? allRowsVisible && index + 1
+                    : "-"}
                 </TableCell>
-                <TableCell className="w-52 py-2 flex flex-row gap-2 items-center">
+                <TableCell
+                  className={cn(
+                    "w-52 py-2 flex flex-row gap-2 items-center",
+                    player.connectionStatus === CONNECTION_STATUS.CONNECTED
+                      ? "grayscale-0"
+                      : "grayscale",
+                  )}
+                >
                   <UserAvatar
                     player={player}
                     size="small"
