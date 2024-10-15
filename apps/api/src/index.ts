@@ -91,6 +91,9 @@ app.post("/feedback", zValidator("json", feedbackSchema), (c) => {
 
   transporter.sendMail(mailOptions, (error) => {
     if (error) {
+      Logger.error("Error while sending feedback", {
+        error,
+      })
       return c.json({ success: false })
     }
   })

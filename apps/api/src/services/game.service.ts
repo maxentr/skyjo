@@ -16,6 +16,8 @@ import {
 import { BaseService } from "./base.service"
 
 export class GameService extends BaseService {
+  private readonly NEW_ROUND_DELAY = 10000
+
   constructor() {
     super()
   }
@@ -138,9 +140,9 @@ export class GameService extends BaseService {
       throw new Error(ERROR.NOT_ALLOWED)
 
     const player = game.getPlayerById(socket.data.playerId)
-    if (!player) throw new Error(`player-not-found`)
+    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
 
-    if (!game.checkTurn(player.id)) throw new Error(`not-your-turn`)
+    if (!game.checkTurn(player.id)) throw new Error(ERROR.NOT_ALLOWED)
 
     if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus))
       throw new Error(ERROR.INVALID_TURN_STATE)
@@ -160,7 +162,7 @@ export class GameService extends BaseService {
       setTimeout(() => {
         game.startNewRound()
         this.broadcastGame(socket, game)
-      }, 10000)
+      }, this.NEW_ROUND_DELAY)
     }
 
     const updateGame = BaseService.gameDb.updateGame(game)

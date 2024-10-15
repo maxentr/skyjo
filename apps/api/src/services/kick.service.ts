@@ -44,10 +44,16 @@ export class KickService extends BaseService {
     targetId: string,
   ) {
     const initiator = game.getPlayerById(socket.data.playerId)
-    if (!initiator) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!initiator)
+      throw new Error(ERROR.PLAYER_NOT_FOUND, {
+        cause: `Tried to initiate a kick vote with player ${socket.data.playerId} as initiator but player not found in game ${game.id}. This can happen if the player left the game before the vote started.`,
+      })
 
     const target = game.getPlayerById(targetId)
-    if (!target) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!target)
+      throw new Error(ERROR.PLAYER_NOT_FOUND, {
+        cause: `Tried to initiate a kick vote with player ${targetId} as target but player not found in game ${game.id}. This can happen if the player left the game before the vote started.`,
+      })
 
     if (this.kickVotes.has(game.id))
       throw new Error(ERROR.KICK_VOTE_IN_PROGRESS)
@@ -100,7 +106,10 @@ export class KickService extends BaseService {
     kickVote: KickVote,
   ) {
     const playerToKick = game.getPlayerById(kickVote.targetId)
-    if (!playerToKick) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!playerToKick)
+      throw new Error(ERROR.PLAYER_NOT_FOUND, {
+        cause: `Tried to kick player ${kickVote.targetId} but player not found in game ${game.id}. This can happen if the player left the game before the vote ended.`,
+      })
 
     playerToKick.connectionStatus = CONNECTION_STATUS.DISCONNECTED
     await BaseService.playerDb.updatePlayer(playerToKick)

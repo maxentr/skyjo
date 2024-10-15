@@ -96,10 +96,16 @@ export abstract class BaseService {
   //#region private methods
   /* istanbul ignore next function -- @preserve */
   private async beforeStart() {
-    await BaseService.gameDb.removeInactiveGames()
-    BaseService.games = await BaseService.gameDb.getGamesByRegion()
+    try {
+      await BaseService.gameDb.removeInactiveGames()
+      BaseService.games = await BaseService.gameDb.getGamesByRegion()
 
-    this.startCronJob()
+      this.startCronJob()
+    } catch (error) {
+      Logger.error("Error while starting the service", {
+        error,
+      })
+    }
   }
 
   /* istanbul ignore next function -- @preserve */
@@ -112,11 +118,17 @@ export abstract class BaseService {
   /* istanbul ignore next function -- @preserve */
   private async removeInactiveGames() {
     Logger.info("Remove inactive games")
-    const deletedGameIds = await BaseService.gameDb.removeInactiveGames()
+    try {
+      const deletedGameIds = await BaseService.gameDb.removeInactiveGames()
 
-    BaseService.games = BaseService.games.filter(
-      (game) => !deletedGameIds.includes(game.id),
-    )
+      BaseService.games = BaseService.games.filter(
+        (game) => !deletedGameIds.includes(game.id),
+      )
+    } catch (error) {
+      Logger.error("Error while removing inactive games", {
+        error,
+      })
+    }
   }
   //#endregion
 }
