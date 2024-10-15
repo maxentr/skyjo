@@ -1,8 +1,14 @@
+import { Constants } from "@/constants"
 import { GameDb } from "@/db/game.db"
 import { PlayerDb } from "@/db/player.db"
 import { Logger } from "@/utils/logs"
 import cron from "node-cron"
-import { ERROR, SERVER_MESSAGE_TYPE } from "shared/constants"
+import {
+  ERROR,
+  GAME_STATUS,
+  ROUND_STATUS,
+  SERVER_MESSAGE_TYPE,
+} from "shared/constants"
 import { ServerChatMessage } from "shared/types/chat"
 import { Skyjo } from "../class/Skyjo"
 import { SkyjoPlayer } from "../class/SkyjoPlayer"
@@ -93,19 +99,34 @@ export abstract class BaseService {
     await BaseService.gameDb.removeGame(gameCode)
   }
 
+  protected async finishTurn(socket: SkyjoSocket, game: Skyjo) {
+    game.nextTurn()
+    const player = game.getCurrentPlayer()
+    BaseService.playerDb.updatePlayer(player)
+
+    if (
+      game.roundStatus === ROUND_STATUS.OVER &&
+      game.status !== GAME_STATUS.FINISHED
+    ) {
+      setTimeout(() => {
+        game.startNewRound()
+        this.broadcastGame(socket, game)
+      }, Constants.NEW_ROUND_DELAY)
+    }
+
+    const updateGame = BaseService.gameDb.updateGame(game)
+    const broadcast = this.broadcastGame(socket, game)
+
+    await Promise.all([updateGame, broadcast])
+  }
+
   //#region private methods
   /* istanbul ignore next function -- @preserve */
   private async beforeStart() {
-    try {
-      await BaseService.gameDb.removeInactiveGames()
-      BaseService.games = await BaseService.gameDb.getGamesByRegion()
+    await BaseService.gameDb.removeInactiveGames()
+    BaseService.games = await BaseService.gameDb.getGamesByRegion()
 
-      this.startCronJob()
-    } catch (error) {
-      Logger.error("Error while starting the service", {
-        error,
-      })
-    }
+    this.startCronJob()
   }
 
   /* istanbul ignore next function -- @preserve */

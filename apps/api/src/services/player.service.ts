@@ -53,8 +53,10 @@ export class PlayerService extends BaseService {
 
       await Promise.all(promises)
     } else {
-      await this.startDisconnectionTimeout(player, timeout, () =>
-        this.updateGameAfterTimeoutExpired(socket, game),
+      await this.startDisconnectionTimeout(
+        player,
+        timeout,
+        async () => await this.updateGameAfterTimeoutExpired(socket, game),
       )
     }
 
@@ -130,16 +132,11 @@ export class PlayerService extends BaseService {
       return
     }
 
-    if (game.getCurrentPlayer()?.id === socket.data.playerId) game.nextTurn()
+    if (game.getCurrentPlayer()?.id === socket.data.playerId)
+      await this.finishTurn(socket, game)
 
     if (game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS)
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
-    else if (
-      game.roundStatus === ROUND_STATUS.LAST_LAP &&
-      game.allConnectedPlayersHavePlayedLastTurn()
-    ) {
-      game.endRound()
-    }
 
     const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)

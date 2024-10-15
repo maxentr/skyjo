@@ -1,4 +1,3 @@
-import { Skyjo } from "@/class/Skyjo"
 import { SkyjoSocket } from "@/types/skyjoSocket"
 import {
   ERROR,
@@ -16,8 +15,6 @@ import {
 import { BaseService } from "./base.service"
 
 export class GameService extends BaseService {
-  private readonly NEW_ROUND_DELAY = 10000
-
   constructor() {
     super()
   }
@@ -148,27 +145,6 @@ export class GameService extends BaseService {
       throw new Error(ERROR.INVALID_TURN_STATE)
 
     return { player, game }
-  }
-
-  private async finishTurn(socket: SkyjoSocket, game: Skyjo) {
-    game.nextTurn()
-    const player = game.getCurrentPlayer()
-    BaseService.playerDb.updatePlayer(player)
-
-    if (
-      game.roundStatus === ROUND_STATUS.OVER &&
-      game.status !== GAME_STATUS.FINISHED
-    ) {
-      setTimeout(() => {
-        game.startNewRound()
-        this.broadcastGame(socket, game)
-      }, this.NEW_ROUND_DELAY)
-    }
-
-    const updateGame = BaseService.gameDb.updateGame(game)
-    const broadcast = this.broadcastGame(socket, game)
-
-    await Promise.all([updateGame, broadcast])
   }
   //#endregion
 }
