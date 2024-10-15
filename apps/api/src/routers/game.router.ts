@@ -25,10 +25,10 @@ const gameRouter = (socket: SkyjoSocket) => {
     }
   })
 
-  socket.on("play:reveal-card", (data: PlayRevealCard) => {
+  socket.on("play:reveal-card", async (data: PlayRevealCard) => {
     try {
       const turnCardData = playRevealCard.parse(data)
-      instance.onRevealCard(socket, turnCardData)
+      await instance.onRevealCard(socket, turnCardData)
     } catch (error) {
       Logger.error(`Error while turning a card`, {
         error,

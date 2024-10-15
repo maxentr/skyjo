@@ -9,10 +9,10 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 const instance = new ChatService()
 
 const chatRouter = (socket: SkyjoSocket) => {
-  socket.on("message", (data: SendChatMessage) => {
+  socket.on("message", async (data: SendChatMessage) => {
     try {
       const message = sendChatMessage.parse(data)
-      instance.onMessage(socket, message)
+      await instance.onMessage(socket, message)
     } catch (error) {
       Logger.error(`Error while chatting`, {
         error,

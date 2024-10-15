@@ -12,10 +12,10 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 const instance = new LobbyService()
 
 const lobbyRouter = (socket: SkyjoSocket) => {
-  socket.on("create-private", (player: CreatePlayer) => {
+  socket.on("create-private", async (player: CreatePlayer) => {
     try {
       const parsedPlayer = createPlayer.parse(player)
-      instance.onCreate(socket, parsedPlayer)
+      await instance.onCreate(socket, parsedPlayer)
     } catch (error) {
       Logger.error(`Error while creating a game`, {
         error,
@@ -51,7 +51,7 @@ const lobbyRouter = (socket: SkyjoSocket) => {
   socket.on("settings", async (data: ChangeSettings) => {
     try {
       const newSettings = changeSettings.parse(data)
-      instance.onSettingsChange(socket, newSettings)
+      await instance.onSettingsChange(socket, newSettings)
     } catch (error) {
       Logger.error(`Error while changing the game settings`, {
         error,
