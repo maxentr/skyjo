@@ -1,3 +1,4 @@
+import { CError } from "@/utils/CError"
 import { SeqTransport } from "@datalust/winston-seq"
 import { config } from "dotenv"
 import { createLogger, format, transports } from "winston"
@@ -6,6 +7,7 @@ config()
 
 export class Logger {
   private static readonly winstonLogger = createLogger({
+    level: "debug",
     format: format.combine(
       format.json(),
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
@@ -38,24 +40,56 @@ export class Logger {
     ],
   })
 
+  static debug(message: string, meta?: Record<string, unknown>) {
+    Logger.winstonLogger.debug(message, {
+      ...meta,
+    })
+  }
+
   static info(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.info(message, {
       ...meta,
-      explanation: message,
     })
   }
 
   static warn(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.warn(message, {
       ...meta,
-      explanation: message,
     })
   }
 
   static error(message: string, meta?: Record<string, unknown>) {
     Logger.winstonLogger.error(message, {
       ...meta,
-      explanation: message,
     })
+  }
+
+  static cError(error: CError, meta?: Record<string, unknown>) {
+    const { ...errorRest } = error
+
+    const level = error.level
+    delete error.level
+    delete error.shouldLog
+
+    const logMeta = {
+      ...errorRest,
+      ...meta,
+    }
+
+    switch (level) {
+      case "debug":
+        Logger.debug(error.message, logMeta)
+        break
+      case "info":
+        Logger.info(error.message, logMeta)
+        break
+      case "warn":
+        Logger.warn(error.message, logMeta)
+        break
+      case "error":
+      default:
+        Logger.error(error.message, logMeta)
+        break
+    }
   }
 }
