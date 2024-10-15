@@ -1,5 +1,5 @@
 import { ChatService } from "@/services/chat.service"
-import { Logger } from "@/utils/logs"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
 import {
   SendChatMessage,
   sendChatMessage,
@@ -9,16 +9,13 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 const instance = new ChatService()
 
 const chatRouter = (socket: SkyjoSocket) => {
-  socket.on("message", async (data: SendChatMessage) => {
-    try {
+  socket.on(
+    "message",
+    socketErrorHandlerWrapper(async (data: SendChatMessage) => {
       const message = sendChatMessage.parse(data)
       await instance.onMessage(socket, message)
-    } catch (error) {
-      Logger.error(`Error while chatting`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 }
 
 export { chatRouter }

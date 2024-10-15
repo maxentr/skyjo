@@ -1,5 +1,5 @@
 import { GameService } from "@/services/game.service"
-import { Logger } from "@/utils/logs"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
 import {
   PlayPickCard,
   PlayReplaceCard,
@@ -15,79 +15,58 @@ import { SkyjoSocket } from "../types/skyjoSocket"
 const instance = new GameService()
 
 const gameRouter = (socket: SkyjoSocket) => {
-  socket.on("get", async () => {
-    try {
+  socket.on(
+    "get",
+    socketErrorHandlerWrapper(async () => {
       await instance.onGet(socket)
-    } catch (error) {
-      Logger.error(`Error while getting a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("play:reveal-card", async (data: PlayRevealCard) => {
-    try {
+  socket.on(
+    "play:reveal-card",
+    socketErrorHandlerWrapper(async (data: PlayRevealCard) => {
       const turnCardData = playRevealCard.parse(data)
       await instance.onRevealCard(socket, turnCardData)
-    } catch (error) {
-      Logger.error(`Error while turning a card`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("play:pick-card", async (data: PlayPickCard) => {
-    try {
+  socket.on(
+    "play:pick-card",
+    socketErrorHandlerWrapper(async (data: PlayPickCard) => {
       const playData = playPickCard.parse(data)
       await instance.onPickCard(socket, playData)
-    } catch (error) {
-      Logger.error(`Error while playing a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("play:replace-card", async (data: PlayReplaceCard) => {
-    try {
+  socket.on(
+    "play:replace-card",
+    socketErrorHandlerWrapper(async (data: PlayReplaceCard) => {
       const playData = playReplaceCard.parse(data)
       await instance.onReplaceCard(socket, playData)
-    } catch (error) {
-      Logger.error(`Error while playing a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("play:discard-selected-card", async () => {
-    try {
+  socket.on(
+    "play:discard-selected-card",
+    socketErrorHandlerWrapper(async () => {
       await instance.onDiscardCard(socket)
-    } catch (error) {
-      Logger.error(`Error while playing a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("play:turn-card", async (data: PlayTurnCard) => {
-    try {
+  socket.on(
+    "play:turn-card",
+    socketErrorHandlerWrapper(async (data: PlayTurnCard) => {
       const playData = playTurnCard.parse(data)
       await instance.onTurnCard(socket, playData)
-    } catch (error) {
-      Logger.error(`Error while playing a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 
-  socket.on("replay", async () => {
-    try {
+  socket.on(
+    "replay",
+    socketErrorHandlerWrapper(async () => {
       await instance.onReplay(socket)
-    } catch (error) {
-      Logger.error(`Error while replaying a game`, {
-        error,
-      })
-    }
-  })
+    }),
+  )
 }
 
 export { gameRouter }
