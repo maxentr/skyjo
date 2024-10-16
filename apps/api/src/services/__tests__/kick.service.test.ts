@@ -74,13 +74,13 @@ describe("KickService", () => {
 
       await expect(
         service.onInitiateKickVote(socket, opponent2.id),
-      ).rejects.toThrow(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
     })
 
     it("should throw if the targeted player is not in the game", async () => {
       await expect(
         service.onInitiateKickVote(socket, crypto.randomUUID()),
-      ).rejects.toThrow(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
     })
 
     it("should initiate a kick vote", async () => {
@@ -94,7 +94,7 @@ describe("KickService", () => {
 
       await expect(
         service.onInitiateKickVote(socket, opponent2.id),
-      ).rejects.toThrow(ERROR.KICK_VOTE_IN_PROGRESS)
+      ).toThrowCErrorWithCode(ERROR.KICK_VOTE_IN_PROGRESS)
     })
 
     it("should check vote status if the kick vote has expired", async () => {
@@ -115,7 +115,7 @@ describe("KickService", () => {
     it("should throw if the game is not found", async () => {
       socket.data.gameCode = "NOT-A-GAME-CODE"
 
-      await expect(service.onVoteToKick(socket, true)).rejects.toThrow(
+      await expect(service.onVoteToKick(socket, true)).toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
     })
@@ -123,13 +123,13 @@ describe("KickService", () => {
     it("should throw if the player is not found", async () => {
       socket.data.playerId = "NOT-A-PLAYER-ID"
 
-      await expect(service.onVoteToKick(socket, true)).rejects.toThrow(
+      await expect(service.onVoteToKick(socket, true)).toThrowCErrorWithCode(
         ERROR.PLAYER_NOT_FOUND,
       )
     })
 
     it("should throw if no kick vote is in progress", async () => {
-      await expect(service.onVoteToKick(socket, true)).rejects.toThrow(
+      await expect(service.onVoteToKick(socket, true)).toThrowCErrorWithCode(
         ERROR.NO_KICK_VOTE_IN_PROGRESS,
       )
     })
@@ -137,7 +137,7 @@ describe("KickService", () => {
     it("should throw if the player has already voted", async () => {
       await service.onInitiateKickVote(socket, opponent2.id)
 
-      await expect(service.onVoteToKick(socket, true)).rejects.toThrow(
+      await expect(service.onVoteToKick(socket, true)).toThrowCErrorWithCode(
         ERROR.PLAYER_ALREADY_VOTED,
       )
       expect(service["kickVotes"].get(game.id)?.["votes"].length).toBe(1)
@@ -168,7 +168,7 @@ describe("KickService", () => {
 
       game.removePlayer(opponent2.id)
 
-      await expect(service.onVoteToKick(socket, true)).rejects.toThrow(
+      await expect(service.onVoteToKick(socket, true)).toThrowCErrorWithCode(
         ERROR.PLAYER_NOT_FOUND,
       )
     })

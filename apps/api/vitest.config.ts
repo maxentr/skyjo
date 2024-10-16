@@ -19,6 +19,7 @@ export default defineConfig({
         "src/**/__tests__/_mock.ts",
         "tests/*.ts",
         "src/service/*.ts",
+        "src/utils/CError.ts",
         "src/utils/Logger.ts",
         "src/utils/socketErrorHandlerWrapper.ts",
         "src/db/*.ts",

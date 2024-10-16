@@ -197,7 +197,7 @@ describe("Skyjo", () => {
         "socketId789",
       )
 
-      expect(() => skyjo.addPlayer(newPlayer)).not.toThrowError()
+      expect(() => skyjo.addPlayer(newPlayer)).not.toThrow()
       expect(skyjo.players).toHaveLength(3)
     })
 
@@ -208,7 +208,9 @@ describe("Skyjo", () => {
         "socketId789",
       )
 
-      expect(() => skyjo.addPlayer(newPlayer)).toThrowError(ERROR.GAME_IS_FULL)
+      expect(() => skyjo.addPlayer(newPlayer)).toThrowCErrorWithCode(
+        ERROR.GAME_IS_FULL,
+      )
       expect(skyjo.players).toHaveLength(2)
     })
   })
@@ -238,7 +240,7 @@ describe("Skyjo", () => {
   describe("start", () => {
     it("should not start the game if min players is not reached", () => {
       skyjo.removePlayer(opponent.id)
-      expect(() => skyjo.start()).toThrowError(ERROR.TOO_FEW_PLAYERS)
+      expect(() => skyjo.start()).toThrowCErrorWithCode(ERROR.TOO_FEW_PLAYERS)
     })
 
     it("should start the game with default settings", () => {
