@@ -249,20 +249,19 @@ export class Skyjo implements SkyjoInterface {
       this.lastTurnStatus = LAST_TURN_STATUS.TURN
       currentPlayer.turnAllCards()
 
-      if (this.allConnectedPlayersHavePlayedLastTurn()) {
-        this.endRound()
-        return
-      }
+      this.checkEndOfRound()
     }
 
     this.turnStatus = TURN_STATUS.CHOOSE_A_PILE
     this.turn = this.getNextTurn()
   }
 
-  allConnectedPlayersHavePlayedLastTurn() {
-    return this.getConnectedPlayers().every(
+  checkEndOfRound() {
+    const allPlayersHavePlayedLastTurn = this.getConnectedPlayers().every(
       (player) => player.hasPlayedLastTurn,
     )
+
+    if (allPlayersHavePlayedLastTurn) this.endRound()
   }
 
   endRound() {

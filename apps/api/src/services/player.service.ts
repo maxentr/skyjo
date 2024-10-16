@@ -68,10 +68,8 @@ export class PlayerService extends BaseService {
 
         await Promise.all(promises)
       } else {
-        await this.startDisconnectionTimeout(
-          player,
-          timeout,
-          async () => await this.updateGameAfterTimeoutExpired(socket, game),
+        this.startDisconnectionTimeout(player, timeout, () =>
+          this.updateGameAfterTimeoutExpired(socket, game),
         )
       }
 
@@ -143,7 +141,7 @@ export class PlayerService extends BaseService {
   }
 
   //#region private methods
-  private async startDisconnectionTimeout(
+  private startDisconnectionTimeout(
     player: SkyjoPlayer,
     connectionLost: boolean,
     callback: (...args: unknown[]) => Promise<unknown>,
@@ -151,12 +149,12 @@ export class PlayerService extends BaseService {
     player.connectionStatus = connectionLost
       ? CONNECTION_STATUS.CONNECTION_LOST
       : CONNECTION_STATUS.LEAVE
-    await BaseService.playerDb.updateDisconnectionDate(player, new Date())
+    BaseService.playerDb.updateDisconnectionDate(player, new Date())
 
     player.disconnectionTimeout = setTimeout(
-      async () => {
+      () => {
         player.connectionStatus = CONNECTION_STATUS.DISCONNECTED
-        await callback()
+        callback()
       },
       connectionLost ? CONNECTION_LOST_TIMEOUT_IN_MS : LEAVE_TIMEOUT_IN_MS,
     )
@@ -176,11 +174,20 @@ export class PlayerService extends BaseService {
       return
     }
 
-    if (game.getCurrentPlayer()?.id === socket.data.playerId)
-      await this.finishTurn(socket, game)
+    if (game.getCurrentPlayer()?.id === socket.data.playerId) {
+      game.nextTurn()
+    }
 
     if (game.roundStatus === ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS)
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
+
+    game.checkEndOfRound()
+    if (
+      game.roundStatus === ROUND_STATUS.OVER &&
+      game.status !== GAME_STATUS.FINISHED
+    ) {
+      this.restartRound(socket, game)
+    }
 
     const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
