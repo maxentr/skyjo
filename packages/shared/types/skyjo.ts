@@ -1,11 +1,11 @@
-import {
+import type {
   GameStatus,
   LastTurnStatus,
   RoundStatus,
   TurnStatus,
-} from "../constants"
-import { SkyjoPlayerToJson } from "./skyjoPlayer"
-import { SkyjoSettingsToJson } from "./skyjoSettings"
+} from "../constants.js"
+import type { SkyjoPlayerToJson } from "./skyjoPlayer.js"
+import type { SkyjoSettingsToJson } from "./skyjoSettings.js"
 
 export interface SkyjoToJson {
   code: string

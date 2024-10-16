@@ -1,24 +1,24 @@
-import { KickVoteToJson } from "types/kickVote"
-import { ChangeSettings } from "validations/changeSettings"
-import { InitiateKickVote, VoteToKick } from "validations/kick"
-import { Error } from "../constants"
-import {
+import type { Error } from "../constants.js"
+import type {
   ServerChatMessage,
   SystemChatMessage,
   UserChatMessage,
-} from "../types/chat"
-import { SkyjoPlayerToJson } from "../types/skyjoPlayer"
-import { SendChatMessage } from "../validations/chatMessage"
-import { JoinGame } from "../validations/joinGame"
-import {
+} from "../types/chat.js"
+import type { KickVoteToJson } from "../types/kickVote.js"
+import type { SkyjoPlayerToJson } from "../types/skyjoPlayer.js"
+import type { ChangeSettingsInput } from "../validations/changeSettings.js"
+import type { SendChatMessage } from "../validations/chatMessage.js"
+import type { JoinGame } from "../validations/joinGame.js"
+import type { InitiateKickVote, VoteToKick } from "../validations/kick.js"
+import type {
   PlayPickCard,
   PlayReplaceCard,
   PlayRevealCard,
   PlayTurnCard,
-} from "../validations/play"
-import { CreatePlayer } from "../validations/player"
-import { LastGame } from "../validations/reconnect"
-import { SkyjoToJson } from "./skyjo"
+} from "../validations/play.js"
+import type { CreatePlayer } from "../validations/player.js"
+import type { LastGame } from "../validations/reconnect.js"
+import type { SkyjoToJson } from "./skyjo.js"
 
 export type ClientToServerEvents = {
   "create-private": (player: CreatePlayer) => void
@@ -27,7 +27,7 @@ export type ClientToServerEvents = {
   reconnect: (data: LastGame) => void
   get: () => void
   start: () => void
-  settings: (data: ChangeSettings) => void
+  settings: (data: ChangeSettingsInput) => void
   message: (message: SendChatMessage) => void
   "play:reveal-card": (data: PlayRevealCard) => void
   "play:pick-card": (data: PlayPickCard) => void

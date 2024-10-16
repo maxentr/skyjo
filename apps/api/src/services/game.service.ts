@@ -1,25 +1,21 @@
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { CError } from "@/utils/CError"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { CError } from "@/utils/CError.js"
 import {
   ERROR,
   GAME_STATUS,
   ROUND_STATUS,
   TURN_STATUS,
-  TurnStatus,
+  type TurnStatus,
 } from "shared/constants"
-import {
+import type {
   PlayPickCard,
   PlayReplaceCard,
   PlayRevealCard,
   PlayTurnCard,
 } from "shared/validations/play"
-import { BaseService } from "./base.service"
+import { BaseService } from "./base.service.js"
 
 export class GameService extends BaseService {
-  constructor() {
-    super()
-  }
-
   async onGet(socket: SkyjoSocket) {
     const game = await this.getGame(socket.data.gameCode)
 

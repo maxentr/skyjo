@@ -1,4 +1,4 @@
-import { SkyjoCardToJson } from "shared/types/skyjoCard"
+import type { SkyjoCardToJson } from "shared/types/skyjoCard"
 
 interface SkyjoCardInterface {
   readonly id: string

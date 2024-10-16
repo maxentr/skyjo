@@ -1,5 +1,5 @@
-import { CError } from "@/utils/CError"
-import { Error as ErrorType } from "shared/constants"
+import { CError } from "@/utils/CError.js"
+import type { Error as ErrorType } from "shared/constants"
 import { expect } from "vitest"
 
 expect.extend({
@@ -43,6 +43,7 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module "vitest" {
+  // biome-ignore lint/suspicious/noExplicitAny: any is required for a callback with a dynamic
   interface Assertion<T = any> extends CustomMatchers<T> {}
   interface AsymmetricMatchersContaining extends CustomMatchers {}
 }

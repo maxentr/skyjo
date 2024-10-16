@@ -1,7 +1,7 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { Error as ErrorType } from "shared/constants"
-import { SocketData } from "shared/types/socket"
+import type { Skyjo } from "@/class/Skyjo.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import type { Error as ErrorType } from "shared/constants"
+import type { SocketData } from "shared/types/socket"
 
 type CErrorLevel = "debug" | "info" | "warn" | "error"
 

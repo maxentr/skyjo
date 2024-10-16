@@ -21,7 +21,7 @@ export const useKickVoteToasts = () => {
 
   const showVoteWithAction = (
     kickVote: KickVoteToJson,
-    voteToKick: (id: string, vote: boolean) => void,
+    voteToKick: (vote: boolean) => void,
   ) => {
     const playerToKickName = getPlayerToKick(kickVote.targetId)?.name
     const initiatorName = getInitiator(kickVote.initiatorId)?.name
@@ -36,13 +36,13 @@ export const useKickVoteToasts = () => {
       action: (
         <div className="flex flex-row items-center gap-2">
           <ToastAction
-            onClick={() => voteToKick(kickVote.targetId, true)}
+            onClick={() => voteToKick(true)}
             altText={t("player-has-not-voted.kick-button.alt")}
           >
             {t("player-has-not-voted.kick-button.label")}
           </ToastAction>
           <ToastAction
-            onClick={() => voteToKick(kickVote.targetId, false)}
+            onClick={() => voteToKick(false)}
             altText={t("player-has-not-voted.ignore-button.alt")}
             className="bg-gray-200"
           >

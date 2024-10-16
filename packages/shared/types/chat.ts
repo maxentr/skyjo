@@ -1,8 +1,8 @@
-import {
+import type {
   ServerMessageType,
   SystemMessageType,
   UserMessageType,
-} from "../constants"
+} from "../constants.js"
 
 export type UserChatMessage = {
   id: string

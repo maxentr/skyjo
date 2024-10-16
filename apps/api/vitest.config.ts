@@ -12,7 +12,7 @@ export default defineConfig({
       provider: "istanbul",
       reportsDirectory: "tests/coverage",
       exclude: [
-        "env.schema.ts",
+        "env.ts",
         "src/constants.ts",
         "src/index.ts",
         "src/**/__tests__/constants-test.ts",

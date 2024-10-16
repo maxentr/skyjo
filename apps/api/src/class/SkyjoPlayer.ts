@@ -1,14 +1,17 @@
-import { DbPlayer } from "database/schema"
+import type { DbPlayer } from "database/schema"
 import {
   AVATARS,
-  Avatar,
+  type Avatar,
   CONNECTION_STATUS,
-  ConnectionStatus,
+  type ConnectionStatus,
 } from "shared/constants"
-import { SkyjoPlayerScores, SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
-import { CreatePlayer } from "shared/validations/player"
-import { SkyjoCard } from "./SkyjoCard"
-import { SkyjoSettings } from "./SkyjoSettings"
+import type {
+  SkyjoPlayerScores,
+  SkyjoPlayerToJson,
+} from "shared/types/skyjoPlayer"
+import type { CreatePlayer } from "shared/validations/player"
+import { SkyjoCard } from "./SkyjoCard.js"
+import { SkyjoSettings } from "./SkyjoSettings.js"
 
 interface SkyjoPlayerInterface {
   cards: SkyjoCard[][]

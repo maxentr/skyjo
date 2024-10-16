@@ -1,24 +1,26 @@
 import { Server as HttpServer } from "http"
-import { chatRouter } from "@/routers/chat.router"
-import { gameRouter } from "@/routers/game.router"
-import { kickRouter } from "@/routers/kick.router"
-import { lobbyRouter } from "@/routers/lobby.router"
-import { playerRouter } from "@/routers/player.router"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { Logger } from "@/utils/Logger"
+import { chatRouter } from "@/routers/chat.router.js"
+import { gameRouter } from "@/routers/game.router.js"
+import { kickRouter } from "@/routers/kick.router.js"
+import { lobbyRouter } from "@/routers/lobby.router.js"
+import { playerRouter } from "@/routers/player.router.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { Logger } from "@/utils/Logger.js"
+import { ENV } from "@env"
 import { serve } from "@hono/node-server"
 import { zValidator } from "@hono/zod-validator"
 import { config } from "dotenv"
 import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { createTransport } from "nodemailer"
-import { ClientToServerEvents, ServerToClientEvents } from "shared/types/socket"
+import type {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "shared/types/socket"
 import { feedbackSchema } from "shared/validations/feedback"
 import { Server } from "socket.io"
 import customParser from "socket.io-msgpack-parser"
-import { checkEnv } from "../env.schema"
 
-checkEnv()
 config()
 
 const transporter = createTransport({
@@ -27,8 +29,8 @@ const transporter = createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.GMAIL_EMAIL,
-    pass: process.env.GMAIL_APP_PASSWORD,
+    user: ENV.GMAIL_EMAIL,
+    pass: ENV.GMAIL_APP_PASSWORD,
   },
 })
 
@@ -37,7 +39,7 @@ const app = new Hono()
 app.use(
   "/*",
   cors({
-    origin: process.env.ORIGINS,
+    origin: ENV.ORIGINS,
   }),
 )
 
@@ -52,7 +54,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(
   {
     parser: customParser,
     cors: {
-      origin: process.env.ORIGINS,
+      origin: ENV.ORIGINS,
     },
     pingInterval: 5000,
     pingTimeout: 60000,
@@ -83,8 +85,8 @@ app.post("/feedback", zValidator("json", feedbackSchema), (c) => {
   const { email, message } = c.req.valid("json")
 
   const mailOptions = {
-    from: process.env.GMAIL_EMAIL,
-    to: process.env.GMAIL_EMAIL,
+    from: ENV.GMAIL_EMAIL,
+    to: ENV.GMAIL_EMAIL,
     subject: `[SKYJO feedback] - from: ${email ?? "anonymous"}`,
     text: message,
   }

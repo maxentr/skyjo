@@ -136,7 +136,7 @@ const SkyjoProvider = ({ children, gameCode }: SkyjoProviderProps) => {
     if (!player?.isAdmin) return
 
     socket!.emit("settings", {
-      private: game?.settings.private,
+      private: game?.settings.private ?? false,
     })
   }
 

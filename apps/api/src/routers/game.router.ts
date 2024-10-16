@@ -1,16 +1,16 @@
-import { GameService } from "@/services/game.service"
-import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
+import { GameService } from "@/services/game.service.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import {
-  PlayPickCard,
-  PlayReplaceCard,
-  PlayRevealCard,
-  PlayTurnCard,
+  type PlayPickCard,
+  type PlayReplaceCard,
+  type PlayRevealCard,
+  type PlayTurnCard,
   playPickCard,
   playReplaceCard,
   playRevealCard,
   playTurnCard,
 } from "shared/validations/play"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 const instance = new GameService()
 

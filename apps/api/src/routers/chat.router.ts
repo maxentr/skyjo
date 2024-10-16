@@ -1,10 +1,10 @@
-import { ChatService } from "@/services/chat.service"
-import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
+import { ChatService } from "@/services/chat.service.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import {
-  SendChatMessage,
+  type SendChatMessage,
   sendChatMessage,
 } from "shared/validations/chatMessage"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 const instance = new ChatService()
 

@@ -1,8 +1,8 @@
-import { Constants } from "@/constants"
-import { GameDb } from "@/db/game.db"
-import { PlayerDb } from "@/db/player.db"
-import { CError } from "@/utils/CError"
-import { Logger } from "@/utils/Logger"
+import { Constants } from "@/constants.js"
+import { GameDb } from "@/db/game.db.js"
+import { PlayerDb } from "@/db/player.db.js"
+import { CError } from "@/utils/CError.js"
+import { Logger } from "@/utils/Logger.js"
 import cron from "node-cron"
 import {
   ERROR,
@@ -10,10 +10,10 @@ import {
   ROUND_STATUS,
   SERVER_MESSAGE_TYPE,
 } from "shared/constants"
-import { ServerChatMessage } from "shared/types/chat"
-import { Skyjo } from "../class/Skyjo"
-import { SkyjoPlayer } from "../class/SkyjoPlayer"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import type { ServerChatMessage } from "shared/types/chat"
+import type { Skyjo } from "../class/Skyjo.js"
+import type { SkyjoPlayer } from "../class/SkyjoPlayer.js"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 export abstract class BaseService {
   private static firstInit = true

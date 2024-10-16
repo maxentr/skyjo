@@ -1,9 +1,9 @@
-import {
+import type {
   ClientToServerEvents,
   ServerToClientEvents,
   SocketData,
 } from "shared/types/socket"
-import { Socket } from "socket.io"
+import type { Socket } from "socket.io"
 
 export type SkyjoSocket = Socket<
   ClientToServerEvents,

@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { createPlayer } from "./player"
+import { createPlayer } from "./player.js"
 
 export const joinGame = z.object({
   gameCode: z.string(),

@@ -1,6 +1,7 @@
 {
   "name": "shared",
   "version": "1.0.0",
+  "type": "module",
   "types": "./dist/*.d.ts",
   "exports": {
     "./validations/*": "./dist/validations/*.js",

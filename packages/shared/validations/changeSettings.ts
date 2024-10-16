@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SKYJO_DEFAULT_SETTINGS } from "../constants"
+import { SKYJO_DEFAULT_SETTINGS } from "../constants.js"
 
 export const changeSettings = z
   .object({
@@ -49,3 +49,4 @@ export const changeSettings = z
   )
 
 export type ChangeSettings = z.infer<typeof changeSettings>
+export type ChangeSettingsInput = z.input<typeof changeSettings>

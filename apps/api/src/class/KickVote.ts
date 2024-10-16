@@ -1,7 +1,7 @@
-import { Skyjo } from "@/class/Skyjo"
-import { Constants } from "@/constants"
+import { Skyjo } from "@/class/Skyjo.js"
+import { Constants } from "@/constants.js"
 
-import { KickVoteToJson, Vote } from "shared/types/kickVote"
+import type { KickVoteToJson, Vote } from "shared/types/kickVote"
 
 interface KickVoteInterface {
   toJson(): KickVoteToJson

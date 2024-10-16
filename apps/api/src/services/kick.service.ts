@@ -1,17 +1,13 @@
-import { KickVote } from "@/class/KickVote"
-import { Skyjo } from "@/class/Skyjo"
-import { Constants } from "@/constants"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { CError } from "@/utils/CError"
+import { KickVote } from "@/class/KickVote.js"
+import type { Skyjo } from "@/class/Skyjo.js"
+import { Constants } from "@/constants.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { CError } from "@/utils/CError.js"
 import { CONNECTION_STATUS, ERROR, GAME_STATUS } from "shared/constants"
-import { BaseService } from "./base.service"
+import { BaseService } from "./base.service.js"
 
 export class KickService extends BaseService {
   private readonly kickVotes: Map<string, KickVote> = new Map()
-
-  constructor() {
-    super()
-  }
 
   async onInitiateKickVote(socket: SkyjoSocket, targetId: string) {
     const game = await this.getGame(socket.data.gameCode)

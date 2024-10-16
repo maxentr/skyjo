@@ -1,15 +1,15 @@
-import { LobbyService } from "@/services/lobby.service"
-import { CError } from "@/utils/CError"
-import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
+import { LobbyService } from "@/services/lobby.service.js"
+import { CError } from "@/utils/CError.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import { ERROR } from "shared/constants"
-import { ErrorJoinMessage } from "shared/types/socket"
+import type { ErrorJoinMessage } from "shared/types/socket"
 import {
-  ChangeSettings,
+  type ChangeSettings,
   changeSettings,
 } from "shared/validations/changeSettings"
-import { JoinGame, joinGame } from "shared/validations/joinGame"
-import { CreatePlayer, createPlayer } from "shared/validations/player"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import { type JoinGame, joinGame } from "shared/validations/joinGame"
+import { type CreatePlayer, createPlayer } from "shared/validations/player"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 const instance = new LobbyService()
 
