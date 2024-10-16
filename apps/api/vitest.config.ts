@@ -7,7 +7,6 @@ export default defineConfig({
     reporters: ["vitest-sonar-reporter"],
     outputFile: {
       "vitest-sonar-reporter": "./tests/sonar-report.xml",
-      lcov: "./tests/lcov.info",
     },
     setupFiles: "./tests/setup.ts",
     coverage: {
