@@ -1,4 +1,5 @@
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
+import { CError } from "@/utils/CError"
 import { db } from "database/provider"
 import { playerTable } from "database/schema"
 import { and, eq, inArray } from "drizzle-orm"
@@ -26,7 +27,13 @@ export class PlayerDb {
       })
       .returning()
 
-    if (!newPlayer) throw new Error("Error while inserting player in database")
+    if (!newPlayer) {
+      throw new CError("Error while inserting player in database", {
+        meta: {
+          player,
+        },
+      })
+    }
 
     return newPlayer
   }

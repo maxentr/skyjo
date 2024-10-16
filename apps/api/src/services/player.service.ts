@@ -1,6 +1,7 @@
 import { Skyjo } from "@/class/Skyjo"
 import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSocket } from "@/types/skyjoSocket"
+import { CError } from "@/utils/CError"
 import {
   CONNECTION_LOST_TIMEOUT_IN_MS,
   CONNECTION_STATUS,
@@ -18,7 +19,16 @@ export class PlayerService extends BaseService {
     const game = await this.getGame(socket.data.gameCode)
 
     const player = game.getPlayerById(socket.data.playerId)
-    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!player) {
+      throw new CError(
+        `Player try to leave a game but he has not been found.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     player.connectionStatus = timeout
       ? CONNECTION_STATUS.CONNECTION_LOST
@@ -75,12 +85,33 @@ export class PlayerService extends BaseService {
       reconnectData.gameCode,
       reconnectData.playerId,
     )
-    if (!isPlayerInGame) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!isPlayerInGame) {
+      throw new CError(
+        `Player try to reconnect but he has not been found in the game.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: {
+            gameCode: reconnectData.gameCode,
+            playerId: reconnectData.playerId,
+          },
+        },
+      )
+    }
 
     const canReconnect = await BaseService.playerDb.canReconnect(
       reconnectData.playerId,
     )
-    if (!canReconnect) throw new Error(ERROR.CANNOT_RECONNECT)
+    if (!canReconnect) {
+      throw new CError(`Player try to reconnect but he cannot reconnect.`, {
+        code: ERROR.CANNOT_RECONNECT,
+        level: "warn",
+        meta: {
+          gameCode: reconnectData.gameCode,
+          playerId: reconnectData.playerId,
+        },
+      })
+    }
 
     await BaseService.playerDb.updateSocketId(reconnectData.playerId, socket.id)
 

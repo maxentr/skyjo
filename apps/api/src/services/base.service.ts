@@ -1,7 +1,8 @@
 import { Constants } from "@/constants"
 import { GameDb } from "@/db/game.db"
 import { PlayerDb } from "@/db/player.db"
-import { Logger } from "@/utils/logs"
+import { CError } from "@/utils/CError"
+import { Logger } from "@/utils/Logger"
 import cron from "node-cron"
 import {
   ERROR,
@@ -35,7 +36,18 @@ export abstract class BaseService {
 
     if (!game) {
       game = await BaseService.gameDb.retrieveGameByCode(gameCode)
-      if (!game) throw new Error(ERROR.GAME_NOT_FOUND)
+      if (!game) {
+        throw new CError(
+          `Someone try to get game but it doesn't exist in memory nor in database`,
+          {
+            code: ERROR.GAME_NOT_FOUND,
+            level: "warn",
+            meta: {
+              gameCode,
+            },
+          },
+        )
+      }
 
       BaseService.games.push(game)
     }
