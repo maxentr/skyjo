@@ -44,8 +44,9 @@ export class GameService extends BaseService {
       game.status !== GAME_STATUS.PLAYING ||
       game.roundStatus !== ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS
     ) {
+      await this.sendGame(socket, game)
       throw new CError(
-        `Player try to reveal a card but the game is not in the correct state.`,
+        `Player try to reveal a card but the game is not in the correct state. Sent game state to the player to fix the issue.`,
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
@@ -157,8 +158,9 @@ export class GameService extends BaseService {
       (game.roundStatus !== ROUND_STATUS.PLAYING &&
         game.roundStatus !== ROUND_STATUS.LAST_LAP)
     ) {
+      await this.sendGame(socket, game)
       throw new CError(
-        `Player try to play but the game is not in the correct state.`,
+        `Player try to play but the game is not in playing state. Sent game state to the player to fix the issue.`,
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
@@ -184,8 +186,9 @@ export class GameService extends BaseService {
     }
 
     if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus)) {
+      await this.sendGame(socket, game)
       throw new CError(
-        `Player try to play but the game is not in the correct state.`,
+        `Player try to play but the game is not in the allowed turn state. Sent game state to the player to fix the issue.`,
         {
           code: ERROR.INVALID_TURN_STATE,
           level: "warn",

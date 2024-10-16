@@ -55,9 +55,12 @@ export abstract class BaseService {
     return game
   }
 
-  protected async broadcastGame(socket: SkyjoSocket, game: Skyjo) {
+  protected async sendGame(socket: SkyjoSocket, game: Skyjo) {
     socket.emit("game", game.toJson())
+  }
 
+  protected async broadcastGame(socket: SkyjoSocket, game: Skyjo) {
+    await this.sendGame(socket, game)
     socket.to(game.code).emit("game", game.toJson())
   }
 
