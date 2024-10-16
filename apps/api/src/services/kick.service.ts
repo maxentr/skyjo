@@ -2,6 +2,7 @@ import { KickVote } from "@/class/KickVote"
 import { Skyjo } from "@/class/Skyjo"
 import { Constants } from "@/constants"
 import { SkyjoSocket } from "@/types/skyjoSocket"
+import { CError } from "@/utils/CError"
 import { CONNECTION_STATUS, ERROR, GAME_STATUS } from "shared/constants"
 import { BaseService } from "./base.service"
 
@@ -21,16 +22,36 @@ export class KickService extends BaseService {
     const game = await this.getGame(socket.data.gameCode)
 
     const player = game.getPlayerById(socket.data.playerId)
-    if (!player)
-      throw new Error(ERROR.PLAYER_NOT_FOUND, {
-        cause: `Tried to vote to kick but player ${socket.data.playerId} not found in game ${game.id}. This can happen if the player left the game before the vote ended.`,
-      })
+    if (!player) {
+      throw new CError(
+        `Player try to vote to kick but is not found. This can happen if the player left the game before the vote ended.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     const kickVote = this.kickVotes.get(game.id)
-    if (!kickVote) throw new Error(ERROR.NO_KICK_VOTE_IN_PROGRESS)
+    if (!kickVote) {
+      throw new CError(
+        `No kick vote is in progress. This can happen if the vote has expired or if the game is not in the correct state.`,
+        {
+          code: ERROR.NO_KICK_VOTE_IN_PROGRESS,
+          level: "warn",
+          meta: { game, gameCode: game.code },
+        },
+      )
+    }
 
-    if (kickVote.hasPlayerVoted(player.id))
-      throw new Error(ERROR.PLAYER_ALREADY_VOTED)
+    if (kickVote.hasPlayerVoted(player.id)) {
+      throw new CError(`Player has already voted.`, {
+        code: ERROR.PLAYER_ALREADY_VOTED,
+        level: "warn",
+        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+      })
+    }
 
     kickVote.addVote(player.id, vote)
 
@@ -44,19 +65,39 @@ export class KickService extends BaseService {
     targetId: string,
   ) {
     const initiator = game.getPlayerById(socket.data.playerId)
-    if (!initiator)
-      throw new Error(ERROR.PLAYER_NOT_FOUND, {
-        cause: `Tried to initiate a kick vote with player ${socket.data.playerId} as initiator but player not found in game ${game.id}. This can happen if the player left the game before the vote started.`,
-      })
+    if (!initiator) {
+      throw new CError(
+        `Player try to initiate a kick vote but is not found. This can happen if the player left the game before the vote started.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     const target = game.getPlayerById(targetId)
-    if (!target)
-      throw new Error(ERROR.PLAYER_NOT_FOUND, {
-        cause: `Tried to initiate a kick vote with player ${targetId} as target but player not found in game ${game.id}. This can happen if the player left the game before the vote started.`,
-      })
+    if (!target) {
+      throw new CError(
+        `Player try to initiate a kick vote but targeted player is not found. This can happen if the player left the game before the vote started.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: targetId },
+        },
+      )
+    }
 
-    if (this.kickVotes.has(game.id))
-      throw new Error(ERROR.KICK_VOTE_IN_PROGRESS)
+    if (this.kickVotes.has(game.id)) {
+      throw new CError(
+        `Cannot initiate a kick vote, a kick vote is already in progress for this game.`,
+        {
+          code: ERROR.KICK_VOTE_IN_PROGRESS,
+          level: "warn",
+          meta: { game, gameCode: game.code },
+        },
+      )
+    }
 
     const kickVote = new KickVote(game, target.id, initiator.id)
 
@@ -106,10 +147,16 @@ export class KickService extends BaseService {
     kickVote: KickVote,
   ) {
     const playerToKick = game.getPlayerById(kickVote.targetId)
-    if (!playerToKick)
-      throw new Error(ERROR.PLAYER_NOT_FOUND, {
-        cause: `Tried to kick player ${kickVote.targetId} but player not found in game ${game.id}. This can happen if the player left the game before the vote ended.`,
-      })
+    if (!playerToKick) {
+      throw new CError(
+        `Player try to be kicked but is not found in game. This can happen if the player left the game before the vote ended.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: kickVote.targetId },
+        },
+      )
+    }
 
     playerToKick.connectionStatus = CONNECTION_STATUS.DISCONNECTED
     await BaseService.playerDb.updatePlayer(playerToKick)

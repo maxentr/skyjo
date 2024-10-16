@@ -3,6 +3,7 @@ import { SkyjoPlayer } from "@/class/SkyjoPlayer"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { BaseService } from "@/services/base.service"
 import { SkyjoSocket } from "@/types/skyjoSocket"
+import { CError } from "@/utils/CError"
 import { ERROR, GAME_STATUS } from "shared/constants"
 import { ChangeSettings } from "shared/validations/changeSettings"
 import { CreatePlayer } from "shared/validations/player"
@@ -57,7 +58,16 @@ export class LobbyService extends BaseService {
 
   async onSettingsChange(socket: SkyjoSocket, settings: ChangeSettings) {
     const game = await this.getGame(socket.data.gameCode)
-    if (!game.isAdmin(socket.data.playerId)) throw new Error(ERROR.NOT_ALLOWED)
+    if (!game.isAdmin(socket.data.playerId)) {
+      throw new CError(
+        `Player try to change game settings but is not the admin.`,
+        {
+          code: ERROR.NOT_ALLOWED,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     game.settings.changeSettings(settings)
     game.updatedAt = new Date()
@@ -73,7 +83,13 @@ export class LobbyService extends BaseService {
 
   async onGameStart(socket: SkyjoSocket) {
     const game = await this.getGame(socket.data.gameCode)
-    if (!game.isAdmin(socket.data.playerId)) throw new Error(ERROR.NOT_ALLOWED)
+    if (!game.isAdmin(socket.data.playerId)) {
+      throw new CError(`Player try to start the game but is not the admin.`, {
+        code: ERROR.NOT_ALLOWED,
+        level: "warn",
+        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+      })
+    }
 
     game.start()
 
@@ -136,8 +152,16 @@ export class LobbyService extends BaseService {
     game: Skyjo,
     player: SkyjoPlayer,
   ) {
-    if (game.status !== GAME_STATUS.LOBBY)
-      throw new Error(ERROR.GAME_ALREADY_STARTED)
+    if (game.status !== GAME_STATUS.LOBBY) {
+      throw new CError(
+        `Player try to join a game but the game is not in the lobby.`,
+        {
+          code: ERROR.GAME_ALREADY_STARTED,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: player.id },
+        },
+      )
+    }
 
     game.addPlayer(player)
     const createPlayer = BaseService.playerDb.createPlayer(

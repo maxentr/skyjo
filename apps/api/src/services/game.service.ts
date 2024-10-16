@@ -1,4 +1,5 @@
 import { SkyjoSocket } from "@/types/skyjoSocket"
+import { CError } from "@/utils/CError"
 import {
   ERROR,
   GAME_STATUS,
@@ -32,13 +33,26 @@ export class GameService extends BaseService {
     const game = await this.getGame(gameCode)
 
     const player = game.getPlayerById(socket.data.playerId)
-    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!player) {
+      throw new CError(`Player try to reveal a card but is not found.`, {
+        code: ERROR.PLAYER_NOT_FOUND,
+        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+      })
+    }
 
     if (
       game.status !== GAME_STATUS.PLAYING ||
       game.roundStatus !== ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS
-    )
-      throw new Error(ERROR.NOT_ALLOWED)
+    ) {
+      throw new CError(
+        `Player try to reveal a card but the game is not in the correct state.`,
+        {
+          code: ERROR.NOT_ALLOWED,
+          level: "warn",
+          meta: { game, gameCode: game.code, player },
+        },
+      )
+    }
 
     if (player.hasRevealedCardCount(game.settings.initialTurnedCount)) return
 
@@ -109,7 +123,16 @@ export class GameService extends BaseService {
 
   async onReplay(socket: SkyjoSocket) {
     const game = await this.getGame(socket.data.gameCode)
-    if (game.status !== GAME_STATUS.FINISHED) throw new Error(ERROR.NOT_ALLOWED)
+    if (game.status !== GAME_STATUS.FINISHED) {
+      throw new CError(`Player try to replay but the game is not finished.`, {
+        code: ERROR.NOT_ALLOWED,
+        meta: {
+          game,
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
+      })
+    }
 
     game.getPlayerById(socket.data.playerId)?.toggleReplay()
 
@@ -133,16 +156,43 @@ export class GameService extends BaseService {
       game.status !== GAME_STATUS.PLAYING ||
       (game.roundStatus !== ROUND_STATUS.PLAYING &&
         game.roundStatus !== ROUND_STATUS.LAST_LAP)
-    )
-      throw new Error(ERROR.NOT_ALLOWED)
+    ) {
+      throw new CError(
+        `Player try to play but the game is not in the correct state.`,
+        {
+          code: ERROR.NOT_ALLOWED,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     const player = game.getPlayerById(socket.data.playerId)
-    if (!player) throw new Error(ERROR.PLAYER_NOT_FOUND)
+    if (!player) {
+      throw new CError(`Player try to play but is not found.`, {
+        code: ERROR.PLAYER_NOT_FOUND,
+        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+      })
+    }
 
-    if (!game.checkTurn(player.id)) throw new Error(ERROR.NOT_ALLOWED)
+    if (!game.checkTurn(player.id)) {
+      throw new CError(`Player try to play but it's not his turn.`, {
+        code: ERROR.NOT_ALLOWED,
+        level: "warn",
+        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+      })
+    }
 
-    if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus))
-      throw new Error(ERROR.INVALID_TURN_STATE)
+    if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus)) {
+      throw new CError(
+        `Player try to play but the game is not in the correct state.`,
+        {
+          code: ERROR.INVALID_TURN_STATE,
+          level: "warn",
+          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        },
+      )
+    }
 
     return { player, game }
   }

@@ -1,7 +1,8 @@
 import { Skyjo } from "@/class/Skyjo"
 import { SkyjoSettings } from "@/class/SkyjoSettings"
 import { PlayerDb } from "@/db/player.db"
-import { Logger } from "@/utils/logs"
+import { CError } from "@/utils/CError"
+import { Logger } from "@/utils/Logger"
 import { db } from "database/provider"
 import { DbGame, gameTable, playerTable } from "database/schema"
 import dayjs from "dayjs"
@@ -46,7 +47,13 @@ export class GameDb {
       })
       .returning()
 
-    if (!dbGame) throw new Error("Error while inserting game in database")
+    if (!dbGame) {
+      throw new CError("Error while inserting game in database", {
+        meta: {
+          game,
+        },
+      })
+    }
 
     return dbGame
   }
@@ -222,7 +229,7 @@ export class GameDb {
 
         formattedGames.push(skyjo)
       } catch (error) {
-        Logger.error(`Error while formatting game with code: ${game.code}`, {
+        Logger.error(`Error while formatting game code: ${game.code}`, {
           error,
         })
 
@@ -241,7 +248,7 @@ export class GameDb {
 
     if (!admin) {
       Logger.warn(
-        `Impossible error while formatting game with code: ${game.code}. Reason: no admin and no player in it. Game will be removed.`,
+        `Impossible error while formatting game code: ${game.code}. Reason: no admin and no player in it. Game will be removed.`,
       )
 
       await this.removeGame(game.code)

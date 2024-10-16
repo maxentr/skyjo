@@ -1,5 +1,6 @@
 import { Constants } from "@/constants"
-import { Logger } from "@/utils/logs"
+import { CError } from "@/utils/CError"
+import { Logger } from "@/utils/Logger"
 import { DbGame, DbPlayer } from "database/schema"
 import {
   CONNECTION_STATUS,
@@ -125,7 +126,18 @@ export class Skyjo implements SkyjoInterface {
   }
 
   addPlayer(player: SkyjoPlayer) {
-    if (this.isFull()) throw new Error(ERROR.GAME_IS_FULL)
+    if (this.isFull()) {
+      throw new CError("Cannot add player, game is full", {
+        code: ERROR.GAME_IS_FULL,
+        level: "warn",
+        meta: {
+          game: this,
+          gameCode: this.code,
+          player,
+        },
+      })
+    }
+
     this.players.push(player)
   }
 
@@ -150,13 +162,23 @@ export class Skyjo implements SkyjoInterface {
   }
 
   start() {
+    if (this.getConnectedPlayers().length < Constants.MIN_PLAYERS) {
+      throw new CError(
+        `Game cannot start with less than ${Constants.MIN_PLAYERS} players`,
+        {
+          code: ERROR.TOO_FEW_PLAYERS,
+          level: "warn",
+          meta: {
+            game: this,
+          },
+        },
+      )
+    }
+
     this.resetRound()
     this.lastTurnStatus = LAST_TURN_STATUS.TURN
     if (this.settings.initialTurnedCount === 0)
       this.roundStatus = ROUND_STATUS.PLAYING
-
-    if (this.getConnectedPlayers().length < Constants.MIN_PLAYERS)
-      throw new Error(ERROR.TOO_FEW_PLAYERS)
 
     this.status = GAME_STATUS.PLAYING
     this.turn = Math.floor(Math.random() * this.players.length)
