@@ -1,4 +1,5 @@
 import { vi } from "vitest"
+import "./cerror-matcher"
 
 vi.mock("database/provider")
 
