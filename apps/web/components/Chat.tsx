@@ -1,9 +1,11 @@
 "use client"
 
+import ChatDrawer from "@/components/ChatDrawer"
 import ChatForm from "@/components/ChatForm"
 import ChatMessageList from "@/components/ChatMessageList"
 import { useChat } from "@/contexts/ChatContext"
 import { useSettings } from "@/contexts/SettingsContext"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
@@ -36,6 +38,7 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
     settings: { chatVisibility, chatNotificationSize },
   } = useSettings()
   const t = useTranslations("components.Chat")
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   const [open, setOpen] = useState(false)
 
@@ -63,10 +66,20 @@ const Chat = ({ className, disabled = false }: ChatProps) => {
 
   if (!chatVisibility) return null
 
+  if (!isDesktop)
+    return (
+      <ChatDrawer
+        className={className}
+        open={open}
+        toggleOpening={toggleOpening}
+        disabled={disabled}
+      />
+    )
+
   return (
     <div
       className={cn(
-        "absolute right-6 top-full z-10 hidden md:flex items-center justify-end",
+        "absolute right-6 top-full z-10 flex items-center justify-end",
         className,
       )}
     >
