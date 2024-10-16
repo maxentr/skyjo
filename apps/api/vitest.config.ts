@@ -1,13 +1,16 @@
-// vitest.config.ts
 import tsconfigPaths from "vite-tsconfig-paths"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
+    reporters: ["vitest-sonar-reporter"],
+    outputFile: {
+      "vitest-sonar-reporter": "./sonar-report.xml",
+    },
     setupFiles: "./tests/setup.ts",
     coverage: {
-      reporter: ["text", "html", "json-summary", "json"],
+      reporter: ["text", "html", "json-summary", "json", "lcov"],
       reportOnFailure: true,
       provider: "istanbul",
       reportsDirectory: "tests/coverage",
