@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
+import { CONNECTION_STATUS } from "shared/constants"
 import { SkyjoPlayerToJson } from "shared/types/skyjoPlayer"
 
 type Props = {
@@ -32,6 +33,19 @@ const ScoreTable = ({ players, winner, scrollToEnd = false }: Props) => {
     })
   }, [])
 
+  const sortedConnectedPlayers = players
+    .filter((player) => player.connectionStatus === CONNECTION_STATUS.CONNECTED)
+    .sort((a, b) => a.score - b.score)
+
+  const sortedDisconnectedPlayers = players
+    .filter((player) => player.connectionStatus !== CONNECTION_STATUS.CONNECTED)
+    .sort((a, b) => a.score - b.score)
+
+  const sortedPlayers = [
+    ...sortedConnectedPlayers,
+    ...sortedDisconnectedPlayers,
+  ]
+
   return (
     <Table id="end-round-table">
       <TableHeader>
@@ -50,7 +64,7 @@ const ScoreTable = ({ players, winner, scrollToEnd = false }: Props) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {players.map((player) => (
+        {sortedPlayers.map((player) => (
           <TableRow key={player.id}>
             <TableCell className="sticky left-0 z-10">
               {player.name} {winner?.id === player.id && "🏆"}
