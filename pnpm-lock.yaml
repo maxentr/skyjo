@@ -109,9 +109,6 @@ importers:
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.16.11)(@vitest/ui@1.6.0)(terser@5.36.0)
-      vitest-sonar-reporter:
-        specifier: ^2.0.0
-        version: 2.0.0(vitest@1.6.0(@types/node@20.16.11)(@vitest/ui@1.6.0)(terser@5.36.0))
 
   apps/web:
     dependencies:
@@ -5251,12 +5248,6 @@ packages:
         optional: true
       terser:
         optional: true
-
-  vitest-sonar-reporter@2.0.0:
-    resolution: {integrity: sha512-LorC3NnmrBrryx4+l3BEsNQjD0Y7wfmrD1y/+tHDuZUuVj7w8nOxRXCBSppDfmgfpToOhwchh0JcL4IGMKUKDA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    peerDependencies:
-      vitest: '>=1'
 
   vitest@1.6.0:
     resolution: {integrity: sha512-H5r/dN06swuFnzNFhq/dnz37bPXnq8xB2xB5JOVk8K09rUtoeNN+LHWkoQ0A/i3hvbUKKcCei9KpbxqHMLhLLA==}
@@ -10485,10 +10476,6 @@ snapshots:
       '@types/node': 20.16.11
       fsevents: 2.3.3
       terser: 5.36.0
-
-  vitest-sonar-reporter@2.0.0(vitest@1.6.0(@types/node@20.16.11)(@vitest/ui@1.6.0)(terser@5.36.0)):
-    dependencies:
-      vitest: 1.6.0(@types/node@20.16.11)(@vitest/ui@1.6.0)(terser@5.36.0)
 
   vitest@1.6.0(@types/node@20.16.11)(@vitest/ui@1.6.0)(terser@5.36.0):
     dependencies:
