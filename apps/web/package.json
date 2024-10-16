@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "biome:check": "pnpm biome check --apply ."
+    "biome:check": "pnpm biome check --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
