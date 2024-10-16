@@ -1,9 +1,9 @@
 {
   "name": "database",
   "version": "1.0.0",
-  "types": "./dist/*.d.ts",
+  "type": "module",
   "exports": {
-    "./*": "./dist/*.js"
+    "./*": "./dist/src/*.js"
   },
   "typesVersions": {
     "*": {
@@ -17,7 +17,7 @@
     "biome:check": "pnpm biome check --apply ."
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.9.5",
+    "@neondatabase/serverless": "^0.10.1",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.2",
     "pg": "^8.13.0",

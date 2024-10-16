@@ -15,8 +15,8 @@ import { KickVoteToJson } from "shared/types/kickVote"
 
 type VoteKickContext = {
   actions: {
-    initiateKickVote: (playerSocketId: string) => void
-    voteToKick: (playerSocketId: string, vote: boolean) => void
+    initiateKickVote: (targetPlayerId: string) => void
+    voteToKick: (vote: boolean) => void
   }
   kickVoteInProgress: boolean
 }
@@ -105,8 +105,8 @@ export const VoteKickProvider = ({ children }: PropsWithChildren) => {
     showVoteInitiated(playerToKick.name)
   }
 
-  const voteToKick = (targetId: string, vote: boolean) => {
-    socket!.emit("kick:vote", { targetId, vote })
+  const voteToKick = (vote: boolean) => {
+    socket!.emit("kick:vote", { vote })
     if (!vote) dismiss()
   }
 

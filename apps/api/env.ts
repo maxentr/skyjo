@@ -1,6 +1,11 @@
+import { config } from "dotenv"
 import { API_REGIONS_TAGS } from "shared/constants"
 import { z } from "zod"
+
+config()
+
 export const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "production"]),
   ORIGINS: z.string({ message: "ORIGINS must be set in .env file" }),
 
   GMAIL_EMAIL: z.string({ message: "GMAIL_EMAIL must be set in .env file" }),
@@ -17,8 +22,4 @@ export const envSchema = z.object({
   }),
 })
 
-export const checkEnv = () => {
-  envSchema.parse(process.env)
-}
-
-export type Env = z.infer<typeof envSchema>
+export const ENV = envSchema.parse(process.env)

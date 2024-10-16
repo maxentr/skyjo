@@ -1,7 +1,7 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { CError } from "@/utils/CError"
+import type { Skyjo } from "@/class/Skyjo.js"
+import type { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { CError } from "@/utils/CError.js"
 import {
   CONNECTION_LOST_TIMEOUT_IN_MS,
   CONNECTION_STATUS,
@@ -11,8 +11,8 @@ import {
   ROUND_STATUS,
   SERVER_MESSAGE_TYPE,
 } from "shared/constants"
-import { LastGame } from "shared/validations/reconnect"
-import { BaseService } from "./base.service"
+import type { LastGame } from "shared/validations/reconnect"
+import { BaseService } from "./base.service.js"
 
 export class PlayerService extends BaseService {
   async onLeave(socket: SkyjoSocket, timeout: boolean = false) {

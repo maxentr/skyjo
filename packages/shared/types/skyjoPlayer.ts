@@ -1,5 +1,5 @@
-import { Avatar, ConnectionStatus } from "../constants"
-import { SkyjoCardToJson } from "./skyjoCard"
+import type { Avatar, ConnectionStatus } from "../constants.js"
+import type { SkyjoCardToJson } from "./skyjoCard.js"
 
 export type SkyjoPlayerScores = (number | "-")[]
 

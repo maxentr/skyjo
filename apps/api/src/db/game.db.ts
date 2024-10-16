@@ -1,10 +1,11 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { PlayerDb } from "@/db/player.db"
-import { CError } from "@/utils/CError"
-import { Logger } from "@/utils/Logger"
+import { Skyjo } from "@/class/Skyjo.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { PlayerDb } from "@/db/player.db.js"
+import { CError } from "@/utils/CError.js"
+import { Logger } from "@/utils/Logger.js"
+import { ENV } from "@env"
 import { db } from "database/provider"
-import { DbGame, gameTable, playerTable } from "database/schema"
+import { type DbGame, gameTable, playerTable } from "database/schema"
 import dayjs from "dayjs"
 import { and, eq, lte } from "drizzle-orm"
 import { GAME_STATUS } from "shared/constants"
@@ -43,7 +44,7 @@ export class GameDb {
         scoreToEndGame: game.settings.scoreToEndGame,
         multiplierForFirstPlayer: game.settings.multiplierForFirstPlayer,
 
-        region: process.env.REGION,
+        region: ENV.REGION,
       })
       .returning()
 
@@ -73,12 +74,7 @@ export class GameDb {
         isFull: game.isFull(),
         updatedAt: new Date(),
       })
-      .where(
-        and(
-          eq(gameTable.id, game.id),
-          eq(gameTable.region, process.env.REGION),
-        ),
-      )
+      .where(and(eq(gameTable.id, game.id), eq(gameTable.region, ENV.REGION)))
       .execute()
 
     if (updatePlayers) {
@@ -104,9 +100,7 @@ export class GameDb {
         scoreToEndGame: setting.scoreToEndGame,
         multiplierForFirstPlayer: setting.multiplierForFirstPlayer,
       })
-      .where(
-        and(eq(gameTable.id, gameId), eq(gameTable.region, process.env.REGION)),
-      )
+      .where(and(eq(gameTable.id, gameId), eq(gameTable.region, ENV.REGION)))
       .execute()
   }
 
@@ -116,15 +110,13 @@ export class GameDb {
       .set({
         adminId,
       })
-      .where(
-        and(eq(gameTable.id, gameId), eq(gameTable.region, process.env.REGION)),
-      )
+      .where(and(eq(gameTable.id, gameId), eq(gameTable.region, ENV.REGION)))
       .execute()
   }
 
   async getGamesByRegion() {
     const games = await db.query.gameTable.findMany({
-      where: eq(gameTable.region, process.env.REGION),
+      where: eq(gameTable.region, ENV.REGION),
     })
 
     return await this.formatArraySkyjo(games)
@@ -132,10 +124,7 @@ export class GameDb {
 
   async getGameById(gameId: string) {
     const game = await db.query.gameTable.findFirst({
-      where: and(
-        eq(gameTable.id, gameId),
-        eq(gameTable.region, process.env.REGION),
-      ),
+      where: and(eq(gameTable.id, gameId), eq(gameTable.region, ENV.REGION)),
       with: {
         players: true,
       },
@@ -158,7 +147,7 @@ export class GameDb {
         eq(gameTable.status, GAME_STATUS.LOBBY),
         eq(gameTable.isFull, false),
         eq(gameTable.isPrivate, false),
-        eq(gameTable.region, process.env.REGION),
+        eq(gameTable.region, ENV.REGION),
       ),
     })
 
@@ -179,7 +168,7 @@ export class GameDb {
         and(
           eq(gameTable.code, code),
           eq(playerTable.id, playerId),
-          eq(gameTable.region, process.env.REGION),
+          eq(gameTable.region, ENV.REGION),
         ),
       )
       .execute()
@@ -199,10 +188,7 @@ export class GameDb {
     await db
       .delete(gameTable)
       .where(
-        and(
-          eq(gameTable.code, gameCode),
-          eq(gameTable.region, process.env.REGION),
-        ),
+        and(eq(gameTable.code, gameCode), eq(gameTable.region, ENV.REGION)),
       )
       .execute()
   }
@@ -212,7 +198,7 @@ export class GameDb {
       .delete(gameTable)
       .where(
         and(
-          eq(gameTable.region, process.env.REGION),
+          eq(gameTable.region, ENV.REGION),
           lte(gameTable.updatedAt, dayjs().subtract(10, "minutes").toDate()),
         ),
       )

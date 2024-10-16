@@ -1,8 +1,8 @@
-import { SkyjoSettingsToJson } from "shared/types/skyjoSettings"
+import type { SkyjoSettingsToJson } from "shared/types/skyjoSettings"
 
-import { DbGame } from "database/schema"
+import type { DbGame } from "database/schema"
 import { SKYJO_DEFAULT_SETTINGS } from "shared/constants"
-import { ChangeSettings } from "shared/validations/changeSettings"
+import type { ChangeSettings } from "shared/validations/changeSettings"
 
 export interface SkyjoSettingsInterface {
   private: boolean

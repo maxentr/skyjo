@@ -1,12 +1,12 @@
-import { KickService } from "@/services/kick.service"
-import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
+import { KickService } from "@/services/kick.service.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import {
-  InitiateKickVote,
-  VoteToKick,
+  type InitiateKickVote,
+  type VoteToKick,
   initiateKickVote,
   voteToKick,
 } from "shared/validations/kick"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 const instance = new KickService()
 

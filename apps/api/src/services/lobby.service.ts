@@ -1,22 +1,18 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { BaseService } from "@/services/base.service"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { CError } from "@/utils/CError"
+import { Skyjo } from "@/class/Skyjo.js"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { BaseService } from "@/services/base.service.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { CError } from "@/utils/CError.js"
 import { ERROR, GAME_STATUS } from "shared/constants"
-import { ChangeSettings } from "shared/validations/changeSettings"
-import { CreatePlayer } from "shared/validations/player"
+import type { ChangeSettings } from "shared/validations/changeSettings"
+import type { CreatePlayer } from "shared/validations/player"
 
 export class LobbyService extends BaseService {
   private readonly MAX_GAME_INACTIVE_TIME = 300000 // 5 minutes
   private readonly BASE_NEW_GAME_CHANCE = 0.05 // 5%
   private readonly MAX_NEW_GAME_CHANCE = 0.2 // 20%
   private readonly IDEAL_LOBBY_GAME_COUNT = 3 // Number of lobby wanted at the same time
-
-  constructor() {
-    super()
-  }
 
   async onCreate(
     socket: SkyjoSocket,

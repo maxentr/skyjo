@@ -11,22 +11,22 @@ import {
 import {
   API_REGIONS_TAGS,
   AVATARS,
-  ApiRegionsTag,
-  Avatar,
+  type ApiRegionsTag,
+  type Avatar,
   CONNECTION_STATUS,
-  ConnectionStatus,
+  type ConnectionStatus,
   GAME_STATUS,
-  GameStatus,
+  type GameStatus,
   LAST_TURN_STATUS,
-  LastTurnStatus,
+  type LastTurnStatus,
   ROUND_STATUS,
-  RoundStatus,
+  type RoundStatus,
   SKYJO_DEFAULT_SETTINGS,
   TURN_STATUS,
-  TurnStatus,
+  type TurnStatus,
 } from "shared/constants"
-import { SkyjoCardDb } from "shared/types/skyjoCard"
-import { SkyjoPlayerScores } from "shared/types/skyjoPlayer"
+import type { SkyjoCardDb } from "shared/types/skyjoCard"
+import type { SkyjoPlayerScores } from "shared/types/skyjoPlayer"
 
 const gameStatusEnum = pgEnum(
   "game_status",

@@ -1,7 +1,8 @@
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { CError } from "@/utils/CError"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { CError } from "@/utils/CError.js"
 import { db } from "database/provider"
 import { playerTable } from "database/schema"
+
 import { and, eq, inArray } from "drizzle-orm"
 import {
   CONNECTION_LOST_TIMEOUT_IN_MS,

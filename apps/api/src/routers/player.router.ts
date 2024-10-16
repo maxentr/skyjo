@@ -1,12 +1,12 @@
-import { PlayerService } from "@/services/player.service"
-import { CError } from "@/utils/CError"
-import { Logger } from "@/utils/Logger"
-import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper"
+import { PlayerService } from "@/services/player.service.js"
+import { CError } from "@/utils/CError.js"
+import { Logger } from "@/utils/Logger.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import { ERROR } from "shared/constants"
-import { ErrorReconnectMessage } from "shared/types/socket"
-import { LastGame, reconnect } from "shared/validations/reconnect"
-import { DisconnectReason } from "socket.io"
-import { SkyjoSocket } from "../types/skyjoSocket"
+import type { ErrorReconnectMessage } from "shared/types/socket"
+import { type LastGame, reconnect } from "shared/validations/reconnect"
+import type { DisconnectReason } from "socket.io"
+import type { SkyjoSocket } from "../types/skyjoSocket.js"
 
 const instance = new PlayerService()
 

@@ -1,5 +1,6 @@
-import { CError } from "@/utils/CError"
+import { CError } from "@/utils/CError.js"
 import { SeqTransport } from "@datalust/winston-seq"
+import { ENV } from "@env"
 import { config } from "dotenv"
 import { createLogger, format, transports } from "winston"
 
@@ -16,7 +17,7 @@ export class Logger {
     ),
     defaultMeta: {
       app: "skyjo-api",
-      environment: process.env.NODE_ENV,
+      environment: ENV.NODE_ENV,
     },
     transports: [
       new transports.Console({
@@ -31,8 +32,8 @@ export class Logger {
         ),
       }),
       new SeqTransport({
-        serverUrl: process.env.SEQ_URL,
-        apiKey: process.env.SEQ_API_KEY,
+        serverUrl: ENV.SEQ_URL,
+        apiKey: ENV.SEQ_API_KEY,
         onError: (e) => console.error(e),
         handleExceptions: true,
         handleRejections: true,

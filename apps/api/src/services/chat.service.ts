@@ -1,14 +1,10 @@
-import { BaseService } from "@/services/base.service"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { CError } from "@/utils/CError"
+import { BaseService } from "@/services/base.service.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { CError } from "@/utils/CError.js"
 import { ERROR, USER_MESSAGE_TYPE } from "shared/constants"
-import { UserChatMessage } from "shared/types/chat"
+import type { UserChatMessage } from "shared/types/chat"
 
 export class ChatService extends BaseService {
-  constructor() {
-    super()
-  }
-
   async onMessage(
     socket: SkyjoSocket,
     { username, message }: Omit<UserChatMessage, "id" | "type">,

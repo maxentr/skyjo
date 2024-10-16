@@ -1,24 +1,25 @@
-import { Constants } from "@/constants"
-import { CError } from "@/utils/CError"
-import { Logger } from "@/utils/Logger"
-import { DbGame, DbPlayer } from "database/schema"
+import { Constants } from "@/constants.js"
+import { CError } from "@/utils/CError.js"
+import { Logger } from "@/utils/Logger.js"
+import type { DbGame } from "database/schema"
+import type { DbPlayer } from "database/schema"
 import {
   CONNECTION_STATUS,
   ERROR,
   GAME_STATUS,
-  GameStatus,
+  type GameStatus,
   LAST_TURN_STATUS,
-  LastTurnStatus,
+  type LastTurnStatus,
   ROUND_STATUS,
-  RoundStatus,
+  type RoundStatus,
   TURN_STATUS,
-  TurnStatus,
+  type TurnStatus,
 } from "shared/constants"
-import { SkyjoToJson } from "shared/types/skyjo"
-import { shuffle } from "../utils/shuffle"
-import { SkyjoCard } from "./SkyjoCard"
-import { SkyjoPlayer } from "./SkyjoPlayer"
-import { SkyjoSettings } from "./SkyjoSettings"
+import type { SkyjoToJson } from "shared/types/skyjo"
+import { shuffle } from "../utils/shuffle.js"
+import { SkyjoCard } from "./SkyjoCard.js"
+import { SkyjoPlayer } from "./SkyjoPlayer.js"
+import { SkyjoSettings } from "./SkyjoSettings.js"
 
 const SHUFFLE_ITERATIONS = 3
 
