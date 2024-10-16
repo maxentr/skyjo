@@ -14,7 +14,7 @@
     "db:generate": "pnpm drizzle-kit generate",
     "db:migrate": "pnpm drizzle-kit migrate",
     "build": "tsc",
-    "biome:check": "pnpm biome check --apply ."
+    "biome:check": "pnpm biome check --write ."
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.1",
