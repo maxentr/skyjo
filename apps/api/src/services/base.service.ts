@@ -123,16 +123,20 @@ export abstract class BaseService {
       game.roundStatus === ROUND_STATUS.OVER &&
       game.status !== GAME_STATUS.FINISHED
     ) {
-      setTimeout(() => {
-        game.startNewRound()
-        this.broadcastGame(socket, game)
-      }, Constants.NEW_ROUND_DELAY)
+      this.restartRound(socket, game)
     }
 
     const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
     await Promise.all([updateGame, broadcast])
+  }
+
+  protected async restartRound(socket: SkyjoSocket, game: Skyjo) {
+    setTimeout(() => {
+      game.startNewRound()
+      this.broadcastGame(socket, game)
+    }, Constants.NEW_ROUND_DELAY)
   }
 
   //#region private methods
