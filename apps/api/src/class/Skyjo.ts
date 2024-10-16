@@ -1,8 +1,7 @@
 import { Constants } from "@/constants.js"
 import { CError } from "@/utils/CError.js"
 import { Logger } from "@/utils/Logger.js"
-import type { DbGame } from "database/schema"
-import type { DbPlayer } from "database/schema"
+import type { DbGame, DbPlayer } from "database/schema"
 import {
   CONNECTION_STATUS,
   ERROR,
