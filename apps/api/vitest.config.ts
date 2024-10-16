@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     reporters: ["vitest-sonar-reporter"],
     outputFile: {
-      "vitest-sonar-reporter": "./tests/sonar-report.xml",
+      "vitest-sonar-reporter": "./sonar-report.xml",
     },
     setupFiles: "./tests/setup.ts",
     coverage: {
