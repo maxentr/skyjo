@@ -39,7 +39,7 @@ describe("GameService", () => {
     it("should not get a game if it does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() => service.onGet(socket)).rejects.toThrowError(
+      await expect(service.onGet(socket)).toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
 
@@ -90,9 +90,9 @@ describe("GameService", () => {
     it("should throw if game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() =>
+      await expect(
         service.onRevealCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -114,9 +114,9 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() =>
+      await expect(
         service.onRevealCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -138,11 +138,11 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() =>
+      await expect(
         service.onRevealCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should not reveal the card if player already revealed the right card amount", async () => {
@@ -209,9 +209,9 @@ describe("GameService", () => {
     it("should throw if game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() =>
+      await expect(
         service.onPickCard(socket, { pile: "draw" }),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -243,9 +243,9 @@ describe("GameService", () => {
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
       game.turn = 0
 
-      await expect(() =>
+      await expect(
         service.onPickCard(socket, { pile: "draw" }),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -267,11 +267,11 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() =>
+      await expect(
         service.onPickCard(socket, { pile: "draw" }),
-      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the player turn", async () => {
@@ -301,9 +301,9 @@ describe("GameService", () => {
 
       game.turn = 1
 
-      await expect(() =>
+      await expect(
         service.onPickCard(socket, { pile: "draw" }),
-      ).rejects.toThrowError("not-your-turn")
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -334,11 +334,11 @@ describe("GameService", () => {
       game.turn = 0
       game.turnStatus = TURN_STATUS.REPLACE_A_CARD
 
-      await expect(() =>
+      await expect(
         service.onPickCard(socket, { pile: "draw" }),
-      ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
+      ).toThrowCErrorWithCode(ERROR.INVALID_TURN_STATE)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should pick a card from the draw pile", async () => {
@@ -413,9 +413,9 @@ describe("GameService", () => {
     it("should throw if the game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() =>
+      await expect(
         service.onReplaceCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -447,9 +447,9 @@ describe("GameService", () => {
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
       game.turn = 0
 
-      await expect(() =>
+      await expect(
         service.onReplaceCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -471,11 +471,11 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() =>
+      await expect(
         service.onReplaceCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the player turn", async () => {
@@ -505,9 +505,9 @@ describe("GameService", () => {
 
       game.turn = 1
 
-      await expect(() =>
+      await expect(
         service.onReplaceCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError("not-your-turn")
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -538,11 +538,11 @@ describe("GameService", () => {
       game.turn = 0
       game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
 
-      await expect(() =>
+      await expect(
         service.onReplaceCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
+      ).toThrowCErrorWithCode(ERROR.INVALID_TURN_STATE)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should replace a card and finish the turn", async () => {
@@ -585,7 +585,7 @@ describe("GameService", () => {
     it("should throw if the game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() => service.onDiscardCard(socket)).rejects.toThrowError(
+      await expect(service.onDiscardCard(socket)).toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
 
@@ -619,7 +619,7 @@ describe("GameService", () => {
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
       game.turn = 0
 
-      await expect(() => service.onDiscardCard(socket)).rejects.toThrowError(
+      await expect(service.onDiscardCard(socket)).toThrowCErrorWithCode(
         ERROR.PLAYER_NOT_FOUND,
       )
 
@@ -643,11 +643,11 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() => service.onDiscardCard(socket)).rejects.toThrowError(
+      await expect(service.onDiscardCard(socket)).toThrowCErrorWithCode(
         ERROR.NOT_ALLOWED,
       )
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the player turn", async () => {
@@ -677,8 +677,8 @@ describe("GameService", () => {
 
       game.turn = 1
 
-      await expect(() => service.onDiscardCard(socket)).rejects.toThrowError(
-        "not-your-turn",
+      await expect(service.onDiscardCard(socket)).toThrowCErrorWithCode(
+        ERROR.NOT_ALLOWED,
       )
 
       expect(socket.emit).not.toHaveBeenCalled()
@@ -711,11 +711,11 @@ describe("GameService", () => {
       game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
       game.selectedCardValue = 0
 
-      await expect(() => service.onDiscardCard(socket)).rejects.toThrowError(
+      await expect(service.onDiscardCard(socket)).toThrowCErrorWithCode(
         ERROR.INVALID_TURN_STATE,
       )
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should discard a card", async () => {
@@ -757,9 +757,9 @@ describe("GameService", () => {
     it("should throw if the game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() =>
+      await expect(
         service.onTurnCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
     })
 
     it("should throw if player is not in the game", async () => {
@@ -789,9 +789,9 @@ describe("GameService", () => {
       game.checkAllPlayersRevealedCards(game.settings.initialTurnedCount)
       game.turn = 0
 
-      await expect(() =>
+      await expect(
         service.onTurnCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -813,11 +813,11 @@ describe("GameService", () => {
       )
       game.addPlayer(opponent)
 
-      await expect(() =>
+      await expect(
         service.onTurnCard(socket, { column: 0, row: 0 }),
-      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not player turn", async () => {
@@ -847,9 +847,9 @@ describe("GameService", () => {
 
       game.turn = 1
 
-      await expect(() =>
+      await expect(
         service.onTurnCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError("not-your-turn")
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -880,11 +880,11 @@ describe("GameService", () => {
       game.turn = 0
       game.turnStatus = TURN_STATUS.REPLACE_A_CARD
 
-      await expect(() =>
+      await expect(
         service.onTurnCard(socket, { column: 0, row: 2 }),
-      ).rejects.toThrowError(ERROR.INVALID_TURN_STATE)
+      ).toThrowCErrorWithCode(ERROR.INVALID_TURN_STATE)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should turn a card and finish the turn ", async () => {
@@ -1046,7 +1046,7 @@ describe("GameService", () => {
     it("should throw if it does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() => service.onReplay(socket)).rejects.toThrowError(
+      await expect(service.onReplay(socket)).toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
 
@@ -1080,7 +1080,7 @@ describe("GameService", () => {
       game.turn = 0
       game.turnStatus = TURN_STATUS.CHOOSE_A_PILE
 
-      await expect(() => service.onReplay(socket)).rejects.toThrowError(
+      await expect(service.onReplay(socket)).toThrowCErrorWithCode(
         ERROR.NOT_ALLOWED,
       )
 

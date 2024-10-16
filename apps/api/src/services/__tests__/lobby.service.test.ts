@@ -84,9 +84,9 @@ describe("LobbyService", () => {
         avatar: AVATARS.BEE,
       }
 
-      await expect(() =>
+      await expect(
         service.onJoin(socket, TEST_UNKNOWN_GAME_ID, player),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -113,9 +113,9 @@ describe("LobbyService", () => {
         avatar: AVATARS.BEE,
       }
 
-      await expect(() =>
+      await expect(
         service.onJoin(socket, game.code, player),
-      ).rejects.toThrowError(ERROR.GAME_IS_FULL)
+      ).toThrowCErrorWithCode(ERROR.GAME_IS_FULL)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -143,9 +143,9 @@ describe("LobbyService", () => {
         avatar: AVATARS.BEE,
       }
 
-      await expect(() =>
+      await expect(
         service.onJoin(socket, game.code, player),
-      ).rejects.toThrowError(ERROR.GAME_ALREADY_STARTED)
+      ).toThrowCErrorWithCode(ERROR.GAME_ALREADY_STARTED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -363,9 +363,9 @@ describe("LobbyService", () => {
         multiplierForFirstPlayer: 2,
       }
 
-      await expect(() =>
+      await expect(
         service.onSettingsChange(socket, newSettings),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -398,9 +398,9 @@ describe("LobbyService", () => {
         scoreToEndGame: 100,
         multiplierForFirstPlayer: 2,
       }
-      await expect(() =>
+      await expect(
         service.onSettingsChange(socket, newSettings),
-      ).rejects.toThrowError(ERROR.NOT_ALLOWED)
+      ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -439,7 +439,7 @@ describe("LobbyService", () => {
     it("should throw if the game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() => service.onGameStart(socket)).rejects.toThrowError(
+      await expect(service.onGameStart(socket)).toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
 
@@ -464,7 +464,7 @@ describe("LobbyService", () => {
       socket.data.gameCode = game.code
       socket.data.playerId = player.id
 
-      await expect(() => service.onGameStart(socket)).rejects.toThrowError(
+      await expect(service.onGameStart(socket)).toThrowCErrorWithCode(
         ERROR.NOT_ALLOWED,
       )
 

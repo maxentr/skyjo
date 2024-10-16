@@ -28,9 +28,9 @@ describe("ChatService", () => {
     it("should throw if game does not exist", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() =>
+      await expect(
         service.onMessage(socket, { username: "player1", message: "Hello!" }),
-      ).rejects.toThrowError(ERROR.GAME_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.GAME_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -46,9 +46,9 @@ describe("ChatService", () => {
 
       socket.data.gameCode = game.code
 
-      await expect(() =>
+      await expect(
         service.onMessage(socket, { username: "player2", message: "Hello!" }),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      ).toThrowCErrorWithCode(ERROR.PLAYER_NOT_FOUND)
 
       expect(socket.emit).not.toHaveBeenCalled()
     })

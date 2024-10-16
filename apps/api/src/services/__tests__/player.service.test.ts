@@ -34,7 +34,7 @@ describe("PlayerService", () => {
     it("should do nothing if player is not in a game", async () => {
       socket.data.gameCode = TEST_UNKNOWN_GAME_ID
 
-      await expect(() => service.onLeave(socket)).rejects.toThrowError(
+      await expect(service.onLeave(socket)).not.toThrowCErrorWithCode(
         ERROR.GAME_NOT_FOUND,
       )
     })
@@ -57,7 +57,7 @@ describe("PlayerService", () => {
       game.addPlayer(opponent2)
       game.start()
 
-      await expect(() => service.onLeave(socket)).rejects.toThrowError(
+      await expect(service.onLeave(socket)).toThrowCErrorWithCode(
         ERROR.PLAYER_NOT_FOUND,
       )
     })
@@ -437,7 +437,7 @@ describe("PlayerService", () => {
       vi.useRealTimers()
     })
 
-    it("should disconnect the player after timeout expired and finish the round if all connected players have played their last turn", async () => {
+    it("should disconnect the player after timeout expired and finish the round and start the next round if all connected players have played their last turn", async () => {
       vi.useFakeTimers()
 
       const opponent = new SkyjoPlayer(
@@ -489,7 +489,10 @@ describe("PlayerService", () => {
         CONNECTION_STATUS.DISCONNECTED,
       )
       expect(game.status).toBe<GameStatus>(GAME_STATUS.PLAYING)
-      expect(game.roundStatus).toBe<RoundStatus>(ROUND_STATUS.OVER)
+      expect(game.roundStatus).toBe<RoundStatus>(
+        ROUND_STATUS.WAITING_PLAYERS_TO_TURN_INITIAL_CARDS,
+      )
+      expect(game.roundNumber).toBe(2)
       expect(game.players.length).toBe(3)
       expect(BaseService["games"].length).toBe(1)
 
@@ -504,9 +507,9 @@ describe("PlayerService", () => {
         playerId: TEST_SOCKET_ID,
       }
 
-      await expect(() =>
-        service.onReconnect(socket, lastGame),
-      ).rejects.toThrowError(ERROR.PLAYER_NOT_FOUND)
+      await expect(service.onReconnect(socket, lastGame)).toThrowCErrorWithCode(
+        ERROR.PLAYER_NOT_FOUND,
+      )
 
       expect(socket.emit).not.toHaveBeenCalled()
     })
@@ -548,9 +551,9 @@ describe("PlayerService", () => {
         Promise.resolve(false),
       )
 
-      await expect(() =>
-        service.onReconnect(socket, lastGame),
-      ).rejects.toThrowError(ERROR.CANNOT_RECONNECT)
+      await expect(service.onReconnect(socket, lastGame)).toThrowCErrorWithCode(
+        ERROR.CANNOT_RECONNECT,
+      )
     })
 
     it("should reconnect the player if in the time limit", async () => {
