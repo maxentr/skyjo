@@ -5,7 +5,7 @@ import { z } from "zod"
 config()
 
 export const envSchema = z.object({
-  NODE_ENV: z.enum(["development", "production"]),
+  NODE_ENV: z.enum(["development", "production", "test"]),
   ORIGINS: z.string({ message: "ORIGINS must be set in .env file" }),
 
   GMAIL_EMAIL: z.string({ message: "GMAIL_EMAIL must be set in .env file" }),

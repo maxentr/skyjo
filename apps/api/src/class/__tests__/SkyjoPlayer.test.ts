@@ -1,8 +1,8 @@
-import { SkyjoCard } from "@/class/SkyjoCard"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { TEST_SOCKET_ID } from "@tests/constants-test"
-import { DbPlayer } from "database/schema"
+import { SkyjoCard } from "@/class/SkyjoCard.js"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { TEST_SOCKET_ID } from "@tests/constants-test.js"
+import type { DbPlayer } from "database/schema"
 import { AVATARS, CONNECTION_STATUS } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
 

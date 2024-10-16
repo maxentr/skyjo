@@ -1,5 +1,5 @@
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { DbGame } from "database/schema"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import type { DbGame } from "database/schema"
 import {
   API_REGIONS_TAGS,
   GAME_STATUS,

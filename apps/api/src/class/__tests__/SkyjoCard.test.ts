@@ -1,4 +1,4 @@
-import { SkyjoCard } from "@/class/SkyjoCard"
+import { SkyjoCard } from "@/class/SkyjoCard.js"
 import { beforeEach, describe, expect, it } from "vitest"
 
 let card: SkyjoCard

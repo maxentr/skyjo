@@ -1,9 +1,9 @@
-import { GameDb } from "@/db/game.db"
-import { PlayerDb } from "@/db/player.db"
-import { BaseService } from "@/services/base.service"
-import { SkyjoSocket } from "@/types/skyjoSocket"
+import { GameDb } from "@/db/game.db.js"
+import { PlayerDb } from "@/db/player.db.js"
+import { BaseService } from "@/services/base.service.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { TEST_SOCKET_ID } from "@tests/constants-test.js"
 import { vi } from "vitest"
-import { TEST_SOCKET_ID } from "../../../tests/constants-test"
 
 const mockPlayerDb = () => {
   return {

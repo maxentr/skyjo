@@ -1,13 +1,13 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { mockBaseService, mockSocket } from "@/services/__tests__/_mock"
-import { BaseService } from "@/services/base.service"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "@tests/constants-test"
+import { Skyjo } from "@/class/Skyjo.js"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { mockBaseService, mockSocket } from "@/services/__tests__/_mock.js"
+import { BaseService } from "@/services/base.service.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "@tests/constants-test.js"
 import { AVATARS, ERROR } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
-import { ChatService } from "../chat.service"
+import { ChatService } from "../chat.service.js"
 
 describe("ChatService", () => {
   let service: ChatService
