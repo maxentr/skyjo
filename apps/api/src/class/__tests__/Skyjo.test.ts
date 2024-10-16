@@ -1,22 +1,22 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoCard } from "@/class/SkyjoCard"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { TEST_SOCKET_ID } from "@tests/constants-test"
-import { DbGame, DbPlayer } from "database/schema"
+import { Skyjo } from "@/class/Skyjo.js"
+import { SkyjoCard } from "@/class/SkyjoCard.js"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { TEST_SOCKET_ID } from "@tests/constants-test.js"
+import type { DbGame, DbPlayer } from "database/schema"
 import {
   API_REGIONS_TAGS,
   AVATARS,
   CONNECTION_STATUS,
   ERROR,
   GAME_STATUS,
-  GameStatus,
+  type GameStatus,
   LAST_TURN_STATUS,
-  LastTurnStatus,
+  type LastTurnStatus,
   ROUND_STATUS,
-  RoundStatus,
+  type RoundStatus,
   TURN_STATUS,
-  TurnStatus,
+  type TurnStatus,
 } from "shared/constants"
 import { beforeEach, describe, expect, it } from "vitest"
 

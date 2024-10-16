@@ -1,22 +1,22 @@
-import { Skyjo } from "@/class/Skyjo"
-import { SkyjoPlayer } from "@/class/SkyjoPlayer"
-import { SkyjoSettings } from "@/class/SkyjoSettings"
-import { mockBaseService, mockSocket } from "@/services/__tests__/_mock"
-import { BaseService } from "@/services/base.service"
-import { LobbyService } from "@/services/lobby.service"
-import { SkyjoSocket } from "@/types/skyjoSocket"
-import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "@tests/constants-test"
+import { Skyjo } from "@/class/Skyjo.js"
+import { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
+import { SkyjoSettings } from "@/class/SkyjoSettings.js"
+import { mockBaseService, mockSocket } from "@/services/__tests__/_mock.js"
+import { BaseService } from "@/services/base.service.js"
+import { LobbyService } from "@/services/lobby.service.js"
+import type { SkyjoSocket } from "@/types/skyjoSocket.js"
+import { TEST_SOCKET_ID, TEST_UNKNOWN_GAME_ID } from "@tests/constants-test.js"
 import {
   AVATARS,
   ERROR,
   GAME_STATUS,
-  GameStatus,
+  type GameStatus,
   ROUND_STATUS,
-  RoundStatus,
+  type RoundStatus,
   SERVER_MESSAGE_TYPE,
 } from "shared/constants"
-import { ChangeSettings } from "shared/validations/changeSettings"
-import { CreatePlayer } from "shared/validations/player"
+import type { ChangeSettings } from "shared/validations/changeSettings"
+import type { CreatePlayer } from "shared/validations/player"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 describe("LobbyService", () => {

@@ -41,31 +41,45 @@ export class Logger {
     ],
   })
 
+  private static shouldLog(): boolean {
+    return ENV.NODE_ENV !== "test"
+  }
+
   static debug(message: string, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
     Logger.winstonLogger.debug(message, {
       ...meta,
     })
   }
 
   static info(message: string, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
     Logger.winstonLogger.info(message, {
       ...meta,
     })
   }
 
   static warn(message: string, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
     Logger.winstonLogger.warn(message, {
       ...meta,
     })
   }
 
   static error(message: string, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
     Logger.winstonLogger.error(message, {
       ...meta,
     })
   }
 
   static cError(error: CError, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
     const { ...errorRest } = error
 
     const level = error.level
