@@ -16,68 +16,81 @@ import { BaseService } from "./base.service"
 
 export class PlayerService extends BaseService {
   async onLeave(socket: SkyjoSocket, timeout: boolean = false) {
-    const game = await this.getGame(socket.data.gameCode)
+    try {
+      const game = await this.getGame(socket.data.gameCode)
 
-    const player = game.getPlayerById(socket.data.playerId)
-    if (!player) {
-      throw new CError(
-        `Player try to leave a game but he has not been found.`,
-        {
-          code: ERROR.PLAYER_NOT_FOUND,
-          level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
-        },
-      )
-    }
-
-    player.connectionStatus = timeout
-      ? CONNECTION_STATUS.CONNECTION_LOST
-      : CONNECTION_STATUS.LEAVE
-
-    await BaseService.playerDb.updatePlayer(player)
-
-    if (game.isAdmin(player.id)) await this.changeAdmin(game)
-
-    if (
-      game.status === GAME_STATUS.LOBBY ||
-      game.status === GAME_STATUS.FINISHED ||
-      game.status === GAME_STATUS.STOPPED
-    ) {
-      game.removePlayer(player.id)
-      await BaseService.playerDb.removePlayer(game.id, player.id)
-
-      game.restartGameIfAllPlayersWantReplay()
-
-      const promises: Promise<void>[] = []
-
-      if (game.getConnectedPlayers().length === 0) {
-        const removeGame = this.removeGame(game.code)
-        promises.push(removeGame)
-      } else {
-        const updateGame = BaseService.gameDb.updateGame(game)
-        promises.push(updateGame)
+      const player = game.getPlayerById(socket.data.playerId)
+      if (!player) {
+        throw new CError(
+          `Player try to leave a game but he has not been found.`,
+          {
+            code: ERROR.PLAYER_NOT_FOUND,
+            level: "warn",
+            meta: {
+              game: game,
+              gameCode: game.code,
+              playerId: socket.data.playerId,
+            },
+          },
+        )
       }
 
-      const broadcast = this.broadcastGame(socket, game)
-      promises.push(broadcast)
+      player.connectionStatus = timeout
+        ? CONNECTION_STATUS.CONNECTION_LOST
+        : CONNECTION_STATUS.LEAVE
 
-      await Promise.all(promises)
-    } else {
-      await this.startDisconnectionTimeout(
-        player,
-        timeout,
-        async () => await this.updateGameAfterTimeoutExpired(socket, game),
-      )
+      await BaseService.playerDb.updatePlayer(player)
+
+      if (game.isAdmin(player.id)) await this.changeAdmin(game)
+
+      if (
+        game.status === GAME_STATUS.LOBBY ||
+        game.status === GAME_STATUS.FINISHED ||
+        game.status === GAME_STATUS.STOPPED
+      ) {
+        game.removePlayer(player.id)
+        await BaseService.playerDb.removePlayer(game.id, player.id)
+
+        game.restartGameIfAllPlayersWantReplay()
+
+        const promises: Promise<void>[] = []
+
+        if (game.getConnectedPlayers().length === 0) {
+          const removeGame = this.removeGame(game.code)
+          promises.push(removeGame)
+        } else {
+          const updateGame = BaseService.gameDb.updateGame(game)
+          promises.push(updateGame)
+        }
+
+        const broadcast = this.broadcastGame(socket, game)
+        promises.push(broadcast)
+
+        await Promise.all(promises)
+      } else {
+        await this.startDisconnectionTimeout(
+          player,
+          timeout,
+          async () => await this.updateGameAfterTimeoutExpired(socket, game),
+        )
+      }
+
+      socket.to(game.code).emit("message:server", {
+        id: crypto.randomUUID(),
+        username: player.name,
+        message: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
+        type: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
+      })
+
+      await socket.leave(game.code)
+    } catch (error) {
+      // If the game is not found, it means the player wasn't in a game so we don't need to do anything
+      if (error instanceof CError && error.code === ERROR.GAME_NOT_FOUND) {
+        return
+      } else {
+        throw error
+      }
     }
-
-    socket.to(game.code).emit("message:server", {
-      id: crypto.randomUUID(),
-      username: player.name,
-      message: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
-      type: SERVER_MESSAGE_TYPE.PLAYER_LEFT,
-    })
-
-    await socket.leave(game.code)
   }
 
   async onReconnect(socket: SkyjoSocket, reconnectData: LastGame) {
