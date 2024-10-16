@@ -23,3 +23,4 @@ export const envSchema = z.object({
 })
 
 export const ENV = envSchema.parse(process.env)
+export type Env = typeof ENV
