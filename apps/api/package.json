@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc --project tsconfig.prod.json",
+    "build": "tsc --project tsconfig.prod.json && pnpx tsc-alias --project tsconfig.prod.json",
     "prod": "tsx dist/src/index.js",
     "biome:check": "pnpm biome check --write .",
     "test": "vitest",
