@@ -305,7 +305,7 @@ describe("GameService", () => {
         service.onPickCard(socket, { pile: "draw" }),
       ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the waited move", async () => {
@@ -509,7 +509,7 @@ describe("GameService", () => {
         service.onReplaceCard(socket, { column: 0, row: 2 }),
       ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the waited move", async () => {
@@ -681,7 +681,7 @@ describe("GameService", () => {
         ERROR.NOT_ALLOWED,
       )
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the waited move", async () => {
@@ -851,7 +851,7 @@ describe("GameService", () => {
         service.onTurnCard(socket, { column: 0, row: 2 }),
       ).toThrowCErrorWithCode(ERROR.NOT_ALLOWED)
 
-      expect(socket.emit).not.toHaveBeenCalled()
+      expect(socket.emit).toHaveBeenNthCalledWith(1, "game", game?.toJson())
     })
 
     it("should throw if it's not the waited move", async () => {

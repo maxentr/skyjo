@@ -48,7 +48,7 @@ export class GameService extends BaseService {
     ) {
       await this.sendGame(socket, game)
       throw new CError(
-        `Player try to reveal a card but the game is not in the correct state. Sent game state to the player to fix the issue.`,
+        `Player try to reveal a card but the game is not in the correct state. Sent game to the player to fix the issue.`,
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
@@ -169,7 +169,7 @@ export class GameService extends BaseService {
     ) {
       await this.sendGame(socket, game)
       throw new CError(
-        `Player try to play but the game is not in playing state. Sent game state to the player to fix the issue.`,
+        `Player try to play but the game is not in playing state. Sent game to the player to fix the issue.`,
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
@@ -197,23 +197,27 @@ export class GameService extends BaseService {
     }
 
     if (!game.checkTurn(player.id)) {
-      throw new CError(`Player try to play but it's not his turn.`, {
-        code: ERROR.NOT_ALLOWED,
-        level: "warn",
-        meta: {
-          game,
-          socket,
-          player,
-          gameCode: game.code,
-          playerId: socket.data.playerId,
+      socket.emit("game", game.toJson())
+      throw new CError(
+        `Player try to play but it's not his turn. Sent game to the player to fix the issue.`,
+        {
+          code: ERROR.NOT_ALLOWED,
+          level: "warn",
+          meta: {
+            game,
+            socket,
+            player,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
-      })
+      )
     }
 
     if (allowedStates.length > 0 && !allowedStates.includes(game.turnStatus)) {
       await this.sendGame(socket, game)
       throw new CError(
-        `Player try to play but the game is not in the allowed turn state. Sent game state to the player to fix the issue.`,
+        `Player try to play but the game is not in the allowed turn state. Sent game to the player to fix the issue.`,
         {
           code: ERROR.INVALID_TURN_STATE,
           level: "warn",
