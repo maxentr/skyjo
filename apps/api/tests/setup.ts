@@ -10,6 +10,7 @@ vi.mock("database/provider", () => ({
 
 vi.spyOn(process, "env", "get").mockReturnValue({
   NODE_ENV: "test",
+  APP_NAME: "skyjo-api",
   ORIGINS: "e",
   GMAIL_EMAIL: "e",
   GMAIL_APP_PASSWORD: "e",

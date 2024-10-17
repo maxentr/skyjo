@@ -16,7 +16,7 @@ export class Logger {
       format.prettyPrint(),
     ),
     defaultMeta: {
-      app: "skyjo-api",
+      app: ENV.APP_NAME,
       environment: ENV.NODE_ENV,
     },
     transports: [
