@@ -1,5 +1,28 @@
-pre-commit:
+_: # this custom hook is used only to provide the anchor
   commands:
-    check:
+    build: &build
+      run: pnpm build
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: TURBO_UI=0 pnpm dlx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --write {staged_files} && git update-index --again
+
+pre-commit:
+  parallel: true
+  commands:
+    check-biome:
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: TURBO_UI=0 pnpm dlx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --write {staged_files}
+      stage_fixed: true
+    test:
+      run: pnpm test:coverage
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+    shared:
+      <<: *build
+      root: "packages/shared/"
+    database:
+      <<: *build
+      root: "packages/database/"
+    web:
+      <<: *build
+      root: "apps/web/"
+    api:
+      <<: *build
+      root: "apps/api/"
