@@ -32,7 +32,13 @@ export class GameService extends BaseService {
     if (!player) {
       throw new CError(`Player try to reveal a card but is not found.`, {
         code: ERROR.PLAYER_NOT_FOUND,
-        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        meta: {
+          game,
+          socket,
+
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
       })
     }
 
@@ -46,7 +52,13 @@ export class GameService extends BaseService {
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
-          meta: { game, gameCode: game.code, player },
+          meta: {
+            game,
+            socket,
+            player,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -125,6 +137,7 @@ export class GameService extends BaseService {
         code: ERROR.NOT_ALLOWED,
         meta: {
           game,
+          socket,
           gameCode: game.code,
           playerId: socket.data.playerId,
         },
@@ -160,7 +173,12 @@ export class GameService extends BaseService {
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+          meta: {
+            game,
+            socket,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -169,7 +187,12 @@ export class GameService extends BaseService {
     if (!player) {
       throw new CError(`Player try to play but is not found.`, {
         code: ERROR.PLAYER_NOT_FOUND,
-        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        meta: {
+          game,
+          socket,
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
       })
     }
 
@@ -177,7 +200,13 @@ export class GameService extends BaseService {
       throw new CError(`Player try to play but it's not his turn.`, {
         code: ERROR.NOT_ALLOWED,
         level: "warn",
-        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        meta: {
+          game,
+          socket,
+          player,
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
       })
     }
 
@@ -188,7 +217,13 @@ export class GameService extends BaseService {
         {
           code: ERROR.INVALID_TURN_STATE,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+          meta: {
+            game,
+            socket,
+            player,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }

@@ -31,6 +31,7 @@ export class PlayerDb {
     if (!newPlayer) {
       throw new CError("Error while inserting player in database", {
         meta: {
+          playerId: player.id,
           player,
         },
       })

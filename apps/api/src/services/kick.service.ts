@@ -24,7 +24,12 @@ export class KickService extends BaseService {
         {
           code: ERROR.PLAYER_NOT_FOUND,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+          meta: {
+            game,
+            socket,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -36,7 +41,13 @@ export class KickService extends BaseService {
         {
           code: ERROR.NO_KICK_VOTE_IN_PROGRESS,
           level: "warn",
-          meta: { game, gameCode: game.code },
+          meta: {
+            game,
+            socket,
+            player,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -45,7 +56,13 @@ export class KickService extends BaseService {
       throw new CError(`Player has already voted.`, {
         code: ERROR.PLAYER_ALREADY_VOTED,
         level: "warn",
-        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        meta: {
+          game,
+          socket,
+          player,
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
       })
     }
 
@@ -67,7 +84,12 @@ export class KickService extends BaseService {
         {
           code: ERROR.PLAYER_NOT_FOUND,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+          meta: {
+            game,
+            socket,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -79,7 +101,14 @@ export class KickService extends BaseService {
         {
           code: ERROR.PLAYER_NOT_FOUND,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: targetId },
+          meta: {
+            game,
+            socket,
+            initiator,
+            targetId,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -90,7 +119,14 @@ export class KickService extends BaseService {
         {
           code: ERROR.KICK_VOTE_IN_PROGRESS,
           level: "warn",
-          meta: { game, gameCode: game.code },
+          meta: {
+            game,
+            socket,
+            initiator,
+            target,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -149,7 +185,13 @@ export class KickService extends BaseService {
         {
           code: ERROR.PLAYER_NOT_FOUND,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: kickVote.targetId },
+          meta: {
+            game,
+            socket,
+            targetId: kickVote.targetId,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }

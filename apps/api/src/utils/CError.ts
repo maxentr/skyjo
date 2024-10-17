@@ -58,7 +58,7 @@ export class CError extends Error {
           id: socket.id,
           data: socket.data,
           recovered: socket.recovered,
-          namespace: socket.nsp.name,
+          namespace: socket?.nsp?.name ?? "unknown",
         }
       }
 

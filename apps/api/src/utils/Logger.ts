@@ -80,14 +80,12 @@ export class Logger {
   static cError(error: CError, meta?: Record<string, unknown>) {
     if (!Logger.shouldLog()) return
 
-    const { ...errorRest } = error
-
     const level = error.level
     delete error.level
     delete error.shouldLog
 
     const logMeta = {
-      ...errorRest,
+      ...error,
       ...meta,
     }
 

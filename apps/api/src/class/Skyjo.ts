@@ -132,8 +132,9 @@ export class Skyjo implements SkyjoInterface {
         level: "warn",
         meta: {
           game: this,
-          gameCode: this.code,
           player,
+          gameCode: this.code,
+          playerId: player.id,
         },
       })
     }

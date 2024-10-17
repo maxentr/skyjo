@@ -16,6 +16,7 @@ export class ChatService extends BaseService {
         code: ERROR.PLAYER_NOT_FOUND,
         meta: {
           game,
+          socket,
           gameCode: game.code,
           playerId: socket.data.playerId,
         },

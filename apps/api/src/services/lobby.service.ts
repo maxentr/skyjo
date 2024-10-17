@@ -60,7 +60,12 @@ export class LobbyService extends BaseService {
         {
           code: ERROR.NOT_ALLOWED,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+          meta: {
+            game,
+            socket,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }
@@ -83,7 +88,12 @@ export class LobbyService extends BaseService {
       throw new CError(`Player try to start the game but is not the admin.`, {
         code: ERROR.NOT_ALLOWED,
         level: "warn",
-        meta: { game, gameCode: game.code, playerId: socket.data.playerId },
+        meta: {
+          game,
+          socket,
+          gameCode: game.code,
+          playerId: socket.data.playerId,
+        },
       })
     }
 
@@ -154,7 +164,13 @@ export class LobbyService extends BaseService {
         {
           code: ERROR.GAME_ALREADY_STARTED,
           level: "warn",
-          meta: { game, gameCode: game.code, playerId: player.id },
+          meta: {
+            game,
+            socket,
+            player,
+            gameCode: game.code,
+            playerId: socket.data.playerId,
+          },
         },
       )
     }

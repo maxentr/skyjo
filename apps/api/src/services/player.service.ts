@@ -27,7 +27,8 @@ export class PlayerService extends BaseService {
             code: ERROR.PLAYER_NOT_FOUND,
             level: "warn",
             meta: {
-              game: game,
+              game,
+              socket,
               gameCode: game.code,
               playerId: socket.data.playerId,
             },
@@ -103,6 +104,7 @@ export class PlayerService extends BaseService {
           code: ERROR.PLAYER_NOT_FOUND,
           level: "warn",
           meta: {
+            socket,
             gameCode: reconnectData.gameCode,
             playerId: reconnectData.playerId,
           },
@@ -118,6 +120,7 @@ export class PlayerService extends BaseService {
         code: ERROR.CANNOT_RECONNECT,
         level: "warn",
         meta: {
+          socket,
           gameCode: reconnectData.gameCode,
           playerId: reconnectData.playerId,
         },
