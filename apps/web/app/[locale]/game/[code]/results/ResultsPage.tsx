@@ -67,7 +67,7 @@ const ResultsPage = () => {
   return (
     <AnimatePresence>
       <m.div
-        className="h-dvh flex flex-col items-center justify-center overflow-auto sm:container"
+        className="ph-no-capture h-dvh flex flex-col items-center justify-center overflow-auto sm:container"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
