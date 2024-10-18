@@ -1,534 +1,530 @@
 {
-    "head": {
-        "title": "Jouer à Skyjo en ligne avec des amis | Skyjo Online",
-        "description": "Jouez gratuitement à Skyjo en ligne avec vos amis ! Jouez à ce jeu multijoueur passionnant et défiez vos amis pour voir qui peut gagner !",
-        "keywords": "Skyjo,Skyjo en ligne,jeu multijoueur,jouer avec des amis,jeux en ligne gratuits,jouer à Skyjo en ligne"
-    },
-    "pages": {
-        "Index": {
-            "name-input-placeholder": "Nom",
-            "explanation": {
-                "title": "Qu'est-ce que Skyjo ?",
-                "content": "Skyjo est un jeu de cartes passionnant et un excellent jeu de société. Apprécié par les amateurs de jeux dans le monde entier, ce jeu de cartes multijoueur est conçu pour un nombre de joueurs allant de 2 à 8, où chacun reçoit 12 cartes, initialement cachées. L'objectif principal du jeu est de marquer le moins de points possible. La partie se termine dès qu'un joueur atteint 100 points. Les règles du jeu sont simples et faciles à comprendre ce qui en fait un choix idéal pour les soirées jeux en famille ou entre amis. Les passionnés de jeux seront ravis d'apprendre qu'il est maintenant possible de jouer à Skyjo en ligne et ce gratuitement !",
-                "button": "Voir les règles"
-            },
-            "faq": {
-                "title": "Foire aux questions (FAQ)",
-                "meaning": {
-                    "title": "Que veut dire Skyjo ?",
-                    "content": "Un Skyjo est une colonne de 3 cartes identiques dans le jeu."
-                },
-                "pronounce": {
-                    "title": "Comment prononcer Skyjo ?",
-                    "content": "Le mot Skyjo ce prononce [Skyjoe]."
-                },
-                "how-to-play": {
-                    "title": "Comment jouer au Skyjo ?",
-                    "content": "Pour jouer à Skyjo, distribuez 12 cartes à chaque joueur, face cachée. Le but est d'avoir le moins de points possible en retournant et échangeant des cartes. À chaque tour, piochez une carte de la pioche ou de la défausse, puis décidez de remplacer une de vos cartes visibles. Les cartes numérotées valent leurs points, les cartes spéciales ont des actions. Le jeu se termine lorsqu'un joueur a retourné toutes ses cartes. Le joueur ayant le moins de points gagne. Vous pouvez consulter <rules>les règles</rules> pour plus d'informations."
-                },
-                "how-to-win": {
-                    "title": "Comment gagner au Skyjo ?",
-                    "content": "Pour gagner au Skyjo, il est essentiel d'avoir le score le plus bas possible. Pour y parvenir, adoptez une stratégie équilibrée entre avoir les cartes les plus basses, découvrir vos cartes et créer des colonnes d'identiques. Évitez de retourner en premier sauf si vous êtes vraiment en avance sur les cartes visibles. N'oubliez pas de conserver les cartes déjà visibles pour essayer de créer des colonnes avec elles, plutôt que de les optimiser individuellement."
-                },
-                "play-classic-with-action": {
-                    "title": "Peut-on jouer au Skyjo classique avec le Skyjo action ?",
-                    "content": "Oui, il vous suffit d'enlever les cartes actions. Si vous êtes sur la version en ligne, séléctionnez la version classique pour jouer au Skyjo."
-                }
-            }
+  "head": {
+    "title": "Jouer à Skyjo en ligne avec des amis | Skyjo Online",
+    "description": "Jouez gratuitement à Skyjo en ligne avec vos amis ! Jouez à ce jeu multijoueur passionnant et défiez vos amis pour voir qui peut gagner !",
+    "keywords": "Skyjo,Skyjo en ligne,jeu multijoueur,jouer avec des amis,jeux en ligne gratuits,jouer à Skyjo en ligne"
+  },
+  "pages": {
+    "Index": {
+      "name-input-placeholder": "Nom",
+      "explanation": {
+        "title": "Qu'est-ce que Skyjo ?",
+        "content": "Skyjo est un jeu de cartes passionnant et un excellent jeu de société. Apprécié par les amateurs de jeux dans le monde entier, ce jeu de cartes multijoueur est conçu pour un nombre de joueurs allant de 2 à 8, où chacun reçoit 12 cartes, initialement cachées. L'objectif principal du jeu est de marquer le moins de points possible. La partie se termine dès qu'un joueur atteint 100 points. Les règles du jeu sont simples et faciles à comprendre ce qui en fait un choix idéal pour les soirées jeux en famille ou entre amis. Les passionnés de jeux seront ravis d'apprendre qu'il est maintenant possible de jouer à Skyjo en ligne et ce gratuitement !",
+        "button": "Voir les règles"
+      },
+      "faq": {
+        "title": "Foire aux questions (FAQ)",
+        "meaning": {
+          "title": "Que veut dire Skyjo ?",
+          "content": "Un Skyjo est une colonne de 3 cartes identiques dans le jeu."
         },
-        "Maintenance": {
-            "title": "Site en maintenance",
-            "description": "Nous sommes en ce moment en train de faire des mises à jour sur le site, veuillez réessayer plus tard.",
-            "github-alt": "Voir le code source sur GitHub"
+        "pronounce": {
+          "title": "Comment prononcer Skyjo ?",
+          "content": "Le mot Skyjo ce prononce [Skyjoe]."
         },
-        "NotFound": {
-            "title": "Erreur 404",
-            "description": "La page que vous recherchez n'existe pas.",
-            "go-back-to-homepage": "Retour à l'accueil"
+        "how-to-play": {
+          "title": "Comment jouer au Skyjo ?",
+          "content": "Pour jouer à Skyjo, distribuez 12 cartes à chaque joueur, face cachée. Le but est d'avoir le moins de points possible en retournant et échangeant des cartes. À chaque tour, piochez une carte de la pioche ou de la défausse, puis décidez de remplacer une de vos cartes visibles. Les cartes numérotées valent leurs points, les cartes spéciales ont des actions. Le jeu se termine lorsqu'un joueur a retourné toutes ses cartes. Le joueur ayant le moins de points gagne. Vous pouvez consulter <rules>les règles</rules> pour plus d'informations."
         },
-        "InactivityCheck": {
-            "warning": {
-                "title": "Êtes-vous toujours là ?",
-                "button": {
-                    "label": "Oui",
-                    "title": "Confirmer que votre présence"
-                }
-            },
-            "timeout": {
-                "title": "Vous avez été déconnecté du lobby pour cause d'inactivité",
-                "description": "Veuillez noter qu'en tant qu'administrateur d'une partie publique, votre inactivité empêche la partie de commencer, affectant l'expérience des autres joueurs."
-            }
+        "how-to-win": {
+          "title": "Comment gagner au Skyjo ?",
+          "content": "Pour gagner au Skyjo, il est essentiel d'avoir le score le plus bas possible. Pour y parvenir, adoptez une stratégie équilibrée entre avoir les cartes les plus basses, découvrir vos cartes et créer des colonnes d'identiques. Évitez de retourner en premier sauf si vous êtes vraiment en avance sur les cartes visibles. N'oubliez pas de conserver les cartes déjà visibles pour essayer de créer des colonnes avec elles, plutôt que de les optimiser individuellement."
         },
-        "Lobby": {
-            "settings": {
-                "title": "Paramètres",
-                "private": {
-                    "tooltip": {
-                        "on": "Cette partie est privée, seuls les personnes ayant le lien peuvent rejoindre",
-                        "off": "Cette partie est publique, n'importe qui peut rejoindre"
-                    }
-                },
-                "reset-settings": "Réinitialiser les paramètres",
-                "allow-skyjo-for-column": "Autoriser les Skyjo pour les colonnes",
-                "allow-skyjo-for-row": "Autoriser les Skyjo pour les lignes",
-                "nb-columns": {
-                    "label": "Nombre de colonnes",
-                    "title": "$number colonnes"
-                },
-                "nb-rows": {
-                    "label": "Nombre de lignes",
-                    "title": "$number lignes"
-                },
-                "initial-turned-count": {
-                    "label": "Nombre de cartes retournées au début de la partie",
-                    "title": "{number} cartes seront retournées au début de la partie"
-                },
-                "score-to-end-game": {
-                    "label": "Nombre de points pour finir la partie",
-                    "title": "{number} points seront nécessaires pour finir la partie"
-                },
-                "multiplier-for-first-player": {
-                    "label": "Multiplicateur pour le premier joueur",
-                    "title": "Le score du premier joueur sera multiplié par {number} si il n'est pas strictement inférieur aux autres scores de la partie"
-                }
-            },
-            "start-game-button": "Commencer la partie",
-            "player-section": {
-                "title": "Joueurs"
-            }
-        },
-        "ResultsPage": {
-            "title": "Résultat de la partie",
-            "rank": "Rang",
-            "player": "Joueur",
-            "score-per-round": "Score par manche",
-            "total": "Total",
-            "player-want-to-replay": "Joueurs qui veulent rejouer :",
-            "replay-button": {
-                "cancel": "Ne pas rejouer",
-                "replay": "Rejouer"
-            },
-            "leave-button": "Quitter la partie"
-        },
-        "PrivacyPolicy": {
-            "head": {
-                "title": "Politique de Confidentialité | Skyjo Online",
-                "description": "Découvrez comment Skyjo Online protège votre vie privée et vos données lors de vos parties en ligne gratuites. Apprenez nos pratiques de collecte, d'utilisation et de protection des données.",
-                "keywords": "Skyjo Online,politique de confidentialité,protection des données,confidentialité jeu en ligne,jeu sécurisé,données utilisateurs,conformité RGPD"
-            },
-            "content": {
-                "back": "Retour à l'accueil",
-                "title": "Politique de Confidentialité",
-                "last-updated": "Dernière mise à jour : {date}",
-                "last-update": {
-                    "text": "Dernière mise à jour : {date}",
-                    "date-format": "DD MMMM YYYY à HH:mm"
-                },
-                "information-we-collect": {
-                    "title": "Informations que nous collectons",
-                    "anonymous-usage-data": {
-                        "title": "Données d'utilisation anonymes",
-                        "description": "Nous utilisons PostHog, un outil d'analyse, pour collecter des données anonymes sur votre utilisation de notre site web. Cela inclut :",
-                        "items": "Vues de pages;;Vitales web (métriques de performance);;Réponses aux sondages (si vous choisissez d'y participer)"
-                    },
-                    "game-data": {
-                        "title": "Données de jeu",
-                        "description": "Nous stockons temporairement :",
-                        "items": "Noms d'utilisateur et choix d'avatar;;Éléments et progression du jeu"
-                    },
-                    "user-provided-information": {
-                        "title": "Informations fournies par l'utilisateur",
-                        "description": "Nous collectons :",
-                        "items": "Soumissions du formulaire de feedback (y compris les adresses e-mail optionnelles)"
-                    },
-                    "local-storage-data": {
-                        "title": "Données de stockage local",
-                        "description": "Nous stockons dans le stockage local de votre navigateur :",
-                        "items": "Préférences de langue;;Préférences de paramètres de jeu"
-                    }
-                },
-                "how-we-use-your-information": {
-                    "title": "Comment nous utilisons vos informations",
-                    "items": "Améliorer notre site web et l'expérience utilisateur;;Analyser les modèles d'utilisation et les performances;;Répondre aux feedbacks et aux demandes de support;;Faciliter le déroulement du jeu"
-                },
-                "data-storage-and-retention": {
-                    "title": "Stockage et conservation des données",
-                    "items": "Les données d'utilisation anonymes sont stockées sur des serveurs au sein de l'Union européenne et conservées pendant un maximum d'un an;;Les données de jeu sont stockées dans notre base de données situées à Francfort, Allemagne. Ces données sont conservées pendant la durée des parties actives. Une fois que tous les joueurs quittent une partie, les données associées sont supprimées;;Les informations stockées dans le stockage local de votre navigateur y restent jusqu'à ce que vous effaciez les données de votre navigateur;;Les soumissions du formulaire de feedback ne sont conservées que dans le but de répondre et d'examiner les suggestions de développement"
-                },
-                "data-sharing": {
-                    "title": "Partage des données",
-                    "description": "Nous ne partageons pas vos informations personnelles avec des tiers. Les données d'utilisation anonymes sont traitées par PostHog, notre fournisseur d'analyses."
-                },
-                "your-rights-and-choices": {
-                    "title": "Vos droits et choix",
-                    "description": "Étant donné que nous collectons principalement des données anonymes, nous ne pouvons pas identifier ou accéder à des informations personnelles spécifiques à un utilisateur individuel. Cependant, vous disposez des droits et choix suivants :",
-                    "items": "Local storage : Vous pouvez effacer le stockage local de votre navigateur à tout moment pour supprimer les préférences enregistrées;;Feedback : Si vous avez soumis un feedback avec une adresse e-mail, vous pouvez nous contacter pour demander sa suppression;;Désactivation des analyses : Vous pouvez désactiver la collecte de données d'analyse en activant le paramètre \"Ne pas suivre\" de votre navigateur ou en utilisant des navigateurs axés sur la confidentialité qui bloquent les scripts d'analyse;;Données de jeu : Les données relatives au jeu sont automatiquement supprimées lorsque tous les joueurs quittent une partie"
-                },
-                "childrens-privacy": {
-                    "title": "Confidentialité des enfants",
-                    "description": "Skyjo Online n'a pas de restrictions d'âge. Nous ne collectons pas sciemment d'informations personnelles auprès des enfants."
-                },
-                "changes-to-this-policy": {
-                    "title": "Modifications de cette politique",
-                    "description": "Nous pouvons mettre à jour cette politique de temps en temps. Nous vous informerons de tout changement en publiant la nouvelle politique sur cette page."
-                },
-                "contact-us": {
-                    "title": "Nous contacter",
-                    "description": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter via le formulaire de feedback sur le site web."
-                }
-            }
-        },
-        "Rules": {
-            "head": {
-                "title": "Comment jouer au Skyjo | Skyjo Onlone",
-                "description": "Apprenez les règles du Skyjo, un jeu multijoueur en ligne amusant et captivant. Découvrez comment jouer gratuitement à Skyjo avec des amis et maîtrisez le jeu grâce à notre guide détaillé.",
-                "keywords": "Règles du jeu Skyjo,jeu,en ligne,multijoueur,gratuit,jouer avec des amis,règles,règles du jeu"
-            },
-            "back": "Retour à l'accueil",
-            "title": "Règles du jeu Skyjo"
+        "play-classic-with-action": {
+          "title": "Peut-on jouer au Skyjo classique avec le Skyjo action ?",
+          "content": "Oui, il vous suffit d'enlever les cartes actions. Si vous êtes sur la version en ligne, séléctionnez la version classique pour jouer au Skyjo."
         }
+      }
     },
-    "components": {
-        "Chat": {
-            "title": "Chat"
-        },
-        "ChatForm": {
-            "message-input-placeholder": "Message",
-            "button-title": "Envoyer",
-            "message-too-long": {
-                "description": "Le message est trop long (200 caractères maximum)"
-            }
-        },
-        "ChatMessage": {
-            "separator": ": "
-        },
-        "ChatMessageList": {
-            "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
-        },
-        "Feedback": {
-            "title": "Laisser un commentaire",
-            "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
-            "toast": {
-                "success": {
-                    "title": "Merci de nous avoir fait part de vos commentaires !",
-                    "description": "Vos commentaires nous ont aidés à améliorer notre site web sur les jeux, et nous vous en sommes très reconnaissants."
-                },
-                "error": {
-                    "title": "Une erreur est survenue, veuillez réessayer."
-                }
-            },
-            "email-input": {
-                "label": "Votre email (facultatif)",
-                "placeholder": "exemple@exemple.fr"
-            },
-            "message-input": {
-                "label": "Votre message",
-                "placeholder": "Dites-nous ce que vous pensez, remarquez ou souhaitez…"
-            },
-            "button-title": "Envoyer"
-        },
-        "CopyLink": {
-            "message": "Lien copié !",
-            "button-title": "Copier le lien"
-        },
-        "DiscardPile": {
-            "title": "Paquet de défausse",
-            "throw": "Défausser"
-        },
-        "DrawPile": {
-            "title": "Paquet de pioche"
-        },
-        "EndRoundDialog": {
-            "title": "Fin de la manche",
-            "description": "La manche suivante va commencer dans quelques secondes…"
-        },
-        "Footer": {
-            "feedback": "Laisser un commentaire",
-            "buy-game": "Acheter le jeu",
-            "explanation": "Qu'est-ce que Skyjo ?",
-            "rules": "Règles du jeu",
-            "home": "Accueil",
-            "release-notes": "Notes de version",
-            "privacy-policy": "Politique de confidentialité",
-            "disclaimer": "Ce site n'est pas affilié aux créateurs ou distributeurs de Skyjo. Tous les droits sur le nom Skyjo et les mécaniques du jeu sont de l'auteur Alexander Bernhardt et Magilano"
-        },
-        "GameLobbyButtons": {
-            "reconnect-game-button": "Se reconnecter à la partie",
-            "join-game-button": "Rejoindre la partie",
-            "find-game-button": "Trouver une partie",
-            "create-private-game-button": "Créer une partie privée",
-            "timeout": {
-                "description": "Le serveur prends plus de temps que prévu à répondre. Vous pouvez tenter de recharger la page et réessayer."
-            },
-            "game-not-found": {
-                "description": "La partie que vous cherchez n'existe pas"
-            },
-            "cannot-reconnect": {
-                "description": "Ce n'est plus possible de se reconnecter à la partie, le temps imparti pour se reconnecter a expiré"
-            },
-            "game-is-full": {
-                "description": "La partie est pleine, vous ne pouvez pas y rejoindre"
-            },
-            "game-already-started": {
-                "description": "La partie a déjà commencé"
-            }
-        },
-        "GameStoppedDialog": {
-            "title": "La partie s'est arrêtée",
-            "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
-        },
-        "LanguageCombobox": {
-            "select-language": "Sélectionner la langue",
-            "search-language": "Rechercher une langue",
-            "no-language-found": "Aucune langue trouvée",
-            "locale": {
-                "en": "English",
-                "fr": "Français"
-            }
-        },
-        "MenuDropdown": {
-            "button": {
-                "aria-label": "Menu"
-            },
-            "rules": "Règles",
-            "feedback": "Laisser un commentaire",
-            "settings": "Paramètres"
-        },
-        "OpponentBoard": {
-            "connection-lost": "Connexion perdue"
-        },
-        "OpponentsMobileView": {
-            "opponents-list": {
-                "title": "Adversaires :"
-            }
-        },
-        "PlayerBoard": {
-            "you": "Vous"
-        },
-        "PWABanner": {
-            "title": "Installer Skyjo Online sur votre appareil !",
-            "Safari": "Appuyez sur l'icône de partage, puis sur 'Ajouter au Dock' pour installer",
-            "Chrome": "Cliquez sur le bouton 'Installer' pour installer",
-            "FirefoxAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
-            "ChromeAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
-            "SamsungBrowser": "Appuyez sur l'icône de menu, puis sur 'Ajouter la page à' pour installer",
-            "ChromeIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
-            "FirefoxIOS": "Appuyez sur l'icône du menu, puis de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
-            "SafariIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
-            "install-button": {
-                "title": "Installer l'application",
-                "content": "Installer"
-            }
-        },
-        "RulesDialog": {
-            "title": "Règles du jeu",
-            "trigger": {
-                "aria-label": "Afficher les règles du jeu"
-            }
-        },
-        "Rules": {
-            "cards-section-title": "{number} cartes de jeu :",
-            "game-goal": {
-                "title": "But du jeu",
-                "content": "Le jeu Skyjo se déroule en plusieurs manches et se termine dès qu'un joueur atteint 100 points ou plus. Celui qui a obtenu le moins de points gagne la partie."
-            },
-            "round-preparation": {
-                "title": "Préparation d'une manche",
-                "content-1": "Tout d'abord, chaque joueur reçoit 12 cartes distribuées face cachée. Ensuite, une carte de la pioche est placée face visible au milieu de la table, elle constitue le début de la pile de défausse. Les cartes restantes sont placées à côté face cachée et forment la pioche.",
-                "content-2": "Chaque joueur place ses 12 cartes en quatre colonnes de trois cartes face cachée devant lui. Enfin, chaque joueur retourne face visible deux cartes de son choix."
-            },
-            "round-start": {
-                "title": "Début d'une manche",
-                "choice": "choix {number}",
-                "content-1": "Le joueur peut choisir la première carte retournée de la défausse",
-                "content-2": "ou la première carte face cachée de la pioche",
-                "choice-1": {
-                    "title": "Choix 1 :",
-                    "description": "Prendre la première carte retournée de la défausse.",
-                    "content": "Le joueur doit immédiatement échanger cette carte avec l'une de ses 12 cartes et la poser face visible. Il peut choisir librement entre les cartes visibles et cachées. Les cartes cachées ne doivent pas être vues avant l'échange. La carte échangée est déposée face visible sur la pile de défausse."
-                },
-                "choice-2": {
-                    "title": "Choix 2 :",
-                    "description": "Prendre la première carte face cachée de la pioche.",
-                    "content-1": "Le joueur peut regarder la carte et choisir s'il veut l'échanger contre l'une de ses cartes (cachées ou visibles) ou bien la défausser. S'il veut garder la carte tirée, il l'échange avec l'une de ses cartes comme décrit ci-dessus dans le",
-                    "choice-1": "Choix 1",
-                    "content-2": "S'il ne veut pas garder la carte tirée, il la dépose sur la pile de défausse et doit retourner face visible une de ses cartes."
-                },
-                "end-of-turn": "Son tour est alors terminé et c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre)."
-            },
-            "special-rule": {
-                "title": "Règle spéciale :",
-                "content": "Si un joueur a 3 cartes identiques dans une colonne, le joueur se débarrasse de ces 3 cartes en les plaçant sur la défausse. Si une colonne de cartes identiques est obtenue à la suite d'un échange avec une carte de la pioche ou de la défausse, les trois cartes identiques doivent toujours être déposées sur la pile de défausse après la carte échangée."
-            },
-            "round-end": {
-                "title": "Fin d'une manche",
-                "content-1": "Quand un joueur a révélé toutes ses cartes, il a joué son dernier tour.",
-                "content-2": "Tous les joueurs suivants jouent encore une fois pour terminer le tour de table."
-            },
-            "scoring": {
-                "title": "Décompte des points",
-                "description": "Les joueurs ayant encore des cartes face cachée les retournent face visible. Chaque joueur comptabilise son total de points.",
-                "list": {
-                    "content-1": "Si le total de points est positif, il l'additionne au total de points des manches précédentes.",
-                    "content-2": "Si le total est négatif, il le soustrait au total de points des manches précédentes."
-                },
-                "first-to-finish": {
-                    "content": "Si le joueur qui a terminé la manche (le 1er à avoir retourné toutes ses cartes) n'a pas obtenu, strictement, le plus petit nombre de points de cette manche, alors, la somme de ses points pour cette manche est doublée.",
-                    "note": {
-                        "title": "Attention :",
-                        "content": "cette règle ne s'applique qu'aux points positifs !"
-                    }
-                },
-                "example": {
-                    "title": "Exemple :",
-                    "content": "le joueur A révèle toutes ses cartes et termine la manche. À la fin de la manche, il a obtenu 10 points, le joueur B a 24 points et le joueur C a également 10 points. Le joueur A n'ayant pas, strictement, le plus petit nombre de points, ses points sont doublés à 20."
-                }
-            },
-            "end-of-game": {
-                "title": "Fin de la partie",
-                "content": "À la fin de chaque manche, les points de chaque joueur sont ajoutés au score total obtenu lors des manches précédentes. Le jeu se termine dès qu'un joueur atteint 100 points ou plus. Le joueur avec le plus petit score gagne la partie."
-            }
-        },
-        "Scoreboard": {
-            "button-title": "Voir le tableau des scores"
-        },
-        "ScoreDialog": {
-            "title": "Score",
-            "description": "{name} a gagné avec {score} points !"
-        },
-        "ScoreSheet": {
-            "see-scores": "Voir scores"
-        },
-        "ScoreTable": {
-            "name": "Nom",
-            "round": "Manche",
-            "total": "Total"
-        },
-        "SettingsDialog": {
-            "title": "Paramètres",
-            "sound": {
-                "title": "Son",
-                "audio": {
-                    "label": "Activer le son"
-                },
-                "volume": {
-                    "label": "Volume ({volume}%)"
-                }
-            },
-            "general": {
-                "title": "Général",
-                "language": "Langue",
-                "language-warn": "Changeable uniquement sur la page d'accueil",
-                "appearance": "Apparence",
-                "coming-soon": "Bientôt disponible"
-            },
-            "mobile": {
-                "title": "Mobile",
-                "switch-to-player-who-is-playing": "Basculer sur le joueur qui joue"
-            },
-            "chat": {
-                "title": "Chat",
-                "chat-visibility": "Visibilité du chat",
-                "chat-notification-size": {
-                    "label": "Taille des notifications du chat",
-                    "values": {
-                        "small": "Petit",
-                        "normal": "Normal",
-                        "big": "Grand"
-                    }
-                }
-            }
-        },
-        "Avatar": {
-            "context-menu": {
-                "kick": "Expulser",
-                "mute": "Rendre muet",
-                "unmute": "Rendre non muet"
-            }
-        },
-        "KickVote": {
-            "player-has-not-voted": {
-                "title": "Vote pour expulser {playerName}",
-                "description": "{initiatorName} veut expulser {playerName}",
-                "kick-button": {
-                    "alt": "Voter pour expulser {playerName}",
-                    "label": "Expulser"
-                },
-                "ignore-button": {
-                    "alt": "Ignorer le vote pour expulser {playerName}",
-                    "label": "Ignorer"
-                }
-            },
-            "player-has-voted": {
-                "title": "Vote pour expulser {playerName}",
-                "description": "Vous avez voté {vote, select, true {pour} false {contre} other {vote}}"
-            },
-            "vote-against-you": {
-                "title": "Vote pour vous expulser",
-                "description": "{initiatorName} a demandé un vote pour vous expulser."
-            },
-            "vote-failed": {
-                "title": "Le vote pour expulser {playerName} a échoué",
-                "description": "Il n'y a pas assez de votes pour expulser {playerName}"
-            },
-            "vote-against-you-failed": {
-                "title": "Vous n'avez pas été expulsé",
-                "description": "Il n'y a pas assez de votes pour vous expulser"
-            },
-            "vote-succeeded": {
-                "title": "{playerName} a été expulsé",
-                "description": "Le vote pour expulser {playerName} a réussi."
-            },
-            "vote-against-you-succeeded": {
-                "title": "Vous avez été expulsé",
-                "description": "Les joueurs ont voté pour vous expulser de la partie."
-            }
-        }
+    "Maintenance": {
+      "title": "Site en maintenance",
+      "description": "Nous sommes en ce moment en train de faire des mises à jour sur le site, veuillez réessayer plus tard.",
+      "github-alt": "Voir le code source sur GitHub"
     },
-    "utils": {
-        "skyjo": {
-            "waiting": "En attente de joueurs",
-            "turn-cards": "Tourner {number} carte{number, plural, =1 {} other {s}}",
-            "waiting-opponents-to-turn-cards": "En attente que {nbOpponents, plural, =1 {l'adversaire} other {les adversaires}} tourne{nbOpponents, plural, =1 {} other {s}} {number} carte{number, plural, =1 {} other {s}}",
-            "turn": {
-                "chooseAPile": "Choisissez une pile",
-                "throwOrReplace": "Remplacez ou défaussez",
-                "replaceACard": "Remplacez une carte",
-                "turnACard": "Tournez une carte"
-            },
-            "player-turn": "C'est au tour de {playerName}",
-            "last-turn": "Dernier tour !",
-            "game-stopped": "Partie arrêtée",
-            "round-over": "Manche terminée",
-            "game-ended": "Partie terminée !"
-        },
-        "chat": {
-            "player-joined": "{username} a rejoint la partie",
-            "player-left": "{username} a quitté la partie",
-            "player-reconnect": "{username} s'est reconnecté",
-            "argument-required": "Un ou des arguments sont requis pour la commande : {command}",
-            "player-already-muted": "{username} est déjà muet",
-            "player-muted": "{username} est maintenant muet",
-            "player-not-muted": "{username} n'est pas muet",
-            "player-unmuted": "{username} n'est plus muet"
-        },
-        "avatar": {
-            "bee": "abeille",
-            "crab": "crabe",
-            "dog": "chien",
-            "elephant": "éléphant",
-            "fox": "renard",
-            "frog": "grenouille",
-            "koala": "koala",
-            "octopus": "pieuvre",
-            "penguin": "pingouin",
-            "turtle": "tortue",
-            "whale": "baleine"
-        }
+    "NotFound": {
+      "title": "Erreur 404",
+      "description": "La page que vous recherchez n'existe pas.",
+      "go-back-to-homepage": "Retour à l'accueil"
     },
-    "contexts": {
-        "SocketContext": {
-            "connection-lost": "Connexion au serveur perdue. Essayez de recharger la page pour se reconnecter"
+    "InactivityCheck": {
+      "warning": {
+        "title": "Êtes-vous toujours là ?",
+        "button": {
+          "label": "Oui",
+          "title": "Confirmer que votre présence"
         }
+      },
+      "timeout": {
+        "title": "Vous avez été déconnecté du lobby pour cause d'inactivité",
+        "description": "Veuillez noter qu'en tant qu'administrateur d'une partie publique, votre inactivité empêche la partie de commencer, affectant l'expérience des autres joueurs."
+      }
+    },
+    "Lobby": {
+      "settings": {
+        "title": "Paramètres",
+        "private": {
+          "tooltip": {
+            "on": "Cette partie est privée, seuls les personnes ayant le lien peuvent rejoindre",
+            "off": "Cette partie est publique, n'importe qui peut rejoindre"
+          }
+        },
+        "reset-settings": "Réinitialiser les paramètres",
+        "allow-skyjo-for-column": "Autoriser les Skyjo pour les colonnes",
+        "allow-skyjo-for-row": "Autoriser les Skyjo pour les lignes",
+        "nb-columns": {
+          "label": "Nombre de colonnes",
+          "title": "$number colonnes"
+        },
+        "nb-rows": {
+          "label": "Nombre de lignes",
+          "title": "$number lignes"
+        },
+        "initial-turned-count": {
+          "label": "Nombre de cartes retournées au début de la partie",
+          "title": "{number} cartes seront retournées au début de la partie"
+        },
+        "score-to-end-game": {
+          "label": "Nombre de points pour finir la partie",
+          "title": "{number} points seront nécessaires pour finir la partie"
+        },
+        "multiplier-for-first-player": {
+          "label": "Multiplicateur pour le premier joueur",
+          "title": "Le score du premier joueur sera multiplié par {number} si il n'est pas strictement inférieur aux autres scores de la partie"
+        }
+      },
+      "start-game-button": "Commencer la partie",
+      "player-section": {
+        "title": "Joueurs"
+      }
+    },
+    "ResultsPage": {
+      "title": "Résultat de la partie",
+      "rank": "Rang",
+      "player": "Joueur",
+      "score-per-round": "Score par manche",
+      "total": "Total",
+      "player-want-to-replay": "Joueurs qui veulent rejouer :",
+      "replay-button": {
+        "cancel": "Ne pas rejouer",
+        "replay": "Rejouer"
+      },
+      "leave-button": "Quitter la partie"
+    },
+    "PrivacyPolicy": {
+      "head": {
+        "title": "Politique de Confidentialité | Skyjo Online",
+        "description": "Découvrez comment Skyjo Online protège votre vie privée et vos données lors de vos parties en ligne gratuites. Apprenez nos pratiques de collecte, d'utilisation et de protection des données.",
+        "keywords": "Skyjo Online,politique de confidentialité,protection des données,confidentialité jeu en ligne,jeu sécurisé,données utilisateurs,conformité RGPD"
+      },
+      "content": {
+        "back": "Retour à l'accueil",
+        "title": "Politique de Confidentialité",
+        "last-updated": "Dernière mise à jour : {date}",
+        "last-update": {
+          "text": "Dernière mise à jour : {date}",
+          "date-format": "DD MMMM YYYY à HH:mm"
+        },
+        "information-we-collect": {
+          "title": "Informations que nous collectons",
+          "anonymous-usage-data": {
+            "title": "Données d'utilisation anonymes",
+            "description": "Nous utilisons PostHog, un outil d'analyse, pour collecter des données anonymes sur votre utilisation de notre site web. Cela inclut :",
+            "items": "Vues de pages;;Vitales web (métriques de performance);;Réponses aux sondages (si vous choisissez d'y participer)"
+          },
+          "game-data": {
+            "title": "Données de jeu",
+            "description": "Nous stockons temporairement :",
+            "items": "Noms d'utilisateur et choix d'avatar;;Éléments et progression du jeu"
+          },
+          "user-provided-information": {
+            "title": "Informations fournies par l'utilisateur",
+            "description": "Nous collectons :",
+            "items": "Soumissions du formulaire de feedback (y compris les adresses e-mail optionnelles)"
+          },
+          "local-storage-data": {
+            "title": "Données de stockage local",
+            "description": "Nous stockons dans le stockage local de votre navigateur :",
+            "items": "Préférences de langue;;Préférences de paramètres de jeu"
+          }
+        },
+        "how-we-use-your-information": {
+          "title": "Comment nous utilisons vos informations",
+          "items": "Améliorer notre site web et l'expérience utilisateur;;Analyser les modèles d'utilisation et les performances;;Répondre aux feedbacks et aux demandes de support;;Faciliter le déroulement du jeu"
+        },
+        "data-storage-and-retention": {
+          "title": "Stockage et conservation des données",
+          "items": "Les données d'utilisation anonymes sont stockées sur des serveurs au sein de l'Union européenne et conservées pendant un maximum d'un an;;Les données de jeu sont stockées dans notre base de données situées à Francfort, Allemagne. Ces données sont conservées pendant la durée des parties actives. Une fois que tous les joueurs quittent une partie, les données associées sont supprimées;;Les informations stockées dans le stockage local de votre navigateur y restent jusqu'à ce que vous effaciez les données de votre navigateur;;Les soumissions du formulaire de feedback ne sont conservées que dans le but de répondre et d'examiner les suggestions de développement"
+        },
+        "data-sharing": {
+          "title": "Partage des données",
+          "description": "Nous ne partageons pas vos informations personnelles avec des tiers. Les données d'utilisation anonymes sont traitées par PostHog, notre fournisseur d'analyses."
+        },
+        "your-rights-and-choices": {
+          "title": "Vos droits et choix",
+          "description": "Étant donné que nous collectons principalement des données anonymes, nous ne pouvons pas identifier ou accéder à des informations personnelles spécifiques à un utilisateur individuel. Cependant, vous disposez des droits et choix suivants :",
+          "items": "Local storage : Vous pouvez effacer le stockage local de votre navigateur à tout moment pour supprimer les préférences enregistrées;;Feedback : Si vous avez soumis un feedback avec une adresse e-mail, vous pouvez nous contacter pour demander sa suppression;;Désactivation des analyses : Vous pouvez désactiver la collecte de données d'analyse en activant le paramètre \"Ne pas suivre\" de votre navigateur ou en utilisant des navigateurs axés sur la confidentialité qui bloquent les scripts d'analyse;;Données de jeu : Les données relatives au jeu sont automatiquement supprimées lorsque tous les joueurs quittent une partie"
+        },
+        "childrens-privacy": {
+          "title": "Confidentialité des enfants",
+          "description": "Skyjo Online n'a pas de restrictions d'âge. Nous ne collectons pas sciemment d'informations personnelles auprès des enfants."
+        },
+        "changes-to-this-policy": {
+          "title": "Modifications de cette politique",
+          "description": "Nous pouvons mettre à jour cette politique de temps en temps. Nous vous informerons de tout changement en publiant la nouvelle politique sur cette page."
+        },
+        "contact-us": {
+          "title": "Nous contacter",
+          "description": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter via le formulaire de feedback sur le site web."
+        }
+      }
+    },
+    "Rules": {
+      "head": {
+        "title": "Comment jouer au Skyjo | Skyjo Onlone",
+        "description": "Apprenez les règles du Skyjo, un jeu multijoueur en ligne amusant et captivant. Découvrez comment jouer gratuitement à Skyjo avec des amis et maîtrisez le jeu grâce à notre guide détaillé.",
+        "keywords": "Règles du jeu Skyjo,jeu,en ligne,multijoueur,gratuit,jouer avec des amis,règles,règles du jeu"
+      },
+      "back": "Retour à l'accueil",
+      "title": "Règles du jeu Skyjo"
     }
+  },
+  "components": {
+    "Chat": {
+      "title": "Chat"
+    },
+    "ChatForm": {
+      "message-input-placeholder": "Message",
+      "button-title": "Envoyer",
+      "message-too-long": {
+        "description": "Le message est trop long (200 caractères maximum)"
+      }
+    },
+    "ChatMessage": {
+      "separator": ": "
+    },
+    "ChatMessageList": {
+      "unread-messages": "{count} message{count, plural, =1 {} other {s}} non lu{count, plural, =1 {} other {s}}"
+    },
+    "Feedback": {
+      "title": "Laisser un commentaire",
+      "description": "Vous pouvez écrire un commentaire pour nous aider à améliorer le jeu.",
+      "toast": {
+        "success": {
+          "title": "Merci de nous avoir fait part de vos commentaires !",
+          "description": "Vos commentaires nous ont aidés à améliorer notre site web sur les jeux, et nous vous en sommes très reconnaissants."
+        },
+        "error": {
+          "title": "Une erreur est survenue, veuillez réessayer."
+        }
+      },
+      "email-input": {
+        "label": "Votre email (facultatif)",
+        "placeholder": "exemple@exemple.fr"
+      },
+      "message-input": {
+        "label": "Votre message",
+        "placeholder": "Dites-nous ce que vous pensez, remarquez ou souhaitez…"
+      },
+      "button-title": "Envoyer"
+    },
+    "CopyLink": {
+      "message": "Lien copié !",
+      "button-title": "Copier le lien"
+    },
+    "DiscardPile": {
+      "title": "Paquet de défausse",
+      "throw": "Défausser"
+    },
+    "DrawPile": {
+      "title": "Paquet de pioche"
+    },
+    "EndRoundDialog": {
+      "title": "Fin de la manche",
+      "description": "La manche suivante va commencer dans quelques secondes…"
+    },
+    "Footer": {
+      "feedback": "Laisser un commentaire",
+      "buy-game": "Acheter le jeu",
+      "explanation": "Qu'est-ce que Skyjo ?",
+      "rules": "Règles du jeu",
+      "home": "Accueil",
+      "release-notes": "Notes de version",
+      "privacy-policy": "Politique de confidentialité",
+      "disclaimer": "Ce site n'est pas affilié aux créateurs ou distributeurs de Skyjo. Tous les droits sur le nom Skyjo et les mécaniques du jeu sont de l'auteur Alexander Bernhardt et Magilano"
+    },
+    "GameLobbyButtons": {
+      "reconnect-game-button": "Se reconnecter à la partie",
+      "join-game-button": "Rejoindre la partie",
+      "find-game-button": "Trouver une partie",
+      "create-private-game-button": "Créer une partie privée",
+      "timeout": {
+        "description": "Le serveur prends plus de temps que prévu à répondre. Vous pouvez tenter de recharger la page et réessayer."
+      },
+      "game-not-found": {
+        "description": "La partie que vous cherchez n'existe pas"
+      },
+      "cannot-reconnect": {
+        "description": "Ce n'est plus possible de se reconnecter à la partie, le temps imparti pour se reconnecter a expiré"
+      },
+      "game-is-full": {
+        "description": "La partie est pleine, vous ne pouvez pas y rejoindre"
+      },
+      "game-already-started": {
+        "description": "La partie a déjà commencé"
+      }
+    },
+    "GameStoppedDialog": {
+      "title": "La partie s'est arrêtée",
+      "description": "La partie a été arrêtée car il n'y a plus assez de joueurs"
+    },
+    "LanguageCombobox": {
+      "select-language": "Sélectionner la langue",
+      "search-language": "Rechercher une langue",
+      "no-language-found": "Aucune langue trouvée"
+    },
+    "MenuDropdown": {
+      "button": {
+        "aria-label": "Menu"
+      },
+      "rules": "Règles",
+      "feedback": "Laisser un commentaire",
+      "settings": "Paramètres"
+    },
+    "OpponentBoard": {
+      "connection-lost": "Connexion perdue"
+    },
+    "OpponentsMobileView": {
+      "opponents-list": {
+        "title": "Adversaires :"
+      }
+    },
+    "PlayerBoard": {
+      "you": "Vous"
+    },
+    "PWABanner": {
+      "title": "Installer Skyjo Online sur votre appareil !",
+      "Safari": "Appuyez sur l'icône de partage, puis sur 'Ajouter au Dock' pour installer",
+      "Chrome": "Cliquez sur le bouton 'Installer' pour installer",
+      "FirefoxAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
+      "ChromeAndroid": "Appuyez sur l'icône du menu, puis sur 'Ajouter à l'écran d'accueil' pour installer",
+      "SamsungBrowser": "Appuyez sur l'icône de menu, puis sur 'Ajouter la page à' pour installer",
+      "ChromeIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "FirefoxIOS": "Appuyez sur l'icône du menu, puis de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "SafariIOS": "Appuyez sur l'icône de partage, puis faites défiler et appuyez sur 'Ajouter à l'écran d'accueil' pour installer",
+      "install-button": {
+        "title": "Installer l'application",
+        "content": "Installer"
+      }
+    },
+    "RulesDialog": {
+      "title": "Règles du jeu",
+      "trigger": {
+        "aria-label": "Afficher les règles du jeu"
+      }
+    },
+    "Rules": {
+      "cards-section-title": "{number} cartes de jeu :",
+      "game-goal": {
+        "title": "But du jeu",
+        "content": "Le jeu Skyjo se déroule en plusieurs manches et se termine dès qu'un joueur atteint 100 points ou plus. Celui qui a obtenu le moins de points gagne la partie."
+      },
+      "round-preparation": {
+        "title": "Préparation d'une manche",
+        "content-1": "Tout d'abord, chaque joueur reçoit 12 cartes distribuées face cachée. Ensuite, une carte de la pioche est placée face visible au milieu de la table, elle constitue le début de la pile de défausse. Les cartes restantes sont placées à côté face cachée et forment la pioche.",
+        "content-2": "Chaque joueur place ses 12 cartes en quatre colonnes de trois cartes face cachée devant lui. Enfin, chaque joueur retourne face visible deux cartes de son choix."
+      },
+      "round-start": {
+        "title": "Début d'une manche",
+        "choice": "choix {number}",
+        "content-1": "Le joueur peut choisir la première carte retournée de la défausse",
+        "content-2": "ou la première carte face cachée de la pioche",
+        "choice-1": {
+          "title": "Choix 1 :",
+          "description": "Prendre la première carte retournée de la défausse.",
+          "content": "Le joueur doit immédiatement échanger cette carte avec l'une de ses 12 cartes et la poser face visible. Il peut choisir librement entre les cartes visibles et cachées. Les cartes cachées ne doivent pas être vues avant l'échange. La carte échangée est déposée face visible sur la pile de défausse."
+        },
+        "choice-2": {
+          "title": "Choix 2 :",
+          "description": "Prendre la première carte face cachée de la pioche.",
+          "content-1": "Le joueur peut regarder la carte et choisir s'il veut l'échanger contre l'une de ses cartes (cachées ou visibles) ou bien la défausser. S'il veut garder la carte tirée, il l'échange avec l'une de ses cartes comme décrit ci-dessus dans le",
+          "choice-1": "Choix 1",
+          "content-2": "S'il ne veut pas garder la carte tirée, il la dépose sur la pile de défausse et doit retourner face visible une de ses cartes."
+        },
+        "end-of-turn": "Son tour est alors terminé et c'est au tour du joueur suivant (dans le sens des aiguilles d'une montre)."
+      },
+      "special-rule": {
+        "title": "Règle spéciale :",
+        "content": "Si un joueur a 3 cartes identiques dans une colonne, le joueur se débarrasse de ces 3 cartes en les plaçant sur la défausse. Si une colonne de cartes identiques est obtenue à la suite d'un échange avec une carte de la pioche ou de la défausse, les trois cartes identiques doivent toujours être déposées sur la pile de défausse après la carte échangée."
+      },
+      "round-end": {
+        "title": "Fin d'une manche",
+        "content-1": "Quand un joueur a révélé toutes ses cartes, il a joué son dernier tour.",
+        "content-2": "Tous les joueurs suivants jouent encore une fois pour terminer le tour de table."
+      },
+      "scoring": {
+        "title": "Décompte des points",
+        "description": "Les joueurs ayant encore des cartes face cachée les retournent face visible. Chaque joueur comptabilise son total de points.",
+        "list": {
+          "content-1": "Si le total de points est positif, il l'additionne au total de points des manches précédentes.",
+          "content-2": "Si le total est négatif, il le soustrait au total de points des manches précédentes."
+        },
+        "first-to-finish": {
+          "content": "Si le joueur qui a terminé la manche (le 1er à avoir retourné toutes ses cartes) n'a pas obtenu, strictement, le plus petit nombre de points de cette manche, alors, la somme de ses points pour cette manche est doublée.",
+          "note": {
+            "title": "Attention :",
+            "content": "cette règle ne s'applique qu'aux points positifs !"
+          }
+        },
+        "example": {
+          "title": "Exemple :",
+          "content": "le joueur A révèle toutes ses cartes et termine la manche. À la fin de la manche, il a obtenu 10 points, le joueur B a 24 points et le joueur C a également 10 points. Le joueur A n'ayant pas, strictement, le plus petit nombre de points, ses points sont doublés à 20."
+        }
+      },
+      "end-of-game": {
+        "title": "Fin de la partie",
+        "content": "À la fin de chaque manche, les points de chaque joueur sont ajoutés au score total obtenu lors des manches précédentes. Le jeu se termine dès qu'un joueur atteint 100 points ou plus. Le joueur avec le plus petit score gagne la partie."
+      }
+    },
+    "Scoreboard": {
+      "button-title": "Voir le tableau des scores"
+    },
+    "ScoreDialog": {
+      "title": "Score",
+      "description": "{name} a gagné avec {score} points !"
+    },
+    "ScoreSheet": {
+      "see-scores": "Voir scores"
+    },
+    "ScoreTable": {
+      "name": "Nom",
+      "round": "Manche",
+      "total": "Total"
+    },
+    "SettingsDialog": {
+      "title": "Paramètres",
+      "sound": {
+        "title": "Son",
+        "audio": {
+          "label": "Activer le son"
+        },
+        "volume": {
+          "label": "Volume ({volume}%)"
+        }
+      },
+      "general": {
+        "title": "Général",
+        "language": "Langue",
+        "language-warn": "Changeable uniquement sur la page d'accueil",
+        "appearance": "Apparence",
+        "coming-soon": "Bientôt disponible"
+      },
+      "mobile": {
+        "title": "Mobile",
+        "switch-to-player-who-is-playing": "Basculer sur le joueur qui joue"
+      },
+      "chat": {
+        "title": "Chat",
+        "chat-visibility": "Visibilité du chat",
+        "chat-notification-size": {
+          "label": "Taille des notifications du chat",
+          "values": {
+            "small": "Petit",
+            "normal": "Normal",
+            "big": "Grand"
+          }
+        }
+      }
+    },
+    "Avatar": {
+      "context-menu": {
+        "kick": "Expulser",
+        "mute": "Rendre muet",
+        "unmute": "Rendre non muet"
+      }
+    },
+    "KickVote": {
+      "player-has-not-voted": {
+        "title": "Vote pour expulser {playerName}",
+        "description": "{initiatorName} veut expulser {playerName}",
+        "kick-button": {
+          "alt": "Voter pour expulser {playerName}",
+          "label": "Expulser"
+        },
+        "ignore-button": {
+          "alt": "Ignorer le vote pour expulser {playerName}",
+          "label": "Ignorer"
+        }
+      },
+      "player-has-voted": {
+        "title": "Vote pour expulser {playerName}",
+        "description": "Vous avez voté {vote, select, true {pour} false {contre} other {vote}}"
+      },
+      "vote-against-you": {
+        "title": "Vote pour vous expulser",
+        "description": "{initiatorName} a demandé un vote pour vous expulser."
+      },
+      "vote-failed": {
+        "title": "Le vote pour expulser {playerName} a échoué",
+        "description": "Il n'y a pas assez de votes pour expulser {playerName}"
+      },
+      "vote-against-you-failed": {
+        "title": "Vous n'avez pas été expulsé",
+        "description": "Il n'y a pas assez de votes pour vous expulser"
+      },
+      "vote-succeeded": {
+        "title": "{playerName} a été expulsé",
+        "description": "Le vote pour expulser {playerName} a réussi."
+      },
+      "vote-against-you-succeeded": {
+        "title": "Vous avez été expulsé",
+        "description": "Les joueurs ont voté pour vous expulser de la partie."
+      }
+    }
+  },
+  "utils": {
+    "skyjo": {
+      "waiting": "En attente de joueurs",
+      "turn-cards": "Tourner {number} carte{number, plural, =1 {} other {s}}",
+      "waiting-opponents-to-turn-cards": "En attente que {nbOpponents, plural, =1 {l'adversaire} other {les adversaires}} tourne{nbOpponents, plural, =1 {} other {s}} {number} carte{number, plural, =1 {} other {s}}",
+      "turn": {
+        "chooseAPile": "Choisissez une pile",
+        "throwOrReplace": "Remplacez ou défaussez",
+        "replaceACard": "Remplacez une carte",
+        "turnACard": "Tournez une carte"
+      },
+      "player-turn": "C'est au tour de {playerName}",
+      "last-turn": "Dernier tour !",
+      "game-stopped": "Partie arrêtée",
+      "round-over": "Manche terminée",
+      "game-ended": "Partie terminée !"
+    },
+    "chat": {
+      "player-joined": "{username} a rejoint la partie",
+      "player-left": "{username} a quitté la partie",
+      "player-reconnect": "{username} s'est reconnecté",
+      "argument-required": "Un ou des arguments sont requis pour la commande : {command}",
+      "player-already-muted": "{username} est déjà muet",
+      "player-muted": "{username} est maintenant muet",
+      "player-not-muted": "{username} n'est pas muet",
+      "player-unmuted": "{username} n'est plus muet"
+    },
+    "avatar": {
+      "bee": "abeille",
+      "crab": "crabe",
+      "dog": "chien",
+      "elephant": "éléphant",
+      "fox": "renard",
+      "frog": "grenouille",
+      "koala": "koala",
+      "octopus": "pieuvre",
+      "penguin": "pingouin",
+      "turtle": "tortue",
+      "whale": "baleine"
+    }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Connexion au serveur perdue. Essayez de recharger la page pour se reconnecter"
+    }
+  }
 }
