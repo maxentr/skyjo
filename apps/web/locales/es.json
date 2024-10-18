@@ -92,5 +92,35 @@
         }
       }
     }
+  },
+  "components": {
+    "LanguageCombobox": {
+      "locale": {
+        "en": "Inglés",
+        "it": "Italiano",
+        "de": "Alemán",
+        "es": "Español",
+        "fr": "Francés"
+      }
+    },
+    "MenuDropdown": {
+      "button": {
+        "aria-label": "Menú"
+      },
+      "rules": "Reglas",
+      "feedback": "Dejar un comentario",
+      "settings": "Ajustes"
+    },
+    "PlayerBoard": {
+      "you": "Tú"
+    },
+    "OpponentBoard": {
+      "connection-lost": "Conexión perdida"
+    },
+    "OpponentsMobileView": {
+      "opponents-list": {
+        "title": "Contrincantes:"
+      }
+    }
   }
 }
