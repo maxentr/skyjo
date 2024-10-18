@@ -1,36 +1,39 @@
-name: 'Test and Report Coverage on PRs'
-on: 
+name: "Test and Report Coverage on PRs"
+on:
   pull_request:
+    branches:
+      - trunk
+      - "!weblate:*"
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
       pull-requests: write
 
     steps:
-    - uses: actions/checkout@v4
-    - name: 'Install Node'
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22.6.0
+      - uses: actions/checkout@v4
+      - name: "Install Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.6.0
 
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: 'Test'
-      run: pnpm test:coverage
+      - name: "Test"
+        run: pnpm test:coverage
 
-    - name: 'Report API Coverage'
-      if: always() 
-      uses:  davelosert/vitest-coverage-report-action@v2
-      with:
-        name: 'API'
-        vite-config-path: "./apps/api/vitest.config.ts"
-        json-summary-path: './apps/api/tests/coverage/coverage-summary.json'
-        json-final-path: './apps/api/tests/coverage/coverage-final.json'
+      - name: "Report API Coverage"
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: "API"
+          vite-config-path: "./apps/api/vitest.config.ts"
+          json-summary-path: "./apps/api/tests/coverage/coverage-summary.json"
+          json-final-path: "./apps/api/tests/coverage/coverage-final.json"
