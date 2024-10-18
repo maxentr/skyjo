@@ -1,533 +1,533 @@
 {
-  "head": {
-    "title": "Play Skyjo Online with Friends | Skyjo Online",
-    "description": "Enjoy playing Skyjo online with friends for free! Join the fun in this exciting multiplayer game and challenge your friends to see who can win!",
-    "keywords": "Skyjo,Skyjo online,multiplayer game,play with friends,free online games,play Skyjo online"
-  },
-  "pages": {
-    "Index": {
-      "name-input-placeholder": "Name",
-      "explanation": {
-        "title": "What is Skyjo?",
-        "content": "Skyjo is an exciting card game and an excellent board game, enjoyed by games fans all over the world. This multiplayer card game is designed for a number of players ranging from 2 to 8, where each player receives 12 cards, initially hidden. The main aim of the game is to score as few points as possible. The game ends as soon as one player reaches 100 points. The rules of the game are simple and easy to understand, making it an ideal choice for game nights with family or friends. Game enthusiasts will be delighted to learn that it is now possible to play Skyjo online for free!",
-        "button": "See the rules"
-      },
-      "faq": {
-        "title": "Frequently asked questions (FAQ)",
-        "meaning": {
-          "title": "What does Skyjo mean?",
-          "content": "A Skyjo is a column of 3 identical cards in the game."
+    "head": {
+        "title": "Play Skyjo Online with Friends | Skyjo Online",
+        "description": "Enjoy playing Skyjo online with friends for free! Join the fun in this exciting multiplayer game and challenge your friends to see who can win!",
+        "keywords": "Skyjo,Skyjo online,multiplayer game,play with friends,free online games,play Skyjo online"
+    },
+    "pages": {
+        "Index": {
+            "name-input-placeholder": "Name",
+            "explanation": {
+                "title": "What is Skyjo?",
+                "content": "Skyjo is an exciting card game and an excellent board game, enjoyed by games fans all over the world. This multiplayer card game is designed for a number of players ranging from 2 to 8, where each player receives 12 cards, initially hidden. The main aim of the game is to score as few points as possible. The game ends as soon as one player reaches 100 points. The rules of the game are simple and easy to understand, making it an ideal choice for game nights with family or friends. Game enthusiasts will be delighted to learn that it is now possible to play Skyjo online for free!",
+                "button": "See the rules"
+            },
+            "faq": {
+                "title": "Frequently asked questions (FAQ)",
+                "meaning": {
+                    "title": "What does Skyjo mean?",
+                    "content": "A Skyjo is a column of 3 identical cards in the game."
+                },
+                "pronounce": {
+                    "title": "How do you pronounce Skyjo?",
+                    "content": "The word Skyjo is pronounced [Skyjoe]."
+                },
+                "how-to-play": {
+                    "title": "How to play Skyjo?",
+                    "content": "To play Skyjo, deal 12 cards to each player face down. The goal is to have the fewest points possible by flipping and exchanging cards. Each turn, draw a card from the deck or discard pile, then decide to replace one of your visible cards. Numbered cards are worth their points, special cards have actions. The game ends when a player has flipped all their cards. The player with the fewest points wins. You can check <rules>the rules</rules> for more information."
+                },
+                "how-to-win": {
+                    "title": "How to win at Skyjo?",
+                    "content": "To win at Skyjo, it's essential to have the lowest score possible. To achieve this, adopt a balanced strategy between having the lowest cards, revealing your cards, and creating columns of identical cards. Avoid flipping first unless you're significantly ahead with visible cards. Remember to keep already visible cards to try to create columns with them, rather than optimizing them individually."
+                },
+                "play-classic-with-action": {
+                    "title": "Can you play classic Skyjo with Skyjo Action?",
+                    "content": "Yes, you just need to remove the action cards. If you're playing the online version, select the classic version to play Skyjo."
+                }
+            }
         },
-        "pronounce": {
-          "title": "How do you pronounce Skyjo?",
-          "content": "The word Skyjo is pronounced [Skyjoe]."
+        "Maintenance": {
+            "title": "Site under maintenance",
+            "description": "We are currently updating the site, please try again later.",
+            "github-alt": "See the code source on GitHub"
         },
-        "how-to-play": {
-          "title": "How to play Skyjo?",
-          "content": "To play Skyjo, deal 12 cards to each player face down. The goal is to have the fewest points possible by flipping and exchanging cards. Each turn, draw a card from the deck or discard pile, then decide to replace one of your visible cards. Numbered cards are worth their points, special cards have actions. The game ends when a player has flipped all their cards. The player with the fewest points wins. You can check <rules>the rules</rules> for more information."
+        "NotFound": {
+            "title": "Error 404",
+            "description": "The page you are looking for does not exist.",
+            "go-back-to-homepage": "Go back to the homepage"
         },
-        "how-to-win": {
-          "title": "How to win at Skyjo?",
-          "content": "To win at Skyjo, it's essential to have the lowest score possible. To achieve this, adopt a balanced strategy between having the lowest cards, revealing your cards, and creating columns of identical cards. Avoid flipping first unless you're significantly ahead with visible cards. Remember to keep already visible cards to try to create columns with them, rather than optimizing them individually."
+        "InactivityCheck": {
+            "warning": {
+                "title": "Are you still here?",
+                "button": {
+                    "label": "Yes",
+                    "title": "Confirm your presence"
+                }
+            },
+            "timeout": {
+                "title": "You have been disconnected from the lobby due to inactivity",
+                "description": "Please note that as an administrator of a public game, your inactivity prevents the game from starting, affecting the experience of other players."
+            }
         },
-        "play-classic-with-action": {
-          "title": "Can you play classic Skyjo with Skyjo Action?",
-          "content": "Yes, you just need to remove the action cards. If you're playing the online version, select the classic version to play Skyjo."
+        "Lobby": {
+            "settings": {
+                "title": "Settings",
+                "private": {
+                    "tooltip": {
+                        "on": "This game is private, only people with the link can join",
+                        "off": "This game is public, anyone can join"
+                    }
+                },
+                "reset-settings": "Reset settings",
+                "allow-skyjo-for-column": "Allow Skyjo for column",
+                "allow-skyjo-for-row": "Allow Skyjo for row",
+                "nb-columns": {
+                    "label": "Number of columns",
+                    "title": "$number columns"
+                },
+                "nb-rows": {
+                    "label": "Number of rows",
+                    "title": "$number rows"
+                },
+                "initial-turned-count": {
+                    "label": "Number of card turned at the beginning of a round",
+                    "title": "{number} cards will be turned at the beginning of the game"
+                },
+                "score-to-end-game": {
+                    "label": "Number of points to end the game",
+                    "title": "{number} points will be required to end the game"
+                },
+                "multiplier-for-first-player": {
+                    "label": "Multiplier for the first player",
+                    "title": "The score of the first player will be multiplied by {number} if it is not strictly inferior to the other scores of the game"
+                }
+            },
+            "start-game-button": "Start the game",
+            "player-section": {
+                "title": "Players"
+            }
+        },
+        "ResultsPage": {
+            "title": "Game results",
+            "rank": "Rank",
+            "player": "Player",
+            "score-per-round": "Score per round",
+            "total": "Total",
+            "player-want-to-replay": "Players who want to replay:",
+            "replay-button": {
+                "cancel": "Do not replay",
+                "replay": "Replay"
+            },
+            "leave-button": "Leave the game"
+        },
+        "PrivacyPolicy": {
+            "head": {
+                "title": "Privacy Policy | Skyjo Online",
+                "description": "Learn how Skyjo Online protects your privacy and data while playing our free online card game. Discover our data collection, usage, and protection practices.",
+                "keywords": "Skyjo Online,privacy policy,data protection,online game privacy,secure gaming,user data,GDPR compliance"
+            },
+            "content": {
+                "back": "Back to the home page",
+                "title": "Privacy Policy",
+                "last-update": {
+                    "text": "Last updated: {date}",
+                    "date-format": "DD MMMM YYYY at HH:mm"
+                },
+                "information-we-collect": {
+                    "title": "Information We Collect",
+                    "anonymous-usage-data": {
+                        "title": "Anonymous Usage Data",
+                        "description": "We use PostHog, an analytics tool, to collect anonymous data about how you use our website. This includes:",
+                        "items": "Page views;;Web vitals (performance metrics);;Survey responses (if you choose to participate)"
+                    },
+                    "game-data": {
+                        "title": "Game Data",
+                        "description": "We temporarily store:",
+                        "items": "Usernames and avatar choices;;Game elements and progress"
+                    },
+                    "user-provided-information": {
+                        "title": "User-Provided Information",
+                        "description": "We collect:",
+                        "items": "Feedback form submissions (including optional email addresses)"
+                    },
+                    "local-storage-data": {
+                        "title": "Local Storage Data",
+                        "description": "We store in your browser's local storage:",
+                        "items": "Language preferences;;Game settings preferences"
+                    }
+                },
+                "how-we-use-your-information": {
+                    "title": "How We Use Your Information",
+                    "items": "Improve our website and user experience;;Analyze usage patterns and performance;;Respond to feedback and support requests;;Facilitate gameplay"
+                },
+                "data-storage-and-retention": {
+                    "title": "Data Storage and Retention",
+                    "items": "Anonymous usage data is stored on servers within the European Union and retained for up to 1 year;;Game data is stored in our database located in Frankfurt, Germany. This data is kept for the duration of active games. Once all players leave a game, the associated data is deleted;;Information stored in your browser's local storage remains there until you clear your browser data;;Feedback form submissions are retained only for the purpose of responding and considering suggestions for development"
+                },
+                "data-sharing": {
+                    "title": "Data Sharing",
+                    "description": "We do not share your personal information with any third parties. Anonymous usage data is processed by PostHog, our analytics provider."
+                },
+                "your-rights-and-choices": {
+                    "title": "Your Rights and Choices",
+                    "description": "Given that we collect primarily anonymous data, we cannot identify or access personal information specific to any individual user. However, you have the following rights and choices:",
+                    "items": "Local Storage: You can clear your browser's local storage at any time to remove saved preferences;;Feedback: If you've submitted feedback with an email address, you can contact us to request its deletion;;Analytics Opt-Out: You can opt-out of analytics data collection by enabling your browser's \"Do Not Track\" setting or using privacy-focused browsers that block analytics scripts;;Game Data: Game-related data is automatically deleted when all players leave a game"
+                },
+                "childrens-privacy": {
+                    "title": "Children's Privacy",
+                    "description": "Skyjo Online does not have any age restrictions. We do not knowingly collect personal information from children."
+                },
+                "changes-to-this-policy": {
+                    "title": "Changes to This Policy",
+                    "description": "We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page."
+                },
+                "contact-us": {
+                    "title": "Contact Us",
+                    "description": "If you have any questions about this Privacy Policy, please contact us through our feedback form on the website."
+                }
+            }
+        },
+        "Rules": {
+            "head": {
+                "title": "How to Play Skyjo | Skyjo Online",
+                "description": "Learn the rules of Skyjo, a fun and engaging online multiplayer game. Discover how to play Skyjo with friends for free and master the game with our detailed guide.",
+                "keywords": "Skyjo rules,how to play Skyjo,Skyjo game,online multiplayer,free card game,play with friends,Skyjo game rules"
+            },
+            "back": "Back to the home page",
+            "title": "Skyjo game rules"
         }
-      }
     },
-    "Maintenance": {
-      "title": "Site under maintenance",
-      "description": "We are currently updating the site, please try again later.",
-      "github-alt": "See the code source on GitHub"
-    },
-    "NotFound": {
-      "title": "Error 404",
-      "description": "The page you are looking for does not exist.",
-      "go-back-to-homepage": "Go back to the homepage"
-    },
-    "InactivityCheck": {
-      "warning": {
-        "title": "Are you still here?",
-        "button": {
-          "label": "Yes",
-          "title": "Confirm your presence"
+    "components": {
+        "Chat": {
+            "title": "Chat"
+        },
+        "ChatForm": {
+            "message-input-placeholder": "Message",
+            "button-title": "Send",
+            "message-too-long": {
+                "description": "The message is too long (max 200 characters)"
+            }
+        },
+        "ChatMessage": {
+            "separator": ": "
+        },
+        "ChatMessageList": {
+            "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
+        },
+        "Feedback": {
+            "title": "Leave a feedback",
+            "description": "You can write a feedback to help us improve the game.",
+            "toast": {
+                "success": {
+                    "title": "Thank you for your feedback!",
+                    "description": "Your insights have helped us enhance our game website, and we are truly grateful."
+                },
+                "error": {
+                    "title": "An error occurred, please try again."
+                }
+            },
+            "email-input": {
+                "label": "Your email (optional)",
+                "placeholder": "example@example.com"
+            },
+            "message-input": {
+                "label": "Your message",
+                "placeholder": "Tell us what you think, note or want to…"
+            },
+            "button-title": "Send"
+        },
+        "CopyLink": {
+            "message": "Link copied!",
+            "button-title": "Copy link"
+        },
+        "DiscardPile": {
+            "title": "Discard pile",
+            "throw": "Throw"
+        },
+        "DrawPile": {
+            "title": "Draw pile"
+        },
+        "EndRoundDialog": {
+            "title": "End of the round",
+            "description": "The next round will start in few seconds…"
+        },
+        "Footer": {
+            "feedback": "Leave a feedback",
+            "buy-game": "Buy the game",
+            "explanation": "What is Skyjo?",
+            "rules": "Game rules",
+            "home": "Home",
+            "release-notes": "Release notes",
+            "privacy-policy": "Privacy policy",
+            "disclaimer": "This website is not affiliated with the creators or distributors of Skyjo. All rights to the Skyjo name and game mechanics are owned by Alexander Bernhardt and Magilano"
+        },
+        "GameLobbyButtons": {
+            "reconnect-game-button": "Reconnect to the game",
+            "join-game-button": "Join the game",
+            "find-game-button": "Find a game",
+            "create-private-game-button": "Create a private game",
+            "timeout": {
+                "description": "The server takes more time than expected to respond. You can try to reload the page and try again."
+            },
+            "game-not-found": {
+                "description": "The game you are looking for does not exist"
+            },
+            "cannot-reconnect": {
+                "description": "It is no longer possible to reconnect to the game, the time to reconnect has expired"
+            },
+            "game-is-full": {
+                "description": "The game is full, you cannot join"
+            },
+            "game-already-started": {
+                "description": "The game has already started"
+            }
+        },
+        "GameStoppedDialog": {
+            "title": "Game stopped",
+            "description": "The game has been stopped because there are not enough players"
+        },
+        "LanguageCombobox": {
+            "select-language": "Select language",
+            "search-language": "Search language",
+            "no-language-found": "No language found",
+            "locale": {
+                "en": "English",
+                "fr": "Français"
+            }
+        },
+        "MenuDropdown": {
+            "button": {
+                "aria-label": "Menu"
+            },
+            "rules": "Rules",
+            "feedback": "Leave a feedback",
+            "settings": "Settings"
+        },
+        "OpponentBoard": {
+            "connection-lost": "Connection lost"
+        },
+        "OpponentsMobileView": {
+            "opponents-list": {
+                "title": "Opponents:"
+            }
+        },
+        "PlayerBoard": {
+            "you": "You"
+        },
+        "PWABanner": {
+            "title": "Install Skyjo Online on your device!",
+            "Safari": "Tap the share icon, then 'Add to Dock' to install",
+            "Chrome": "Click on the 'Install' button to install",
+            "FirefoxAndroid": "Tap the menu icon, then 'Add to Home screen' to install",
+            "ChromeAndroid": "Tap the menu icon, then 'Add to Home screen' to install",
+            "SamsungBrowser": "Tap the menu icon, then 'Add page to', then 'Home screen' to install",
+            "ChromeIOS": "Tap the share icon, then scroll and tap 'Add to Home Screen' to install",
+            "FirefoxIOS": "Tap the menu icon, then the share icon, then scroll and tap 'Add to Home Screen' to install",
+            "SafariIOS": "Tap the share icon, then scroll and tap 'Add to Home Screen' to install",
+            "install-button": {
+                "title": "Install the app",
+                "content": "Install"
+            }
+        },
+        "RulesDialog": {
+            "title": "Game rules",
+            "trigger": {
+                "aria-label": "Show game rules"
+            }
+        },
+        "Rules": {
+            "cards-section-title": "{number} game cards:",
+            "game-goal": {
+                "title": "Game goal",
+                "content": "The Skyjo game is played over several rounds and ends as soon as a player reaches 100 points or more. The player with the fewest points wins the game."
+            },
+            "round-preparation": {
+                "title": "Round preparation",
+                "content-1": "First, each player is dealt 12 cards face-down. Next, one card from the draw pile is placed face-up in the middle of the table, forming the beginning of the discard pile. The remaining cards are placed face-down next to each other and form the draw pile.",
+                "content-2": "Each player places his 12 cards in four columns of three cards face down in front of him. Finally, each player turns face-up two cards of their choice."
+            },
+            "round-start": {
+                "title": "Round start",
+                "choice": "choice {number}",
+                "content-1": "The player can choose the first card turned over from the discard pile",
+                "content-2": "or the first face-down card of the draw pile",
+                "choice-1": {
+                    "title": "Choice 1:",
+                    "description": "Take the first card from the discard pile.",
+                    "content": "The player must immediately swap this card with one of his or her 12 cards and place it face up. He can choose freely between face-up and face-down cards. Hidden cards must not be must not be seen before the exchange. The exchanged card is placed face-up on the discard pile."
+                },
+                "choice-2": {
+                    "title": "Choice 2:",
+                    "description": "Take the first card face down from the draw pile.",
+                    "content-1": "The player can look at the card and choose whether to exchange it for one of his cards (hidden or visible) or discard it. If he wants to keep the drawn card, he exchanges it with one of his cards as described above in the",
+                    "choice-1": "Choice 1",
+                    "content-2": "If he does not wish to keep the drawn card, he places it on the discard pile and must turn face-up one of his cards."
+                },
+                "end-of-turn": "His turn is then over, and it's the next player's turn (clockwise)."
+            },
+            "special-rule": {
+                "title": "Special rule:",
+                "content": "If a player has 3 identical cards in a column, the player discards these 3 cards by placing them on the discard pile. If a column of identical cards is obtained by exchanging with a card from the draw pile or discard pile, the three identical cards identical cards must always be placed on the discard pile after the exchanged card."
+            },
+            "round-end": {
+                "title": "End of the round",
+                "content-1": "When a player has revealed all his cards, he has played his last turn.",
+                "content-2": "All subsequent players play once more to complete the round."
+            },
+            "scoring": {
+                "title": "Scoring",
+                "description": "Players who still have cards face down turn them face up. Each player counts his total points.",
+                "list": {
+                    "content-1": "If the total of points is positive, he adds it to the total of points from previous rounds.",
+                    "content-2": "If the total is negative, it is subtracted from the total points of the previous rounds."
+                },
+                "first-to-finish": {
+                    "content": "If the player who has completed the round (the 1st to have turned over all his cards) has not obtained, strictly speaking, the lowest number of points for that round, then the sum of his points for that round is doubled.",
+                    "note": {
+                        "title": "Please note:",
+                        "content": "this rule only applies to positive points!"
+                    }
+                },
+                "example": {
+                    "title": "Example:",
+                    "content": "Player A reveals all his cards and finishes the round. At the end of the round, he has 10 points, player B has 24 points and player C also has 10 points. As player A does not strictly have the lowest number of points, his points are doubled to 20."
+                }
+            },
+            "end-of-game": {
+                "title": "End of game",
+                "content": "At the end of each round, each player's points are added to the total score obtained in the previous rounds. The game ends as soon as a player reaches 100 points or more. The player with the lowest score wins the game."
+            }
+        },
+        "Scoreboard": {
+            "button-title": "Show scoreboard"
+        },
+        "ScoreDialog": {
+            "title": "Score",
+            "description": "{name} has won with {score} points !"
+        },
+        "ScoreSheet": {
+            "see-scores": "See scores"
+        },
+        "ScoreTable": {
+            "name": "Name",
+            "round": "Round",
+            "total": "Total"
+        },
+        "SettingsDialog": {
+            "title": "Settings",
+            "sound": {
+                "title": "Sound",
+                "audio": {
+                    "label": "Enable audio"
+                },
+                "volume": {
+                    "label": "Volume ({volume}%)"
+                }
+            },
+            "general": {
+                "title": "General",
+                "language": "Language",
+                "language-warn": "Changeable only on the home page",
+                "appearance": "Appearance",
+                "coming-soon": "Coming soon"
+            },
+            "mobile": {
+                "title": "Mobile",
+                "switch-to-player-who-is-playing": "Switch to the player who is playing"
+            },
+            "chat": {
+                "title": "Chat",
+                "chat-visibility": "Chat visibility",
+                "chat-notification-size": {
+                    "label": "Chat notification size",
+                    "values": {
+                        "small": "Small",
+                        "normal": "Normal",
+                        "big": "Big"
+                    }
+                }
+            }
+        },
+        "Avatar": {
+            "context-menu": {
+                "kick": "Kick",
+                "mute": "Mute",
+                "unmute": "Unmute"
+            }
+        },
+        "KickVote": {
+            "player-has-not-voted": {
+                "title": "Vote to kick {playerName}",
+                "description": "{initiatorName} wants to kick {playerName}",
+                "kick-button": {
+                    "alt": "Kick {playerName}",
+                    "label": "Kick"
+                },
+                "ignore-button": {
+                    "alt": "Ignore the vote to kick {playerName}",
+                    "label": "Ignore"
+                }
+            },
+            "player-has-voted": {
+                "title": "Vote to kick {playerName}",
+                "description": "You have voted {vote, select, true {for} false {against} other {vote}}"
+            },
+            "vote-against-you": {
+                "title": "Vote to kick you",
+                "description": "{initiatorName} has requested a vote to kick you."
+            },
+            "vote-failed": {
+                "title": "The vote to kick {playerName} failed",
+                "description": "There are not enough votes to kick {playerName}"
+            },
+            "vote-against-you-failed": {
+                "title": "You were not kicked",
+                "description": "There are not enough votes to kick you"
+            },
+            "vote-succeeded": {
+                "title": "{playerName} has been kicked",
+                "description": "The vote to kick {playerName} has succeeded."
+            },
+            "vote-against-you-succeeded": {
+                "title": "You have been kicked",
+                "description": "The players have voted to kick you out of the game."
+            }
         }
-      },
-      "timeout": {
-        "title": "You have been disconnected from the lobby due to inactivity",
-        "description": "Please note that as an administrator of a public game, your inactivity prevents the game from starting, affecting the experience of other players."
-      }
     },
-    "Lobby": {
-      "settings": {
-        "title": "Settings",
-        "private": {
-          "tooltip": {
-            "on": "This game is private, only people with the link can join",
-            "off": "This game is public, anyone can join"
-          }
+    "utils": {
+        "skyjo": {
+            "waiting": "Waiting for players",
+            "turn-cards": "Turn {number} card{number, plural, =1 {} other {s}}",
+            "waiting-opponents-to-turn-cards": "Waiting for opponent{nbOpponents, plural, =1 {} other {s}} to turn {number} card{number, plural, =1 {} other {s}}",
+            "turn": {
+                "chooseAPile": "Choose a pile",
+                "throwOrReplace": "Replace or discard",
+                "replaceACard": "Replace a card",
+                "turnACard": "Turn a card"
+            },
+            "player-turn": "It's {playerName}'s turn",
+            "last-turn": "Last turn!",
+            "game-stopped": "Game stopped",
+            "round-over": "Round finished",
+            "game-ended": "Game over!"
         },
-        "reset-settings": "Reset settings",
-        "allow-skyjo-for-column": "Allow Skyjo for column",
-        "allow-skyjo-for-row": "Allow Skyjo for row",
-        "nb-columns": {
-          "label": "Number of columns",
-          "title": "$number columns"
+        "chat": {
+            "player-joined": "{username} joined the game",
+            "player-left": "{username} left the game",
+            "player-reconnect": "{username} reconnected to the game",
+            "argument-required": "One or more arguments are required for command: {command}",
+            "player-already-muted": "{username} is already muted",
+            "player-muted": "{username} is now muted",
+            "player-not-muted": "{username} is not muted",
+            "player-unmuted": "{username} is no longer muted"
         },
-        "nb-rows": {
-          "label": "Number of rows",
-          "title": "$number rows"
-        },
-        "initial-turned-count": {
-          "label": "Number of card turned at the beginning of a round",
-          "title": "{number} cards will be turned at the beginning of the game"
-        },
-        "score-to-end-game": {
-          "label": "Number of points to end the game",
-          "title": "{number} points will be required to end the game"
-        },
-        "multiplier-for-first-player": {
-          "label": "Multiplier for the first player",
-          "title": "The score of the first player will be multiplied by {number} if it is not strictly inferior to the other scores of the game"
+        "avatar": {
+            "bee": "bee",
+            "crab": "crab",
+            "dog": "dog",
+            "elephant": "elephant",
+            "fox": "fox",
+            "frog": "frog",
+            "koala": "koala",
+            "octopus": "octopus",
+            "penguin": "penguin",
+            "turtle": "turtle",
+            "whale": "whale"
         }
-      },
-      "start-game-button": "Start the game",
-      "player-section": {
-        "title": "Players"
-      }
     },
-    "ResultsPage": {
-      "title": "Game results",
-      "rank": "Rank",
-      "player": "Player",
-      "score-per-round": "Score per round",
-      "total": "Total",
-      "player-want-to-replay": "Players who want to replay:",
-      "replay-button": {
-        "cancel": "Do not replay",
-        "replay": "Replay"
-      },
-      "leave-button": "Leave the game"
-    },
-    "PrivacyPolicy": {
-      "head": {
-        "title": "Privacy Policy | Skyjo Online",
-        "description": "Learn how Skyjo Online protects your privacy and data while playing our free online card game. Discover our data collection, usage, and protection practices.",
-        "keywords": "Skyjo Online,privacy policy,data protection,online game privacy,secure gaming,user data,GDPR compliance"
-      },
-      "content": {
-        "back": "Back to the home page",
-        "title": "Privacy Policy",
-        "last-update": {
-          "text": "Last updated: {date}",
-          "date-format": "DD MMMM YYYY at HH:mm"
-        },
-        "information-we-collect": {
-          "title": "Information We Collect",
-          "anonymous-usage-data": {
-            "title": "Anonymous Usage Data",
-            "description": "We use PostHog, an analytics tool, to collect anonymous data about how you use our website. This includes:",
-            "items": "Page views;;Web vitals (performance metrics);;Survey responses (if you choose to participate)"
-          },
-          "game-data": {
-            "title": "Game Data",
-            "description": "We temporarily store:",
-            "items": "Usernames and avatar choices;;Game elements and progress"
-          },
-          "user-provided-information": {
-            "title": "User-Provided Information",
-            "description": "We collect:",
-            "items": "Feedback form submissions (including optional email addresses)"
-          },
-          "local-storage-data": {
-            "title": "Local Storage Data",
-            "description": "We store in your browser's local storage:",
-            "items": "Language preferences;;Game settings preferences"
-          }
-        },
-        "how-we-use-your-information": {
-          "title": "How We Use Your Information",
-          "items": "Improve our website and user experience;;Analyze usage patterns and performance;;Respond to feedback and support requests;;Facilitate gameplay"
-        },
-        "data-storage-and-retention": {
-          "title": "Data Storage and Retention",
-          "items": "Anonymous usage data is stored on servers within the European Union and retained for up to 1 year;;Game data is stored in our database located in Frankfurt, Germany. This data is kept for the duration of active games. Once all players leave a game, the associated data is deleted;;Information stored in your browser's local storage remains there until you clear your browser data;;Feedback form submissions are retained only for the purpose of responding and considering suggestions for development"
-        },
-        "data-sharing": {
-          "title": "Data Sharing",
-          "description": "We do not share your personal information with any third parties. Anonymous usage data is processed by PostHog, our analytics provider."
-        },
-        "your-rights-and-choices": {
-          "title": "Your Rights and Choices",
-          "description": "Given that we collect primarily anonymous data, we cannot identify or access personal information specific to any individual user. However, you have the following rights and choices:",
-          "items": "Local Storage: You can clear your browser's local storage at any time to remove saved preferences;;Feedback: If you've submitted feedback with an email address, you can contact us to request its deletion;;Analytics Opt-Out: You can opt-out of analytics data collection by enabling your browser's \"Do Not Track\" setting or using privacy-focused browsers that block analytics scripts;;Game Data: Game-related data is automatically deleted when all players leave a game"
-        },
-        "childrens-privacy": {
-          "title": "Children's Privacy",
-          "description": "Skyjo Online does not have any age restrictions. We do not knowingly collect personal information from children."
-        },
-        "changes-to-this-policy": {
-          "title": "Changes to This Policy",
-          "description": "We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page."
-        },
-        "contact-us": {
-          "title": "Contact Us",
-          "description": "If you have any questions about this Privacy Policy, please contact us through our feedback form on the website."
+    "contexts": {
+        "SocketContext": {
+            "connection-lost": "Connection to the server has been lost. Try to reload the page to reconnect"
         }
-      }
-    },
-    "Rules": {
-      "head": {
-        "title": "How to Play Skyjo | Skyjo Online",
-        "description": "Learn the rules of Skyjo, a fun and engaging online multiplayer game. Discover how to play Skyjo with friends for free and master the game with our detailed guide.",
-        "keywords": "Skyjo rules,how to play Skyjo,Skyjo game,online multiplayer,free card game,play with friends,Skyjo game rules"
-      },
-      "back": "Back to the home page",
-      "title": "Skyjo game rules"
     }
-  },
-  "components": {
-    "Chat": {
-      "title": "Chat"
-    },
-    "ChatForm": {
-      "message-input-placeholder": "Message",
-      "button-title": "Send",
-      "message-too-long": {
-        "description": "The message is too long (max 200 characters)"
-      }
-    },
-    "ChatMessage": {
-      "separator": ": "
-    },
-    "ChatMessageList": {
-      "unread-messages": "{count} unread message{count, plural, =1 {} other {s}}"
-    },
-    "Feedback": {
-      "title": "Leave a feedback",
-      "description": "You can write a feedback to help us improve the game.",
-      "toast": {
-        "success": {
-          "title": "Thank you for your feedback!",
-          "description": "Your insights have helped us enhance our game website, and we are truly grateful."
-        },
-        "error": {
-          "title": "An error occurred, please try again."
-        }
-      },
-      "email-input": {
-        "label": "Your email (optional)",
-        "placeholder": "example@example.com"
-      },
-      "message-input": {
-        "label": "Your message",
-        "placeholder": "Tell us what you think, note or want to..."
-      },
-      "button-title": "Send"
-    },
-    "CopyLink": {
-      "message": "Link copied!",
-      "button-title": "Copy link"
-    },
-    "DiscardPile": {
-      "title": "Discard pile",
-      "throw": "Throw"
-    },
-    "DrawPile": {
-      "title": "Draw pile"
-    },
-    "EndRoundDialog": {
-      "title": "End of the round",
-      "description": "The next round will start in few seconds..."
-    },
-    "Footer": {
-      "feedback": "Leave a feedback",
-      "buy-game": "Buy the game",
-      "explanation": "What is Skyjo?",
-      "rules": "Game rules",
-      "home": "Home",
-      "release-notes": "Release notes",
-      "privacy-policy": "Privacy policy",
-      "disclaimer": "This website is not affiliated with the creators or distributors of Skyjo. All rights to the Skyjo name and game mechanics are owned by Alexander Bernhardt and Magilano"
-    },
-    "GameLobbyButtons": {
-      "reconnect-game-button": "Reconnect to the game",
-      "join-game-button": "Join the game",
-      "find-game-button": "Find a game",
-      "create-private-game-button": "Create a private game",
-      "timeout": {
-        "description": "The server takes more time than expected to respond. You can try to reload the page and try again."
-      },
-      "game-not-found": {
-        "description": "The game you are looking for does not exist"
-      },
-      "cannot-reconnect": {
-        "description": "It is no longer possible to reconnect to the game, the time to reconnect has expired"
-      },
-      "game-is-full": {
-        "description": "The game is full, you cannot join"
-      },
-      "game-already-started": {
-        "description": "The game has already started"
-      }
-    },
-    "GameStoppedDialog": {
-      "title": "Game stopped",
-      "description": "The game has been stopped because there are not enough players"
-    },
-    "LanguageCombobox": {
-      "select-language": "Select language",
-      "search-language": "Search language",
-      "no-language-found": "No language found",
-      "locale": {
-        "en": "English",
-        "fr": "Français"
-      }
-    },
-    "MenuDropdown": {
-      "button": {
-        "aria-label": "Menu"
-      },
-      "rules": "Rules",
-      "feedback": "Leave a feedback",
-      "settings": "Settings"
-    },
-    "OpponentBoard": {
-      "connection-lost": "Connection lost"
-    },
-    "OpponentsMobileView": {
-      "opponents-list": {
-        "title": "Opponents:"
-      }
-    },
-    "PlayerBoard": {
-      "you": "You"
-    },
-    "PWABanner": {
-      "title": "Install Skyjo Online on your device!",
-      "Safari": "Tap the share icon, then 'Add to Dock' to install",
-      "Chrome": "Click on the 'Install' button to install",
-      "FirefoxAndroid": "Tap the menu icon, then 'Add to Home screen' to install",
-      "ChromeAndroid": "Tap the menu icon, then 'Add to Home screen' to install",
-      "SamsungBrowser": "Tap the menu icon, then 'Add page to', then 'Home screen' to install",
-      "ChromeIOS": "Tap the share icon, then scroll and tap 'Add to Home Screen' to install",
-      "FirefoxIOS": "Tap the menu icon, then the share icon, then scroll and tap 'Add to Home Screen' to install",
-      "SafariIOS": "Tap the share icon, then scroll and tap 'Add to Home Screen' to install",
-      "install-button": {
-        "title": "Install the app",
-        "content": "Install"
-      }
-    },
-    "RulesDialog": {
-      "title": "Game rules",
-      "trigger": {
-        "aria-label": "Show game rules"
-      }
-    },
-    "Rules": {
-      "cards-section-title": "{number} game cards:",
-      "game-goal": {
-        "title": "Game goal",
-        "content": "The Skyjo game is played over several rounds and ends as soon as a player reaches 100 points or more. The player with the fewest points wins the game."
-      },
-      "round-preparation": {
-        "title": "Round preparation",
-        "content-1": "First, each player is dealt 12 cards face-down. Next, one card from the draw pile is placed face-up in the middle of the table, forming the beginning of the discard pile. The remaining cards are placed face-down next to each other and form the draw pile.",
-        "content-2": "Each player places his 12 cards in four columns of three cards face down in front of him. Finally, each player turns face-up two cards of their choice."
-      },
-      "round-start": {
-        "title": "Round start",
-        "choice": "choice {number}",
-        "content-1": "The player can choose the first card turned over from the discard pile",
-        "content-2": "or the first face-down card of the draw pile",
-        "choice-1": {
-          "title": "Choice 1:",
-          "description": "Take the first card from the discard pile.",
-          "content": "The player must immediately swap this card with one of his or her 12 cards and place it face up. He can choose freely between face-up and face-down cards. Hidden cards must not be must not be seen before the exchange. The exchanged card is placed face-up on the discard pile."
-        },
-        "choice-2": {
-          "title": "Choice 2:",
-          "description": "Take the first card face down from the draw pile.",
-          "content-1": "The player can look at the card and choose whether to exchange it for one of his cards (hidden or visible) or discard it. If he wants to keep the drawn card, he exchanges it with one of his cards as described above in the",
-          "choice-1": "Choice 1",
-          "content-2": "If he does not wish to keep the drawn card, he places it on the discard pile and must turn face-up one of his cards."
-        },
-        "end-of-turn": "His turn is then over, and it's the next player's turn (clockwise)."
-      },
-      "special-rule": {
-        "title": "Special rule:",
-        "content": "If a player has 3 identical cards in a column, the player discards these 3 cards by placing them on the discard pile. If a column of identical cards is obtained by exchanging with a card from the draw pile or discard pile, the three identical cards identical cards must always be placed on the discard pile after the exchanged card."
-      },
-      "round-end": {
-        "title": "End of the round",
-        "content-1": "When a player has revealed all his cards, he has played his last turn.",
-        "content-2": "All subsequent players play once more to complete the round."
-      },
-      "scoring": {
-        "title": "Scoring",
-        "description": "Players who still have cards face down turn them face up. Each player counts his total points.",
-        "list": {
-          "content-1": "If the total of points is positive, he adds it to the total of points from previous rounds.",
-          "content-2": "If the total is negative, it is subtracted from the total points of the previous rounds."
-        },
-        "first-to-finish": {
-          "content": "If the player who has completed the round (the 1st to have turned over all his cards) has not obtained, strictly speaking, the lowest number of points for that round, then the sum of his points for that round is doubled.",
-          "note": {
-            "title": "Please note:",
-            "content": "this rule only applies to positive points!"
-          }
-        },
-        "example": {
-          "title": "Example:",
-          "content": "Player A reveals all his cards and finishes the round. At the end of the round, he has 10 points, player B has 24 points and player C also has 10 points. As player A does not strictly have the lowest number of points, his points are doubled to 20."
-        }
-      },
-      "end-of-game": {
-        "title": "End of game",
-        "content": "At the end of each round, each player's points are added to the total score obtained in the previous rounds. The game ends as soon as a player reaches 100 points or more. The player with the lowest score wins the game."
-      }
-    },
-    "Scoreboard": {
-      "button-title": "Show scoreboard"
-    },
-    "ScoreDialog": {
-      "title": "Score",
-      "description": "{name} has won with {score} points !"
-    },
-    "ScoreSheet": {
-      "see-scores": "See scores"
-    },
-    "ScoreTable": {
-      "name": "Name",
-      "round": "Round",
-      "total": "Total"
-    },
-    "SettingsDialog": {
-      "title": "Settings",
-      "sound": {
-        "title": "Sound",
-        "audio": {
-          "label": "Enable audio"
-        },
-        "volume": {
-          "label": "Volume ({volume}%)"
-        }
-      },
-      "general": {
-        "title": "General",
-        "language": "Language",
-        "language-warn": "Changeable only on the home page",
-        "appearance": "Appearance",
-        "coming-soon": "Coming soon"
-      },
-      "mobile": {
-        "title": "Mobile",
-        "switch-to-player-who-is-playing": "Switch to the player who is playing"
-      },
-      "chat": {
-        "title": "Chat",
-        "chat-visibility": "Chat visibility",
-        "chat-notification-size": {
-          "label": "Chat notification size",
-          "values": {
-            "small": "Small",
-            "normal": "Normal",
-            "big": "Big"
-          }
-        }
-      }
-    },
-    "Avatar": {
-      "context-menu": {
-        "kick": "Kick",
-        "mute": "Mute",
-        "unmute": "Unmute"
-      }
-    },
-    "KickVote": {
-      "player-has-not-voted": {
-        "title": "Vote to kick {playerName}",
-        "description": "{initiatorName} wants to kick {playerName}",
-        "kick-button": {
-          "alt": "Kick {playerName}",
-          "label": "Kick"
-        },
-        "ignore-button": {
-          "alt": "Ignore the vote to kick {playerName}",
-          "label": "Ignore"
-        }
-      },
-      "player-has-voted": {
-        "title": "Vote to kick {playerName}",
-        "description": "You have voted {vote, select, true {for} false {against} other {vote}}"
-      },
-      "vote-against-you": {
-        "title": "Vote to kick you",
-        "description": "{initiatorName} has requested a vote to kick you."
-      },
-      "vote-failed": {
-        "title": "The vote to kick {playerName} failed",
-        "description": "There are not enough votes to kick {playerName}"
-      },
-      "vote-against-you-failed": {
-        "title": "You were not kicked",
-        "description": "There are not enough votes to kick you"
-      },
-      "vote-succeeded": {
-        "title": "{playerName} has been kicked",
-        "description": "The vote to kick {playerName} has succeeded."
-      },
-      "vote-against-you-succeeded": {
-        "title": "You have been kicked",
-        "description": "The players have voted to kick you out of the game."
-      }
-    }
-  },
-  "utils": {
-    "skyjo": {
-      "waiting": "Waiting for players",
-      "turn-cards": "Turn {number} card{number, plural, =1 {} other {s}}",
-      "waiting-opponents-to-turn-cards": "Waiting for opponent{nbOpponents, plural, =1 {} other {s}} to turn {number} card{number, plural, =1 {} other {s}}",
-      "turn": {
-        "chooseAPile": "Choose a pile",
-        "throwOrReplace": "Replace or discard",
-        "replaceACard": "Replace a card",
-        "turnACard": "Turn a card"
-      },
-      "player-turn": "It's {playerName}'s turn",
-      "last-turn": "Last turn!",
-      "game-stopped": "Game stopped",
-      "round-over": "Round finished",
-      "game-ended": "Game over!"
-    },
-    "chat": {
-      "player-joined": "{username} joined the game",
-      "player-left": "{username} left the game",
-      "player-reconnect": "{username} reconnected to the game",
-      "argument-required": "One or more arguments are required for command: {command}",
-      "player-already-muted": "{username} is already muted",
-      "player-muted": "{username} is now muted",
-      "player-not-muted": "{username} is not muted",
-      "player-unmuted": "{username} is no longer muted"
-    },
-    "avatar": {
-      "bee": "bee",
-      "crab": "crab",
-      "dog": "dog",
-      "elephant": "elephant",
-      "fox": "fox",
-      "frog": "frog",
-      "koala": "koala",
-      "octopus": "octopus",
-      "penguin": "penguin",
-      "turtle": "turtle",
-      "whale": "whale"
-    }
-  },
-  "contexts": {
-    "SocketContext": {
-      "connection-lost": "Connection to the server has been lost. Try to reload the page to reconnect"
-    }
-  }
 }
