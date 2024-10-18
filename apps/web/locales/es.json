@@ -43,7 +43,17 @@
     },
     "NotFound": {
       "title": "Error 404",
-      "description": "La página que buscas no existe."
+      "description": "La página que buscas no existe.",
+      "go-back-to-homepage": "Volver a la página principal"
+    },
+    "InactivityCheck": {
+      "warning": {
+        "title": "¿Estás todavía aquí?",
+        "button": {
+          "label": "Sí",
+          "title": "Confirma tu presencia"
+        }
+      }
     }
   }
 }
