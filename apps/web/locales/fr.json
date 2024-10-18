@@ -180,8 +180,8 @@
         },
         "Rules": {
             "head": {
-                "title": "Règles du jeu Skyjo",
-                "description": "Les règles du jeu Skyjo",
+                "title": "Comment jouer au Skyjo | Skyjo Onlone",
+                "description": "Apprenez les règles du Skyjo, un jeu multijoueur en ligne amusant et captivant. Découvrez comment jouer gratuitement à Skyjo avec des amis et maîtrisez le jeu grâce à notre guide détaillé.",
                 "keywords": "Règles du jeu Skyjo,jeu,en ligne,multijoueur,gratuit,jouer avec des amis,règles,règles du jeu"
             },
             "back": "Retour à l'accueil",
@@ -506,7 +506,7 @@
             "player-joined": "{username} a rejoint la partie",
             "player-left": "{username} a quitté la partie",
             "player-reconnect": "{username} s'est reconnecté",
-            "argument-required": "Un ou des arguments sont requis pour la commande: {command}",
+            "argument-required": "Un ou des arguments sont requis pour la commande : {command}",
             "player-already-muted": "{username} est déjà muet",
             "player-muted": "{username} est maintenant muet",
             "player-not-muted": "{username} n'est pas muet",
