@@ -1,17 +1,15 @@
-<a href="https://www.skyjo.online" style="display: flex; align-items: center; justify-content: center; padding-bottom: 16px;">
-<img src="https://www.skyjo.online/svg/logo.svg" alt="Skyjo Online" width="160" />
-</a>
+<p align="center">
+  <a href="https://www.skyjo.online">
+    <img src="https://www.skyjo.online/svg/logo.svg" alt="Skyjo Online" width="160" />
+  </a>
+</p>
 
-<div style="display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap;">
-
-![Sonar Quality Gate (branch)](https://img.shields.io/sonar/quality_gate/maxentr_skyjo/trunk?server=https%3A%2F%2Fsonarcloud.io)
-
-![Sonar Tech Debt (branch)](https://img.shields.io/sonar/tech_debt/maxentr_skyjo/trunk?server=https%3A%2F%2Fsonarcloud.io)
-
-![Weblate project translated](https://img.shields.io/weblate/progress/skyjo-online)
-
-![GitHub License](https://img.shields.io/github/license/maxentr/skyjo)
-</div>
+<p align="center">
+  <img alt="Sonar Quality Gate (branch)" src="https://img.shields.io/sonar/quality_gate/maxentr_skyjo/trunk?server=https%3A%2F%2Fsonarcloud.io">
+  <img alt="Sonar Tech Debt (branch)" src="https://img.shields.io/sonar/tech_debt/maxentr_skyjo/trunk?server=https%3A%2F%2Fsonarcloud.io">
+  <img alt="Weblate project translated" src="https://img.shields.io/weblate/progress/skyjo-online">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/maxentr/skyjo">
+</p>
 
 This repository contains the code of [skyjo.online](https://www.skyjo.online), the online version of the popular card game Skyjo.
 
