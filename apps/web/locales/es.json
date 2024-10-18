@@ -8,8 +8,42 @@
     "Index": {
       "name-input-placeholder": "Nombre",
       "explanation": {
-        "title": "¿Qué es Skyjo?"
+        "title": "¿Qué es Skyjo?",
+        "button": "Ver las reglas",
+        "content": "Skyjo es un emocionante juego de cartas y un excelente juego de mesa, disfrutado por los fans de juegos en todo el mundo. Este juego de cartas multijugador está diseñado para un número de jugadores que van desde 2 hasta 8, donde cada jugador recibe 12 cartas, inicialmente ocultas. El objetivo principal del juego es anotar la menor cantidad de puntos posible. El juego termina tan pronto como un jugador alcanza 100 puntos. Las reglas del juego son simples y fáciles de entender, lo que lo convierte en una opción ideal para noches de juegos con familiares o amigos. ¡Los entusiastas del juego estarán encantados de saber que ahora es posible jugar a Skyjo en línea de forma gratuita!"
+      },
+      "faq": {
+        "meaning": {
+          "content": "Un Skyjo es una columna de 3 cartas idénticas en el juego.",
+          "title": "¿Qué significa Skyjo?"
+        },
+        "how-to-play": {
+          "title": "¿Cómo jugar a Skyjo?",
+          "content": "Para jugar a Skyjo, repartir 12 cartas a cada jugador boca abajo. El objetivo es tener el menor número de puntos posible al cambiar y intercambiar cartas. Cada turno, saca una carta de la baraja o descarte y luego decide reemplazar una de tus cartas visibles. Las cartas numeradas valen sus puntos, las cartas especiales tienen acciones. El juego termina cuando un jugador ha invertido todas sus cartas. El jugador con menos puntos gana. Puedes consultar <rules>las reglas</rules> para más información."
+        },
+        "how-to-win": {
+          "title": "¿Cómo ganar en Skyjo?",
+          "content": "Para ganar en Skyjo, es esencial tener la puntuación más baja posible. Para lograr esto, adopta una estrategia equilibrada entre tener las cartas más bajas, revelar tus cartas y crear columnas de cartas idénticas. Evita el primero en tirar a menos que estés muy por delante con cartas visibles. Recuerda mantener las cartas ya visibles para intentar crear columnas con ellas, en lugar de optimizarlas individualmente."
+        },
+        "play-classic-with-action": {
+          "title": "¿Puedes jugar a Skyjo clásico con Skyjo Action?",
+          "content": "Sí, solo tienes que quitar las cartas de acción. Si estás jugando la versión en línea, selecciona la versión clásica para jugar a Skyjo."
+        },
+        "title": "Preguntas frecuentes (FAQ)",
+        "pronounce": {
+          "title": "¿Cómo se pronuncia Skyjo?",
+          "content": "La palabra Skyjo se pronuncia [Skyjoe]."
+        }
       }
+    },
+    "Maintenance": {
+      "title": "En mantenimiento",
+      "description": "Estamos actualizando la página, por favor inténtelo de nuevo más tarde.",
+      "github-alt": "Ver el código fuente en GitHub"
+    },
+    "NotFound": {
+      "title": "Error 404",
+      "description": "La página que buscas no existe."
     }
   }
 }
