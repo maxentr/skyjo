@@ -119,7 +119,6 @@
       "content": {
         "back": "Retour à l'accueil",
         "title": "Politique de Confidentialité",
-        "last-updated": "Dernière mise à jour : {date}",
         "last-update": {
           "text": "Dernière mise à jour : {date}",
           "date-format": "DD MMMM YYYY à HH:mm"
