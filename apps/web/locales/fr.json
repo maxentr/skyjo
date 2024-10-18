@@ -149,18 +149,15 @@
         },
         "how-we-use-your-information": {
           "title": "Comment nous utilisons vos informations",
-          "description": "",
           "items": "Améliorer notre site web et l'expérience utilisateur;;Analyser les modèles d'utilisation et les performances;;Répondre aux feedbacks et aux demandes de support;;Faciliter le déroulement du jeu"
         },
         "data-storage-and-retention": {
           "title": "Stockage et conservation des données",
-          "description": "",
           "items": "Les données d'utilisation anonymes sont stockées sur des serveurs au sein de l'Union européenne et conservées pendant un maximum d'un an;;Les données de jeu sont stockées dans notre base de données situées à Francfort, Allemagne. Ces données sont conservées pendant la durée des parties actives. Une fois que tous les joueurs quittent une partie, les données associées sont supprimées;;Les informations stockées dans le stockage local de votre navigateur y restent jusqu'à ce que vous effaciez les données de votre navigateur;;Les soumissions du formulaire de feedback ne sont conservées que dans le but de répondre et d'examiner les suggestions de développement"
         },
         "data-sharing": {
           "title": "Partage des données",
-          "description": "Nous ne partageons pas vos informations personnelles avec des tiers. Les données d'utilisation anonymes sont traitées par PostHog, notre fournisseur d'analyses.",
-          "items": ""
+          "description": "Nous ne partageons pas vos informations personnelles avec des tiers. Les données d'utilisation anonymes sont traitées par PostHog, notre fournisseur d'analyses."
         },
         "your-rights-and-choices": {
           "title": "Vos droits et choix",
@@ -169,18 +166,15 @@
         },
         "childrens-privacy": {
           "title": "Confidentialité des enfants",
-          "description": "Skyjo Online n'a pas de restrictions d'âge. Nous ne collectons pas sciemment d'informations personnelles auprès des enfants.",
-          "items": ""
+          "description": "Skyjo Online n'a pas de restrictions d'âge. Nous ne collectons pas sciemment d'informations personnelles auprès des enfants."
         },
         "changes-to-this-policy": {
           "title": "Modifications de cette politique",
-          "description": "Nous pouvons mettre à jour cette politique de temps en temps. Nous vous informerons de tout changement en publiant la nouvelle politique sur cette page.",
-          "items": ""
+          "description": "Nous pouvons mettre à jour cette politique de temps en temps. Nous vous informerons de tout changement en publiant la nouvelle politique sur cette page."
         },
         "contact-us": {
           "title": "Nous contacter",
-          "description": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter via le formulaire de feedback sur le site web.",
-          "items": ""
+          "description": "Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter via le formulaire de feedback sur le site web."
         }
       }
     },

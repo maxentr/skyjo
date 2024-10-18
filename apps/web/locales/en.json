@@ -148,18 +148,15 @@
         },
         "how-we-use-your-information": {
           "title": "How We Use Your Information",
-          "description": "",
           "items": "Improve our website and user experience;;Analyze usage patterns and performance;;Respond to feedback and support requests;;Facilitate gameplay"
         },
         "data-storage-and-retention": {
           "title": "Data Storage and Retention",
-          "description": "",
           "items": "Anonymous usage data is stored on servers within the European Union and retained for up to 1 year;;Game data is stored in our database located in Frankfurt, Germany. This data is kept for the duration of active games. Once all players leave a game, the associated data is deleted;;Information stored in your browser's local storage remains there until you clear your browser data;;Feedback form submissions are retained only for the purpose of responding and considering suggestions for development"
         },
         "data-sharing": {
           "title": "Data Sharing",
-          "description": "We do not share your personal information with any third parties. Anonymous usage data is processed by PostHog, our analytics provider.",
-          "items": ""
+          "description": "We do not share your personal information with any third parties. Anonymous usage data is processed by PostHog, our analytics provider."
         },
         "your-rights-and-choices": {
           "title": "Your Rights and Choices",
@@ -168,18 +165,15 @@
         },
         "childrens-privacy": {
           "title": "Children's Privacy",
-          "description": "Skyjo Online does not have any age restrictions. We do not knowingly collect personal information from children.",
-          "items": ""
+          "description": "Skyjo Online does not have any age restrictions. We do not knowingly collect personal information from children."
         },
         "changes-to-this-policy": {
           "title": "Changes to This Policy",
-          "description": "We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page.",
-          "items": ""
+          "description": "We may update this policy from time to time. We will notify you of any changes by posting the new policy on this page."
         },
         "contact-us": {
           "title": "Contact Us",
-          "description": "If you have any questions about this Privacy Policy, please contact us through our feedback form on the website.",
-          "items": ""
+          "description": "If you have any questions about this Privacy Policy, please contact us through our feedback form on the website."
         }
       }
     },

@@ -38,17 +38,21 @@ const RulesPage = () => {
   )
 }
 type RenderSectionProps = {
-  section: any
+  section: string
 }
 const RenderSection = ({ section }: RenderSectionProps) => {
-  const tr = useTranslations(`pages.PrivacyPolicy.content.${section}` as any)
+  const tr = useTranslations(`pages.PrivacyPolicy.content.${section}`)
 
-  const items = tr(`items` as never) ?? null
+  const items = tr.has("items") ? tr("items") : null
 
   return (
     <section className="mt-6">
-      <h2 className="mt-2 text-2xl mb-0.5">{tr("title" as never)}</h2>
-      <p className="text-justify">{tr(`description` as never)}</p>
+      {tr.has("title") && (
+        <h2 className="mt-2 text-2xl mb-0.5">{tr("title")}</h2>
+      )}
+      {tr.has("description") && (
+        <p className="text-justify">{tr("description")}</p>
+      )}
       <ul className="list-disc list-inside">
         {items
           ? items.split(";;").map((item) => (
@@ -63,17 +67,19 @@ const RenderSection = ({ section }: RenderSectionProps) => {
 }
 
 type RenderSubSectionProps = {
-  section: any
+  section: string
 }
 const RenderSubSection = ({ section }: RenderSubSectionProps) => {
-  const tr = useTranslations(`pages.PrivacyPolicy.content.${section}` as any)
+  const tr = useTranslations(`pages.PrivacyPolicy.content.${section}`)
 
-  const items = tr(`items` as never) ?? null
+  const items = tr.has("items") ? tr("items") : null
 
   return (
     <div>
-      <h3 className="text-lg mt-4">{tr("title" as never)}</h3>
-      <p className="text-justify">{tr(`description` as never)}</p>
+      {tr.has("title") && <h3 className="text-lg mt-4">{tr("title")}</h3>}
+      {tr.has("description") && (
+        <p className="text-justify">{tr("description")}</p>
+      )}
       <ul className="list-disc list-inside">
         {items
           ? items.split(";;").map((item) => (
