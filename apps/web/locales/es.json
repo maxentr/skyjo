@@ -53,6 +53,43 @@
           "label": "Sí",
           "title": "Confirma tu presencia"
         }
+      },
+      "timeout": {
+        "title": "Ha sido desconectado debido a la inactividad",
+        "description": "Por favor, tenga en cuenta que como administrador de un juego público, su inactividad impide que el juego comience, lo que afecta a la experiencia de otros jugadores."
+      }
+    },
+    "Lobby": {
+      "settings": {
+        "title": "Ajustes",
+        "private": {
+          "tooltip": {
+            "on": "Este juego es privado, solo las personas con el enlace pueden unirse",
+            "off": "Este juego es público, cualquiera puede unirse"
+          }
+        },
+        "reset-settings": "Restablecer los ajustes",
+        "allow-skyjo-for-column": "Permitir Skyjo para columna",
+        "allow-skyjo-for-row": "Permitir Skyjo para fila",
+        "nb-columns": {
+          "label": "Número de columnas",
+          "title": "$número de columnas"
+        },
+        "nb-rows": {
+          "label": "Número de filas",
+          "title": "$número de filas"
+        },
+        "initial-turned-count": {
+          "label": "Número de cartas giradas al principio de una ronda",
+          "title": "{number} cartas se girarán al comienzo del juego"
+        },
+        "score-to-end-game": {
+          "label": "Número de puntos para terminar el juego",
+          "title": "{number} puntos serán necesarios para terminar el juego"
+        },
+        "multiplier-for-first-player": {
+          "label": "Multiplicador para el primer jugador"
+        }
       }
     }
   }
