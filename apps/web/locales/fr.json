@@ -223,7 +223,7 @@
             },
             "message-input": {
                 "label": "Votre message",
-                "placeholder": "Dites-nous ce que vous pensez, remarquez ou souhaitez..."
+                "placeholder": "Dites-nous ce que vous pensez, remarquez ou souhaitez…"
             },
             "button-title": "Envoyer"
         },
@@ -240,7 +240,7 @@
         },
         "EndRoundDialog": {
             "title": "Fin de la manche",
-            "description": "La manche suivante va commencer dans quelques secondes..."
+            "description": "La manche suivante va commencer dans quelques secondes…"
         },
         "Footer": {
             "feedback": "Laisser un commentaire",
