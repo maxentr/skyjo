@@ -70,7 +70,6 @@ const ChatDesktopView = ({
             </>
           )}
           <MessageCircleIcon className="size-5" />
-          {/* <p className="-rotate-90">{t("title")}</p> */}
         </button>
       </div>
       <div className="flex w-full h-svh px-2 pb-2 bg-white shadow border-l-2 border-black z-10">
