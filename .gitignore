@@ -12,6 +12,9 @@ coverage
 .next/
 out/
 build
+# next.js PWA
+sw.js
+workbox-*.js
 
 # build
 dist
