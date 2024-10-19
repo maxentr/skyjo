@@ -88,8 +88,47 @@
           "title": "{number} puntos serán necesarios para terminar el juego"
         },
         "multiplier-for-first-player": {
-          "label": "Multiplicador para el primer jugador"
+          "label": "Multiplicador para el primer jugador",
+          "title": "La puntuación del primer jugador se multiplicará por {number} si no es estrictamente inferior a las otras puntuaciones del juego"
         }
+      },
+      "start-game-button": "Iniciar el juego",
+      "player-section": {
+        "title": "Jugadores"
+      }
+    },
+    "ResultsPage": {
+      "title": "Resultados de juego",
+      "rank": "Clasificación",
+      "score-per-round": "Puntuación por ronda",
+      "player": "Jugador",
+      "total": "Total",
+      "player-want-to-replay": "Jugadores que quieren repetir:",
+      "leave-button": "Abandonar el juego",
+      "replay-button": {
+        "cancel": "No repetir",
+        "replay": "Repetir"
+      }
+    },
+    "PrivacyPolicy": {
+      "content": {
+        "back": "Volver a la página principal",
+        "title": "Política de privacidad",
+        "last-update": {
+          "text": "Última actualización: {date}",
+          "date-format": "DD MMMM YYYY a las HH:mm"
+        },
+        "information-we-collect": {
+          "anonymous-usage-data": {
+            "title": "Datos de uso anónimos"
+          },
+          "title": "Información que recopilamos"
+        }
+      },
+      "head": {
+        "keywords": "Skyjo Online,política de privacidad,protección de datos,privacidad de juegos en línea,juego seguro,datos de usuario,cumplimiento del RGPD",
+        "title": "Política de privacidad | Skyjo Online",
+        "description": "Descubra cómo Skyjo Online protege su privacidad y sus datos mientras juega a nuestro juego de cartas en línea gratuito. Descubra nuestras prácticas de recopilación, uso y protección de datos."
       }
     }
   },
