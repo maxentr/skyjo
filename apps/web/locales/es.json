@@ -135,11 +135,11 @@
   "components": {
     "LanguageCombobox": {
       "locale": {
-        "en": "Inglés",
+        "en": "English",
         "it": "Italiano",
-        "de": "Alemán",
-        "es": "Español",
-        "fr": "Francés"
+        "de": "German",
+        "es": "Spanish",
+        "fr": "Français"
       }
     },
     "MenuDropdown": {
