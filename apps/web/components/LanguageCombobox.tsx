@@ -9,7 +9,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import {
   Popover,
   PopoverContent,
@@ -53,8 +59,7 @@ const LocaleList = ({ currentLocale, updateLocale, t }: LocalListProps) => {
           {orderedLocales.map(({ locale, label }) => (
             <CommandItem
               key={locale}
-              value={locale}
-              onSelect={(value) => updateLocale(value as Locales)}
+              onSelect={() => updateLocale(locale)}
               className="flex flex-row justify-between"
             >
               <span>{label}</span>
@@ -129,7 +134,10 @@ const LanguageCombobox = () => {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mt-4 border-t-[1.5px] border-black">
+        <DrawerHeader>
+          <DrawerTitle>{t("select-language")}</DrawerTitle>
+        </DrawerHeader>
+        <div className="border-t-[1.5px] border-black">
           <LocaleList
             currentLocale={currentLocale}
             updateLocale={updateLocale}
