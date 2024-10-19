@@ -74,7 +74,7 @@ const OpponentsMobileView = () => {
 
   return (
     <AnimatePresence>
-      <div className="flex md:hidden flex-row grow">
+      <div className="flex lg:hidden flex-row grow">
         <div className="flex flex-col w-20 gap-2 max-h-52">
           {opponentsWithoutSelected.length > 0 && (
             <>

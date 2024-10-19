@@ -22,7 +22,7 @@ type ChatDrawerProps = {
   className?: ClassValue
 }
 
-const ChatDrawer = ({
+const ChatMobileView = ({
   open,
   toggleOpening,
   disabled = false,
@@ -47,7 +47,7 @@ const ChatDrawer = ({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="p-3 pb-0">
-          <DrawerTitle>{t("title")}</DrawerTitle>
+          <DrawerTitle className="text-center">{t("title")}</DrawerTitle>
         </DrawerHeader>
         <div className="px-4 py-0 h-[50svh] flex flex-col">
           <ChatMessageList />
@@ -60,4 +60,4 @@ const ChatDrawer = ({
   )
 }
 
-export default ChatDrawer
+export { ChatMobileView }

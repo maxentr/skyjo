@@ -15,7 +15,7 @@ const cardClass = cva(
       size: {
         tiny: " h-12 w-8 border-[1.5px] rounded shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] text-base",
         normal:
-          " h-12 w-8 mdh:md:h-16 mdh:md:w-12 rounded mdh:md:rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] mdh:md:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base mdh:md:text-2xl ",
+          " h-8 w-6 smh:h-12 smh:w-8 xlh:md:h-16 xlh:md:w-12 rounded smh:rounded xlh:md:rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] xlh:md:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base xlh:md:text-2xl ",
       },
       value: {
         discard: "bg-transparent border-dashed border-red-600 !shadow-none",

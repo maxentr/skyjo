@@ -66,119 +66,123 @@ const ResultsPage = () => {
 
   return (
     <AnimatePresence>
-      <m.div
-        className="ph-no-capture h-dvh flex flex-col items-center justify-center overflow-auto sm:container"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        <h1 className="text-2xl font-semibold mb-4">{t("title")}</h1>
-        <Table className="border border-black bg-container lg:w-2/3 mx-auto">
-          {allRowsVisible && (
-            <MotionTableHeader
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, display: "table-header-group" }}
-              transition={{ delay: 0.2 }}
-            >
-              <TableRow>
-                <TableHead className="py-2 w-fit">{t("rank")}</TableHead>
-                <TableHead className="py-2 w-52">{t("player")}</TableHead>
-                <TableHead className="py-2">{t("score-per-round")}</TableHead>
-                <TableHead className="py-2 text-right">{t("total")}</TableHead>
-              </TableRow>
-            </MotionTableHeader>
-          )}
-          <TableBody>
-            {visibleRows.map((player, index) => (
-              <MotionTableRow
-                key={player.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.5 }}
-                className="border-b"
+      <div className="ph-no-capture h-dvh w-dvw overflow-y-auto container py-10 flex lgh:items-center lgh:justify-center">
+        <m.div
+          className="h-fit w-full flex flex-col items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <h1 className="text-2xl font-semibold mb-4">{t("title")}</h1>
+          <Table className="border border-black bg-container lg:w-2/3 mx-auto">
+            {allRowsVisible && (
+              <MotionTableHeader
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, display: "table-header-group" }}
+                transition={{ delay: 0.2 }}
               >
-                <TableCell className="w-8">
-                  {player.connectionStatus === CONNECTION_STATUS.CONNECTED
-                    ? allRowsVisible && index + 1
-                    : "-"}
-                </TableCell>
-                <TableCell
-                  className={cn(
-                    "w-52 py-2 flex flex-row gap-2 items-center",
-                    player.connectionStatus === CONNECTION_STATUS.CONNECTED
-                      ? "grayscale-0"
-                      : "grayscale",
-                  )}
-                >
-                  <UserAvatar
-                    player={player}
-                    size="small"
-                    showName={false}
-                    allowContextMenu={false}
-                  />
-                  <p className="text-sm text-ellipsis overflow-hidden whitespace-nowrap">
-                    {player.name}
-                  </p>
-                </TableCell>
-                <TableCell className="py-2">
-                  {player.scores.join(" ; ")}
-                </TableCell>
-                <TableCell className="py-2 text-right">
-                  {player.score}
-                </TableCell>
-              </MotionTableRow>
-            ))}
-          </TableBody>
-        </Table>
-
-        {allRowsVisible && (
-          <m.div
-            className="mt-2 flex flex-col items-center gap-4"
-            initial={{ display: "none", opacity: 0 }}
-            animate={{ opacity: 1, display: "flex" }}
-            transition={{ delay: 1 }}
-          >
-            {hasMoreThanOneConnectedPlayer && (
-              <div className="flex flex-col gap-1 items-center">
-                <p>{t("player-want-to-replay")}</p>
-                <div className="flex flex-row gap-1">
-                  {connectedPlayers.map((player) =>
-                    player.wantsReplay ? (
-                      <CheckCircle2Icon
-                        key={player.id}
-                        size={24}
-                        className="text-emerald-600"
-                      />
-                    ) : (
-                      <XCircleIcon key={player.id} size={24} />
-                    ),
-                  )}
-                </div>
-              </div>
+                <TableRow>
+                  <TableHead className="py-2 w-fit">{t("rank")}</TableHead>
+                  <TableHead className="py-2 w-52">{t("player")}</TableHead>
+                  <TableHead className="py-2">{t("score-per-round")}</TableHead>
+                  <TableHead className="py-2 text-right">
+                    {t("total")}
+                  </TableHead>
+                </TableRow>
+              </MotionTableHeader>
             )}
-            <Button
-              onClick={actions.replay}
-              className={cn(
-                "w-full",
-                hasMoreThanOneConnectedPlayer ? "" : "mt-6",
-              )}
+            <TableBody>
+              {visibleRows.map((player, index) => (
+                <MotionTableRow
+                  key={player.id}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5 }}
+                  className="border-b"
+                >
+                  <TableCell className="w-8">
+                    {player.connectionStatus === CONNECTION_STATUS.CONNECTED
+                      ? allRowsVisible && index + 1
+                      : "-"}
+                  </TableCell>
+                  <TableCell
+                    className={cn(
+                      "w-52 py-2 flex flex-row gap-2 items-center",
+                      player.connectionStatus === CONNECTION_STATUS.CONNECTED
+                        ? "grayscale-0"
+                        : "grayscale",
+                    )}
+                  >
+                    <UserAvatar
+                      player={player}
+                      size="small"
+                      showName={false}
+                      allowContextMenu={false}
+                    />
+                    <p className="text-sm text-ellipsis overflow-hidden whitespace-nowrap">
+                      {player.name}
+                    </p>
+                  </TableCell>
+                  <TableCell className="py-2">
+                    {player.scores.join(" ; ")}
+                  </TableCell>
+                  <TableCell className="py-2 text-right">
+                    {player.score}
+                  </TableCell>
+                </MotionTableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {allRowsVisible && (
+            <m.div
+              className="mt-2 flex flex-col items-center gap-4"
+              initial={{ display: "none", opacity: 0 }}
+              animate={{ opacity: 1, display: "flex" }}
+              transition={{ delay: 1 }}
             >
-              {player.wantsReplay
-                ? t("replay-button.cancel")
-                : t("replay-button.replay")}
-            </Button>
-            <Button
-              onClick={actions.leave}
-              className={cn(
-                "w-full",
-                hasMoreThanOneConnectedPlayer ? "mt-6" : "mt-2",
+              {hasMoreThanOneConnectedPlayer && (
+                <div className="flex flex-col gap-1 items-center">
+                  <p>{t("player-want-to-replay")}</p>
+                  <div className="flex flex-row gap-1">
+                    {connectedPlayers.map((player) =>
+                      player.wantsReplay ? (
+                        <CheckCircle2Icon
+                          key={player.id}
+                          size={24}
+                          className="text-emerald-600"
+                        />
+                      ) : (
+                        <XCircleIcon key={player.id} size={24} />
+                      ),
+                    )}
+                  </div>
+                </div>
               )}
-            >
-              {t("leave-button")}
-            </Button>
-          </m.div>
-        )}
-      </m.div>
+              <Button
+                onClick={actions.replay}
+                className={cn(
+                  "w-full",
+                  hasMoreThanOneConnectedPlayer ? "" : "mt-6",
+                )}
+              >
+                {player.wantsReplay
+                  ? t("replay-button.cancel")
+                  : t("replay-button.replay")}
+              </Button>
+              <Button
+                onClick={actions.leave}
+                className={cn(
+                  "w-full",
+                  hasMoreThanOneConnectedPlayer ? "mt-6" : "mt-2",
+                )}
+              >
+                {t("leave-button")}
+              </Button>
+            </m.div>
+          )}
+        </m.div>
+      </div>
     </AnimatePresence>
   )
 }

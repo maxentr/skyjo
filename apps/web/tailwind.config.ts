@@ -27,9 +27,10 @@ const config = {
     },
     extend: {
       screens: {
-        sdh: { raw: "(min-height: 480px)" },
+        smh: { raw: "(min-height: 600px)" },
         mdh: { raw: "(min-height: 690px)" },
         lgh: { raw: "(min-height: 800px)" },
+        xlh: { raw: "(min-height: 900px)" },
       },
       colors: {
         card: {

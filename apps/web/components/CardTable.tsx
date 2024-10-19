@@ -65,7 +65,7 @@ const CardTable = ({
       exit={{ opacity: 0.9 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        "inline-grid grid-flow-col duration-100 gap-2 w-fit",
+        "inline-grid grid-flow-col duration-100 gap-1 smh:gap-2 w-fit",
         numberOfRowsForClass
           ? `grid-rows-${numberOfRowsForClass}`
           : "grid-rows-3",

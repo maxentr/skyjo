@@ -51,11 +51,11 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
               height={100}
               alt={tAvatar(avatar)}
               title={tAvatar(avatar)}
-              className="size-12 sdh:sm:size-16 mdh:md:size-[6.25rem]"
+              className="size-12 smh:sm:size-16 mdh:md:size-[6.25rem]"
               priority
             />
           ) : (
-            <div className="size-12 sdh:sm:size-16 mdh:md:size-[6.25rem] bg-zinc-200 rounded-3xl animate-pulse scale-50" />
+            <div className="size-12 smh:sm:size-16 mdh:md:size-[6.25rem] bg-zinc-200 rounded-3xl animate-pulse scale-50" />
           )}
         </m.div>
       </AnimatePresence>

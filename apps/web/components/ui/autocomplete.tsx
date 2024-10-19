@@ -18,7 +18,7 @@ const Autocomplete = ({
   selectedIndex,
 }: AutocompleteProps) => {
   return (
-    <div className="absolute bottom-full left-0 right-3 bg-white border-2 border-black rounded-md w-full max-h-32 overflow-y-auto select-none scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+    <div className="absolute bottom-full left-0 right-3 bg-white border-2 mb-2 border-black rounded-md w-full max-h-32 overflow-y-auto select-none scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
       {choices.map((choice, index) => {
         return (
           <button

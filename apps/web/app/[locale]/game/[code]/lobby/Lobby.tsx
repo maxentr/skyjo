@@ -97,16 +97,16 @@ const Lobby = ({ gameCode }: LobbyProps) => {
 
   return (
     <m.div
-      className="fixed inset-0 z-20 flex flex-col md:items-center mdh:md:justify-center overflow-auto"
+      className="relative h-svh w-full z-20 flex flex-col md:items-center mdh:md:justify-center overflow-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="w-full pt-4 px-4 flex justify-end lgh:md:fixed lgh:md:top-0 lgh:md:right-0">
+      <div className="w-full pt-4 px-4 flex justify-end lgh:md:absolute lgh:md:top-0 lgh:md:right-0">
         <MenuDropdown />
       </div>
-      <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-4xl p-4 pb-20 md:pb-4">
-        <div className="flex flex-col md:flex-row gap-4 w-full">
+      <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-3xl lg:max-w-4xl p-4 pb-20 md:pb-4">
+        <div className="flex flex-col lg:flex-row gap-4 w-full">
           <div className="bg-container border-2 border-black rounded-2xl w-full px-8 md:px-12 py-8 relative">
             <HomeIcon
               className="absolute top-4 left-4 h-6 w-6 text-slate-700 cursor-pointer"
@@ -142,11 +142,11 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                 </Tooltip>
               </TooltipProvider>
             </span>
-            <h2 className="text-slate-900 text-center text-2xl mb-2 md:mb-5">
+            <h2 className="text-slate-900 text-center text-2xl mb-2 lg:mb-5">
               {t("settings.title")}
             </h2>
 
-            <div className="flex flex-col gap-4 md:gap-3">
+            <div className="flex flex-col gap-4 lg:gap-3">
               <div className="flex flex-row items-center gap-2">
                 <Switch
                   id="skyjo-for-column"
@@ -315,7 +315,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-8 mt-6 md:mt-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 lg:gap-8 mt-6 lg:mt-8">
               {isAdmin && (
                 <Button
                   onClick={actions.resetSettings}
@@ -333,8 +333,8 @@ const Lobby = ({ gameCode }: LobbyProps) => {
               </Button>
             </div>
           </div>
-          <div className="block bg-container border-2 border-black rounded-2xl w-full md:w-80 p-4 md:p-8">
-            <h3 className="text-slate-900 text-center text-xl mb-2 md:mb-5">
+          <div className="block bg-container border-2 border-black rounded-2xl w-full lg:w-80 p-4 lg:p-8">
+            <h3 className="text-slate-900 text-center text-xl mb-2 lg:mb-5">
               {t("player-section.title")}
             </h3>
             <div className="flex flex-row flex-wrap justify-center gap-2">
