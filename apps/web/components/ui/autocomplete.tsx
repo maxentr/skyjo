@@ -30,11 +30,9 @@ const Autocomplete = ({
             )}
             onClick={() => onSelect(choice.value)}
           >
-            <span className="text-black text-sm">{choice.name}</span>
+            <span className="text-sm text-black">{choice.name}</span>
             {choice.description && (
-              <span className="text-sm text-gray-500">
-                {choice.description}
-              </span>
+              <span className="text-sm text-black">{choice.description}</span>
             )}
           </button>
         )

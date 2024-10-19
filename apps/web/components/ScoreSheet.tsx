@@ -20,7 +20,7 @@ const ScoreSheet = ({ players }: Props) => {
         }`}
       >
         <button
-          className="text-center text-slate-800 font-semibold w-full px-4 py-2 border-b"
+          className="text-center text-black font-semibold w-full px-4 py-2 border-b"
           onClick={() => setOpen(!open)}
         >
           {t("see-scores")}

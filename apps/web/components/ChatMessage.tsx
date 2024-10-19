@@ -9,7 +9,7 @@ const chatMessageClasses = cva(
   {
     variants: {
       type: {
-        message: "text-slate-800",
+        message: "text-black",
         "player-joined": "text-green-600",
         "player-reconnect": "text-green-600",
         "player-left": "text-red-600",

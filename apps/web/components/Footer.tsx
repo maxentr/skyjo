@@ -11,25 +11,25 @@ const Footer = () => {
       <div className="container grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-8">
         <div className="flex flex-col justify-center items-center md:items-start gap-3 md:gap-4">
           <FeedbackLink text={t("feedback")} />
-          <Link href="/#explanation" className="text-slate-900 underline">
+          <Link href="/#explanation" className="text-black underline">
             {t("explanation")}
           </Link>
-          <Link href="/rules" className="text-slate-900 underline">
+          <Link href="/rules" className="text-black underline">
             {t("rules")}
           </Link>
         </div>
         <div className="flex flex-col justify-center items-center gap-3 md:gap-4">
-          <Link href="/" className="text-slate-900 underline">
+          <Link href="/" className="text-black underline">
             {t("home")}
           </Link>
           <Link
             href="https://github.com/Maxentr/Skyjo/releases"
             target="_blank"
-            className="text-slate-900 underline"
+            className="text-black underline"
           >
             {t("release-notes")}
           </Link>
-          <Link href="/privacy-policy" className="text-slate-900 underline">
+          <Link href="/privacy-policy" className="text-black underline">
             {t("privacy-policy")}
           </Link>
         </div>
@@ -37,7 +37,7 @@ const Footer = () => {
           <Link
             href="https://www.magilano.com/produkt/skyjo/?lang=en&v=1d2a83b3af1f"
             target="_blank"
-            className="text-slate-900 underline"
+            className="text-black underline"
           >
             {t("buy-game")}
           </Link>
@@ -52,7 +52,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="container flex flex-col gap-2">
-        <p className="text-center text-slate-900 text-sm">{t("disclaimer")}</p>
+        <p className="text-center text-black text-sm">{t("disclaimer")}</p>
       </div>
     </footer>
   )

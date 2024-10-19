@@ -109,7 +109,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
         <div className="flex flex-col lg:flex-row gap-4 w-full">
           <div className="bg-container border-2 border-black rounded-2xl w-full px-8 md:px-12 py-8 relative">
             <HomeIcon
-              className="absolute top-4 left-4 h-6 w-6 text-slate-700 cursor-pointer"
+              className="absolute top-4 left-4 h-6 w-6 text-black cursor-pointer"
               onClick={actions.leave}
             />
             <span className="absolute top-4 right-4">
@@ -119,7 +119,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     {settings.private ? (
                       <LockIcon
                         className={cn(
-                          "h-6 w-6 text-slate-700",
+                          "h-6 w-6 text-black",
                           isAdmin ? "cursor-pointer" : "cursor-not-allowed",
                         )}
                         onClick={() => changeSettings("private", false)}
@@ -127,7 +127,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     ) : (
                       <UnlockIcon
                         className={cn(
-                          "h-6 w-6 text-slate-500",
+                          "h-6 w-6 text-black",
                           !isAdmin && "cursor-default",
                         )}
                         onClick={() => changeSettings("private", true)}
@@ -142,7 +142,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                 </Tooltip>
               </TooltipProvider>
             </span>
-            <h2 className="text-slate-900 text-center text-2xl mb-2 lg:mb-5">
+            <h2 className="text-black text-center text-2xl mb-2 lg:mb-5">
               {t("settings.title")}
             </h2>
 
@@ -334,7 +334,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
             </div>
           </div>
           <div className="block bg-container border-2 border-black rounded-2xl w-full lg:w-80 p-4 lg:p-8">
-            <h3 className="text-slate-900 text-center text-xl mb-2 lg:mb-5">
+            <h3 className="text-black text-center text-xl mb-2 lg:mb-5">
               {t("player-section.title")}
             </h3>
             <div className="flex flex-row flex-wrap justify-center gap-2">

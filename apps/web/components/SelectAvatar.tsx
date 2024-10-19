@@ -33,7 +33,7 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
   return (
     <div className={cn("flex flex-row gap-2 items-center", containerClassName)}>
       <ChevronLeftIcon
-        className="h-6 w-6 cursor-pointer dark:text-primary"
+        className="h-6 w-6 cursor-pointer text-black"
         onClick={handlePrevious}
       />
       <AnimatePresence mode="popLayout" initial={false}>
@@ -60,7 +60,7 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
         </m.div>
       </AnimatePresence>
       <ChevronRightIcon
-        className="h-6 w-6 cursor-pointer dark:text-primary"
+        className="h-6 w-6 cursor-pointer text-black"
         onClick={handleNext}
       />
     </div>

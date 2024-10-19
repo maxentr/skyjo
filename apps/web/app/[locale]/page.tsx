@@ -59,20 +59,18 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
         <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">
           <h2
             id="explanation"
-            className="text-center text-3xl text-slate-800 pt-2 mb-4"
+            className="text-center text-3xl text-black pt-2 mb-4"
           >
             {t("explanation.title")}
           </h2>
-          <p className="text-justify text-slate-800">
-            {t("explanation.content")}
-          </p>
+          <p className="text-justify text-black">{t("explanation.content")}</p>
           <Link href="/rules" className="mt-8">
             <Button>{t("explanation.button")}</Button>
           </Link>
         </section>
 
         <section className="container bg-body mt-16 mb-32 max-w-4xl flex flex-col items-center">
-          <h2 className="text-center text-3xl text-slate-800 mb-4">
+          <h2 className="text-center text-3xl text-black mb-4">
             {t("faq.title")}
           </h2>
           <Accordion type="single" collapsible className="w-full">

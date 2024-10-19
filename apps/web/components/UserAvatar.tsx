@@ -43,7 +43,7 @@ const imageVariants = cva("select-none", {
 })
 
 const textVariants = cva(
-  "text-slate-900 dark:text-primary text-center text-ellipsis overflow-hidden whitespace-nowrap",
+  "text-black text-center text-ellipsis overflow-hidden whitespace-nowrap",
   {
     variants: {
       size: {
