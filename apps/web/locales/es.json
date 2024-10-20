@@ -38,12 +38,12 @@
     },
     "Maintenance": {
       "title": "En mantenimiento",
-      "description": "Estamos actualizando la página, por favor inténtelo de nuevo más tarde.",
+      "description": "Estamos actualizando el sitio, por favor inténtelo más tarde.",
       "github-alt": "Ver el código fuente en GitHub"
     },
     "NotFound": {
       "title": "Error 404",
-      "description": "La página que buscas no existe.",
+      "description": "La página que busca no existe.",
       "go-back-to-homepage": "Volver a la página principal"
     },
     "InactivityCheck": {
@@ -98,13 +98,13 @@
       }
     },
     "ResultsPage": {
-      "title": "Resultados de juego",
-      "rank": "Clasificación",
+      "title": "Resultados del juego",
+      "rank": "Rango",
       "score-per-round": "Puntuación por ronda",
       "player": "Jugador",
       "total": "Total",
       "player-want-to-replay": "Jugadores que quieren repetir:",
-      "leave-button": "Abandonar el juego",
+      "leave-button": "Abandona el juego",
       "replay-button": {
         "cancel": "No repetir",
         "replay": "Repetir"
