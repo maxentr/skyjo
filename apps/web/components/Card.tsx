@@ -5,6 +5,7 @@ import { VariantProps, cva } from "class-variance-authority"
 import { ClassValue } from "clsx"
 import { m, useAnimate, useAnimationControls } from "framer-motion"
 import { Trash2Icon } from "lucide-react"
+import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { SkyjoCardToJson } from "shared/types/skyjoCard"
 
@@ -101,13 +102,29 @@ const Card = ({
   exitAnimation = false,
 }: CardProps) => {
   const [scope, animate] = useAnimate()
+  const { theme, systemTheme } = useTheme()
   const controls = useAnimationControls()
 
   const [value, setValue] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     const turnCard = async () => {
-      controls.set({ rotateY: -180, backgroundColor: "white", color: "white" })
+      const currentTheme = theme === "system" ? systemTheme : theme
+      if (currentTheme === "light") {
+        controls.set({
+          rotateY: -180,
+          // card-not-visible
+          backgroundColor: "#fefdf7",
+          color: "#fefdf7",
+        })
+      } else {
+        controls.set({
+          rotateY: -180,
+          // dark-card-not-visible
+          backgroundColor: "#5a5a58",
+          color: "#5a5a58",
+        })
+      }
 
       const animation = animate(
         scope.current,
