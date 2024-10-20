@@ -485,6 +485,11 @@
         "title": "Vous avez été expulsé",
         "description": "Les joueurs ont voté pour vous expulser de la partie."
       }
+    },
+    "AppearanceSelect": {
+      "light": "Clair",
+      "system": "Système",
+      "dark": "Sombre"
     }
   },
   "utils": {
