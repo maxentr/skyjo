@@ -3,6 +3,7 @@
 import SettingsDialog from "@/components/SettingsDialog"
 import { Locales } from "@/i18n"
 import { Howler } from "howler"
+import { ThemeProvider } from "next-themes"
 import {
   PropsWithChildren,
   createContext,
@@ -34,7 +35,6 @@ type Settings = {
   chatVisibility: boolean
   chatNotificationSize: ChatNotificationSize
   locale: Locales
-  appearance: Appearance
   switchToPlayerWhoIsPlaying: boolean
   audio: boolean
   volume: number
@@ -44,7 +44,6 @@ type SettingsKeys = keyof Settings
 const DEFAULT_SETTINGS: Settings = {
   chatVisibility: true,
   chatNotificationSize: ChatNotificationSize.NORMAL,
-  appearance: Appearance.LIGHT,
   locale: "en",
   switchToPlayerWhoIsPlaying: true,
   audio: true,
@@ -107,8 +106,10 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
 
   return (
     <SettingsContext.Provider value={contextValue}>
-      {children}
-      <SettingsDialog open={open} onOpenChange={setOpen} />
+      <ThemeProvider attribute="class" enableSystem>
+        {children}
+        <SettingsDialog open={open} onOpenChange={setOpen} />
+      </ThemeProvider>
     </SettingsContext.Provider>
   )
 }
