@@ -38,7 +38,7 @@
     },
     "Maintenance": {
       "title": "En mantenimiento",
-      "description": "Estamos actualizando el sitio, por favor inténtelo más tarde.",
+      "description": "Estamos actualizando el página web, por favor inténtelo más tarde.",
       "github-alt": "Ver el código fuente en GitHub"
     },
     "NotFound": {
@@ -99,7 +99,7 @@
     },
     "ResultsPage": {
       "title": "Resultados del juego",
-      "rank": "Rango",
+      "rank": "Clasificación",
       "score-per-round": "Puntuación por ronda",
       "player": "Jugador",
       "total": "Total",
@@ -142,7 +142,7 @@
           }
         },
         "how-we-use-your-information": {
-          "title": "¿Cómo utilizamos su información?",
+          "title": "Cómo utilizamos su información",
           "items": "Mejorar nuestra página web y la experiencia del usuario;;Analizar los patrones de uso y el rendimiento;;Responder a las solicitudes de retroalimentación y apoyo;;Facilitar el juego"
         },
         "contact-us": {
@@ -183,7 +183,7 @@
         "en": "English",
         "it": "Italiano",
         "de": "German",
-        "es": "Spanish",
+        "es": "Español",
         "fr": "Français"
       }
     },
@@ -262,6 +262,11 @@
     },
     "EndRoundDialog": {
       "title": "Final de la ronda"
+    },
+    "SettingsDialog": {
+      "general": {
+        "appearance": "Apariencia"
+      }
     }
   }
 }
