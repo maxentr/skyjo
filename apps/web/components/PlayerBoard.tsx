@@ -39,12 +39,15 @@ const PlayerBoard = ({ player, isPlayerTurn }: PlayerBoardProps) => {
         height={32}
         alt={ta(player.avatar)}
         title={ta(player.avatar)}
-        className={cn("mt-4 select-none", isPlayerTurn && "animate-bounce")}
+        className={cn(
+          "mt-4 select-none dark:opacity-75",
+          isPlayerTurn && "animate-bounce",
+        )}
         priority
       />
       <p
         className={cn(
-          "text-center select-none text-sm",
+          "text-center select-none text-sm text-black dark:text-dark-font",
           isPlayerTurn && "font-semibold",
         )}
       >

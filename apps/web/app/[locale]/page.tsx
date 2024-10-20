@@ -30,20 +30,20 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
 
   return (
     <>
-      <div className="bg-body flex flex-col">
-        <div className="relative h-dvh !p-6 bg-body flex items-center justify-center">
+      <div className="bg-body dark:bg-dark-body flex flex-col">
+        <div className="relative h-dvh !p-6 bg-body dark:bg-dark-body flex items-center justify-center">
           <PWABanner />
           <div className="absolute top-6 right-6 w-10 flex flex-col gap-4 z-10">
             <MenuDropdown />
           </div>
-          <div className="bg-container border-2 border-black px-10 md:px-16 py-6 mdh:md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
+          <div className="bg-container dark:bg-dark-container border-2 border-black dark:border-dark-border px-10 md:px-16 py-6 mdh:md:py-12 rounded-xl md:w-3/6 max-w-2xl flex flex-col items-center">
             <h1 className="mb-5">
               <Image
                 src="/svg/logo.svg"
                 width={0}
                 height={0}
                 style={{ width: "auto", height: "2.5rem" }}
-                className="select-none"
+                className="select-none dark:invert"
                 priority
                 loading="eager"
                 title="Skyjo"
@@ -56,21 +56,23 @@ const IndexServerPage = ({ searchParams }: IndexServerPageProps) => {
             <MovingArrow href="#explanation" />
           </div>
         </div>
-        <section className="container bg-body my-8 max-w-4xl flex flex-col items-center">
+        <section className="container bg-body dark:bg-dark-body my-8 max-w-4xl flex flex-col items-center">
           <h2
             id="explanation"
-            className="text-center text-3xl text-black pt-2 mb-4"
+            className="text-center text-3xl text-black dark:text-dark-font pt-2 mb-4"
           >
             {t("explanation.title")}
           </h2>
-          <p className="text-justify text-black">{t("explanation.content")}</p>
+          <p className="text-justify text-black dark:text-dark-font">
+            {t("explanation.content")}
+          </p>
           <Link href="/rules" className="mt-8">
             <Button>{t("explanation.button")}</Button>
           </Link>
         </section>
 
-        <section className="container bg-body mt-16 mb-32 max-w-4xl flex flex-col items-center">
-          <h2 className="text-center text-3xl text-black mb-4">
+        <section className="container bg-body dark:bg-dark-body mt-16 mb-32 max-w-4xl flex flex-col items-center">
+          <h2 className="text-center text-3xl text-black dark:text-dark-font mb-4">
             {t("faq.title")}
           </h2>
           <Accordion type="single" collapsible className="w-full">

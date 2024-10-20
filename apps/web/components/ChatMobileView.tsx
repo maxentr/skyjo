@@ -13,7 +13,7 @@ import { ClassValue } from "clsx"
 import { MessageCircle } from "lucide-react"
 import { useTranslations } from "next-intl"
 import ChatForm from "./ChatForm"
-import ChatMessageList from "./ChatMessageList"
+import { ChatMessageList } from "./ChatMessageList"
 
 type ChatDrawerProps = {
   open: boolean

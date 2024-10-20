@@ -15,12 +15,12 @@ function ChatMessageList() {
         <ChatMessage key={message.id} {...message} />
       ))}
       {unreadMessages.length > 0 && (
-        <div className="sticky top-0 flex flex-row items-center bg-white">
-          <hr className="flex-grow border-red-500" />
-          <p className="font-inter text-sm text-red-500 px-2">
+        <div className="sticky top-0 flex flex-row items-center bg-white dark:bg-dark-input">
+          <hr className="flex-grow border-red-500 dark:border-red-600" />
+          <p className="font-inter text-sm text-red-500 dark:text-red-600 px-2">
             {t("unread-messages", { count: unreadMessages.length })}
           </p>
-          <hr className="flex-grow border-red-500" />
+          <hr className="flex-grow border-red-500 dark:border-red-600" />
         </div>
       )}
       {chat
@@ -32,4 +32,4 @@ function ChatMessageList() {
   )
 }
 
-export default ChatMessageList
+export { ChatMessageList }

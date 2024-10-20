@@ -137,7 +137,7 @@ const LanguageCombobox = () => {
         <DrawerHeader>
           <DrawerTitle>{t("select-language")}</DrawerTitle>
         </DrawerHeader>
-        <div className="border-t-[1.5px] border-black">
+        <div className="border-t-[1.5px] border-black dark:border-dark-border">
           <LocaleList
             currentLocale={currentLocale}
             updateLocale={updateLocale}

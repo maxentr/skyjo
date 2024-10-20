@@ -29,7 +29,7 @@ export function Toaster() {
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {yesVotes && requiredVotes && (
-                <div className="absolute top-2 right-2 text-sm text-black">
+                <div className="absolute top-2 right-2 text-sm text-black dark:text-dark-font">
                   {yesVotes}/{requiredVotes}
                 </div>
               )}

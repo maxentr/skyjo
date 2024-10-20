@@ -7,29 +7,38 @@ const Footer = () => {
   const t = useTranslations("components.Footer")
 
   return (
-    <footer className="w-full flex flex-col gap-8 border-t-2 border-black bg-container py-8">
+    <footer className="w-full flex flex-col gap-8 border-t-2 border-black dark:border-dark-border bg-container dark:bg-dark-container py-8">
       <div className="container grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-8">
         <div className="flex flex-col justify-center items-center md:items-start gap-3 md:gap-4">
           <FeedbackLink text={t("feedback")} />
-          <Link href="/#explanation" className="text-black underline">
+          <Link
+            href="/#explanation"
+            className="text-black dark:text-dark-font underline"
+          >
             {t("explanation")}
           </Link>
-          <Link href="/rules" className="text-black underline">
+          <Link
+            href="/rules"
+            className="text-black dark:text-dark-font underline"
+          >
             {t("rules")}
           </Link>
         </div>
         <div className="flex flex-col justify-center items-center gap-3 md:gap-4">
-          <Link href="/" className="text-black underline">
+          <Link href="/" className="text-black dark:text-dark-font underline">
             {t("home")}
           </Link>
           <Link
             href="https://github.com/Maxentr/Skyjo/releases"
             target="_blank"
-            className="text-black underline"
+            className="text-black dark:text-dark-font underline"
           >
             {t("release-notes")}
           </Link>
-          <Link href="/privacy-policy" className="text-black underline">
+          <Link
+            href="/privacy-policy"
+            className="text-black dark:text-dark-font underline"
+          >
             {t("privacy-policy")}
           </Link>
         </div>
@@ -37,7 +46,7 @@ const Footer = () => {
           <Link
             href="https://www.magilano.com/produkt/skyjo/?lang=en&v=1d2a83b3af1f"
             target="_blank"
-            className="text-black underline"
+            className="text-black dark:text-dark-font underline"
           >
             {t("buy-game")}
           </Link>
@@ -47,12 +56,15 @@ const Footer = () => {
               width={24}
               height={24}
               alt="github.com/Maxentr"
+              className="dark:invert"
             />
           </Link>
         </div>
       </div>
       <div className="container flex flex-col gap-2">
-        <p className="text-center text-black text-sm">{t("disclaimer")}</p>
+        <p className="text-center text-black dark:text-dark-font text-sm">
+          {t("disclaimer")}
+        </p>
       </div>
     </footer>
   )

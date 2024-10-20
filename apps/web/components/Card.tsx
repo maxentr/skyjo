@@ -18,14 +18,17 @@ const cardClass = cva(
           " h-8 w-6 smh:h-12 smh:w-8 xlh:md:h-16 xlh:md:w-12 rounded smh:rounded xlh:md:rounded-md shadow-[0.75px_0.75px_0px_0px_rgba(0,0,0)] xlh:md:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0)] text-base xlh:md:text-2xl ",
       },
       value: {
-        discard: "bg-transparent border-dashed border-red-600 !shadow-none",
-        "no-card": "bg-transparent border-dashed !shadow-none",
-        "not-visible": " bg-container text-container",
-        negative: " bg-card-negative",
-        neutral: " bg-card-neutral",
-        low: " bg-card-low",
-        medium: "bg-card-medium",
-        high: " bg-card-high",
+        discard:
+          "bg-transparent border-dashed border-card-discard dark:border-dark-card-discard !shadow-none",
+        "no-card":
+          "bg-transparent border-dashed border-black dark:border-dark-border dark:border-dark-card-empty !shadow-none",
+        "not-visible":
+          " bg-card-not-visible text-card-not-visible dark:bg-dark-card-not-visible dark:text-dark-card-not-visible ",
+        negative: " bg-card-negative dark:bg-dark-card-negative ",
+        neutral: " bg-card-neutral dark:bg-dark-card-neutral ",
+        low: " bg-card-low dark:bg-dark-card-low ",
+        medium: "bg-card-medium dark:bg-dark-card-medium ",
+        high: " bg-card-high dark:bg-dark-card-high ",
       },
       disabled: {
         true: "",
@@ -35,7 +38,7 @@ const cardClass = cva(
   },
 )
 
-const throwIconClass = cva("text-red-600", {
+const throwIconClass = cva(" text-card-discard dark:text-dark-card-discard ", {
   variants: {
     size: {
       tiny: "w-4 aspect-square",
@@ -128,7 +131,6 @@ const Card = ({
         },
       )
 
-      // set classname
       await Promise.all([animation])
 
       controls.set({ rotateY: 0 })

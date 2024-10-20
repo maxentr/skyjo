@@ -1,7 +1,7 @@
 "use client"
 
 import ChatForm from "@/components/ChatForm"
-import ChatMessageList from "@/components/ChatMessageList"
+import { ChatMessageList } from "@/components/ChatMessageList"
 import { useChat } from "@/contexts/ChatContext"
 import { useSettings } from "@/contexts/SettingsContext"
 import { cn } from "@/lib/utils"
@@ -11,15 +11,18 @@ import { m } from "framer-motion"
 import { MessageCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-const ChatNotificationVariant = cva("absolute rounded-full bg-red-400", {
-  variants: {
-    size: {
-      small: "top-1.5 left-1.5 w-1 h-1",
-      normal: "top-1.5 left-1.5 w-2 h-2",
-      big: "top-1.5 left-1.5 w-3 h-3",
+const ChatNotificationVariant = cva(
+  "absolute rounded-full bg-red-400 dark:bg-red-600",
+  {
+    variants: {
+      size: {
+        small: "top-1.5 left-1.5 w-1 h-1",
+        normal: "top-1.5 left-1.5 w-2 h-2",
+        big: "top-1.5 left-1.5 w-3 h-3",
+      },
     },
   },
-})
+)
 
 type ChatDesktopViewProps = {
   open: boolean
@@ -50,7 +53,7 @@ const ChatDesktopView = ({
     >
       <div className="relative">
         <button
-          className="absolute bottom-16 right-full w-10 h-24 flex items-center justify-center bg-button text-center text-black border-2 border-r-0 rounded-s-lg border-black transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4 shadow-[3px_3px_0px_0px_rgba(0,0,0)]"
+          className="absolute bottom-16 right-full w-10 h-24 flex items-center justify-center bg-button dark:bg-dark-button text-center text-black dark:text-dark-font border-2 border-r-0 rounded-s-lg border-black dark:border-dark-border transition-all duration-200 focus-visible:outline-black focus-visible:-outline-offset-4 shadow-[3px_3px_0px_0px_rgba(0,0,0)]"
           onClick={toggleOpening}
           disabled={disabled}
         >
@@ -72,7 +75,7 @@ const ChatDesktopView = ({
           <MessageCircleIcon className="size-5" />
         </button>
       </div>
-      <div className="flex w-full h-svh px-2 pb-2 bg-white shadow border-l-2 border-black z-10">
+      <div className="flex w-full h-svh px-2 pb-2 bg-container dark:bg-dark-container shadow border-l-2 border-black dark:border-dark-border z-10">
         <m.div
           animate={open ? "open" : "closed"}
           variants={{
@@ -84,7 +87,7 @@ const ChatDesktopView = ({
           transition={{ duration: 0.2 }}
           className="flex flex-grow flex-col items-center"
         >
-          <p className="w-full text-center text-black text-xl pt-2 pb-1 border-b-2 border-black">
+          <p className="w-full text-center text-black dark:text-dark-font text-xl pt-2 pb-1 border-b-2 border-black dark:border-dark-border">
             {t("title")}
           </p>
           <ChatMessageList />

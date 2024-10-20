@@ -27,7 +27,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-5/6 mdh:h-fit px-0 bg-container">
+      <DialogContent className="h-5/6 mdh:h-fit px-0 bg-container dark:bg-dark-container">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
             {t("title")}

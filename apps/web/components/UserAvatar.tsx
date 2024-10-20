@@ -7,6 +7,7 @@ import {
 import { useChat } from "@/contexts/ChatContext"
 import { useSkyjo } from "@/contexts/SkyjoContext"
 import { useVoteKick } from "@/contexts/VoteKickContext"
+import { cn } from "@/lib/utils"
 import { VariantProps, cva } from "class-variance-authority"
 import {
   MessageSquareIcon,
@@ -43,7 +44,7 @@ const imageVariants = cva("select-none", {
 })
 
 const textVariants = cva(
-  "text-black text-center text-ellipsis overflow-hidden whitespace-nowrap",
+  "text-black dark:text-dark-font text-center text-ellipsis overflow-hidden whitespace-nowrap",
   {
     variants: {
       size: {
@@ -88,7 +89,7 @@ const UserAvatar = ({
           height={size === "small" ? 40 : 100}
           alt={tAvatar(player.avatar)}
           title={tAvatar(player.avatar)}
-          className={imageVariants({ size })}
+          className={cn(imageVariants({ size }), "dark:opacity-75")}
           priority
         />
         {player.name && showName && (

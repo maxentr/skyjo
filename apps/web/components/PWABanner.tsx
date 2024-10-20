@@ -74,13 +74,18 @@ const PWABanner = () => {
           exit={{ opacity: 0, y: 100 }}
           className="z-[100] fixed bottom-4 left-4 right-4"
         >
-          <div className="bg-white mx-auto px-4 pt-2 pb-2 rounded-xl border-2 border-black flex flex-col gap-1 max-w-2xl">
+          <div className="bg-white dark:bg-dark-input mx-auto px-4 pt-2 pb-2 rounded-xl border-2 border-black dark:border-dark-border flex flex-col gap-1 max-w-2xl">
             <div className="flex flex-row items-end justify-between gap-2">
-              <p className="text-black text-sm font-medium">{t("title")}</p>
-              <XIcon onClick={handleDismiss} className="text-black" />
+              <p className="text-black dark:text-dark-font text-sm font-medium">
+                {t("title")}
+              </p>
+              <XIcon
+                onClick={handleDismiss}
+                className="text-black dark:text-dark-font"
+              />
             </div>
             <div className="flex flex-row justify-between gap-2">
-              <p className="text-black text-sm">
+              <p className="text-black dark:text-dark-font text-sm">
                 {t(userAgent as Exclude<UserAgent, "unknown">)}
               </p>
               <div className="flex flex-row items-center gap-4 mb-1">
