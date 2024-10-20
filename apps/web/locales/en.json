@@ -188,6 +188,11 @@
     }
   },
   "components": {
+    "AppearanceSelect": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
     "Chat": {
       "title": "Chat"
     },

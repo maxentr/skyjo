@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl"
 import { useTheme } from "next-themes"
 
 const AppearanceSelect = () => {
-  const t = useTranslations("components.Appearance")
+  const t = useTranslations("components.AppearanceSelect")
   const { theme, setTheme } = useTheme()
 
   return (
