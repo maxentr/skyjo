@@ -279,7 +279,14 @@
     "LanguageCombobox": {
       "select-language": "Sélectionner la langue",
       "search-language": "Rechercher une langue",
-      "no-language-found": "Aucune langue trouvée"
+      "no-language-found": "Aucune langue trouvée",
+      "locale": {
+        "en": "English",
+        "fr": "Français",
+        "de": "German",
+        "es": "Spanish",
+        "it": "Italiano"
+      }
     },
     "MenuDropdown": {
       "button": {
