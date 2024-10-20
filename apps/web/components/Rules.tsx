@@ -5,8 +5,8 @@ const Rules = () => {
   const t = useTranslations("components.Rules")
 
   return (
-    <div className="flex flex-col gap-6 text-black px-6">
-      <div className="bg-slate-100 rounded-md pt-2 pb-4">
+    <div className="flex flex-col gap-6 text-black dark:text-dark-font px-6">
+      <div className="bg-slate-100 dark:bg-dark-container rounded-md pt-2 pb-4">
         <h3 className="md:pl-2 text-lg">
           {t("cards-section-title", { number: 150 })}
         </h3>
@@ -75,17 +75,17 @@ const Rules = () => {
         <h3 className="text-xl font-medium mb-0.5">{t("round-start.title")}</h3>
         <p className="text-justify">
           {t("round-start.content-1")}{" "}
-          <span className="font-semibold text-blue-600">
+          <span className="font-semibold text-blue-600 dark:text-blue-400">
             ({t("round-start.choice", { number: 1 })})
           </span>{" "}
           {t("round-start.content-2")}{" "}
-          <span className="font-semibold text-blue-600">
+          <span className="font-semibold text-blue-600 dark:text-blue-400">
             ({t("round-start.choice", { number: 2 })})
           </span>
           .
         </p>
         <p id="choice1" className="mt-1 text-justify">
-          <span className="text-blue-600">
+          <span className="text-blue-600 dark:text-blue-400">
             <span className="font-semibold">
               {t("round-start.choice-1.title")}
             </span>{" "}
@@ -94,7 +94,7 @@ const Rules = () => {
           {t("round-start.choice-1.content")}
         </p>
         <p className="mt-1 text-justify">
-          <span className="text-blue-600">
+          <span className="text-blue-600 dark:text-blue-400">
             <span className="font-semibold">
               {t("round-start.choice-2.title")}
             </span>{" "}
@@ -107,8 +107,8 @@ const Rules = () => {
           . {t("round-start.choice-2.content-2")}
         </p>
         <p className="text-justify">{t("round-start.end-of-turn")}</p>
-        <div className="flex flex-col gap-1 bg-blue-50 rounded-md py-2 px-4 mt-3">
-          <p className="text-justify text-blue-700">
+        <div className="flex flex-col gap-1 bg-blue-50 dark:bg-blue-900 rounded-md py-2 px-4 mt-3">
+          <p className="text-justify text-blue-700 dark:text-blue-400">
             <span className="font-semibold">{t("special-rule.title")}</span>{" "}
             {t("special-rule.content")}
           </p>
@@ -122,13 +122,13 @@ const Rules = () => {
       <div>
         <h3 className="text-xl font-medium mb-0.5">{t("scoring.title")}</h3>
         <p className="text-justify">{t("scoring.description")}</p>
-        <ul className="marker:text-black list-disc list-inside">
+        <ul className="marker:text-black dark:text-dark-font list-disc list-inside">
           <li className="text-justify">{t("scoring.list.content-1")}</li>
           <li className="text-justify">{t("scoring.list.content-2")}</li>
         </ul>
         <p className="text-justify">{t("scoring.first-to-finish.content")}</p>
-        <div className="flex flex-col gap-1 bg-amber-50 rounded-md py-2 px-4 mt-2">
-          <p className="text-amber-700 text-justify">
+        <div className="flex flex-col gap-1 bg-amber-50 dark:bg-amber-900 rounded-md py-2 px-4 mt-2">
+          <p className="text-amber-700 dark:text-amber-400 text-justify">
             <span className="font-semibold">
               {t("scoring.first-to-finish.note.title")}
             </span>{" "}

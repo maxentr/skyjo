@@ -107,9 +107,9 @@ const Lobby = ({ gameCode }: LobbyProps) => {
       </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center h-fit w-full md:max-w-3xl lg:max-w-4xl p-4 pb-20 md:pb-4">
         <div className="flex flex-col lg:flex-row gap-4 w-full">
-          <div className="bg-container border-2 border-black rounded-2xl w-full px-8 md:px-12 py-8 relative">
+          <div className="bg-container dark:bg-dark-container border-2 border-black dark:border-dark-border rounded-2xl w-full px-8 md:px-12 py-8 relative">
             <HomeIcon
-              className="absolute top-4 left-4 h-6 w-6 text-black cursor-pointer"
+              className="absolute top-4 left-4 h-6 w-6 text-black dark:text-dark-font cursor-pointer"
               onClick={actions.leave}
             />
             <span className="absolute top-4 right-4">
@@ -119,7 +119,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     {settings.private ? (
                       <LockIcon
                         className={cn(
-                          "h-6 w-6 text-black",
+                          "h-6 w-6 text-black dark:text-dark-font",
                           isAdmin ? "cursor-pointer" : "cursor-not-allowed",
                         )}
                         onClick={() => changeSettings("private", false)}
@@ -127,7 +127,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                     ) : (
                       <UnlockIcon
                         className={cn(
-                          "h-6 w-6 text-black",
+                          "h-6 w-6 text-black dark:text-dark-font",
                           !isAdmin && "cursor-default",
                         )}
                         onClick={() => changeSettings("private", true)}
@@ -142,7 +142,7 @@ const Lobby = ({ gameCode }: LobbyProps) => {
                 </Tooltip>
               </TooltipProvider>
             </span>
-            <h2 className="text-black text-center text-2xl mb-2 lg:mb-5">
+            <h2 className="text-black dark:text-dark-font text-center text-2xl mb-2 lg:mb-5">
               {t("settings.title")}
             </h2>
 
@@ -333,8 +333,8 @@ const Lobby = ({ gameCode }: LobbyProps) => {
               </Button>
             </div>
           </div>
-          <div className="block bg-container border-2 border-black rounded-2xl w-full lg:w-80 p-4 lg:p-8">
-            <h3 className="text-black text-center text-xl mb-2 lg:mb-5">
+          <div className="block bg-container dark:bg-dark-container border-2 border-black dark:border-dark-border rounded-2xl w-full lg:w-80 p-4 lg:p-8">
+            <h3 className="text-black dark:text-dark-font text-center text-xl mb-2 lg:mb-5">
               {t("player-section.title")}
             </h3>
             <div className="flex flex-row flex-wrap justify-center gap-2">

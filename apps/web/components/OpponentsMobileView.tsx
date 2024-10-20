@@ -78,7 +78,9 @@ const OpponentsMobileView = () => {
         <div className="flex flex-col w-20 gap-2 max-h-52">
           {opponentsWithoutSelected.length > 0 && (
             <>
-              <p className="text-nowrap">{t("opponents-list.title")}</p>
+              <p className="text-nowrap text-black dark:text-dark-font">
+                {t("opponents-list.title")}
+              </p>
               {opponentsWithoutSelected.map((opponent, index) => (
                 <m.button
                   key={opponent.id}

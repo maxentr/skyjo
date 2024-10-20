@@ -33,7 +33,7 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
   return (
     <div className={cn("flex flex-row gap-2 items-center", containerClassName)}>
       <ChevronLeftIcon
-        className="h-6 w-6 cursor-pointer text-black"
+        className="h-6 w-6 cursor-pointer text-black dark:text-dark-font"
         onClick={handlePrevious}
       />
       <AnimatePresence mode="popLayout" initial={false}>
@@ -51,7 +51,7 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
               height={100}
               alt={tAvatar(avatar)}
               title={tAvatar(avatar)}
-              className="size-12 smh:sm:size-16 mdh:md:size-[6.25rem]"
+              className="select-none size-12 smh:sm:size-16 mdh:md:size-[6.25rem] dark:opacity-75"
               priority
             />
           ) : (
@@ -60,7 +60,7 @@ const SelectAvatar = ({ containerClassName }: SelectAvatarProps) => {
         </m.div>
       </AnimatePresence>
       <ChevronRightIcon
-        className="h-6 w-6 cursor-pointer text-black"
+        className="h-6 w-6 cursor-pointer text-black dark:text-dark-font"
         onClick={handleNext}
       />
     </div>

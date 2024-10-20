@@ -12,14 +12,18 @@ const MaintenancePage = () => {
         width={0}
         height={0}
         style={{ width: "auto", height: "2rem" }}
-        className="select-none absolute top-4 inset-x-0 mx-auto sm:mx-0 sm:left-4"
+        className="select-none absolute top-4 inset-x-0 mx-auto sm:mx-0 sm:left-4 dark:invert"
         priority
         loading="eager"
         title="Skyjo"
         alt="Skyjo"
       />
-      <h1 className="text-4xl font-bold text-center">{t("title")}</h1>
-      <p className="text-center">{t("description")}</p>
+      <h1 className="text-black dark:text-white text-4xl font-bold text-center">
+        {t("title")}
+      </h1>
+      <p className="text-black dark:text-white text-center">
+        {t("description")}
+      </p>
       <Link
         href="https://github.com/maxentr/skyjo"
         className="absolute bottom-4 inset-x-0 flex justify-center"
@@ -29,6 +33,7 @@ const MaintenancePage = () => {
           width={24}
           height={24}
           alt={t("github-alt")}
+          className="dark:invert"
         />
       </Link>
     </div>

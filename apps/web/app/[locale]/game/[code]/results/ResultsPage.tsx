@@ -72,8 +72,10 @@ const ResultsPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <h1 className="text-2xl font-semibold mb-4">{t("title")}</h1>
-          <Table className="border border-black bg-container lg:w-2/3 mx-auto">
+          <h1 className="text-black dark:text-dark-font text-2xl font-semibold mb-4">
+            {t("title")}
+          </h1>
+          <Table className="border border-black dark:border-dark-border bg-container dark:bg-dark-container lg:w-2/3 mx-auto">
             {allRowsVisible && (
               <MotionTableHeader
                 initial={{ opacity: 0 }}
@@ -143,7 +145,9 @@ const ResultsPage = () => {
             >
               {hasMoreThanOneConnectedPlayer && (
                 <div className="flex flex-col gap-1 items-center">
-                  <p>{t("player-want-to-replay")}</p>
+                  <p className="text-black dark:text-dark-font">
+                    {t("player-want-to-replay")}
+                  </p>
                   <div className="flex flex-row gap-1">
                     {connectedPlayers.map((player) =>
                       player.wantsReplay ? (
@@ -153,7 +157,11 @@ const ResultsPage = () => {
                           className="text-emerald-600"
                         />
                       ) : (
-                        <XCircleIcon key={player.id} size={24} />
+                        <XCircleIcon
+                          key={player.id}
+                          size={24}
+                          className="text-black dark:text-dark-font"
+                        />
                       ),
                     )}
                   </div>

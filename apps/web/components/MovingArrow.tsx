@@ -20,7 +20,7 @@ const MovingArrow = ({ href }: Props) => {
           repeatType: "reverse",
         }}
       >
-        <ArrowDown />
+        <ArrowDown className="text-black dark:text-dark-font" />
       </m.div>
     </Link>
   )

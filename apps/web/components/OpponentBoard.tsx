@@ -40,12 +40,15 @@ const OpponentBoard = ({
         height={32}
         alt={ta(opponent.avatar)}
         title={ta(opponent.avatar)}
-        className={cn("select-none", isPlayerTurn && "animate-bounce")}
+        className={cn(
+          "select-none dark:opacity-75",
+          isPlayerTurn && "animate-bounce",
+        )}
         priority
       />
       <p
         className={cn(
-          "text-center select-none text-sm mb-2 flex flex-row items-center gap-1",
+          "text-center select-none text-sm text-black dark:text-dark-font mb-2 flex flex-row items-center gap-1",
           isPlayerTurn && "font-semibold",
         )}
       >

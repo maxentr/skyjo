@@ -1,5 +1,6 @@
 "use client"
 
+import { AppearanceSelect } from "@/components/AppearanceSelect"
 import { LanguageCombobox } from "@/components/LanguageCombobox"
 import {
   Dialog,
@@ -27,7 +28,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-5/6 mdh:h-fit px-0 bg-container">
+      <DialogContent className="h-5/6 mdh:h-fit px-0 bg-container dark:bg-dark-container">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
             {t("title")}
@@ -44,9 +45,9 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 </Label>
                 <LanguageCombobox />
               </div>
-              <div className="flex flex-col gap-2 opacity-50">
+              <div className="flex flex-col gap-2">
                 <Label>{t("general.appearance")}</Label>
-                <p className="text-sm">{t("general.coming-soon")}</p>
+                <AppearanceSelect />
               </div>
             </div>
           </div>

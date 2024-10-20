@@ -18,7 +18,7 @@ const GameLayout = ({ children, params }: GameLayoutProps) => {
     <ChatProvider>
       <SkyjoProvider gameCode={params.code}>
         <VoteKickProvider>
-          <div className="w-svh h-svh bg-body flex flex-row overflow-hidden">
+          <div className="w-svh h-svh bg-body dark:bg-dark-body flex flex-row overflow-hidden">
             {children}
             <Chat className="z-40" />
           </div>

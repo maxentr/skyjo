@@ -19,11 +19,11 @@ const RulesDialog = ({ open, onOpenChange }: RulesDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-2/3 px-0 bg-container">
+      <DialogContent className="h-2/3 px-0 bg-container dark:bg-dark-container">
         <DialogHeader className="px-6">
           <DialogTitle className="text-2xl">{t("title")}</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-6 text-black bg-container overflow-y-auto">
+        <div className="flex flex-col gap-6 text-black dark:text-dark-font bg-container dark:bg-dark-container overflow-y-auto">
           <Rules />
         </div>
       </DialogContent>

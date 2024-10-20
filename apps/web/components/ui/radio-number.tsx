@@ -1,12 +1,13 @@
 import { cva } from "class-variance-authority"
 
 const classValue = cva(
-  "h-8 w-8 flex items-center justify-center rounded-md border-2 border-black text-black cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2",
+  "h-8 w-8 flex items-center justify-center rounded-md border-2 border-black dark:border-dark-border text-black cursor-pointer transition-all duration-200 -outline-offset-2 focus-visible:outline focus-visible:outline-black focus-visible:outline-2 focus-visible:outline-offset-[-6px]",
   {
     variants: {
       selected: {
-        true: " bg-button",
-        false: "bg-white",
+        true: " bg-button dark:bg-dark-border dark:focus-visible:outline-dark-input",
+        false:
+          "bg-white dark:bg-dark-input dark:text-dark-font dark:focus-visible:outline-dark-border",
       },
       disabled: {
         true: "cursor-not-allowed opacity-50",

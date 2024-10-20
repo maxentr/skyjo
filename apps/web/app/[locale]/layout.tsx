@@ -142,8 +142,13 @@ export default async function LocaleLayout({
   )
 
   return (
-    <html lang={locale} suppressHydrationWarning style={fredoka.style}>
-      <body className="bg-body antialiased">
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      style={fredoka.style}
+      className="dark"
+    >
+      <body className="bg-body dark:bg-dark-body antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           {isSiteUnderMaintenance ? (
             <MaintenancePage />

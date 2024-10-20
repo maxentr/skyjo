@@ -34,6 +34,8 @@ const config = {
       },
       colors: {
         card: {
+          discard: "#dc2626",
+          "not-visible": "#fefdf7",
           negative: "#5992E7",
           neutral: "#A0C4FF",
           low: "#7ACE7A",
@@ -43,6 +45,26 @@ const config = {
         body: "#F8F7EB",
         button: "#F6E9C9",
         container: "#fefdf7",
+
+        dark: {
+          card: {
+            empty: "#C5C5C2",
+            discard: "#BC2323",
+            "not-visible": "#5A5A58",
+            negative: "#517FC3",
+            neutral: "#8AA7D6",
+            low: "#6CAE6C",
+            medium: "#CCC444",
+            high: "#CE6262",
+          },
+          body: "#1C1C1C",
+          container: "#242424",
+          input: "#222222",
+          button: "#1A1A1A",
+          font: "#D2D2D2",
+          border: "#898989",
+          focus: "#404040",
+        },
       },
       keyframes: {
         "accordion-down": {
