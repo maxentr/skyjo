@@ -120,15 +120,60 @@
         },
         "information-we-collect": {
           "anonymous-usage-data": {
-            "title": "Datos de uso anónimos"
+            "title": "Datos de uso anónimos",
+            "description": "Utilizamos PostHog, una herramienta de análisis, para recopilar datos anónimos sobre su uso de nuestra página web. Esto incluye:",
+            "items": "Visitas a la página; Web vitals (métricas de rendimiento); Respuestas a las encuestas (si decide participar)"
           },
-          "title": "Información que recopilamos"
+          "title": "Información que recopilamos",
+          "game-data": {
+            "title": "Datos del juego",
+            "description": "Almacenamos temporalmente:",
+            "items": "Nombres de usuario y opciones del avatar;;Elementos del juego y progreso"
+          },
+          "user-provided-information": {
+            "title": "Información proporcionada por el usuario",
+            "description": "Recopilamos:",
+            "items": "Envío de formularios de comentarios (incluyendo direcciones de correo electrónico opcionales)"
+          },
+          "local-storage-data": {
+            "title": "Datos de almacenamiento local",
+            "description": "Guardamos en el almacenamiento local de su navegador:",
+            "items": "Preferencias de idioma;;Sus ajustes en el juego"
+          }
+        },
+        "how-we-use-your-information": {
+          "title": "¿Cómo utilizamos su información?",
+          "items": "Mejorar nuestra página web y la experiencia del usuario;;Analizar los patrones de uso y el rendimiento;;Responder a las solicitudes de retroalimentación y apoyo;;Facilitar el juego"
+        },
+        "contact-us": {
+          "title": "Contacta con nosotros",
+          "description": "Si tiene alguna pregunta sobre esta Política de privacidad, por favor contáctenos a través de nuestro formulario de comentarios en la página web."
+        },
+        "changes-to-this-policy": {
+          "description": "Podemos actualizar esta política de vez en cuando. Le notificaremos de cualquier cambio publicando la nueva política en esta página.",
+          "title": "Cambios en esta política"
+        },
+        "childrens-privacy": {
+          "description": "Skyjo Online no tiene restricciones de edad. No recopilamos deliberadamente información personal de los niños.",
+          "title": "Privacidad para niños"
+        },
+        "data-storage-and-retention": {
+          "title": "Almacenamiento y tratamiento de los datos"
         }
       },
       "head": {
         "keywords": "Skyjo Online,política de privacidad,protección de datos,privacidad de juegos en línea,juego seguro,datos de usuario,cumplimiento del RGPD",
         "title": "Política de privacidad | Skyjo Online",
         "description": "Descubra cómo Skyjo Online protege su privacidad y sus datos mientras juega a nuestro juego de cartas en línea gratuito. Descubra nuestras prácticas de recopilación, uso y protección de datos."
+      }
+    },
+    "Rules": {
+      "title": "Reglas de Skyjo",
+      "back": "Volver a la página principal",
+      "head": {
+        "keywords": "Reglas de Skyjo, cómo jugar a Skyjo, juego Skyjo, multijugador en línea, juego de cartas gratuito, jugar con amigos, reglas del juego Skyjo",
+        "description": "Aprende las reglas de Skyjo, un juego multijugador en línea divertido y atractivo. Descubre cómo jugar a Skyjo con amigos gratis y domina el juego con nuestra guía detallada.",
+        "title": "¿Cómo jugar a Skyjo? | Skyjo en línea"
       }
     }
   },
@@ -160,6 +205,63 @@
       "opponents-list": {
         "title": "Contrincantes:"
       }
+    },
+    "Chat": {
+      "title": "Chat"
+    },
+    "ChatForm": {
+      "message-input-placeholder": "Mensaje",
+      "button-title": "Enviar",
+      "message-too-long": {
+        "description": "El mensaje es demasiado largo (máximo 200 caracteres)"
+      }
+    },
+    "AppearanceSelect": {
+      "light": "Claro",
+      "system": "Sistema",
+      "dark": "Oscuro"
+    },
+    "ChatMessage": {
+      "separator": ": "
+    },
+    "ChatMessageList": {
+      "unread-messages": "{count} mensaje no leído{count, plural, =1 {mensaje sin leer} otro {mensajes sin leer}}"
+    },
+    "Feedback": {
+      "title": "Dejar un comentario",
+      "description": "Puedes escribir un comentario para ayudarnos a mejorar el juego.",
+      "toast": {
+        "success": {
+          "title": "¡Gracias por tu opinión!",
+          "description": "Tus ideas nos han ayudado a mejorar nuestra página web de juegos, y estamos verdaderamente agradecidos."
+        },
+        "error": {
+          "title": "Se ha producido un error, por favor inténtelo de nuevo."
+        }
+      },
+      "email-input": {
+        "placeholder": "example@example.com",
+        "label": "Tu correo electrónico (opcional)"
+      },
+      "message-input": {
+        "label": "Tu mensaje",
+        "placeholder": "Cuéntanos lo que piensas, notas o quieres…"
+      },
+      "button-title": "Enviar"
+    },
+    "CopyLink": {
+      "message": "¡Enlace copiado!",
+      "button-title": "Copiar enlace"
+    },
+    "DiscardPile": {
+      "title": "Montón de descartes",
+      "throw": "Desechar"
+    },
+    "DrawPile": {
+      "title": "Mazo común"
+    },
+    "EndRoundDialog": {
+      "title": "Final de la ronda"
     }
   }
 }
