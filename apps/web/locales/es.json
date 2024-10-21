@@ -472,7 +472,7 @@
       },
       "vote-against-you": {
         "description": "{initiatorName} ha pedido una votación para expulsarte.",
-        "title": "Votar para patearte"
+        "title": "Voto a favor de echarlo"
       },
       "vote-against-you-failed": {
         "title": "No te expulsan",
