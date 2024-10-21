@@ -518,6 +518,24 @@
       "player-muted": "{username} está silenciad@",
       "player-not-muted": "{username} no está silenciad@",
       "player-unmuted": "{username} ya no está silenciad@"
+    },
+    "avatar": {
+      "turtle": "tortuga",
+      "whale": "ballena",
+      "bee": "bee",
+      "crab": "cangrejo",
+      "dog": "perro",
+      "koala": "koala",
+      "octopus": "pulpo",
+      "penguin": "pingüino",
+      "elephant": "elefante",
+      "fox": "zorro",
+      "frog": "rana"
+    }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Se ha perdido la conexión con el servidor. Trate de volver a cargar la página para reconectar"
     }
   }
 }
