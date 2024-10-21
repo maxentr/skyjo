@@ -86,6 +86,10 @@ const SettingsProvider = ({ children, locale }: SettingsProviderProps) => {
     if (settings) Howler.volume((settings.volume ?? 50) / VOLUME_DIVISOR)
   }, [settings?.volume])
 
+  useEffect(() => {
+    if (settings) setSettings({ ...settings, locale })
+  }, [locale])
+
   const openSettings = () => setOpen(true)
 
   const updateSetting = <K extends keyof Settings>(
