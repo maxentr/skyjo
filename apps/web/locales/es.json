@@ -501,7 +501,7 @@
         "replaceACard": "Reemplazar una carta",
         "turnACard": "Gire una carta"
       },
-      "game-ended": "¡Juego terminado!",
+      "game-ended": "¡Perdiste!",
       "turn-cards": "Gira {number} carta{number, plural, =1 {} other {s}}",
       "waiting-opponents-to-turn-cards": "Esperando a que el oponente {nbOpponents, plural, =1 {} other {s}} gire {número} carta{número, plural, =1 {} other {s}}",
       "player-turn": "Es el turno de {playerName}",
@@ -522,7 +522,7 @@
     "avatar": {
       "turtle": "tortuga",
       "whale": "ballena",
-      "bee": "bee",
+      "bee": "abeja",
       "crab": "cangrejo",
       "dog": "perro",
       "koala": "koala",
