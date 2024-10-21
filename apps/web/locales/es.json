@@ -192,7 +192,7 @@
       "locale": {
         "en": "English",
         "it": "Italiano",
-        "de": "German",
+        "de": "Deutsch",
         "es": "Español",
         "fr": "Français"
       },
@@ -472,18 +472,18 @@
       },
       "vote-against-you": {
         "description": "{initiatorName} ha pedido una votación para expulsarte.",
-        "title": "Voto para echarl@"
+        "title": "Voto para echarlo"
       },
       "vote-against-you-failed": {
         "title": "No te expulsan",
         "description": "No hay suficientes votos para expulsarte"
       },
       "vote-succeeded": {
-        "title": "{playerName} ha sido expulsad@",
+        "title": "{playerName} ha sido expulsado",
         "description": "La votación para expulsar a {playerName} ha tenido éxito."
       },
       "vote-against-you-succeeded": {
-        "title": "Te han expulsad@",
+        "title": "Te han expulsado",
         "description": "Los jugadores han votado para expulsarte del juego."
       },
       "vote-failed": {
@@ -494,7 +494,7 @@
   },
   "utils": {
     "skyjo": {
-      "waiting": "Esperando a los jugador@s",
+      "waiting": "Esperando a los jugadores",
       "turn": {
         "chooseAPile": "Elige una pila",
         "throwOrReplace": "Reemplazar o descartar",
@@ -514,10 +514,10 @@
       "player-left": "{username} abandonó la partida",
       "player-reconnect": "{username} se volvió a conectar a la partida",
       "argument-required": "Se requieren uno o más argumentos para el comando: {command}",
-      "player-already-muted": "{username} ya está silenciad@",
-      "player-muted": "{username} está silenciad@",
-      "player-not-muted": "{username} no está silenciad@",
-      "player-unmuted": "{username} ya no está silenciad@"
+      "player-already-muted": "{username} ya está silenciado",
+      "player-muted": "{username} está silenciado",
+      "player-not-muted": "{username} no está silenciado",
+      "player-unmuted": "{username} ya no está silenciado"
     },
     "avatar": {
       "turtle": "tortuga",
