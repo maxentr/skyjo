@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.skyjo.online">
-    <img src="https://www.skyjo.online/svg/logo.svg" alt="Skyjo Online" width="160" />
+    <img src="https://www.skyjo.online/svg/logo.svg" alt="Skyjo Online" width="400" />
   </a>
 </p>
 
