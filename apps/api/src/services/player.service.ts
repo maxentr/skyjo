@@ -2,6 +2,7 @@ import type { Skyjo } from "@/class/Skyjo.js"
 import type { SkyjoPlayer } from "@/class/SkyjoPlayer.js"
 import type { SkyjoSocket } from "@/types/skyjoSocket.js"
 import { CError } from "@/utils/CError.js"
+import { socketErrorHandlerWrapper } from "@/utils/socketErrorHandlerWrapper.js"
 import {
   CONNECTION_LOST_TIMEOUT_IN_MS,
   CONNECTION_STATUS,
@@ -147,7 +148,7 @@ export class PlayerService extends BaseService {
   private startDisconnectionTimeout(
     player: SkyjoPlayer,
     connectionLost: boolean,
-    callback: (...args: unknown[]) => Promise<unknown>,
+    callback: (...args: unknown[]) => Promise<void>,
   ) {
     player.connectionStatus = connectionLost
       ? CONNECTION_STATUS.CONNECTION_LOST
@@ -155,10 +156,10 @@ export class PlayerService extends BaseService {
     BaseService.playerDb.updateDisconnectionDate(player, new Date())
 
     player.disconnectionTimeout = setTimeout(
-      () => {
+      socketErrorHandlerWrapper(async () => {
         player.connectionStatus = CONNECTION_STATUS.DISCONNECTED
-        callback()
-      },
+        await callback()
+      }),
       connectionLost ? CONNECTION_LOST_TIMEOUT_IN_MS : LEAVE_TIMEOUT_IN_MS,
     )
   }
@@ -195,6 +196,7 @@ export class PlayerService extends BaseService {
     const updateGame = BaseService.gameDb.updateGame(game)
     const broadcast = this.broadcastGame(socket, game)
 
+    console.log("updateGame", updateGame)
     await Promise.all([updateGame, broadcast])
   }
   //#endregion
