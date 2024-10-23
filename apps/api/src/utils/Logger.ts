@@ -108,12 +108,12 @@ export class Logger {
       case "warn":
         Logger.warn(error.message, logMeta)
         break
+      case "critical":
+        Logger.critical(error.message, logMeta)
+        break
       case "error":
       default:
         Logger.error(error.message, logMeta)
-        break
-      case "critical":
-        Logger.critical(error.message, logMeta)
         break
     }
   }
