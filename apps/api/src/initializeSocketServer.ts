@@ -20,6 +20,7 @@ export const initializeSocketServer = (server: ServerType) => {
     server as HttpServer,
     {
       parser: customParser,
+      transports: ["polling", "websocket", "webtransport"],
       cors: {
         origin: ENV.ORIGINS,
       },
