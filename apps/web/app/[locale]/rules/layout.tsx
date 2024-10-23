@@ -24,6 +24,7 @@ export async function generateMetadata({
       languages: {
         en: "/rules",
         fr: "/fr/rules",
+        es: "/es/rules",
       },
     },
     openGraph: {

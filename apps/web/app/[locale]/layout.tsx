@@ -71,6 +71,7 @@ export async function generateMetadata({
       languages: {
         en: "/",
         fr: "/fr",
+        es: "/es",
       },
     },
     authors: { url: githubUrl, name: "Maxent" },
