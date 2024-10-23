@@ -11,6 +11,12 @@ import type { SkyjoSocket } from "../types/skyjoSocket.js"
 const instance = new PlayerService()
 
 const playerRouter = (socket: SkyjoSocket) => {
+  if (socket.recovered) {
+    socketErrorHandlerWrapper(async () => {
+      await instance.onRecover(socket)
+    })
+  }
+
   socket.on(
     "leave",
     socketErrorHandlerWrapper(async () => {

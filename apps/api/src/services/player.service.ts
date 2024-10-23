@@ -130,18 +130,19 @@ export class PlayerService extends BaseService {
 
     await BaseService.playerDb.updateSocketId(reconnectData.playerId, socket.id)
 
-    const game = await this.getGame(reconnectData.gameCode)
+    await this.reconnectPlayer(
+      socket,
+      reconnectData.gameCode,
+      reconnectData.playerId,
+    )
+  }
 
-    const player = game.getPlayerById(reconnectData.playerId)!
-
-    if (player.disconnectionTimeout) clearTimeout(player.disconnectionTimeout)
-    player.socketId = socket.id
-    player.connectionStatus = CONNECTION_STATUS.CONNECTED
-
-    const updatePlayer = BaseService.playerDb.reconnectPlayer(player)
-    const joinGame = this.joinGame(socket, game, player, true)
-
-    await Promise.all([updatePlayer, joinGame])
+  async onRecover(socket: SkyjoSocket) {
+    await this.reconnectPlayer(
+      socket,
+      socket.data.gameCode,
+      socket.data.playerId,
+    )
   }
 
   //#region private methods
@@ -198,6 +199,40 @@ export class PlayerService extends BaseService {
 
     console.log("updateGame", updateGame)
     await Promise.all([updateGame, broadcast])
+  }
+
+  private async reconnectPlayer(
+    socket: SkyjoSocket,
+    gameCode: string,
+    playerId: string,
+  ) {
+    const game = await this.getGame(gameCode)
+
+    const player = game.getPlayerById(playerId)
+
+    if (!game || !player)
+      throw new CError(
+        `Game or player not found in game when trying to reconnect. This error can only happen if socket.data is wrong in onRecover method.`,
+        {
+          code: ERROR.PLAYER_NOT_FOUND,
+          level: "critical",
+          meta: {
+            game,
+            socket,
+            gameCode,
+            playerId,
+          },
+        },
+      )
+
+    if (player.disconnectionTimeout) clearTimeout(player.disconnectionTimeout)
+    player.socketId = socket.id
+    player.connectionStatus = CONNECTION_STATUS.CONNECTED
+
+    const updatePlayer = BaseService.playerDb.reconnectPlayer(player)
+    const joinGame = this.joinGame(socket, game, player, true)
+
+    await Promise.all([updatePlayer, joinGame])
   }
   //#endregion
 }

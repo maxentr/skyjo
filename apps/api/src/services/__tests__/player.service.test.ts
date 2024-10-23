@@ -652,4 +652,95 @@ describe("PlayerService", () => {
       )
     })
   })
+
+  describe("onRecover", () => {
+    it("should throw if player not found", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      BaseService["games"].push(game)
+
+      const opponent2 = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        "socketId9887",
+      )
+      game.addPlayer(opponent2)
+
+      const player = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = crypto.randomUUID()
+
+      game.start()
+
+      opponent.cards = [[new SkyjoCard(1), new SkyjoCard(1)]]
+      opponent2.cards = [[new SkyjoCard(1), new SkyjoCard(1)]]
+
+      player.connectionStatus = CONNECTION_STATUS.CONNECTION_LOST
+
+      await expect(service.onRecover(socket)).toThrowCErrorWithCode(
+        ERROR.PLAYER_NOT_FOUND,
+      )
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTION_LOST,
+      )
+    })
+
+    it("should set the player as connected and clear the disconnection timeout", async () => {
+      vi.useFakeTimers()
+
+      const opponent = new SkyjoPlayer(
+        { username: "player1", avatar: AVATARS.ELEPHANT },
+        "socket456",
+      )
+      const game = new Skyjo(opponent.id, new SkyjoSettings(false))
+      game.addPlayer(opponent)
+
+      BaseService["games"].push(game)
+
+      const opponent2 = new SkyjoPlayer(
+        { username: "player2", avatar: AVATARS.PENGUIN },
+        "socketId9887",
+      )
+      game.addPlayer(opponent2)
+
+      const player = new SkyjoPlayer(
+        { username: "player3", avatar: AVATARS.PENGUIN },
+        TEST_SOCKET_ID,
+      )
+      game.addPlayer(player)
+      socket.data.gameCode = game.code
+      socket.data.playerId = player.id
+
+      game.start()
+
+      opponent.cards = [[new SkyjoCard(1), new SkyjoCard(1)]]
+      opponent2.cards = [[new SkyjoCard(1), new SkyjoCard(1)]]
+
+      player.connectionStatus = CONNECTION_STATUS.CONNECTION_LOST
+      player.disconnectionTimeout = setTimeout(() => {
+        throw new Error("test")
+      }, 100000)
+
+      await service.onRecover(socket)
+      // run all timers to check if the timeout was cleared
+      vi.runAllTimers()
+
+      expect(player.connectionStatus).toBe<ConnectionStatus>(
+        CONNECTION_STATUS.CONNECTED,
+      )
+
+      vi.useRealTimers()
+    })
+  })
 })
