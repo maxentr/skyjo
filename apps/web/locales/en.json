@@ -286,9 +286,9 @@
       "search-language": "Search language",
       "no-language-found": "No language found",
       "locale": {
-        "de": "German",
+        "de": "Deutsch",
         "en": "English",
-        "es": "Spanish",
+        "es": "Español",
         "fr": "Français",
         "it": "Italiano"
       }

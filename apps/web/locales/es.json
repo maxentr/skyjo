@@ -38,7 +38,7 @@
     },
     "Maintenance": {
       "title": "En mantenimiento",
-      "description": "Estamos actualizando el sitio, por favor inténtelo más tarde.",
+      "description": "Estamos actualizando el página web, por favor inténtelo más tarde.",
       "github-alt": "Ver el código fuente en GitHub"
     },
     "NotFound": {
@@ -99,12 +99,12 @@
     },
     "ResultsPage": {
       "title": "Resultados del juego",
-      "rank": "Rango",
+      "rank": "Clasificación",
       "score-per-round": "Puntuación por ronda",
       "player": "Jugador",
       "total": "Total",
       "player-want-to-replay": "Jugadores que quieren repetir:",
-      "leave-button": "Abandona el juego",
+      "leave-button": "Abandonar el juego",
       "replay-button": {
         "cancel": "No repetir",
         "replay": "Repetir"
@@ -142,7 +142,7 @@
           }
         },
         "how-we-use-your-information": {
-          "title": "¿Cómo utilizamos su información?",
+          "title": "Cómo utilizamos su información",
           "items": "Mejorar nuestra página web y la experiencia del usuario;;Analizar los patrones de uso y el rendimiento;;Responder a las solicitudes de retroalimentación y apoyo;;Facilitar el juego"
         },
         "contact-us": {
@@ -158,13 +158,23 @@
           "title": "Privacidad para niños"
         },
         "data-storage-and-retention": {
-          "title": "Almacenamiento y tratamiento de los datos"
+          "title": "Almacenamiento y tratamiento de los datos",
+          "items": "Los datos de uso anónimos se almacenan en servidores dentro de la Unión Europea y se conservan hasta 1 año;;Los datos de las partidas se almacenan en nuestra base de datos ubicada en Fráncfort, Alemania. Estos datos se conservan mientras duren las partidas activas. Una vez que todos los jugadores abandonan una partida, los datos asociados se eliminan;;La información almacenada en la memoria local de su navegador permanece allí hasta que usted borra los datos de su navegador;;Los formularios de opinión se conservan únicamente con el fin de responder y considerar sugerencias para el desarrollo"
+        },
+        "data-sharing": {
+          "title": "Uso compartido de datos",
+          "description": "No compartimos tu información personal con terceros. Los datos de uso anónimos son procesados por PostHog, nuestro proveedor de análisis."
+        },
+        "your-rights-and-choices": {
+          "title": "Derechos y opciones",
+          "description": "Dado que recopilamos principalmente datos anónimos, no podemos identificar ni acceder a información personal específica de ningún usuario individual. Sin embargo, usted tiene los siguientes derechos y opciones:",
+          "items": "Almacenamiento local: Puede borrar el almacenamiento local de su navegador en cualquier momento para eliminar las preferencias guardadas;;Comentarios: Si ha enviado comentarios con una dirección de correo electrónico, puede ponerse en contacto con nosotros para solicitar su eliminación: Puede excluirse de la recopilación de datos analíticos activando la opción \"No rastrear\" de su navegador o utilizando navegadores de privacidad que bloqueen las secuencias de comandos analíticas: Los datos relacionados con el juego se eliminan automáticamente cuando todos los jugadores abandonan la partida"
         }
       },
       "head": {
         "keywords": "Skyjo Online,política de privacidad,protección de datos,privacidad de juegos en línea,juego seguro,datos de usuario,cumplimiento del RGPD",
-        "title": "Política de privacidad | Skyjo Online",
-        "description": "Descubra cómo Skyjo Online protege su privacidad y sus datos mientras juega a nuestro juego de cartas en línea gratuito. Descubra nuestras prácticas de recopilación, uso y protección de datos."
+        "title": "Política de privacidad | Skyjo en línea",
+        "description": "Descubra cómo Skyjo en línea protege su privacidad y sus datos mientras juega a nuestro juego de cartas en línea gratuito. Descubra nuestras prácticas de recopilación, uso y protección de datos."
       }
     },
     "Rules": {
@@ -182,10 +192,13 @@
       "locale": {
         "en": "English",
         "it": "Italiano",
-        "de": "German",
-        "es": "Spanish",
+        "de": "Deutsch",
+        "es": "Español",
         "fr": "Français"
-      }
+      },
+      "select-language": "Elegir el idioma",
+      "search-language": "Buscar idioma",
+      "no-language-found": "Ningún idioma encontrado"
     },
     "MenuDropdown": {
       "button": {
@@ -261,7 +274,268 @@
       "title": "Mazo común"
     },
     "EndRoundDialog": {
-      "title": "Final de la ronda"
+      "title": "Final de la ronda",
+      "description": "La siguiente ronda comenzará en unos segundos…"
+    },
+    "SettingsDialog": {
+      "general": {
+        "appearance": "Apariencia",
+        "title": "General",
+        "language": "Idioma",
+        "language-warn": "Cambiar solo en la página principal",
+        "coming-soon": "Próximamente"
+      },
+      "sound": {
+        "title": "Sonido",
+        "audio": {
+          "label": "Activar el sonido"
+        },
+        "volume": {
+          "label": "Volumen ({volume}%)"
+        }
+      },
+      "mobile": {
+        "title": "Móvil",
+        "switch-to-player-who-is-playing": "Cambiar al jugador que está jugando"
+      },
+      "chat": {
+        "title": "Chat",
+        "chat-visibility": "Visibilidad del chat",
+        "chat-notification-size": {
+          "label": "Tamaño de la notificación del chat",
+          "values": {
+            "small": "Pequeña",
+            "normal": "Normal",
+            "big": "Grande"
+          }
+        }
+      },
+      "title": "Ajustes"
+    },
+    "GameLobbyButtons": {
+      "join-game-button": "Únirse a una partida",
+      "reconnect-game-button": "Reconectar a la partida",
+      "find-game-button": "Encontrar una partida",
+      "create-private-game-button": "Crear una partida privada",
+      "timeout": {
+        "description": "El servidor tarda más tiempo del esperado en responder. Puede intentar recargar la página e intentarlo de nuevo."
+      },
+      "cannot-reconnect": {
+        "description": "Ya no es posible volver a conectarse al juego, el tiempo para reconectarse ha expirado"
+      },
+      "game-is-full": {
+        "description": "La partida está completa, no puedes unirte"
+      },
+      "game-not-found": {
+        "description": "La partida que buscas no existe"
+      },
+      "game-already-started": {
+        "description": "La partida ya ha comenzado"
+      }
+    },
+    "Rules": {
+      "round-start": {
+        "content-1": "El jugador puede elegir la primera carta de la pila de descarte",
+        "content-2": "o la primera carta boca abajo del mazo de robo",
+        "choice-2": {
+          "choice-1": "Opción 1",
+          "title": "Opción 2:",
+          "description": "Tome la primera carta boca abajo del mazo de robo.",
+          "content-2": "Si no desea mantener la carta que ha tirado, la coloca en el mazo de descarte y debe volver a colocar una de sus cartas boca arriba.",
+          "content-1": "El jugador puede mirar la carta y elegir si quiere cambiarla por una de sus cartas (oculta o visible) o descartarla. Si quiere conservar la carta que ha sacado, la cambia por una de sus cartas como se describe arriba en el"
+        },
+        "title": "Empieza la ronda",
+        "choice": "elegir {number}",
+        "choice-1": {
+          "title": "Opción 1:",
+          "description": "Toma la primera carta del mazo de descartes.",
+          "content": "El jugador debe intercambiar inmediatamente esta carta por una de sus 12 cartas y colocarla boca arriba. Puede elegir libremente entre cartas boca arriba y boca abajo. Las cartas ocultas no deben verse antes del intercambio. La carta intercambiada se coloca boca arriba en el mazo de descartes."
+        },
+        "end-of-turn": "Su turno ha terminado, y es el turno del siguiente jugador (en sentido horario)."
+      },
+      "end-of-game": {
+        "title": "Fin de la partida",
+        "content": "Al final de cada ronda, los puntos de cada jugador se suman a la puntuación total obtenida en las rondas anteriores. El juego termina cuando un jugador alcanza 100 puntos o más. El jugador con la puntuación más baja gana el juego."
+      },
+      "game-goal": {
+        "title": "Objetivo del juego",
+        "content": "El juego Skyjo se desarrolla en varias rondas y termina en cuanto un jugador alcanza 100 puntos o más. El jugador con menos puntos gana la partida."
+      },
+      "round-preparation": {
+        "title": "Preparación de la ronda",
+        "content-1": "En primer lugar, se reparten 12 cartas boca abajo a cada jugador. A continuación, una carta de la pila de robo se coloca boca arriba en el centro de la mesa, formando el principio de la pila de descarte. Las cartas restantes se colocan boca abajo una al lado de la otra y forman el montón de robo.",
+        "content-2": "Cada jugador coloca sus 12 cartas en cuatro columnas de tres cartas boca abajo delante de él. Finalmente, cada jugador da vuelta a dos cartas de su elección."
+      },
+      "round-end": {
+        "content-2": "Todos los jugadores juegan una vez más para completar la ronda.",
+        "title": "Fin de la ronda",
+        "content-1": "Cuando un jugador ha revelado todas sus cartas, ha jugado su último turno."
+      },
+      "scoring": {
+        "list": {
+          "content-1": "Si el total de puntos son positivos, lo añade al total de puntos de las rondas anteriores.",
+          "content-2": "Si el total es negativo, se resta del total de puntos de las rondas anteriores."
+        },
+        "first-to-finish": {
+          "note": {
+            "title": "Tenga en cuenta:",
+            "content": "¡Esta regla soo se aplica a los puntos positivos!"
+          },
+          "content": "Si el jugador que ha completado la ronda (el primero en entregar todas sus cartas) no ha obtenido, estrictamente hablando, el número más bajo de puntos para esa ronda, entonces la suma de sus puntos para esa ronda se duplica."
+        },
+        "example": {
+          "title": "Ejemplo:",
+          "content": "El jugador A revela todas sus cartas y termina la ronda. Al final de la ronda, tiene 10 puntos, el jugador B tiene 24 puntos y el jugador C también tiene 10 puntos. Como el jugador A no tiene estrictamente el menor número de puntos, sus puntos se duplican hasta 20."
+        },
+        "title": "Puntuación",
+        "description": "Los jugadores que todavía tienen cartas boca abajo las ponen boca arriba. Cada jugador cuenta sus puntos."
+      },
+      "cards-section-title": "{number} de cartas del juego:",
+      "special-rule": {
+        "content": "Si un jugador tiene 3 cartas idénticas en una columna, el jugador descarta estas tres cartas colocándolas en el mazo de descartes. Si se obtiene una columna de cartas idénticas al intercambiar con una carta del mazo o la pila de descarte, las tres cartas idénticas deben ser siempre colocadas en el mazo después de la carta intercambiada.",
+        "title": "Regla especial:"
+      }
+    },
+    "PWABanner": {
+      "SamsungBrowser": "Toque el icono del menú, luego 'Añadir página', luego 'Pantalla de inicio' para instalar",
+      "ChromeIOS": "Pulse el icono de compartir, luego deslice y toque 'Agregar a la pantalla de inicio' para instalar",
+      "FirefoxAndroid": "Toque el icono de menú y, a continuación, \"Añadir a la pantalla de inicio\" para instalar",
+      "ChromeAndroid": "Toque el icono del menú, a continuación 'Añadir a la pantalla de inicio' para instalar",
+      "title": "¡Instala Skyjo en línea en tu dispositivo!",
+      "FirefoxIOS": "Pulse el icono del menú, luego el icono de compartir, luego deslice y toque 'Agregar a la pantalla de inicio' para instalar",
+      "install-button": {
+        "title": "Instalar la aplicación",
+        "content": "Instalar"
+      },
+      "Safari": "Toca el icono de compartir y, a continuación, \"Añadir al Dock\" para instalarlo",
+      "Chrome": "Haga clic en el botón \"Instalar\" para instalar",
+      "SafariIOS": "Pulsa el icono de compartir, desplázate y pulsa \"Añadir a la pantalla de inicio\" para instalarlo"
+    },
+    "Footer": {
+      "feedback": "Deje un comentario",
+      "rules": "Reglas del juego",
+      "release-notes": "Notas de la versión",
+      "privacy-policy": "Política de privacidad",
+      "buy-game": "Comprar el juego",
+      "explanation": "¿Qué es Skyjo?",
+      "home": "Inicio",
+      "disclaimer": "Esta página web no está afiliada a los creadores o distribuidores de Skyjo. Todos los derechos sobre el nombre Skyjo y la mecánica del juego son propiedad de Alexander Bernhardt y Magilano"
+    },
+    "GameStoppedDialog": {
+      "description": "La partida se ha detenido porque no hay suficientes jugadores",
+      "title": "Partida detenida"
+    },
+    "RulesDialog": {
+      "title": "Reglas del juego",
+      "trigger": {
+        "aria-label": "Mostrar las reglas del juego"
+      }
+    },
+    "Scoreboard": {
+      "button-title": "Ver el marcador"
+    },
+    "ScoreDialog": {
+      "title": "Puntuación",
+      "description": "¡{name} ha ganado con {score} puntos!"
+    },
+    "ScoreSheet": {
+      "see-scores": "Ver la puntuación"
+    },
+    "ScoreTable": {
+      "total": "Total",
+      "name": "Nombre",
+      "round": "Ronda"
+    },
+    "Avatar": {
+      "context-menu": {
+        "kick": "Expulsar",
+        "unmute": "Activar el sonido",
+        "mute": "Silenciar"
+      }
+    },
+    "KickVote": {
+      "player-has-not-voted": {
+        "title": "Vota para expulsar a {playerName}",
+        "kick-button": {
+          "label": "Expulsar",
+          "alt": "Expulsar a {playerName}"
+        },
+        "ignore-button": {
+          "alt": "Ignorar la votación para expulsar a {playerName}",
+          "label": "Ignorar"
+        },
+        "description": "{initiatorName} quiere expulsar a {playerName}"
+      },
+      "player-has-voted": {
+        "title": "Vota para expulsar a {playerName}",
+        "description": "Ha votado {vote, select, true {a favor} false {en contra} other {voto}}"
+      },
+      "vote-against-you": {
+        "description": "{initiatorName} ha pedido una votación para expulsarte.",
+        "title": "Voto a favor de echarlo"
+      },
+      "vote-against-you-failed": {
+        "title": "No te expulsan",
+        "description": "No hay suficientes votos para expulsarte"
+      },
+      "vote-succeeded": {
+        "title": "{playerName} ha sido expulsado",
+        "description": "La votación para expulsar a {playerName} ha tenido éxito."
+      },
+      "vote-against-you-succeeded": {
+        "title": "Te han expulsado",
+        "description": "Los jugadores han votado para expulsarte del juego."
+      },
+      "vote-failed": {
+        "title": "La votación para expulsar a {playerName} falló",
+        "description": "No hay suficientes votos para expulsar a {playerName}"
+      }
+    }
+  },
+  "utils": {
+    "skyjo": {
+      "waiting": "Esperando a los jugadores",
+      "turn": {
+        "chooseAPile": "Elige una pila",
+        "throwOrReplace": "Reemplazar o descartar",
+        "replaceACard": "Reemplazar una carta",
+        "turnACard": "Gire una carta"
+      },
+      "game-ended": "¡Perdiste!",
+      "turn-cards": "Gira {number} carta{number, plural, =1 {} other {s}}",
+      "waiting-opponents-to-turn-cards": "Esperando a que el oponente {nbOpponents, plural, =1 {} other {s}} gire {número} carta{número, plural, =1 {} other {s}}",
+      "player-turn": "Es el turno de {playerName}",
+      "last-turn": "¡Última ronda!",
+      "game-stopped": "Partida detenida",
+      "round-over": "Redonda terminada"
+    },
+    "chat": {
+      "player-joined": "{username} se unió a la partida",
+      "player-left": "{username} abandonó la partida",
+      "player-reconnect": "{username} se volvió a conectar a la partida",
+      "argument-required": "Se requieren uno o más argumentos para el comando: {command}",
+      "player-already-muted": "{username} ya está silenciado",
+      "player-muted": "{username} está silenciado",
+      "player-not-muted": "{username} no está silenciado",
+      "player-unmuted": "{username} ya no está silenciado"
+    },
+    "avatar": {
+      "turtle": "tortuga",
+      "whale": "ballena",
+      "bee": "abeja",
+      "crab": "cangrejo",
+      "dog": "perro",
+      "koala": "koala",
+      "octopus": "pulpo",
+      "penguin": "pingüino",
+      "elephant": "elefante",
+      "fox": "zorro",
+      "frog": "rana"
+    }
+  },
+  "contexts": {
+    "SocketContext": {
+      "connection-lost": "Se ha perdido la conexión con el servidor. Trate de volver a cargar la página para reconectar"
     }
   }
 }
