@@ -78,6 +78,14 @@ export class Logger {
     })
   }
 
+  static critical(message: string, meta?: Record<string, unknown>) {
+    if (!Logger.shouldLog()) return
+
+    Logger.winstonLogger.crit(message, {
+      ...meta,
+    })
+  }
+
   static cError(error: CError, meta?: Record<string, unknown>) {
     if (!Logger.shouldLog()) return
 
@@ -103,6 +111,9 @@ export class Logger {
       case "error":
       default:
         Logger.error(error.message, logMeta)
+        break
+      case "critical":
+        Logger.critical(error.message, logMeta)
         break
     }
   }

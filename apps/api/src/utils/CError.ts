@@ -3,7 +3,7 @@ import type { SkyjoSocket } from "@/types/skyjoSocket.js"
 import type { Error as ErrorType } from "shared/constants"
 import type { SocketData } from "shared/types/socket"
 
-type CErrorLevel = "debug" | "info" | "warn" | "error"
+type CErrorLevel = "debug" | "info" | "warn" | "error" | "critical"
 
 export interface CErrorOptions {
   code?: ErrorType
