@@ -494,11 +494,11 @@ export class Skyjo implements SkyjoInterface {
       )
 
     if (opponentWithALowerOrEqualScore) {
-      firstToFinishPlayer!.scores[lastScoreIndex] =
-        +firstToFinishPlayer!.scores[lastScoreIndex] *
+      firstToFinishPlayer.scores[lastScoreIndex] =
+        +firstToFinishPlayer.scores[lastScoreIndex] *
         this.settings.multiplierForFirstPlayer
 
-      firstToFinishPlayer!.recalculateScore()
+      firstToFinishPlayer.recalculateScore()
     }
   }
 
