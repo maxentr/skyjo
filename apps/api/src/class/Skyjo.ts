@@ -471,8 +471,9 @@ export class Skyjo implements SkyjoInterface {
     const firstToFinishPlayer = this.players.find(
       (player) => player.id === this.firstToFinishPlayerId,
     )
+    if (!firstToFinishPlayer) return
 
-    const firstToFinishPlayerScore = firstToFinishPlayer!.scores[lastScoreIndex]
+    const firstToFinishPlayerScore = firstToFinishPlayer.scores[lastScoreIndex]
 
     if (
       typeof firstToFinishPlayerScore === "number" &&
